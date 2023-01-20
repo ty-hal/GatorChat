@@ -2,16 +2,18 @@ package router
 
 import (
 	"github.com/gorilla/mux"
-	// "github.com/team/swe-project/middleware"
+	"github.com/team/swe-project/handlers"
 )
 
 func Router() *mux.Router {
 	router := mux.NewRouter()
-	// router.HandleFunc("/api/task", middleware.GetAllTasks).Methods("GET", "OPTIONS")
-	// router.HandleFunc("/api/tasks", middleware.CreateTask).Methods("POST", "OPTIONS")
-	// router.HandleFunc("/api/tasks/{id}", middleware.TaskComplete).Methods("PUT", "OPTIONS")
-	// router.HandleFunc("/api/undoTask/{id}", middleware.UndoTask).Methods("PUT", "OPTIONS")
-	// router.HandleFunc("/api/deleteTask/{id}", middleware.DeleteTask).Methods("DELETE", "OPTIONS")
-	// router.HandleFunc("/api/deleteAllTasks", middleware.DeleteAllTasks).Methods("DELETE", "OPTIONS")
+
+	// User Routes
+	router.HandleFunc("/api/users", handlers.GetAllUsers).Methods("GET")
+	router.HandleFunc("/api/user/{id}", handlers.GetUser).Methods("GET")
+	router.HandleFunc("/api/user", handlers.CreateUser).Methods("POST")
+	router.HandleFunc("/api/users/{id}", handlers.DeleteUser).Methods("DELETE")
+	router.HandleFunc("/api/user/{id}", handlers.UpdateUser).Methods("PUT")
+
 	return router
 }

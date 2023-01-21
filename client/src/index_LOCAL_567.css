@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-<<<<<<< HEAD
 .title
 {
     font-family:Verdana, Geneva, Tahoma, sans-serif;
@@ -34,11 +33,3 @@
     font-size:20px;
     color:green;
 }
-=======
-
-
-p{
-    font-family: Arial, Helvetica, sans-serif;
-}
-
->>>>>>> ab2283133e606e0df77b9cc9e74b6e4beffaecc8

@@ -1,9 +1,6 @@
-<<<<<<< HEAD
-import React from "react"
-=======
-import Footer from "../components/Footer";
 
->>>>>>> ab2283133e606e0df77b9cc9e74b6e4beffaecc8
+import React from "react"
+import Footer from "../components/Footer";
 const Home = () => {
   return (
     <div>

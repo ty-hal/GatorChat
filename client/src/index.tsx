@@ -9,23 +9,28 @@ import Home from "./pages/Home";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import NoPage from "./pages/NoPage";
+import ForgotPassword from "./pages/ForgotPassword";
 
 export default function App() {
   return (
     <BrowserRouter>
+      <Layout />
       <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="sign-in" element={<SignIn />} />
-          <Route path="sign-up" element={<SignUp />} />
-          <Route path="*" element={<NoPage />} />
-        </Route>
+        {/* <Route path="/" element={<Layout />}> */}
+        <Route index element={<Home />} />
+        <Route path="sign-in" element={<SignIn />} />
+        <Route path="sign-up" element={<SignUp />} />
+        <Route path="forgot-password" element={<ForgotPassword />} />
+        <Route path="*" element={<NoPage />} />
+        {/* </Route> */}
       </Routes>
     </BrowserRouter>
   );
 }
 
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+const root = ReactDOM.createRoot(
+  document.getElementById("root") as HTMLElement
+);
 root.render(<App />);
 
 // const root = ReactDOM.createRoot(

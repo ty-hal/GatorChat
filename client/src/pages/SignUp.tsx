@@ -1,6 +1,8 @@
-const SignUp = () => {
+import React from "react"
+const SignUp = () => 
+{
   return (
-    <div>Sign Up</div>
+  <header>Sign Up</header>
   )
 }
 

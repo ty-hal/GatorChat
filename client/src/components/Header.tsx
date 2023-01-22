@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import React from "react";
 
 const Layout = () => {
   const [showDropDown, setShowDropDown] = useState<boolean>(false);
@@ -9,8 +10,8 @@ const Layout = () => {
   };
 
   return (
-    <div className="flex flex-wrap border-b-blue-600 border-b-2">
-      <section className="relative mx-auto  ">
+    <div className="flex flex-wrap border-b-blue-600 border-b-4">
+      <section className="relative mx-auto">
         <nav className="flex justify-between h-14 dark:bg-gray-900 text-gray-700 dark:text-white w-screen">
           <div className="px-5 xl:px-12 py-6 flex w-full items-center">
             {/* Logo  */}
@@ -31,7 +32,7 @@ const Layout = () => {
                   Sign in
                 </span>
               </Link>
-              <Link to="/sign-up">
+              <Link to="/register">
                 {" "}
                 <span className="font-semibold hover:ring-2 rounded-lg p-1 text-lg ring-gray-300 hover:bg-blue-600 hover:text-white mr-6">
                   Register
@@ -110,29 +111,3 @@ const Layout = () => {
 };
 
 export default Layout;
-
-// <div className="container">
-// {/* align-items-center justify-content-center justify-content-md-between */}
-// <header className="flex py-3 mb-4 w-screen border-bottom bg-slate-100 border-b-2 border-b-slate-500">
-//   <a href="/" className="w-1/4 text-left pl-4">
-//     LOGO
-//   </a>
-
-//   <nav className="w-3/4 space-x-6 text-right">
-//     <Link to="/">
-//       {" "}
-//       <span className="hover:text-red-600 px-1.5 py-1 rounded-lg border-2 border-blue-600 text-blue-700 text-lg">
-//         Home
-//       </span>
-//     </Link>
-//     <Link to="/sign-in">
-//       {" "}
-//       <span className="">Sign in</span>
-//     </Link>
-//     <Link to="/sign-up">
-//       {" "}
-//       <span className="mr-6">Sign up</span>
-//     </Link>
-//   </nav>
-// </header>
-// </div>

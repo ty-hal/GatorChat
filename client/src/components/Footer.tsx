@@ -42,11 +42,11 @@ const Footer = () => {
 
             <div className="col-span-2 sm:col-span-1">
               <Link
-                to="/sign-up"
+                to="/register"
                 className="md:text-lg  text-gray-900 dark:text-white cursor-pointer"
               >
                 {" "}
-                <span className="font-medium mr-4">Sign up</span>
+                <span className="font-medium mr-4">Register</span>
               </Link>
             </div>
 
@@ -75,7 +75,7 @@ const Footer = () => {
                   <input
                     type="email"
                     id="UserEmail"
-                    placeholder="name@ufl.edu"
+                    placeholder="email@email.com"
                     className="w-full border-none focus:border-transparent focus:ring-transparent dark:bg-gray-900 dark:text-white sm:text-sm !outline-none
                     "
                   />
@@ -98,12 +98,13 @@ const Footer = () => {
             <nav aria-label="Footer Navigation - Support">
               <ul className="flex flex-wrap justify-start gap-4 text-xs lg:justify-end">
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="/terms-and-conditions"
                     className="text-gray-500 transition hover:opacity-75 dark:text-gray-400"
                   >
-                    Terms & Conditions
-                  </a>
+                    {" "}
+                    <span className="font-medium mr-4">Terms & Conditions</span>
+                  </Link>
                 </li>
 
                 <li>

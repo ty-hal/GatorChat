@@ -1,5 +1,19 @@
 # SWE-Project
-Group project for CEN3031 - Intro to Software Engineering.
+CEN3031 - Intro to Software Engineering
+
+Project name: (WRITE HERE)
+
+Project description: (WRITE HERE)
+
+Front-end engineers: Ty Halpen and Steven Miller
+Back-end engineers: Dev Patel and Timothy Swango
+
+
+
+
+
+
+
 
 The **client** folder contains all of the frontend (Typescript with the React framework). In the client folder, run `npm start` to start the React app locally.
 

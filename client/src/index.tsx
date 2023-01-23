@@ -19,7 +19,7 @@ export default function App() {
       <Header />
       <Routes>
         <Route index element={<Home />} />
-        <Route path="sign-in" element={<Ty_SignIn />} />
+        <Route path="sign-in" element={<SignIn />} />
         <Route path="register" element={<Register />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
         <Route path="terms-and-conditions" element={<TermsAndConditions />} />

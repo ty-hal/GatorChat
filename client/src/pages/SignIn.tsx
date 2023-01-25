@@ -1,6 +1,5 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { ThemeContext } from "../context/ThemeContext";
 
 const SignIn = () => {
   const [username, setusername] = useState("");
@@ -12,33 +11,8 @@ const SignIn = () => {
     console.log("password:" + password);
   };
 
-  const { dark, toggleDark, setDark } = useContext(ThemeContext);
-
-  useEffect(() => {
-    const data = window.localStorage.getItem("darkMode");
-    if (data !== null) {
-      if (setDark) {
-        setDark(JSON.parse(data));
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    window.localStorage.setItem("darkMode", JSON.stringify(dark));
-  }, [dark]);
-
   return (
     <section className="h-screen py-8 bg-gray-50 dark:bg-gray-900">
-      <div
-        onClick={() => {
-          if (toggleDark) {
-            toggleDark();
-          }
-        }}
-      >
-        {dark ? "DARK" : "LIGHT"}
-      </div>
-
       <div className="sm:max-w-md w-full mx-auto bg-white rounded-lg shadow dark:border md:mt-0 xl:p-0 dark:bg-gray-800 dark:border-gray-700">
         <div className="p-6 space-y-4 md:space-y-6 sm:p-8 shadow">
           <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">

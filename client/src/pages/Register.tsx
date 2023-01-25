@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
-import { useState, useEffect, useContext } from "react";
-import { ThemeContext } from "../context/ThemeContext";
+import { useState, useEffect } from "react";
 
 const Register = () => {
   const [password, setPassword] = useState("");
@@ -50,19 +49,8 @@ const Register = () => {
     console.log("Submit form");
   };
 
-  const { dark, toggleDark } = useContext(ThemeContext);
-
   return (
     <section className="h-screen py-8 bg-gray-50 dark:bg-gray-900">
-      <div
-        onClick={() => {
-          if (toggleDark) {
-            toggleDark();
-          }
-        }}
-      >
-        {dark ? "DARK" : "LIGHT"}
-      </div>
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
         <div className="sm:max-w-md w-full bg-white rounded-lg shadow dark:border md:mt-0 xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">

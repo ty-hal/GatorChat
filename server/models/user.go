@@ -13,6 +13,7 @@ type User struct {
 	//Major          string `json:"major,omitempty"`
 	ProfilePic string `json:"profile_pic,omitempty"`
 	Email      string `json:"email,omitempty"`
+	Dark       bool   `json:"dark,omitempty"`
 }
 
 func GetAllUsers() []User {
@@ -48,4 +49,5 @@ func DeleteUser(id uint8) {
 }
 
 func UpdateUser() {
+	// figure out criteria for that later, gonna be multiple update functions
 }

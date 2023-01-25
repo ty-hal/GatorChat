@@ -22,6 +22,7 @@ func Router() *mux.Router {
 
 	// Test getting user
 	user := models.GetUser(1)
-	fmt.Printf("name:%v    | email:%v \n", user.FirstName, user.Email)
+	fmt.Printf("name:%v    | email:%v\n", user.FirstName, user.Email)
+
 	return router
 }

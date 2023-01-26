@@ -36,6 +36,9 @@ const SignIn = () => {
                 pattern="[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@ufl\.edu"
                 onChange={(event) => setusername(event.target.value)}
               ></input>
+               <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
+			          Invalid Username!
+		            </span>
               <label
                 htmlFor="password"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -53,6 +56,9 @@ const SignIn = () => {
                   setpassword(event.target.value);
                 }}
               ></input>
+               <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
+			          Invalid Password!
+		            </span>
             </div>
             <div className="flex items-center justify-between">
               <div className="flex items-start">
@@ -63,6 +69,7 @@ const SignIn = () => {
                     type="checkbox"
                     className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800"
                   ></input>
+                  
                 </div>
                 <div className="ml-3 text-sm">
                   <label

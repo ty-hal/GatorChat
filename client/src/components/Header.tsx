@@ -72,14 +72,16 @@ const Layout = () => {
                     onMouseLeave={(): void => toggleDropDown()}
                   >
                     <div className="py-1" role="none">
-                      <a
-                        href="#"
+                      <Link to ="/Settings">
+                      <span
                         className="text-gray-700 block px-4 py-2 text-sm hover:font-semibold"
                         role="menuitem"
-                        id="menu-item-0"
-                      >
+                        id="menu-item-0">
+                        
+                      
                         Settings
-                      </a>
+                        </span>
+                      </Link>
                       <a
                         href="#"
                         className="text-gray-700 block px-4 py-2 text-sm hover:font-semibold"

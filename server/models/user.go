@@ -1,6 +1,8 @@
 package models
 
 import (
+	"errors"
+
 	"github.com/team/swe-project/middleware"
 )
 
@@ -24,28 +26,29 @@ func GetAllUsers() []User {
 	return users
 }
 
-func GetUser(id uint8) User {
+func GetUser(id uint8) (User, error) {
 	var user User
 
-	middleware.DB.First(&user, id)
+	err := middleware.DB.First(&user, id).Error
 
-	return user
+	return user, err
 }
 
-func CreateUser(firstName string, lastName string, password string, profilePic string, email string) {
-	user := User{
-		FirstName:  firstName,
-		LastName:   lastName,
-		Password:   password,
-		ProfilePic: profilePic,
-		Email:      email,
-	}
-
+func CreateUser(user User) {
 	middleware.DB.Create(&user)
 }
 
-func DeleteUser(id uint8) {
-	middleware.DB.Delete(&User{}, id)
+func DeleteUser(id uint8) (User, error) {
+	var user User
+	var err error
+
+	db := middleware.DB.Delete(&user, id)
+
+	if db.RowsAffected < 1 {
+		err = errors.New("User Not Found")
+	}
+
+	return user, err
 }
 
 func UpdateUser() {

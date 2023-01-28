@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/team/swe-project/middleware"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type User struct {
@@ -11,10 +12,10 @@ type User struct {
 	UserID    uint8  `json:"user_id" gorm:"primary_key"`
 	FirstName string `json:"first_name,omitempty"`
 	LastName  string `json:"last_name,omitempty"`
+	Email     string `json:"email,omitempty"`
 	Password  string `json:"password,omitempty"`
 	//Major          string `json:"major,omitempty"`
 	ProfilePic string `json:"profile_pic,omitempty"`
-	Email      string `json:"email,omitempty"`
 	Dark       bool   `json:"dark,omitempty"`
 }
 
@@ -34,8 +35,19 @@ func GetUser(id uint8) (User, error) {
 	return user, err
 }
 
-func CreateUser(user User) {
+func CreateUser(user User) (User, error) {
+	// Check if User already exists. If true, return error
+
+	// Hash Password
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return User{}, errors.New("could not hash password")
+	}
+
+	user.Password = string(hashedPassword)
 	middleware.DB.Create(&user)
+
+	return user, nil
 }
 
 func DeleteUser(id uint8) (User, error) {
@@ -53,4 +65,25 @@ func DeleteUser(id uint8) (User, error) {
 
 func UpdateUser() {
 	// figure out criteria for that later, gonna be multiple update functions
+}
+
+func CheckSignIn(email string, password string) (User, error) {
+	var user User
+
+	err := middleware.DB.First(&user, "email = ?", email).Error
+
+	// Database Error
+	if err != nil {
+		return User{}, err
+	}
+
+	// Check Password
+	passwordErr := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+
+	// Invalid login
+	if passwordErr != nil {
+		return User{}, passwordErr
+	}
+
+	return user, nil
 }

@@ -9,6 +9,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/team/swe-project/models"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
@@ -55,8 +56,45 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// IMPORTANT, CHECK IF USER ALREADY EXISTS
+
 	// Create User
-	models.CreateUser(user)
+	userCreated, hashErr := models.CreateUser(user)
+
+	// If hashing error
+	if hashErr != nil {
+		w.WriteHeader(http.StatusNotFound)
+		w.Write([]byte(hashErr.Error()))
+		return
+	}
+
+	json.NewEncoder(w).Encode(userCreated)
+}
+
+func SignIn(w http.ResponseWriter, r *http.Request) {
+	type login struct {
+		Email    string `json:"email,omitempty"`
+		Password string `json:"password,omitempty"`
+	}
+
+	var loginInfo login
+	json.NewDecoder(r.Body).Decode(&loginInfo)
+
+	user, err := models.CheckSignIn(loginInfo.Email, loginInfo.Password)
+
+	// User not Found
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		w.WriteHeader(http.StatusNotFound)
+		w.Write([]byte("User Not Found"))
+		return
+	}
+
+	// Invalid Password
+	if errors.Is(err, bcrypt.ErrMismatchedHashAndPassword) {
+		w.WriteHeader(http.StatusUnauthorized)
+		w.Write([]byte("Invalid Password"))
+		return
+	}
 
 	json.NewEncoder(w).Encode(user)
 }
@@ -74,11 +112,11 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, db_err := models.DeleteUser(uint8(id))
+	user, dbErr := models.DeleteUser(uint8(id))
 
-	if db_err != nil {
+	if dbErr != nil {
 		w.WriteHeader(http.StatusNotFound)
-		w.Write([]byte(db_err.Error()))
+		w.Write([]byte(dbErr.Error()))
 		return
 	}
 

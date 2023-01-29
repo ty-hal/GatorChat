@@ -19,9 +19,15 @@ const Footer = () => {
             </div>
 
             <div className="col-span-2 sm:col-span-1">
-              <p className="md:text-lg font-medium text-gray-900 dark:text-white cursor-pointer">
-                Settings
-              </p>
+              <Link to="/settings">
+                <span
+                  className="md:text-lg font-medium text-gray-900 dark:text-white cursor-pointer"
+                  role="menuitem"
+                  id="menu-item-0"
+                >
+                  Settings
+                </span>
+              </Link>
             </div>
 
             <div className="col-span-2 sm:col-span-1">

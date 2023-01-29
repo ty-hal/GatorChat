@@ -11,7 +11,8 @@ import Register from "./pages/Register";
 import NoPage from "./pages/NoPage";
 import ForgotPassword from "./pages/ForgotPassword";
 import TermsAndConditions from "./pages/TermsAndConditions";
-import  Settings from "./pages/Settings";
+import Settings from "./pages/Settings";
+import FAQ from "./pages/FAQ";
 
 export default function App() {
   const [dark, toggleDark] = useState(true);
@@ -28,7 +29,8 @@ export default function App() {
           <Route path="register" element={<Register />} />
           <Route path="forgot-password" element={<ForgotPassword />} />
           <Route path="terms-and-conditions" element={<TermsAndConditions />} />
-          <Route path = "Settings" element = {<Settings/>}/>
+          <Route path="settings" element={<Settings />} />
+          <Route path="faq" element={<FAQ />} />
           <Route path="*" element={<NoPage />} />
         </Routes>
       </div>

@@ -36,8 +36,6 @@ func GetUser(id uint8) (User, error) {
 }
 
 func CreateUser(user User) (User, error) {
-	// Check if User already exists. If true, return error
-
 	// Hash Password
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if err != nil {
@@ -45,7 +43,12 @@ func CreateUser(user User) (User, error) {
 	}
 
 	user.Password = string(hashedPassword)
-	middleware.DB.Create(&user)
+	result := middleware.DB.Where("email = ?", user.Email).FirstOrCreate(&user)
+
+	// User already exists
+	if result.RowsAffected == 0 {
+		return User{}, errors.New("User Already Exists")
+	}
 
 	return user, nil
 }

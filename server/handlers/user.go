@@ -56,16 +56,23 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// IMPORTANT, CHECK IF USER ALREADY EXISTS
-
 	// Create User
-	userCreated, hashErr := models.CreateUser(user)
+	userCreated, userErr := models.CreateUser(user)
 
-	// If hashing error
-	if hashErr != nil {
-		w.WriteHeader(http.StatusNotFound)
-		w.Write([]byte(hashErr.Error()))
-		return
+	if userErr != nil {
+		// If password could not be hashed
+		if userErr.Error() == "could not hash password" {
+			w.WriteHeader(http.StatusNotFound)
+			w.Write([]byte(userErr.Error()))
+			return
+		}
+
+		// If user already exists
+		if userErr.Error() == "User Already Exists" {
+			w.WriteHeader(http.StatusConflict)
+			w.Write([]byte(userErr.Error()))
+			return
+		}
 	}
 
 	json.NewEncoder(w).Encode(userCreated)

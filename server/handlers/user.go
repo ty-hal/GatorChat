@@ -14,18 +14,20 @@ import (
 )
 
 func GetAllUsers(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
 	users := models.GetAllUsers()
 
-	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(users)
 }
 
 func GetUser(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
 	params := mux.Vars(r)
 	id, err := strconv.Atoi(params["id"])
 
-	w.Header().Set("Content-Type", "application/json")
-
+	// Invalid parameter
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write([]byte("Invalid Parameter: id"))
@@ -34,6 +36,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 
 	user, db_err := models.GetUser(uint8(id))
 
+	// User not found
 	if errors.Is(db_err, gorm.ErrRecordNotFound) {
 		w.WriteHeader(http.StatusNotFound)
 		w.Write([]byte("User Not Found"))
@@ -44,10 +47,10 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateUser(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
 	var user models.User
 	json.NewDecoder(r.Body).Decode(&user)
-
-	w.Header().Set("Content-Type", "application/json")
 
 	// Ensure all fields are there
 	if user.FirstName == "" || user.LastName == "" || user.Password == "" || user.Email == "" {
@@ -79,6 +82,8 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func SignIn(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
 	type login struct {
 		Email    string `json:"email,omitempty"`
 		Password string `json:"password,omitempty"`
@@ -92,15 +97,11 @@ func SignIn(w http.ResponseWriter, r *http.Request) {
 	// User not Found
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		w.WriteHeader(http.StatusNotFound)
-		w.Write([]byte("User Not Found"))
-		return
 	}
 
 	// Invalid Password
 	if errors.Is(err, bcrypt.ErrMismatchedHashAndPassword) {
 		w.WriteHeader(http.StatusUnauthorized)
-		w.Write([]byte("Invalid Password"))
-		return
 	}
 
 	json.NewEncoder(w).Encode(user)
@@ -108,11 +109,12 @@ func SignIn(w http.ResponseWriter, r *http.Request) {
 
 // DELETING WITH FOREGIN KEYS NOT FINISHED YET
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
 	params := mux.Vars(r)
 	id, err := strconv.Atoi(params["id"])
 
-	w.Header().Set("Content-Type", "application/json")
-
+	// Invalid parameter
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write([]byte("Invalid Parameter: id"))

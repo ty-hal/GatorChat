@@ -11,14 +11,40 @@ const SignIn = () => {
     e.preventDefault();
     console.log("username:" + username);
     console.log("password:" + password);
+    
+    const login = {
+      email: username,
+      password: password
+    }
 
     // Backend API call here to see if user a) has a valid email address, and b) has a valid login
+    fetch("http://localhost:9000/api/user/signin", {
+      method: "POST",
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify(login)
+    })
+    .then(response => {
+      // User signed in 
+      if (response.status === 200) {
+        setInvalidCredentials(false);
+        return response.json()
+      }
 
-    // If login is unsuccessful:
-    setInvalidCredentials(true);
+      // User not found
+      else if (response.status === 404) {
+        console.log("REDIRECT TO CREATE ACCOUNT OR DISPLAY ACCOUNT NEEDS TO BE CREATED")
+      }
 
-    // If login is successful:
-    // setInvalidCredentials(false);
+      // Invalid Password 
+      else if (response.status === 401) {
+        setInvalidCredentials(true);
+      }
+
+    })
+    .then(data => console.log(data))
+    
   };
 
   return (

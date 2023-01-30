@@ -5,6 +5,8 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/rs/cors"
+
 	"github.com/team/swe-project/middleware"
 	"github.com/team/swe-project/router"
 )
@@ -13,9 +15,11 @@ func main() {
 	r := router.Router()
 	middleware.Init()
 
-	//middleware.DB.AutoMigrate(&models.User{})
+	corsHandler := cors.New(cors.Options{
+		AllowedOrigins: []string{"http://localhost:3000"},
+	})
 
 	fmt.Println("starting the server on port 9000...")
 
-	log.Fatal(http.ListenAndServe(":9000", r))
+	log.Fatal(http.ListenAndServe(":9000", corsHandler.Handler(r)))
 }

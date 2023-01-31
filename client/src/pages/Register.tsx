@@ -1,13 +1,50 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import ProfilePicture from "../components/ProfilePicture";
+
+interface userRegistration {
+  first_name: String;
+  last_name: String;
+  email: String;
+  major: String;
+  password: String;
+  profile_picture?: String;
+}
 
 const Register = () => {
+  const [first_name, setFirstName] = useState("");
+  const [last_name, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [major, setMajor] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [selectedImage, setSelectedImage] = useState<File>();
+  const [selectedImage, setSelectedImage] = useState(false);
+  const [profilePicture, setProfilePicture] = useState({
+    file: "",
+  });
+  let navigate = useNavigate();
+
+  const convertImageToBase64 = (file: File) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files !== null) {
+      const file = e.target.files[0];
+      const base64 = (await convertImageToBase64(file)) as string;
+      setProfilePicture({ ...profilePicture, file: base64 });
+    }
+  };
 
   useEffect(() => {
-    console.log(password, confirmPassword);
     const elem_confirmPassword = document.getElementById("confirm-password");
     if (elem_confirmPassword !== null) {
       if (confirmPassword === "") {
@@ -46,11 +83,56 @@ const Register = () => {
 
   const submitForm = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Submit form");
+
+    const registration: userRegistration = {
+      first_name: first_name,
+      last_name: last_name,
+      email: email,
+      major: major,
+      password: password,
+      profile_picture: profilePicture.file,
+    };
+
+    console.log(registration);
+
+    // Backend API call here to see if user a) has a valid email address, and b) has a valid login
+    // fetch("http://localhost:9000/api/user/signin", {
+    //   method: "POST",
+    //   headers: {
+    //     "content-type": "application/json",
+    //   },
+    //   body: JSON.stringify(login),
+    // })
+    //   .then((response) => {
+    //     // User signed in
+    //     if (response.status === 200) {
+    //       setInvalidPassword(false);
+    //       setInvalidEmail(false);
+    //       console.log("User signed in");
+    //       navigate("/"); // Navigate to home page
+    //       return response.json();
+    //     }
+
+    //     // User not found (no account with this email address)
+    //     else if (response.status === 404) {
+    //       setInvalidEmail(true);
+    //       setInvalidPassword(false);
+    //       console.log("User not found");
+    //     }
+
+    //     // Invalid Password
+    //     else if (response.status === 401) {
+    //       setInvalidPassword(true);
+    //       setInvalidEmail(false);
+    //       console.log("Invalid password");
+    //     }
+    //   })
+    //   .then((data) => console.log(data));
+    // navigate("/"); // Navigate to home page
   };
 
   return (
-    <section className="h-screen bg-gray-50 py-8 dark:bg-gray-900">
+    <section className="bg-gray-50 py-8 pb-32  dark:bg-gray-900">
       <div className="mx-auto flex flex-col items-center justify-center px-6 py-8 lg:py-0">
         <div className="w-full rounded-lg bg-white shadow dark:border dark:border-gray-700 dark:bg-gray-800 sm:max-w-md md:mt-0 xl:p-0">
           <div className="space-y-4 p-6 sm:p-8 md:space-y-6">
@@ -76,6 +158,9 @@ const Register = () => {
                     placeholder="John"
                     pattern="[a-zA-Z .'*_`~-]+"
                     required
+                    onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                      setFirstName((e.target as HTMLInputElement).value);
+                    }}
                   />
                 </div>
                 {/* Last Name  */}
@@ -94,6 +179,9 @@ const Register = () => {
                     placeholder="Doe"
                     pattern="[a-zA-Z .'*_`~-]+"
                     required
+                    onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                      setLastName((e.target as HTMLInputElement).value);
+                    }}
                   />
                 </div>
               </div>
@@ -114,6 +202,9 @@ const Register = () => {
                   pattern="[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@ufl\.edu"
                   title="Must use a UF email address"
                   required
+                  onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                    setEmail((e.target as HTMLInputElement).value);
+                  }}
                 />
               </div>
               {/* Major  */}
@@ -128,6 +219,9 @@ const Register = () => {
                   id="major"
                   className="focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500"
                   required
+                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                    setMajor(e.target.value);
+                  }}
                 >
                   <option value="" selected disabled>
                     Select a major
@@ -401,34 +495,34 @@ const Register = () => {
                 <div className="flex-box flex">
                   <input
                     className="block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400"
-                    id="file_input"
+                    id="profile_picture"
                     type="file"
+                    accept="image/*"
                     onChange={(event) => {
                       if (event.target.files !== null) {
-                        setSelectedImage(event.target.files[0]);
+                        handleImageUpload(event);
+                        setSelectedImage(true);
                       }
                     }}
                   />
                   {selectedImage && (
                     <div
-                      className="-ml-2 cursor-pointer rounded-lg rounded-l-sm border border-gray-300 bg-red-600 px-1 pt-0.5 text-center text-sm text-gray-200 dark:border-gray-600 dark:placeholder-gray-400"
+                      className="-ml-2 flex cursor-pointer  items-center justify-center rounded-lg rounded-l-sm border border-gray-300 bg-red-600  px-1 pt-0.5 text-center align-baseline text-sm text-gray-200 dark:border-gray-600 dark:placeholder-gray-400"
                       onClick={() => {
-                        console.log(selectedImage);
-                        setSelectedImage(undefined);
+                        setSelectedImage(false);
+                        setProfilePicture({ ...profilePicture, file: "" });
                       }}
                     >
                       Remove
                     </div>
                   )}
                 </div>
+                {/* Show profile picture if one is inputted */}
                 {selectedImage && (
-                  <div>
-                    <img
-                      alt="image"
-                      className="mt-4 h-40 w-40 rounded-full"
-                      src={URL.createObjectURL(selectedImage)}
-                    />
-                  </div>
+                  <ProfilePicture
+                    image={profilePicture}
+                    class="mt-4 h-40 w-40 rounded-full"
+                  />
                 )}
               </div>
 

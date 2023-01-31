@@ -1,22 +1,31 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+
+interface userLogin {
+  email: String;
+  password: String;
+}
 
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false); // Toggles show password
-  const [invalidCredentials, setInvalidCredentials] = useState(false); // After user tried to login, is the login valid
-  const [username, setusername] = useState("");
-  const [password, setpassword] = useState("");
+  const [invalidPassword, setInvalidPassword] = useState(false); // If the user's password is invalid
+  const [invalidEmail, setInvalidEmail] = useState(false); // If the user's password is invalid
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  let navigate = useNavigate();
 
   const submit = (e: any) => {
     e.preventDefault();
-    console.log("username:" + username);
-    console.log("password:" + password);
 
-    const login = {
-      email: username,
+    const login: userLogin = {
+      email: email,
       password: password,
     };
 
+    /*  
+random@ufl.edu
+Mypassword@123
+*/
     // Backend API call here to see if user a) has a valid email address, and b) has a valid login
     fetch("http://localhost:9000/api/user/signin", {
       method: "POST",
@@ -28,20 +37,25 @@ const SignIn = () => {
       .then((response) => {
         // User signed in
         if (response.status === 200) {
-          setInvalidCredentials(false);
+          setInvalidPassword(false);
+          setInvalidEmail(false);
+          console.log("User signed in");
+          navigate("/"); // Navigate to home page
           return response.json();
         }
 
-        // User not found
+        // User not found (no account with this email address)
         else if (response.status === 404) {
-          console.log(
-            "REDIRECT TO CREATE ACCOUNT OR DISPLAY ACCOUNT NEEDS TO BE CREATED"
-          );
+          setInvalidEmail(true);
+          setInvalidPassword(false);
+          console.log("User not found");
         }
 
         // Invalid Password
         else if (response.status === 401) {
-          setInvalidCredentials(true);
+          setInvalidPassword(true);
+          setInvalidEmail(false);
+          console.log("Invalid password");
         }
       })
       .then((data) => console.log(data));
@@ -60,7 +74,7 @@ const SignIn = () => {
                 htmlFor="email"
                 className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
               >
-                Username
+                UFL Email
               </label>
               <input
                 type="email"
@@ -70,11 +84,11 @@ const SignIn = () => {
                 placeholder="email@ufl.edu"
                 required
                 pattern="[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@ufl\.edu"
-                onChange={(event) => setusername(event.target.value)}
+                onChange={(event) => setEmail(event.target.value)}
               ></input>
-              {invalidCredentials && (
+              {invalidEmail && (
                 <span className="mt-1 ml-1 flex items-center text-sm font-medium tracking-wide text-red-500">
-                  Incorrect username!
+                  No account with this email address exists.
                 </span>
               )}
             </div>
@@ -90,14 +104,14 @@ const SignIn = () => {
                 <input
                   name="password"
                   id="password"
-                  placeholder="••••••••"
+                  placeholder={`${showPassword ? "password" : "••••••••"}`}
                   type={`${showPassword ? "text" : "password"}`}
                   className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
                   pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                   title="Must be at least 8 characters long and contain a number and uppercase letter"
                   required
                   onChange={(event) => {
-                    setpassword(event.target.value);
+                    setPassword(event.target.value);
                   }}
                 />
                 <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
@@ -136,7 +150,7 @@ const SignIn = () => {
                   </svg>
                 </div>
               </div>
-              {invalidCredentials && (
+              {invalidPassword && (
                 <span className="mt-1 ml-1 flex items-center text-sm font-medium tracking-wide text-red-500">
                   Incorrect password!
                 </span>

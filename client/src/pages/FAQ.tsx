@@ -68,11 +68,11 @@ const Accordion = () => {
   ];
 
   return (
-    <div className="pb-16 bg-gray-50 dark:bg-gray-900">
-      <h1 className="leading-tight tracking-tight text-gray-900 dark:text-white text-4xl font-semibold pt-4 text-center">
+    <div className="bg-gray-50 pb-16 dark:bg-gray-900">
+      <h1 className="pt-4 text-center text-4xl font-semibold leading-tight tracking-tight text-gray-900 dark:text-white">
         Frequently Asked Questions
       </h1>
-      <div className="flex flex-col items-center p-10 rounded-xl h-auto">
+      <div className="flex h-auto flex-col items-center rounded-xl p-10">
         {FAQs.map((FAQs) => {
           return (
             <AccordionUI

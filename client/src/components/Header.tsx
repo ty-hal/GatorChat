@@ -10,31 +10,31 @@ const Layout = () => {
   };
 
   return (
-    <div className="flex flex-wrap border-b-blue-600 border-b-4">
+    <div className="flex flex-wrap border-b-4 border-b-blue-600">
       <section className="relative mx-auto">
-        <nav className="flex justify-between h-14 dark:bg-gray-900 text-gray-700 dark:text-white w-screen">
-          <div className="px-5 xl:px-12 py-6 flex w-full items-center">
+        <nav className="flex h-14 w-screen justify-between text-gray-700 dark:bg-gray-900 dark:text-white">
+          <div className="flex w-full items-center px-5 py-6 xl:px-12">
             {/* Logo  */}
-            <a className="text-3xl font-bold font-heading" href="#">
+            <a className="font-heading text-3xl font-bold" href="#">
               Logo
             </a>
-            <ul className="flex px-4 items-center absolute right-0 font-heading space-x-8 ">
+            <ul className="font-heading absolute right-0 flex items-center space-x-8 px-4 ">
               {/* Navigation Bar */}
               <Link to="/">
                 {" "}
-                <span className="font-semibold hover:ring-2 rounded-lg p-1 text-lg ring-gray-300 hover:bg-blue-600 hover:text-white">
+                <span className="rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2">
                   Home
                 </span>
               </Link>
               <Link to="/sign-in">
                 {" "}
-                <span className="font-semibold hover:ring-2 rounded-lg p-1 text-lg ring-gray-300 hover:bg-blue-600 hover:text-white">
+                <span className="rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2">
                   Sign in
                 </span>
               </Link>
               <Link to="/register">
                 {" "}
-                <span className="font-semibold hover:ring-2 rounded-lg p-1 text-lg ring-gray-300 hover:bg-blue-600 hover:text-white mr-6">
+                <span className="mr-6 rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2">
                   Register
                 </span>
               </Link>
@@ -42,7 +42,7 @@ const Layout = () => {
               <div className="flex items-center">
                 <div className="relative inline-block text-left">
                   <div
-                    className="mt-1 inline-flex w-full justify-center rounded-md cursor-pointer text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-200"
+                    className="mt-1 inline-flex w-full cursor-pointer justify-center rounded-md text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-200"
                     id="menu-button"
                     onMouseEnter={(): void => toggleDropDown()}
                   >
@@ -64,8 +64,8 @@ const Layout = () => {
                   <div
                     className={
                       showDropDown
-                        ? "-mt-2 absolute right-0 z-10 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                        : "hidden -mt-2 absolute right-0 z-10 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                        ? "absolute right-0 z-10 -mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                        : "absolute right-0 z-10 -mt-2 hidden w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                     }
                     role="menu"
                     id="dropdown-content"
@@ -74,7 +74,7 @@ const Layout = () => {
                     <div className="py-1" role="none">
                       <Link to="/settings">
                         <span
-                          className="text-gray-700 block px-4 py-2 text-sm hover:font-semibold"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:font-semibold"
                           role="menuitem"
                           id="menu-item-0"
                         >
@@ -83,7 +83,7 @@ const Layout = () => {
                       </Link>
                       <a
                         href="#"
-                        className="text-gray-700 block px-4 py-2 text-sm hover:font-semibold"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:font-semibold"
                         role="menuitem"
                         id="menu-item-1"
                       >
@@ -93,7 +93,7 @@ const Layout = () => {
                     <div className="py-1" role="none">
                       <a
                         href="#"
-                        className="text-gray-700 block px-4 py-2 text-sm hover:font-semibold"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:font-semibold"
                         role="menuitem"
                         id="menu-item-6"
                       >

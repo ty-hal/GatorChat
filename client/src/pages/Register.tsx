@@ -50,21 +50,21 @@ const Register = () => {
   };
 
   return (
-    <section className="h-screen py-8 bg-gray-50 dark:bg-gray-900">
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
-        <div className="sm:max-w-md w-full bg-white rounded-lg shadow dark:border md:mt-0 xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+    <section className="h-screen bg-gray-50 py-8 dark:bg-gray-900">
+      <div className="mx-auto flex flex-col items-center justify-center px-6 py-8 lg:py-0">
+        <div className="w-full rounded-lg bg-white shadow dark:border dark:border-gray-700 dark:bg-gray-800 sm:max-w-md md:mt-0 xl:p-0">
+          <div className="space-y-4 p-6 sm:p-8 md:space-y-6">
+            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
               Create an account
             </h1>
             <form className="space-y-4 md:space-y-3" onSubmit={submitForm}>
               {/* Name  */}
-              <div className="flex flex-box justify-between">
+              <div className="flex-box flex justify-between">
                 {/* First Name  */}
                 <div>
                   <label
                     htmlFor="text"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                   >
                     First Name
                   </label>
@@ -72,7 +72,7 @@ const Register = () => {
                     type="text"
                     name="text"
                     id="first-name"
-                    className="w-11/12 sm:w-full bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 focus:ring-1 focus:outline-none block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="block w-11/12 rounded-lg border border-gray-300 bg-gray-50 p-2 text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:w-full sm:text-sm"
                     placeholder="John"
                     pattern="[a-zA-Z .'*_`~-]+"
                     required
@@ -82,7 +82,7 @@ const Register = () => {
                 <div>
                   <label
                     htmlFor="text"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                   >
                     Last Name
                   </label>
@@ -90,7 +90,7 @@ const Register = () => {
                     type="text"
                     name="text"
                     id="last-name"
-                    className="w-full bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 focus:ring-1 focus:outline-none block w p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="w block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
                     placeholder="Doe"
                     pattern="[a-zA-Z .'*_`~-]+"
                     required
@@ -101,7 +101,7 @@ const Register = () => {
               <div>
                 <label
                   htmlFor="email"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                 >
                   UFL Email
                 </label>
@@ -109,7 +109,7 @@ const Register = () => {
                   type="email"
                   name="email"
                   id="email"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 focus:ring-1 focus:outline-none block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
                   placeholder="email@ufl.edu"
                   pattern="[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@ufl\.edu"
                   title="Must use a UF email address"
@@ -120,13 +120,13 @@ const Register = () => {
               <div>
                 <label
                   htmlFor="major"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Major
                 </label>
                 <select
                   id="major"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-blue-500"
+                  className="focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500"
                   required
                 >
                   <option value="" selected disabled>
@@ -349,7 +349,7 @@ const Register = () => {
               <div>
                 <label
                   htmlFor="password"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Password
                 </label>
@@ -358,7 +358,7 @@ const Register = () => {
                   name="password"
                   id="password"
                   placeholder="••••••••"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 focus:ring-1 focus:outline-none block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
                   pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                   title="Must be at least 8 characters long and contain a number and uppercase letter"
                   required
@@ -371,7 +371,7 @@ const Register = () => {
               <div>
                 <label
                   htmlFor="confirm-password"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Confirm password
                 </label>
@@ -380,7 +380,7 @@ const Register = () => {
                   name="confirm-password"
                   id="confirm-password"
                   placeholder="••••••••"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 focus:ring-1 focus:outline-none block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
                   pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                   title="Must be at least 8 characters long and contain a number and uppercase letter"
                   required
@@ -392,15 +392,15 @@ const Register = () => {
               {/* Profile Picture */}
               <div>
                 <label
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                   htmlFor="file_input"
                 >
                   Profile picture{" "}
                   <span className="text-gray-500">(Optional)</span>
                 </label>
-                <div className="flex flex-box">
+                <div className="flex-box flex">
                   <input
-                    className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                    className="block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400"
                     id="file_input"
                     type="file"
                     onChange={(event) => {
@@ -411,7 +411,7 @@ const Register = () => {
                   />
                   {selectedImage && (
                     <div
-                      className="text-gray-200 pt-0.5 text-sm text-center border border-gray-300 rounded-lg rounded-l-sm px-1 cursor-pointer dark:border-gray-600 dark:placeholder-gray-400 bg-red-600 -ml-2"
+                      className="-ml-2 cursor-pointer rounded-lg rounded-l-sm border border-gray-300 bg-red-600 px-1 pt-0.5 text-center text-sm text-gray-200 dark:border-gray-600 dark:placeholder-gray-400"
                       onClick={() => {
                         console.log(selectedImage);
                         setSelectedImage(undefined);
@@ -425,7 +425,7 @@ const Register = () => {
                   <div>
                     <img
                       alt="image"
-                      className="w-40 h-40 rounded-full mt-4"
+                      className="mt-4 h-40 w-40 rounded-full"
                       src={URL.createObjectURL(selectedImage)}
                     />
                   </div>
@@ -434,12 +434,12 @@ const Register = () => {
 
               {/* Terms and Conditions  */}
               <div className="flex items-start">
-                <div className="flex items-center h-5">
+                <div className="flex h-5 items-center">
                   <input
                     id="terms"
                     aria-describedby="terms"
                     type="checkbox"
-                    className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800"
+                    className="focus:ring-3 h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
                     required
                   />
                 </div>
@@ -463,7 +463,7 @@ const Register = () => {
               {/* Submit Button  */}
               <button
                 type="submit"
-                className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                className="w-full rounded-lg bg-blue-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
                 Create an account
               </button>

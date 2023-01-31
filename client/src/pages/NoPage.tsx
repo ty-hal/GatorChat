@@ -1,6 +1,6 @@
 const NoPage = () => {
   return (
-    <h1 className="font-semibold mt-12 text-center text-3xl">
+    <h1 className="mt-12 text-center text-3xl font-semibold">
       Page not found!
     </h1>
   );

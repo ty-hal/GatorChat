@@ -7,7 +7,7 @@ type Props = {
   onClick: () => void;
 };
 
-const AccordionUI: React.FC<Props> = ({
+const Accordion: React.FC<Props> = ({
   title,
   children,
   id,
@@ -22,7 +22,7 @@ const AccordionUI: React.FC<Props> = ({
   let expanded = (
     <svg
       data-accordion-icon
-      className="h-6 w-6 shrink-0 rotate-180"
+      className="h-6 w-6 shrink-0 rotate-180 fill-white dark:fill-black"
       fill="currentColor"
       viewBox="0 0 20 20"
       xmlns="http://www.w3.org/2000/svg"
@@ -38,7 +38,7 @@ const AccordionUI: React.FC<Props> = ({
   let collapsed = (
     <svg
       data-accordion-icon
-      className="h-6 w-6 shrink-0"
+      className="h-6 w-6 shrink-0 fill-white dark:fill-black"
       fill="currentColor"
       viewBox="0 0 20 20"
       xmlns="http://www.w3.org/2000/svg"
@@ -56,12 +56,12 @@ const AccordionUI: React.FC<Props> = ({
       <div
         id={`question-${id}`}
         onClick={() => handleSetIndex(id)}
-        className="group mx-auto mt-4 flex h-16 w-full cursor-pointer items-center  justify-between rounded-md bg-gray-900 p-2 shadow-xl first:mt-0 dark:bg-gray-50 md:w-2/3 md:text-lg "
+        className="group mx-auto mt-4 flex h-16 w-full cursor-pointer  items-center justify-between rounded-md bg-gray-800 p-2 shadow-xl first:mt-0 dark:bg-gray-50 md:w-4/5 md:text-lg 2xl:w-3/4 "
       >
         <div className="group flex cursor-pointer ">
           <div
             id={`title-${id}`}
-            className="pl-4 font-bold text-white group-hover:text-blue-600 dark:text-gray-900  md:pl-10"
+            className="pl-4 font-bold text-white group-hover:text-blue-400 dark:text-gray-900  md:pl-10"
             onClick={() => {}}
           >
             {title}
@@ -74,7 +74,7 @@ const AccordionUI: React.FC<Props> = ({
       </div>
 
       {index === id && (
-        <div className="mb-2 mt-0.5  h-auto w-full rounded-md border-l-2 border-blue-300  bg-blue-200 p-4 font-semibold text-gray-700 md:w-2/3 md:pl-10">
+        <div className="mb-2 mt-0.5  h-auto w-full rounded-md border-l-2 border-blue-300  bg-blue-200 p-4 font-semibold text-gray-700 md:w-4/5 md:pl-10 2xl:w-3/4">
           {children}
         </div>
       )}
@@ -82,4 +82,4 @@ const AccordionUI: React.FC<Props> = ({
   );
 };
 
-export default AccordionUI;
+export default Accordion;

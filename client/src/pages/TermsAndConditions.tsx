@@ -2,7 +2,7 @@ import React from "react";
 
 const TermsAndConditions = () => {
   return (
-    <div className="h-screen bg-gray-50 pb-16 text-gray-900 dark:bg-gray-900 dark:text-white">
+    <div className=" bg-gray-50 pb-16 text-gray-900 dark:bg-gray-900 dark:text-white">
       <div className="mx-auto w-11/12 space-y-4 pt-4">
         <h1 className="pb-4 text-center text-4xl font-semibold">
           Terms and Conditions

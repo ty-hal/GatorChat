@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import React from "react";
+import { useAtom } from "jotai";
+import { darkModeAtom } from "../index";
 
 const Layout = () => {
   const [showDropDown, setShowDropDown] = useState<boolean>(false);
+  const [darkMode, setDarkMode] = useAtom(darkModeAtom);
 
   const toggleDropDown = () => {
     setShowDropDown(!showDropDown);
@@ -15,9 +17,7 @@ const Layout = () => {
         <nav className="flex h-14 w-screen justify-between text-gray-700 dark:bg-gray-900 dark:text-white">
           <div className="flex w-full items-center px-5 py-6 xl:px-12">
             {/* Logo  */}
-            <a className="font-heading text-3xl font-bold" href="#">
-              Logo
-            </a>
+            <span className="font-heading text-3xl font-bold">Logo</span>
             <ul className="font-heading absolute right-0 flex items-center space-x-8 px-4 ">
               {/* Navigation Bar */}
               <Link to="/">
@@ -78,24 +78,45 @@ const Layout = () => {
                             Settings
                           </span>
                         </Link>
-                        <a
-                          href="#"
+                        <span
                           className="block px-4 py-2 text-sm text-gray-700 hover:font-semibold"
                           role="menuitem"
                           id="menu-item-1"
                         >
                           My Account
-                        </a>
+                        </span>
                       </div>
                       <div className="py-1" role="none">
-                        <a
-                          href="#"
+                        <span
+                          className="block px-4 py-2 text-sm text-gray-700 hover:font-semibold"
+                          role="menuitem"
+                          id="menu-item-6"
+                          onClick={() => setDarkMode(!darkMode)}
+                        >
+                          Dark Mode
+                        </span>
+                        {/* Here  */}
+                        <div className=" bg-red-200">
+                          <span className="ml-4 text-sm font-medium text-gray-700 hover:font-semibold">
+                            Toggle me
+                          </span>
+                          <label className="relative inline-flex cursor-pointer items-center">
+                            <input
+                              type="checkbox"
+                              value=""
+                              className="peer sr-only"
+                            />
+
+                            <div className="peer h-5 w-9 rounded-full bg-gray-200 after:absolute after:top-[2px] after:left-[2px] after:h-4 after:w-4 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:peer-focus:ring-blue-800"></div>
+                          </label>
+                        </div>
+                        <span
                           className="block px-4 py-2 text-sm text-gray-700 hover:font-semibold"
                           role="menuitem"
                           id="menu-item-6"
                         >
                           Sign out
-                        </a>
+                        </span>
                       </div>
                     </div>
                   )}

@@ -1,8 +1,10 @@
 import Footer from "../components/Footer";
-
 import Message from "../components/Message";
+import { useAtomValue } from "jotai";
 
 const Home = () => {
+  // const dark = useAtomValue(darkAtom);
+
   return (
     <div>
       <Message

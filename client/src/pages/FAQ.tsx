@@ -1,7 +1,7 @@
 import { useState } from "react";
-import AccordionUI from "../components/AccordionUI";
+import Accordion from "../components/Accordion";
 
-const Accordion = () => {
+const FAQ = () => {
   const [index, setIndex] = useState(0);
 
   const FAQs = [
@@ -9,19 +9,19 @@ const Accordion = () => {
       id: 1,
       question: "How do I sign up for an account?",
       answer:
-        "To sign up for an account, click on the 'Sign Up' button on the homepage. You will be prompted to enter your name, email address, and a password. Once you have submitted this information, you will receive an email to confirm your account.",
+        "To sign up for an account, click on the 'Register' button on the navigation bar or the footer of the homepage. You will be prompted to enter your name, UFL email address, major, password, and an optional profile picture. Once you have submitted this information, you will receive an email to confirm your account.",
     },
     {
       id: 2,
       question: "How do I log in to my account?",
       answer:
-        "To log in to your account, click on the 'Log In' button on the homepage. Enter your email address and password, and click 'Log In'.",
+        "To log in to your account, click on the 'Sign In' button on the navigation bar or the footer of the homepage. Enter your UFL email address and password, and click 'Sign In'.",
     },
     {
       id: 3,
       question: "What do I do if I forget my password?",
       answer:
-        "If you forget your password, click on the 'Forgot Password' link on the log in page. Enter the email address associated with your account and click 'Submit.' You will receive an email with instructions on how to reset your password.",
+        "If you forget your password, click on the 'Forgot password' link on the sign in page. Enter the UFL email address associated with your account and click 'Send email.' You will receive an email with instructions on how to reset your password.",
     },
     {
       id: 4,
@@ -75,18 +75,18 @@ const Accordion = () => {
       <div className="flex h-auto flex-col items-center rounded-xl p-10">
         {FAQs.map((FAQs) => {
           return (
-            <AccordionUI
+            <Accordion
               title={FAQs.question}
               id={FAQs.id}
               children={FAQs.answer}
               index={index}
               setIndex={setIndex}
               onClick={() => setIndex(0)}
-            ></AccordionUI>
+            ></Accordion>
           );
         })}
       </div>
     </div>
   );
 };
-export default Accordion;
+export default FAQ;

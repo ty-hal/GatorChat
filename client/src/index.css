@@ -4,8 +4,11 @@
 
 .accordion-content {
     transition: max-height 0.3s ease-out, padding 0.3s ease;
-    }
+}
 
+input[type="file"]::file-selector-button {
+    background: rgba(128, 128, 128, 0.484);
+}
 /* .title
 {
     font-family:Verdana, Geneva, Tahoma, sans-serif;

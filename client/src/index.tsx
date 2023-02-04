@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAtom } from "jotai";
+import { atomWithStorage } from "jotai/utils";
+
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Home from "./pages/Home";
 import SignIn from "./pages/SignIn";
@@ -14,14 +18,18 @@ import TermsAndConditions from "./pages/TermsAndConditions";
 import Settings from "./pages/Settings";
 import FAQ from "./pages/FAQ";
 
+export const darkModeAtom = atomWithStorage("dark-mode", true);
+
 export default function App() {
-  const [dark, toggleDark] = useState(true);
+  const [darkMode, setDarkMode] = useAtom(darkModeAtom);
+
   return (
     <BrowserRouter>
-      <div className={dark ? "dark" : ""}>
-        <button onClick={() => toggleDark(!dark)}>
-          Toggle {dark ? "dark" : " light"} mode
+      <div className={darkMode ? "dark" : ""}>
+        <button onClick={() => setDarkMode(!darkMode)}>
+          Toggle {darkMode ? "dark" : " light"} mode
         </button>
+
         <Header />
         <Routes>
           <Route index element={<Home />} />

@@ -61,46 +61,44 @@ const Layout = () => {
                       />
                     </svg>
                   </div>
-                  <div
-                    className={
-                      showDropDown
-                        ? "absolute right-0 z-10 -mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                        : "absolute right-0 z-10 -mt-2 hidden w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                    }
-                    role="menu"
-                    id="dropdown-content"
-                    onMouseLeave={(): void => toggleDropDown()}
-                  >
-                    <div className="py-1" role="none">
-                      <Link to="/settings">
-                        <span
+                  {showDropDown && (
+                    <div
+                      className="absolute right-0 z-10 -mt-2 w-32 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                      role="menu"
+                      id="dropdown-content"
+                      onMouseLeave={(): void => toggleDropDown()}
+                    >
+                      <div className="py-1" role="none">
+                        <Link to="/settings">
+                          <span
+                            className="block px-4 py-2 text-sm text-gray-700 hover:font-semibold"
+                            role="menuitem"
+                            id="menu-item-0"
+                          >
+                            Settings
+                          </span>
+                        </Link>
+                        <a
+                          href="#"
                           className="block px-4 py-2 text-sm text-gray-700 hover:font-semibold"
                           role="menuitem"
-                          id="menu-item-0"
+                          id="menu-item-1"
                         >
-                          Settings
-                        </span>
-                      </Link>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:font-semibold"
-                        role="menuitem"
-                        id="menu-item-1"
-                      >
-                        My Account
-                      </a>
+                          My Account
+                        </a>
+                      </div>
+                      <div className="py-1" role="none">
+                        <a
+                          href="#"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:font-semibold"
+                          role="menuitem"
+                          id="menu-item-6"
+                        >
+                          Sign out
+                        </a>
+                      </div>
                     </div>
-                    <div className="py-1" role="none">
-                      <a
-                        href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:font-semibold"
-                        role="menuitem"
-                        id="menu-item-6"
-                      >
-                        Sign out
-                      </a>
-                    </div>
-                  </div>
+                  )}
                 </div>
               </div>
             </ul>

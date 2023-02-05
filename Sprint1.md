@@ -6,6 +6,7 @@
 - As a **user**, I want to be able to *see my and other users' profile pictures* so I will create an easy to implement and reuse component that displays a user's profile picture.
 - As a **user**, I want to be able to *register an account* so I will allow for the backend to receive important information about the user's registration form.
 - As a **user**, I want to be able to *check if I entered my password to sign in correctly* so I will create an visually appealing button to toggle password visibility.
+- As a **user**, I want to be able to *edit my email, password, profile picture and name* so I will create a settings page to allow users to change their information.
 
 ### Backend:
 - As a developer, I want to organize my REST API, so I will split my endpoints into handlers to make my code more readable and easier to debug.
@@ -17,6 +18,7 @@
 - Create a working header and footer and sign in, registration, settings, terms and conditions, forgot user password, and FAQ pages in React.
 - Create a working log in page using our REST API to determine if a user entered an email and password to an existing account.
 - Create a working registration page using our REST API to create a user row in our database with relevant user information.
+- Create a working settings page. Backend can be connected later.
  
 ## Which ones were successfully completed
 The first four issues that we planned to address were successfully completed in this first sprint.

@@ -1,56 +1,70 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+
+interface userLogin {
+  email: String;
+  password: String;
+}
 
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false); // Toggles show password
-  const [invalidCredentials, setInvalidCredentials] = useState(false); // After user tried to login, is the login valid
-  const [username, setusername] = useState("");
-  const [password, setpassword] = useState("");
+  const [invalidPassword, setInvalidPassword] = useState(false); // If the user's password is invalid
+  const [invalidEmail, setInvalidEmail] = useState(false); // If the user's password is invalid
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  let navigate = useNavigate();
 
   const submit = (e: any) => {
     e.preventDefault();
-    console.log("username:" + username);
-    console.log("password:" + password);
-    
-    const login = {
-      email: username,
-      password: password
-    }
 
+    const login: userLogin = {
+      email: email,
+      password: password,
+    };
+
+    /*  
+random@ufl.edu
+Mypassword@123
+*/
     // Backend API call here to see if user a) has a valid email address, and b) has a valid login
     fetch("http://localhost:9000/api/user/signin", {
       method: "POST",
       headers: {
-        'content-type': 'application/json',
+        "content-type": "application/json",
       },
-      body: JSON.stringify(login)
+      body: JSON.stringify(login),
     })
-    .then(response => {
-      // User signed in 
-      if (response.status === 200) {
-        setInvalidCredentials(false);
-        return response.json()
-      }
+      .then((response) => {
+        // User signed in
+        if (response.status === 200) {
+          setInvalidPassword(false);
+          setInvalidEmail(false);
+          console.log("User signed in");
+          navigate("/"); // Navigate to home page
+          return response.json();
+        }
 
-      // User not found
-      else if (response.status === 404) {
-        console.log("REDIRECT TO CREATE ACCOUNT OR DISPLAY ACCOUNT NEEDS TO BE CREATED")
-      }
+        // User not found (no account with this email address)
+        else if (response.status === 404) {
+          setInvalidEmail(true);
+          setInvalidPassword(false);
+          console.log("User not found");
+        }
 
-      // Invalid Password 
-      else if (response.status === 401) {
-        setInvalidCredentials(true);
-      }
-
-    })
-    .then(data => console.log(data))
-    
+        // Invalid Password
+        else if (response.status === 401) {
+          setInvalidPassword(true);
+          setInvalidEmail(false);
+          console.log("Invalid password");
+        }
+      })
+      .then((data) => console.log(data));
   };
 
   return (
-    <section className="h-screen py-8 bg-gray-50 dark:bg-gray-900">
-      <div className="sm:max-w-md w-full mx-auto bg-white rounded-lg shadow dark:border md:mt-0 xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-        <div className="p-6 space-y-4 md:space-y-6 sm:p-8 shadow">
+    <section className="h-screen bg-gray-50 py-8 dark:bg-gray-900">
+      <div className="mx-auto w-full rounded-lg bg-white shadow dark:border dark:border-gray-700 dark:bg-gray-800 sm:max-w-md md:mt-0 xl:p-0">
+        <div className="space-y-4 p-6 shadow sm:p-8 md:space-y-6">
           <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
             Sign into your account
           </h1>
@@ -58,23 +72,23 @@ const SignIn = () => {
             <div>
               <label
                 htmlFor="email"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
               >
-                Username
+                UFL Email
               </label>
               <input
                 type="email"
                 name="email"
                 id="email"
-                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-1 focus:outline-none focus:ring-blue-600 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600  dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
                 placeholder="email@ufl.edu"
                 required
                 pattern="[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@ufl\.edu"
-                onChange={(event) => setusername(event.target.value)}
+                onChange={(event) => setEmail(event.target.value)}
               ></input>
-              {invalidCredentials && (
-                <span className="flex items-center font-medium tracking-wide text-red-500 text-sm mt-1 ml-1">
-                  Incorrect username!
+              {invalidEmail && (
+                <span className="mt-1 ml-1 flex items-center text-sm font-medium tracking-wide text-red-500">
+                  No account with this email address exists.
                 </span>
               )}
             </div>
@@ -82,7 +96,7 @@ const SignIn = () => {
             <div>
               <label
                 htmlFor="password"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
               >
                 Password
               </label>
@@ -90,17 +104,17 @@ const SignIn = () => {
                 <input
                   name="password"
                   id="password"
-                  placeholder="••••••••"
+                  placeholder={`${showPassword ? "password" : "••••••••"}`}
                   type={`${showPassword ? "text" : "password"}`}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-1 focus:outline-none focus:ring-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
                   pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                   title="Must be at least 8 characters long and contain a number and uppercase letter"
                   required
                   onChange={(event) => {
-                    setpassword(event.target.value);
+                    setPassword(event.target.value);
                   }}
                 />
-                <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+                <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                   <svg
                     fill="none"
                     onClick={() => {
@@ -136,20 +150,20 @@ const SignIn = () => {
                   </svg>
                 </div>
               </div>
-              {invalidCredentials && (
-                <span className="flex items-center font-medium tracking-wide text-red-500 text-sm mt-1 ml-1">
+              {invalidPassword && (
+                <span className="mt-1 ml-1 flex items-center text-sm font-medium tracking-wide text-red-500">
                   Incorrect password!
                 </span>
               )}
             </div>
             <div className="flex items-center justify-between">
               <div className="flex items-start">
-                <div className="flex items-center h-5">
+                <div className="flex h-5 items-center">
                   <input
                     id="remember"
                     aria-describedby="remember"
                     type="checkbox"
-                    className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800"
+                    className="focus:ring-3 h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
                   ></input>
                 </div>
                 <div className="ml-3 text-sm">
@@ -171,7 +185,7 @@ const SignIn = () => {
             </div>
             <button
               type="submit"
-              className="w-full text-white bg-blue-600 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+              className="dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 w-full rounded-lg bg-blue-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300"
             >
               Sign in
             </button>
@@ -179,7 +193,7 @@ const SignIn = () => {
               Don't have an account yet?{" "}
               <Link
                 to="/register"
-                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                className="font-medium text-blue-600 hover:underline dark:text-blue-500"
               >
                 {" "}
                 <span className="mr-4">Create an account</span>

@@ -1,40 +1,79 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import React from "react";
+import { useAtom } from "jotai";
+import { darkModeAtom } from "../index";
 
 const Layout = () => {
   const [showDropDown, setShowDropDown] = useState<boolean>(false);
+  const [darkMode, setDarkMode] = useAtom(darkModeAtom);
 
   const toggleDropDown = () => {
     setShowDropDown(!showDropDown);
   };
 
+  let darkModeText = (
+    <div className="flex w-full items-center ">
+      <span className="mr-2 w-2/3">Dark Mode</span>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        className="h-6 w-6"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"
+        />
+      </svg>
+    </div>
+  );
+
+  let lightModeText = (
+    <div className="flex w-full items-center ">
+      <span className="mr-2 w-2/3">Light Mode</span>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        className="h-6 w-6"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
+        />
+      </svg>
+    </div>
+  );
   return (
-    <div className="flex flex-wrap border-b-blue-600 border-b-4">
+    <div className="flex flex-wrap border-b-4 border-b-blue-600">
       <section className="relative mx-auto">
-        <nav className="flex justify-between h-14 dark:bg-gray-900 text-gray-700 dark:text-white w-screen">
-          <div className="px-5 xl:px-12 py-6 flex w-full items-center">
+        <nav className="flex h-14 w-screen justify-between text-gray-700 dark:bg-gray-900 dark:text-white">
+          <div className="flex w-full items-center px-5 py-6 xl:px-12">
             {/* Logo  */}
-            <a className="text-3xl font-bold font-heading" href="#">
-              Logo
-            </a>
-            <ul className="flex px-4 items-center absolute right-0 font-heading space-x-8 ">
+            <span className="font-heading text-3xl font-bold">Logo</span>
+            <ul className="font-heading absolute right-0 flex items-center space-x-8 px-4 ">
               {/* Navigation Bar */}
               <Link to="/">
                 {" "}
-                <span className="font-semibold hover:ring-2 rounded-lg p-1 text-lg ring-gray-300 hover:bg-blue-600 hover:text-white">
+                <span className="rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2">
                   Home
                 </span>
               </Link>
               <Link to="/sign-in">
                 {" "}
-                <span className="font-semibold hover:ring-2 rounded-lg p-1 text-lg ring-gray-300 hover:bg-blue-600 hover:text-white">
+                <span className="rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2">
                   Sign in
                 </span>
               </Link>
               <Link to="/register">
                 {" "}
-                <span className="font-semibold hover:ring-2 rounded-lg p-1 text-lg ring-gray-300 hover:bg-blue-600 hover:text-white mr-6">
+                <span className="mr-6 rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2">
                   Register
                 </span>
               </Link>
@@ -42,7 +81,7 @@ const Layout = () => {
               <div className="flex items-center">
                 <div className="relative inline-block text-left">
                   <div
-                    className="mt-1 inline-flex w-full justify-center rounded-md cursor-pointer text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-200"
+                    className="mt-1 inline-flex w-full cursor-pointer justify-center rounded-md text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-200"
                     id="menu-button"
                     onMouseEnter={(): void => toggleDropDown()}
                   >
@@ -61,46 +100,51 @@ const Layout = () => {
                       />
                     </svg>
                   </div>
-                  <div
-                    className={
-                      showDropDown
-                        ? "-mt-2 absolute right-0 z-10 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                        : "hidden -mt-2 absolute right-0 z-10 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                    }
-                    role="menu"
-                    id="dropdown-content"
-                    onMouseLeave={(): void => toggleDropDown()}
-                  >
-                    <div className="py-1" role="none">
-                      <Link to="/settings">
+                  {showDropDown && (
+                    <div
+                      className="absolute right-0 z-10 -mt-2 w-32 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                      role="menu"
+                      id="dropdown-content"
+                      onMouseLeave={(): void => toggleDropDown()}
+                    >
+                      <div className="py-1" role="none">
+                        <Link to="/settings">
+                          <span
+                            className="block px-4 py-2 text-sm text-gray-700 hover:font-semibold"
+                            role="menuitem"
+                            id="menu-item-0"
+                          >
+                            Settings
+                          </span>
+                        </Link>
                         <span
-                          className="text-gray-700 block px-4 py-2 text-sm hover:font-semibold"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:font-semibold"
                           role="menuitem"
-                          id="menu-item-0"
+                          id="menu-item-1"
                         >
-                          Settings
+                          My Account
                         </span>
-                      </Link>
-                      <a
-                        href="#"
-                        className="text-gray-700 block px-4 py-2 text-sm hover:font-semibold"
-                        role="menuitem"
-                        id="menu-item-1"
-                      >
-                        My Account
-                      </a>
+                      </div>
+                      <div className="py-1" role="none">
+                        <span
+                          className="block py-2 pl-4 text-sm text-gray-700 hover:font-semibold"
+                          role="menuitem"
+                          id="menu-item-6"
+                          onClick={() => setDarkMode(!darkMode)}
+                        >
+                          {darkMode ? lightModeText : darkModeText}
+                        </span>
+
+                        <span
+                          className="block px-4 py-2 text-sm text-gray-700 hover:font-semibold"
+                          role="menuitem"
+                          id="menu-item-6"
+                        >
+                          Sign out
+                        </span>
+                      </div>
                     </div>
-                    <div className="py-1" role="none">
-                      <a
-                        href="#"
-                        className="text-gray-700 block px-4 py-2 text-sm hover:font-semibold"
-                        role="menuitem"
-                        id="menu-item-6"
-                      >
-                        Sign out
-                      </a>
-                    </div>
-                  </div>
+                  )}
                 </div>
               </div>
             </ul>

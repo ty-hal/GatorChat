@@ -31,12 +31,36 @@ func GetThreadById(threadID uint8) Thread {
 	return thread
 }
 
-func GetAllThreadsFromUser(userID uint8) []Thread {
-	var threads []Thread
-	return threads
+func (t *Thread) GetCreator() (User, error) {
+	var user User
+
+	result := middleware.DB.First(&user, t.UserID)
+	if result.Error != nil {
+		return user, result.Error
+	}
+
+	return user, nil
 }
 
-func GetAllThreadsFromSection(sectionID uint8) []Thread {
-	var threads []Thread
-	return threads
+func (t *Thread) GetSection() (Section, error) {
+	var section Section
+
+	result := middleware.DB.First(&section, t.SectionID)
+	if result.Error != nil {
+		return section, result.Error
+	}
+
+	return section, nil
+}
+
+func (t *Thread) GetPosts() []Post {
+	var posts []Post
+
+	for _, post := range GetAllPosts() {
+		if post.ThreadID == t.ThreadID {
+			posts = append(posts, post)
+		}
+	}
+
+	return posts
 }

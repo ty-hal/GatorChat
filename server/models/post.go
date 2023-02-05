@@ -14,6 +14,7 @@ type Post struct {
 	SectionID    uint8          `json:"thread_id,omitempty"`
 	Content      string         `json:"content,omitempty"`
 	CreationDate datatypes.Date `json:"creation_date,omitempty"`
+	Likes        uint8          `json:"likes,omitempty"`
 }
 
 func GetPostByID(postID uint8) (Post, error) {

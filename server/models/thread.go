@@ -13,6 +13,7 @@ type Thread struct {
 	ThreadTitle  string         `json:"thread_title,omitempty"`
 	Content      string         `json:"content,omitempty"`
 	CreationDate datatypes.Date `json:"creation_date,omitempty"`
+	Likes        uint8          `json:"likes,omitempty"`
 }
 
 func GetAllThreads() []Thread {

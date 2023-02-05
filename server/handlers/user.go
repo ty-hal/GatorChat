@@ -34,7 +34,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, db_err := models.GetUser(uint8(id))
+	user, db_err := models.GetUserByID(uint8(id))
 
 	// User not found
 	if errors.Is(db_err, gorm.ErrRecordNotFound) {

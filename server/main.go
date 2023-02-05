@@ -31,6 +31,12 @@ func main() {
 
 	fmt.Println("Creator: " + creator.FirstName)
 
+	posts := thread.GetPosts()
+
+	for _, post := range posts {
+		fmt.Println("Post: " + post.Content)
+	}
+
 	log.Fatal(http.ListenAndServe(":9000", corsHandler.Handler(r)))
 
 }

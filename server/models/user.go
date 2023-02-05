@@ -108,6 +108,14 @@ func (u *User) GetThreads() []Thread {
 	return threads
 }
 
-//func (u *User) GetPosts() []Post {
+func (u *User) GetPosts() []Post {
+	var posts []Post
 
-//}
+	for _, post := range GetAllPosts() {
+		if post.UserID == u.UserID {
+			posts = append(posts, post)
+		}
+	}
+
+	return posts
+}

@@ -40,3 +40,25 @@ func GetAllThreadsFromSection(sectionID uint8) []Thread {
 	var threads []Thread
 	return threads
 }
+
+func (t *Thread) GetCreator() (User, error) {
+	var user User
+
+	result := middleware.DB.First(&user, t.UserID)
+	if result.Error != nil {
+		return user, result.Error
+	}
+
+	return user, nil
+}
+
+func (t *Thread) GetSection() (Section, error) {
+	var section Section
+
+	result := middleware.DB.First(&section, t.SectionID)
+	if result.Error != nil {
+		return section, result.Error
+	}
+
+	return section, nil
+}

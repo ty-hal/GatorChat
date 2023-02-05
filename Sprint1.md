@@ -9,12 +9,16 @@
 - As a **user**, I want to be able to *edit my email, password, profile picture and name* so I will create a settings page to allow users to change their information.
 
 ### Backend:
-- As a developer, I want to organize my REST API, so I will split my endpoints into handlers to make my code more readable and easier to debug.
-- As a user want my password to be secure so I will create a method to hash passwords stored in the database.
+- As a **developer**, I want to *organize my REST API*, so I will split my endpoints into handlers to make my code more readable and easier to debug.
+- As a **user**, I want to *secure my password* so I will create a method to hash passwords stored in the database.
+- As a **developer**, I want *all data organized, easily accessible, and identifiable*, so I will link tables through foreign keys and create distinguishable tables with related data.
+- As a **developer**, I want to *easily access all data stored in all tables of the relational database*, so I will create separate, clear, and effective functions to perform queries that access/manipulate data.
 
 ## What issues your team planned to address
 - Connect our React frontend to our Golang backend through a REST API.
-- Create our database schemas for user information.
+- Create our database schema for user information.
+- Integrate the database schema into structs in Golang to help organize our backend structure.
+- Create functions that execute queries in order to easily access/manipulate the specified data.
 - Create a working header and footer and sign in, registration, settings, terms and conditions, forgot user password, and FAQ pages in React.
 - Create a working log in page using our REST API to determine if a user entered an email and password to an existing account.
 - Create a working registration page using our REST API to create a user row in our database with relevant user information.

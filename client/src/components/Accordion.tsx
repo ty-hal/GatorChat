@@ -61,7 +61,7 @@ const Accordion: React.FC<Props> = ({
         <div className="group flex cursor-pointer ">
           <div
             id={`title-${id}`}
-            className="pl-4 font-bold text-white group-hover:text-blue-400 dark:text-gray-900  md:pl-10"
+            className="pl-4 font-bold text-white group-hover:text-blue-500 dark:text-gray-900  md:pl-10"
             onClick={() => {}}
           >
             {title}

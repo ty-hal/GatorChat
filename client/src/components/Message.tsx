@@ -1,15 +1,17 @@
 import { useState } from "react";
 import ProfilePicture from "./ProfilePicture";
 interface IMessage {
+  id: number;
   username: string;
   profilePicture?: string;
   messageContent: string;
   messageDate: string;
-  likesCount?: number;
+  likesCount: number;
 }
 
 const Message = (props: IMessage) => {
   const [showDropDown, setShowDropDown] = useState<boolean>(false);
+  const [numLikes, toggleLike] = useState<number>(props.likesCount);
 
   const toggleDropDown = () => {
     setShowDropDown(!showDropDown);
@@ -17,14 +19,15 @@ const Message = (props: IMessage) => {
 
   return (
     <div className="my-2 mx-auto w-11/12 lg:w-4/5">
-      <div className="relative rounded-2xl bg-gray-200 py-8 text-center text-lg font-normal text-gray-900 shadow-xl dark:bg-gray-900 dark:text-white">
+      <div className="relative rounded-2xl bg-gray-200 py-8 text-center text-lg font-normal text-gray-900 shadow-xl dark:bg-gray-800 dark:text-white">
         {/* Profile picture */}
         <div className="absolute top-3 left-3 h-10 w-10 overflow-hidden rounded-full bg-white dark:bg-gray-600">
           <ProfilePicture />
         </div>
         {/* Username and Time  */}
         <div className="absolute top-4 left-16">
-          <span className=" font-bold">{props.username}</span> posted at{" "}
+          <span className="font-bold">{props.username}</span>
+          <span className="hidden sm:inline"> posted at</span>{" "}
           {props.messageDate}
         </div>
         {/* Message Menu  */}
@@ -32,7 +35,7 @@ const Message = (props: IMessage) => {
           <svg
             onClick={toggleDropDown}
             fill="white"
-            className="h-8 w-8 fill-gray-800 dark:fill-white"
+            className="h-8 w-8 cursor-pointer fill-gray-800 dark:fill-white"
             version="1.1"
             id="message-menu"
             xmlns="http://www.w3.org/2000/svg"
@@ -40,11 +43,11 @@ const Message = (props: IMessage) => {
             viewBox="0 0 32.055 32.055"
             xmlSpace="preserve"
           >
-            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
             <g
               id="SVGRepo_tracerCarrier"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             ></g>
             <g id="SVGRepo_iconCarrier">
               {" "}
@@ -58,12 +61,12 @@ const Message = (props: IMessage) => {
           {showDropDown && (
             <div
               className={
-                "absolute -right-4 z-10 w-28 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                "absolute -right-4 z-10 w-28 origin-top-right divide-y divide-gray-200 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
               }
               role="menu"
               id="dropdown-content"
             >
-              <div className="py-1" role="none">
+              <div className="cursor-pointer py-1" role="none">
                 <span
                   className="block px-4 py-2 text-sm text-gray-700 hover:font-semibold"
                   role="menuitem"
@@ -72,9 +75,13 @@ const Message = (props: IMessage) => {
                   Reply
                 </span>
                 <span
-                  className="block px-4 py-2 text-sm text-gray-700 hover:font-semibold"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:font-semibold "
                   role="menuitem"
                   id="menu-item-1"
+                  onClick={() => {
+                    navigator.clipboard.writeText(props.messageContent);
+                    toggleDropDown();
+                  }}
                 >
                   Copy
                 </span>
@@ -86,37 +93,61 @@ const Message = (props: IMessage) => {
                   Report
                 </span>
               </div>
+
+              {/* IF USER HAS ACCESS TO MODIFY THIS MESSAGE */}
+              <div className="cursor-pointer py-1" role="none">
+                <span
+                  className="block px-4 py-2 text-sm text-gray-700 hover:font-semibold "
+                  role="menuitem"
+                  id="menu-item-3"
+                >
+                  Edit
+                </span>
+                <span
+                  className="block px-4 py-2 text-sm text-gray-700 hover:font-semibold"
+                  role="menuitem"
+                  id="menu-item-4"
+                >
+                  Delete
+                </span>
+              </div>
             </div>
           )}
         </div>
-
         {/* Message Content  */}
-        <div className="relative top-7 mb-12 px-8 text-left">
+        <div
+          id="message-content"
+          className="relative top-7 mb-12 px-8 text-left"
+        >
           {props.messageContent}
         </div>
         {/* Likes  */}
         <div className="absolute left-3 bottom-3">
           <div className="flex">
             <svg
-              onClick={() => {
-                let svg = document.getElementById("like-image");
-                svg?.classList.toggle("fill-red-600");
+              onClick={(e) => {
+                e.currentTarget.classList.toggle("fill-red-600");
+                if (e.currentTarget.classList.contains("fill-red-600")) {
+                  toggleLike(numLikes + 1);
+                } else {
+                  toggleLike(numLikes - 1);
+                }
               }}
               id="like-image"
-              className="h-8 w-8 stroke-red-600"
+              className="h-8 w-8 cursor-pointer stroke-red-600"
               fill="none"
-              stroke-width="1.5"
+              strokeWidth="1.5"
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
               aria-hidden="true"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
               ></path>
             </svg>
-            <div className="ml-2 flex">{props.likesCount} likes</div>
+            <div className="ml-2 flex">{numLikes} likes</div>
           </div>
         </div>
       </div>

@@ -17,6 +17,7 @@ type User struct {
 	//Major          string `json:"major,omitempty"`
 	ProfilePic string `json:"profile_pic,omitempty"`
 	Dark       bool   `json:"dark,omitempty"`
+	Likes      uint8  `json:"likes,omitempty"`
 }
 
 func GetAllUsers() []User {
@@ -27,12 +28,16 @@ func GetAllUsers() []User {
 	return users
 }
 
-func GetUser(id uint8) (User, error) {
+func GetUserByID(id uint8) (User, error) {
 	var user User
 
 	err := middleware.DB.First(&user, id).Error
 
-	return user, err
+	if err != nil {
+		return User{}, errors.New("could not find user")
+	}
+
+	return user, nil
 }
 
 func CreateUser(user User) (User, error) {
@@ -59,14 +64,14 @@ func DeleteUser(id uint8) (User, error) {
 
 	db := middleware.DB.Delete(&user, id)
 
-	if db.RowsAffected < 1 {
+	if db.RowsAffected == 0 {
 		err = errors.New("User Not Found")
 	}
 
 	return user, err
 }
 
-func UpdateUser() {
+func (u *User) Update() {
 	// figure out criteria for that later, gonna be multiple update functions
 }
 
@@ -91,6 +96,26 @@ func CheckSignIn(email string, password string) (User, error) {
 	return user, nil
 }
 
-//func (u *User) GetThreads() []Thread {
+func (u *User) GetThreads() []Thread {
+	var threads []Thread
 
-//}
+	for _, thread := range GetAllThreads() {
+		if thread.UserID == u.UserID {
+			threads = append(threads, thread)
+		}
+	}
+
+	return threads
+}
+
+func (u *User) GetPosts() []Post {
+	var posts []Post
+
+	for _, post := range GetAllPosts() {
+		if post.UserID == u.UserID {
+			posts = append(posts, post)
+		}
+	}
+
+	return posts
+}

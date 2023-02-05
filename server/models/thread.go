@@ -31,16 +31,6 @@ func GetThreadById(threadID uint8) Thread {
 	return thread
 }
 
-func GetAllThreadsFromUser(userID uint8) []Thread {
-	var threads []Thread
-	return threads
-}
-
-func GetAllThreadsFromSection(sectionID uint8) []Thread {
-	var threads []Thread
-	return threads
-}
-
 func (t *Thread) GetCreator() (User, error) {
 	var user User
 
@@ -61,4 +51,16 @@ func (t *Thread) GetSection() (Section, error) {
 	}
 
 	return section, nil
+}
+
+func (t *Thread) GetPosts() []Post {
+	var posts []Post
+
+	for _, post := range GetAllPosts() {
+		if post.ThreadID == t.ThreadID {
+			posts = append(posts, post)
+		}
+	}
+
+	return posts
 }

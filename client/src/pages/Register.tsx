@@ -48,36 +48,17 @@ const Register = () => {
     const elem_confirmPassword = document.getElementById("confirm-password");
     if (elem_confirmPassword !== null) {
       if (confirmPassword === "") {
-        elem_confirmPassword.classList.add("dark:text-white");
-        elem_confirmPassword.classList.add("focus:ring-blue-500");
-        elem_confirmPassword.classList.add("focus:border-blue-500");
-        elem_confirmPassword.classList.add("focus:ring-blue-600");
-        elem_confirmPassword.classList.add("focus:border-blue-600");
-        elem_confirmPassword.classList.remove("text-red-500");
-        elem_confirmPassword.classList.remove("focus:border-red-600");
+        elem_confirmPassword.className =
+          "block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm";
       } else if (password !== confirmPassword) {
-        elem_confirmPassword.classList.remove("dark:text-white");
-        elem_confirmPassword.classList.remove("focus:ring-blue-500");
-        elem_confirmPassword.classList.remove("focus:border-blue-500");
-        elem_confirmPassword.classList.remove("dark:focus:ring-blue-600");
-        elem_confirmPassword.classList.remove("dark:focus:border-blue-600");
-
-        elem_confirmPassword.classList.add("text-red-500");
-        elem_confirmPassword.classList.add("focus:border-red-600");
-        elem_confirmPassword.classList.add("focus:border-red-600");
+        elem_confirmPassword.className =
+          "block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-red-500  focus:outline-none focus:ring-1 dark:border-gray-600 dark:bg-gray-700 dark:placeholder-gray-400  focus:border-red-600  dark:focus:border-red-600 dark:focus:ring-red-600 focus:ring-red-600 sm:text-sm";
       } else if (password === confirmPassword) {
-        elem_confirmPassword.classList.add("dark:text-white");
-        elem_confirmPassword.classList.add("focus:ring-blue-500");
-        elem_confirmPassword.classList.add("focus:border-blue-500");
-        elem_confirmPassword.classList.add("focus:ring-blue-600");
-        elem_confirmPassword.classList.add("focus:border-blue-600");
-
-        elem_confirmPassword.classList.remove("text-red-500");
-        elem_confirmPassword.classList.remove("focus:border-red-600");
-        elem_confirmPassword.classList.remove("focus:border-red-600");
+        elem_confirmPassword.className =
+          "block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm";
       }
     }
-  }, [confirmPassword]);
+  }, [confirmPassword, password]);
 
   const submitForm = (e: React.FormEvent) => {
     e.preventDefault();
@@ -141,7 +122,7 @@ const Register = () => {
               {/* Name  */}
               <div className="flex-box flex justify-between">
                 {/* First Name  */}
-                <div>
+                <div className="sm:w-2/5">
                   <label
                     htmlFor="text"
                     className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
@@ -465,7 +446,7 @@ const Register = () => {
                   htmlFor="confirm-password"
                   className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                 >
-                  Confirm password
+                  Confirm Password
                 </label>
                 <input
                   type="password"
@@ -487,7 +468,7 @@ const Register = () => {
                   className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                   htmlFor="file_input"
                 >
-                  Profile picture{" "}
+                  Profile Picture{" "}
                   <span className="text-gray-500">(Optional)</span>
                 </label>
                 <div className="flex-box flex">
@@ -555,23 +536,17 @@ const Register = () => {
               {/* Submit Button  */}
               <button
                 type="submit"
-                disabled={
-                  first_name &&
-                  last_name &&
-                  email &&
-                  major &&
-                  password === confirmPassword
-                    ? false
-                    : true
-                }
+                disabled={password === confirmPassword ? false : true}
                 className={
-                  first_name &&
-                  last_name &&
-                  email &&
+                  new RegExp(/[a-zA-Z .'*_`~-]+/).test(first_name) &&
+                  new RegExp(/[a-zA-Z .'*_`~-]+/).test(last_name) &&
+                  new RegExp(/[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@ufl\.edu/).test(
+                    email
+                  ) &&
                   major &&
                   password === confirmPassword
                     ? "w-full rounded-lg bg-blue-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                    : "w-full cursor-auto rounded-lg bg-gray-500 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600  dark:focus:ring-blue-800"
+                    : "w-full cursor-auto rounded-lg bg-gray-500 px-5 py-2.5 text-center text-sm font-medium text-white"
                 }
               >
                 Create an account

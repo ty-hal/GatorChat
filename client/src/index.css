@@ -8,7 +8,12 @@
 
 input[type="file"]::file-selector-button {
     background: rgba(128, 128, 128, 0.484);
+    color: rgba(0, 0, 0, 0.849);
 }
+input[type="file"]::file-selector-button:hover {
+    background: rgba(128, 128, 128, 0.763);
+}
+
 /* .title
 {
     font-family:Verdana, Geneva, Tahoma, sans-serif;

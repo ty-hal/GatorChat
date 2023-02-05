@@ -16,7 +16,7 @@
 - Create our database schemas for user information.
 - Create a working header and footer and sign in, registration, settings, terms and conditions, forgot user password, and FAQ pages in React.
 - Create a working log in page using our REST API to determine if a user entered an email and password to an existing account.
-- Create a working registration page using our REST API to create a user object (is this the right terminology?) in our database with relevant user information.
+- Create a working registration page using our REST API to create a user row in our database with relevant user information.
  
 ## Which ones were successfully completed
 The first four issues that we planned to address were successfully completed in this first sprint.

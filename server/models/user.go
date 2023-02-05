@@ -90,3 +90,7 @@ func CheckSignIn(email string, password string) (User, error) {
 
 	return user, nil
 }
+
+//func (u *User) GetThreads() []Thread {
+
+//}

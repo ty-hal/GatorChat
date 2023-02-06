@@ -39,7 +39,6 @@ Mypassword@123
         if (response.status === 200) {
           setInvalidPassword(false);
           setInvalidEmail(false);
-          console.log("User signed in");
           navigate("/"); // Navigate to home page
           return response.json();
         }
@@ -58,7 +57,7 @@ Mypassword@123
           console.log("Invalid password");
         }
       })
-      .then((data) => console.log(data));
+      .then((data) => data ? console.log("User Signed In") : console.log(data));
   };
 
   return (

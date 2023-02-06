@@ -22,6 +22,11 @@ const Register = () => {
   const [profilePicture, setProfilePicture] = useState({
     file: "",
   });
+
+  const [userExists, setUserExists] = useState(false)
+  const [invalidForm, setInvalidForm] = useState(false)
+  const [errorOccurred, setErrorOccured] = useState(false)
+
   let navigate = useNavigate();
 
   const convertImageToBase64 = (file: File) => {
@@ -72,42 +77,42 @@ const Register = () => {
       profile_picture: profilePicture.file,
     };
 
-    console.log(registration);
+    fetch("http://localhost:9000/api/user", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(registration),
+    })
+      .then((response) => {
+        // User created
+        if (response.status === 200) {
+          setUserExists(false)
+          setInvalidForm(false)
+          setErrorOccured(false)
+          navigate("/"); // Navigate to home page
+          return response.json();
+        }
 
-    // Backend API call here to see if user a) has a valid email address, and b) has a valid login
-    // fetch("http://localhost:9000/api/user/signin", {
-    //   method: "POST",
-    //   headers: {
-    //     "content-type": "application/json",
-    //   },
-    //   body: JSON.stringify(login),
-    // })
-    //   .then((response) => {
-    //     // User signed in
-    //     if (response.status === 200) {
-    //       setInvalidPassword(false);
-    //       setInvalidEmail(false);
-    //       console.log("User signed in");
-    //       navigate("/"); // Navigate to home page
-    //       return response.json();
-    //     }
+        // Missing Form Requirements
+        else if (response.status === 400) {
+          setInvalidForm(true)
+          console.log("Invalid Form");
+        }
 
-    //     // User not found (no account with this email address)
-    //     else if (response.status === 404) {
-    //       setInvalidEmail(true);
-    //       setInvalidPassword(false);
-    //       console.log("User not found");
-    //     }
+        // User already created (exisiting email)
+        else if (response.status === 409) {
+          setUserExists(true)
+          console.log("User Email Already Exists. Please Sign In");
+        }
 
-    //     // Invalid Password
-    //     else if (response.status === 401) {
-    //       setInvalidPassword(true);
-    //       setInvalidEmail(false);
-    //       console.log("Invalid password");
-    //     }
-    //   })
-    //   .then((data) => console.log(data));
-    // navigate("/"); // Navigate to home page
+        // Password hashing error 
+        else if (response.status === 404) {
+          setErrorOccured(true)
+          console.log("Error Occurred. Please try again");
+        }
+      })
+      .then((data) => data ? console.log("User Created") : console.log(data));
   };
 
   return (
@@ -533,6 +538,22 @@ const Register = () => {
                   </label>
                 </div>
               </div>
+              {/* Error Handling */}
+              {userExists && (
+                <span className="mt-1 ml-1 flex items-center text-sm font-medium tracking-wide text-red-500">
+                  User Already Exists. Please Sign In.
+                </span>
+              )}
+              {invalidForm && (
+                <span className="mt-1 ml-1 flex items-center text-sm font-medium tracking-wide text-red-500">
+                  Please Fill Out Required Sections.
+                </span>
+              )}
+              {errorOccurred && (
+                <span className="mt-1 ml-1 flex items-center text-sm font-medium tracking-wide text-red-500">
+                  Error Occurred. Please Try Again.
+                </span>
+              )}
               {/* Submit Button  */}
               <button
                 type="submit"

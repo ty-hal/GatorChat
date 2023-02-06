@@ -8,7 +8,7 @@ interface userRegistration {
   email: String;
   major: String;
   password: String;
-  profile_picture?: String;
+  profile_pic?: String;
 }
 
 const Register = () => {
@@ -74,7 +74,7 @@ const Register = () => {
       email: email,
       major: major,
       password: password,
-      profile_picture: profilePicture.file,
+      profile_pic: profilePicture.file,
     };
 
     fetch("http://localhost:9000/api/user", {

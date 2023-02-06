@@ -1,6 +1,6 @@
+import { useLayoutEffect } from "react";
 import { useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
-
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 
 import ReactDOM from "react-dom/client";
@@ -16,15 +16,20 @@ import ForgotPassword from "./pages/ForgotPassword";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import Settings from "./pages/Settings";
 import FAQ from "./pages/FAQ";
-import { useLayoutEffect } from "react";
 
+import SampleMessages from "./pages/SampleMessages";
+import SampleThreads from "./pages/SampleThreads";
+
+// Uses local storage to detect user dark mode preference
 export const darkModeAtom = atomWithStorage("dark-mode", true);
 
-type WrapperProps = {
+type ScrollWrapperProps = {
   children: JSX.Element;
 };
+
 export default function App() {
-  const Wrapper = ({ children }: WrapperProps) => {
+  // On page load, auto scroll to the top of the page
+  const ScrollWrapper = ({ children }: ScrollWrapperProps) => {
     const location = useLocation();
     useLayoutEffect(() => {
       document.documentElement.scrollTo(0, 0);
@@ -36,11 +41,14 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <Wrapper>
+      <ScrollWrapper>
         <div className={darkMode ? "dark" : ""}>
           <Header />
           <Routes>
             <Route index element={<Home />} />
+            <Route path="sample-messages" element={<SampleMessages />} />
+            <Route path="sample-threads" element={<SampleThreads />} />
+
             <Route path="sign-in" element={<SignIn />} />
             <Route path="register" element={<Register />} />
             <Route path="forgot-password" element={<ForgotPassword />} />
@@ -53,7 +61,7 @@ export default function App() {
             <Route path="*" element={<NoPage />} />
           </Routes>
         </div>
-      </Wrapper>
+      </ScrollWrapper>
     </BrowserRouter>
   );
 }

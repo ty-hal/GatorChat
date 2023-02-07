@@ -25,7 +25,7 @@
 - Create a working settings page. Backend can be connected later.
  
 ## Which ones were successfully completed
-The first four issues that we planned to address were successfully completed in this first sprint.
+The first five issues that we planned to address were successfully completed in this first sprint. We also successfully implemented a settings page.
 
 ## Which ones didn't and why?
-The last issue (a working registration page) was not completed yet due to the deadline approaching earlier than anticipated. We will have successfully completed this issue by the next sprint.
+The second to last issue (a working registration page) was not completed yet due to the deadline approaching earlier than anticipated. We will have successfully completed this issue by the next sprint.

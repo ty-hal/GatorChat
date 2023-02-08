@@ -23,9 +23,9 @@ const Register = () => {
     file: "",
   });
 
-  const [userExists, setUserExists] = useState(false)
-  const [invalidForm, setInvalidForm] = useState(false)
-  const [errorOccurred, setErrorOccured] = useState(false)
+  const [userExists, setUserExists] = useState(false);
+  const [invalidForm, setInvalidForm] = useState(false);
+  const [errorOccurred, setErrorOccured] = useState(false);
 
   let navigate = useNavigate();
 
@@ -87,32 +87,32 @@ const Register = () => {
       .then((response) => {
         // User created
         if (response.status === 200) {
-          setUserExists(false)
-          setInvalidForm(false)
-          setErrorOccured(false)
+          setUserExists(false);
+          setInvalidForm(false);
+          setErrorOccured(false);
           navigate("/"); // Navigate to home page
           return response.json();
         }
 
         // Missing Form Requirements
         else if (response.status === 400) {
-          setInvalidForm(true)
+          setInvalidForm(true);
           console.log("Invalid Form");
         }
 
         // User already created (exisiting email)
         else if (response.status === 409) {
-          setUserExists(true)
+          setUserExists(true);
           console.log("User Email Already Exists. Please Sign In");
         }
 
-        // Password hashing error 
+        // Password hashing error
         else if (response.status === 404) {
-          setErrorOccured(true)
+          setErrorOccured(true);
           console.log("Error Occurred. Please try again");
         }
       })
-      .then((data) => data ? console.log("User Created") : console.log(data));
+      .then((data) => (data ? console.log("User Created") : console.log(data)));
   };
 
   return (

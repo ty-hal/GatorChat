@@ -1,16 +1,19 @@
-interface IProps {
-  image?: {
-    file: string;
-  };
-  class?: string;
-}
-const ProfilePicture = (props: IProps) => {
+type Props = {
+  image?:
+    | {
+        file: string;
+      }
+    | string;
+  className?: string;
+};
+
+const ProfilePicture: React.FC<Props> = ({ image, className }) => {
   var profilePic = new Image();
-  if (!props.image) {
+  if (!image) {
     // If there is no image, return default image
     return (
       <svg
-        className="h-10 w-10 text-gray-400 sm:h-12 sm:w-12"
+        className="h-12 w-12 text-gray-400"
         fill="currentColor"
         viewBox="0 0 20 20"
         xmlns="http://www.w3.org/2000/svg"
@@ -24,7 +27,11 @@ const ProfilePicture = (props: IProps) => {
       </svg>
     );
   }
-  profilePic.src = props.image.file;
+  if (typeof image === "object") {
+    profilePic.src = image.file;
+  } else {
+    profilePic.src = image;
+  }
   if (document.getElementById("profilePicture")) {
     let img = document.getElementById("profilePicture") as HTMLImageElement;
     if (img !== null) {
@@ -32,7 +39,7 @@ const ProfilePicture = (props: IProps) => {
     }
   }
 
-  return <img id="profilePicture" src="" alt="" className={props.class} />;
+  return <img id="profilePicture" src="" alt="" className={className} />;
 };
 
 export default ProfilePicture;

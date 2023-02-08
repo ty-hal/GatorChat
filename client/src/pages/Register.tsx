@@ -203,11 +203,12 @@ const Register = () => {
                   id="major"
                   className="focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500"
                   required
+                  defaultValue={"default"}
                   onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                     setMajor(e.target.value);
                   }}
                 >
-                  <option value="" selected disabled>
+                  <option value="default" disabled>
                     Select a major
                   </option>
                   <option value="Accounting">Accounting</option>
@@ -505,7 +506,7 @@ const Register = () => {
                 {selectedImage && (
                   <ProfilePicture
                     image={profilePicture}
-                    class="mt-4 h-40 w-40 rounded-full"
+                    className="mt-4 h-40 w-40 rounded-full"
                   />
                 )}
               </div>

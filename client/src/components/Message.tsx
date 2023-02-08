@@ -1,17 +1,24 @@
 import { useState } from "react";
 import ProfilePicture from "./ProfilePicture";
-interface IMessage {
+type Props = {
   id: number;
   username: string;
   profilePicture?: string;
   messageContent: string;
   messageDate: string;
   likesCount: number;
-}
+};
 
-const Message = (props: IMessage) => {
+const Message: React.FC<Props> = ({
+  id,
+  username,
+  profilePicture,
+  messageContent,
+  messageDate,
+  likesCount,
+}) => {
   const [showDropDown, setShowDropDown] = useState<boolean>(false);
-  const [numLikes, toggleLike] = useState<number>(props.likesCount);
+  const [numLikes, toggleLike] = useState<number>(likesCount);
 
   const toggleDropDown = () => {
     setShowDropDown(!showDropDown);
@@ -28,16 +35,15 @@ const Message = (props: IMessage) => {
           </div>
           {/* Username and Time  */}
           <div className="ml-4">
-            <span className="font-bold">{props.username}</span>
-            <span className="hidden sm:inline"> posted at</span>{" "}
-            {props.messageDate}
+            <span className="font-bold">{username}</span>
+            <span className="hidden sm:inline"> posted at</span> {messageDate}
           </div>
           {/* Message Menu  */}
           <div className="ml-auto mr-6">
             <svg
               onClick={toggleDropDown}
               fill="white"
-              className="h-8 w-8 cursor-pointer fill-gray-800 dark:fill-white"
+              className="h-8 w-8 cursor-pointer rounded-md fill-gray-700 px-1 hover:bg-gray-300 dark:fill-white dark:hover:bg-slate-700"
               version="1.1"
               id="message-menu"
               xmlns="http://www.w3.org/2000/svg"
@@ -63,55 +69,181 @@ const Message = (props: IMessage) => {
             {showDropDown && (
               <div
                 className={
-                  "absolute z-10 -ml-14 w-28 origin-top-right divide-y divide-gray-200 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                  "absolute z-10 w-28 origin-top-right divide-y divide-gray-300 rounded-md bg-white shadow-lg ring-1 ring-blue-200 focus:outline-none"
                 }
                 role="menu"
                 id="dropdown-content"
               >
-                <div className="cursor-pointer py-1" role="none">
-                  <span
-                    className="block px-4 py-2 text-sm text-gray-700 hover:font-semibold"
-                    role="menuitem"
-                    id="menu-item-0"
-                  >
-                    Reply
-                  </span>
-                  <span
-                    className="block px-4 py-2 text-sm text-gray-700 hover:font-semibold "
-                    role="menuitem"
-                    id="menu-item-1"
-                    onClick={() => {
-                      navigator.clipboard.writeText(props.messageContent);
-                      toggleDropDown();
-                    }}
-                  >
-                    Copy
-                  </span>
-                  <span
-                    className="block px-4 py-2 text-sm text-gray-700 hover:font-semibold"
-                    role="menuitem"
-                    id="menu-item-2"
-                  >
-                    Report
-                  </span>
-                </div>
-
-                {/* IF USER HAS ACCESS TO MODIFY THIS MESSAGE */}
-                <div className="cursor-pointer py-1" role="none">
-                  <span
-                    className="block px-4 py-2 text-sm text-gray-700 hover:font-semibold "
+                <div className="cursor-pointer" role="none">
+                  <div
+                    className="flex items-center py-2 text-sm text-gray-700 hover:bg-blue-200 hover:text-black "
                     role="menuitem"
                     id="menu-item-3"
                   >
-                    Edit
-                  </span>
-                  <span
-                    className="block px-4 py-2 text-sm text-gray-700 hover:font-semibold"
+                    <div className="flex-1">
+                      <svg
+                        viewBox="0 0 16 16"
+                        xmlns="http://www.w3.org/2000/svg"
+                        version="1.1"
+                        fill="none"
+                        stroke="#000000"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="0.944"
+                        className="ml-2 h-6 w-6 "
+                      >
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g
+                          id="SVGRepo_tracerCarrier"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        ></g>
+                        <g id="SVGRepo_iconCarrier">
+                          {" "}
+                          <path d="m14.25 13.25c-.5-6-5.5-7.5-8-7v-3.5l-4.5 5.25 4.5 5.25v-3.5c2.50001-0.5 6.5 0.5 8 3.5z"></path>{" "}
+                        </g>
+                      </svg>
+                    </div>
+                    <div className="">Reply</div>
+                    <div className="flex-1"></div>
+                  </div>
+
+                  <div
+                    className="flex items-center py-2 text-sm text-gray-700 hover:bg-blue-200 hover:text-black "
                     role="menuitem"
-                    id="menu-item-4"
+                    id="menu-item-3"
+                    onClick={() => {
+                      navigator.clipboard.writeText(messageContent);
+                      toggleDropDown();
+                    }}
                   >
-                    Delete
-                  </span>
+                    <div className="flex-1">
+                      <svg
+                        viewBox="0 0 1024 1024"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="#000000"
+                        className="ml-2 h-6 w-6 "
+                      >
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g
+                          id="SVGRepo_tracerCarrier"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        ></g>
+                        <g id="SVGRepo_iconCarrier">
+                          <path
+                            fill="#000000"
+                            d="M768 832a128 128 0 0 1-128 128H192A128 128 0 0 1 64 832V384a128 128 0 0 1 128-128v64a64 64 0 0 0-64 64v448a64 64 0 0 0 64 64h448a64 64 0 0 0 64-64h64z"
+                          ></path>
+                          <path
+                            fill="#000000"
+                            d="M384 128a64 64 0 0 0-64 64v448a64 64 0 0 0 64 64h448a64 64 0 0 0 64-64V192a64 64 0 0 0-64-64H384zm0-64h448a128 128 0 0 1 128 128v448a128 128 0 0 1-128 128H384a128 128 0 0 1-128-128V192A128 128 0 0 1 384 64z"
+                          ></path>
+                        </g>
+                      </svg>
+                    </div>
+                    <div className="">Copy</div>
+                    <div className="flex-1"></div>
+                  </div>
+
+                  <div
+                    className="flex items-center py-2 text-sm text-gray-700 hover:bg-blue-200 hover:text-black "
+                    role="menuitem"
+                    id="menu-item-3"
+                  >
+                    <div className="flex-1">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="ml-2 h-7 w-7"
+                      >
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g
+                          id="SVGRepo_tracerCarrier"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        ></g>
+                        <g id="SVGRepo_iconCarrier">
+                          {" "}
+                          <path
+                            d="M6 14.4623H16.1909C17.6066 14.4623 18.472 12.7739 17.7261 11.4671L17.2365 10.6092C16.7547 9.76504 16.7547 8.69728 17.2365 7.85309L17.7261 6.99524C18.472 5.68842 17.6066 4 16.1909 4L6 4L6 14.4623ZM6 14.4623L6 20"
+                            stroke="#363853"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            transform="translate(-1.6, 0)"
+                          ></path>{" "}
+                        </g>
+                      </svg>
+                    </div>
+                    <div className="">Report</div>
+                    <div className="flex-1"></div>
+                  </div>
+                </div>
+
+                {/* IF USER HAS ACCESS TO MODIFY THIS MESSAGE */}
+                <div className="cursor-pointer" role="none">
+                  <div
+                    className="flex items-center py-2 text-sm text-gray-700 hover:bg-blue-200 hover:text-black "
+                    role="menuitem"
+                    id="menu-item-3"
+                  >
+                    <div className="flex-1">
+                      <svg
+                        fill="#000000"
+                        viewBox="0 0 1920 1920"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="ml-2 h-5 w-5 "
+                      >
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g
+                          id="SVGRepo_tracerCarrier"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        ></g>
+                        <g id="SVGRepo_iconCarrier">
+                          {" "}
+                          <path
+                            d="M277.974 49.076c65.267-65.379 171.733-65.49 237.448 0l232.186 232.187 1055.697 1055.809L1919.958 1920l-582.928-116.653-950.128-950.015 79.15-79.15 801.792 801.68 307.977-307.976-907.362-907.474L281.22 747.65 49.034 515.464c-65.379-65.603-65.379-172.069 0-237.448Zm1376.996 1297.96-307.977 307.976 45.117 45.116 384.999 77.023-77.023-385-45.116-45.116ZM675.355 596.258l692.304 692.304-79.149 79.15-692.304-692.305 79.149-79.15ZM396.642 111.88c-14.33 0-28.547 5.374-39.519 16.345l-228.94 228.94c-21.718 21.718-21.718 57.318 0 79.149l153.038 153.037 308.089-308.09-153.037-153.036c-10.972-10.971-25.301-16.345-39.63-16.345Z"
+                            fill-rule="evenodd"
+                          ></path>{" "}
+                        </g>
+                      </svg>
+                    </div>
+                    <div className="">Edit</div>
+                    <div className="flex-1"></div>
+                  </div>
+
+                  <div
+                    className="flex items-center py-2 text-sm text-gray-700 hover:bg-blue-200 hover:text-black "
+                    role="menuitem"
+                    id="menu-item-3"
+                  >
+                    <div className="flex-1">
+                      <svg
+                        viewBox="0 0 1024 1024"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="#000000"
+                        className="ml-2 h-5 w-5 "
+                      >
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g
+                          id="SVGRepo_tracerCarrier"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        ></g>
+                        <g id="SVGRepo_iconCarrier">
+                          <path
+                            fill="#000000"
+                            d="M160 256H96a32 32 0 0 1 0-64h256V95.936a32 32 0 0 1 32-32h256a32 32 0 0 1 32 32V192h256a32 32 0 1 1 0 64h-64v672a32 32 0 0 1-32 32H192a32 32 0 0 1-32-32V256zm448-64v-64H416v64h192zM224 896h576V256H224v640zm192-128a32 32 0 0 1-32-32V416a32 32 0 0 1 64 0v320a32 32 0 0 1-32 32zm192 0a32 32 0 0 1-32-32V416a32 32 0 0 1 64 0v320a32 32 0 0 1-32 32z"
+                          ></path>
+                        </g>
+                      </svg>
+                    </div>
+                    <div className="">Delete</div>
+                    <div className="flex-1"></div>
+                  </div>
                 </div>
               </div>
             )}
@@ -123,20 +255,24 @@ const Message = (props: IMessage) => {
           id="message-content"
           className="relative top-7 mx-8 mb-12 text-left"
         >
-          {props.messageContent}
+          {messageContent}
         </div>
 
         {/* Likes */}
-        <div className="absolute left-3 bottom-3 flex items-center">
+        <div
+          className="absolute left-3 bottom-3 flex cursor-pointer items-center rounded-md px-1 hover:bg-gray-300 dark:hover:bg-slate-700"
+          onClick={(e) => {
+            e.currentTarget.children[0].classList.toggle("fill-red-600");
+            if (
+              e.currentTarget.children[0].classList.contains("fill-red-600")
+            ) {
+              toggleLike(numLikes + 1);
+            } else {
+              toggleLike(numLikes - 1);
+            }
+          }}
+        >
           <svg
-            onClick={(e) => {
-              e.currentTarget.classList.toggle("fill-red-600");
-              if (e.currentTarget.classList.contains("fill-red-600")) {
-                toggleLike(numLikes + 1);
-              } else {
-                toggleLike(numLikes - 1);
-              }
-            }}
             id="like-image"
             className="h-8 w-8 cursor-pointer stroke-red-600"
             fill="none"

@@ -29,12 +29,23 @@ func main() {
 		fmt.Println("error in finding creator")
 	}
 
-	fmt.Println("Creator: " + creator.FirstName)
+	fmt.Println()
+	fmt.Println("Thread: " + thread.ThreadTitle)
+	fmt.Println(thread.Content)
+	fmt.Println("Posted on:", thread.CreationDate, "by "+creator.FirstName+" "+creator.LastName)
+	fmt.Println()
 
 	posts := thread.GetPosts()
 
 	for _, post := range posts {
-		fmt.Println("Post: " + post.Content)
+		postCreator, postErr := post.GetCreator()
+
+		if postErr != nil {
+			fmt.Println("error in finding creator")
+		}
+
+		fmt.Println(" - " + post.Content)
+		fmt.Println("Posted on:", post.CreationDate, "by "+postCreator.FirstName+" "+postCreator.LastName)
 	}
 
 	log.Fatal(http.ListenAndServe(":9000", corsHandler.Handler(r)))

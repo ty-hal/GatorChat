@@ -58,7 +58,7 @@ const Thread: React.FC<Props> = ({
         {/* Thread Title  */}
         <div
           id="thread-title"
-          className="relative top-7 mx-8 mb-1 text-left text-xl font-bold sm:my-2 lg:text-2xl"
+          className="relative top-7 mx-8 mb-1 text-left text-xl font-bold sm:my-2 sm:text-2xl"
         >
           {threadTitle}
         </div>
@@ -72,8 +72,8 @@ const Thread: React.FC<Props> = ({
             {threadContent.substring(lengthOpacityCutoff)}
           </span>
         </div>
-        {/* Likes and Messages */}
-        <div className="absolute left-3 bottom-3 flex space-x-6 text-base md:text-lg">
+        {/* Bottom Bar */}
+        <div className="absolute left-3 bottom-3 flex space-x-2 text-base sm:space-x-6 md:text-lg">
           {/* Likes */}
           <div
             className="flex items-center rounded-md px-1 hover:bg-gray-300 dark:hover:bg-slate-700"
@@ -200,7 +200,7 @@ const Thread: React.FC<Props> = ({
             <svg
               onClick={toggleDropDown}
               fill="white"
-              className="h-8 w-8 cursor-pointer rounded-md fill-gray-700 px-1  dark:fill-white dark:hover:bg-slate-700"
+              className="h-8 w-8 cursor-pointer rounded-md fill-gray-700 px-1 hover:bg-gray-300 dark:fill-white dark:hover:bg-slate-700"
               version="1.1"
               id="thread-menu"
               xmlns="http://www.w3.org/2000/svg"
@@ -226,44 +226,140 @@ const Thread: React.FC<Props> = ({
             {showDropDown && (
               <div
                 className={
-                  "absolute z-10 w-28 origin-top-right divide-y divide-gray-300 rounded-md bg-white shadow-lg ring-1 ring-blue-200  focus:outline-none"
+                  "absolute z-10 w-28 origin-top-right divide-y divide-gray-300 rounded-md bg-white shadow-lg ring-1 ring-blue-200 focus:outline-none"
                 }
                 role="menu"
                 id="dropdown-content"
               >
                 <div className="cursor-pointer" role="none">
-                  <span
-                    className="rounded--t-md block px-4 py-2 text-sm text-gray-700 hover:bg-blue-200 hover:text-black"
+                  <div
+                    className="flex items-center py-2 text-sm text-gray-700 hover:bg-blue-200 hover:text-black "
                     role="menuitem"
-                    id="menu-item-1"
+                    id="menu-item-3"
                   >
-                    Save
-                  </span>
-                  <span
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-200 hover:text-black"
+                    <div className="flex-1">
+                      <svg
+                        fill="#000000"
+                        viewBox="0 0 1920 1920"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="ml-2 h-5 w-5"
+                      >
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g
+                          id="SVGRepo_tracerCarrier"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        ></g>
+                        <g id="SVGRepo_iconCarrier">
+                          {" "}
+                          <path
+                            d="m960.481 1412.11 511.758 307.054V170.586c0-31.274-25.588-56.862-56.862-56.862H505.586c-31.274 0-56.862 25.588-56.862 56.862v1548.578l511.757-307.055ZM1585.963 1920 960.48 1544.711 335 1920V170.586C335 76.536 411.536 0 505.586 0h909.79c94.05 0 170.587 76.536 170.587 170.586V1920Z"
+                            fill-rule="evenodd"
+                          ></path>{" "}
+                        </g>
+                      </svg>
+                    </div>
+                    <div className="">Save</div>
+                    <div className="flex-1"></div>
+                  </div>
+                  <div
+                    className="flex items-center py-2 text-sm text-gray-700 hover:bg-blue-200 hover:text-black "
                     role="menuitem"
-                    id="menu-item-2"
+                    id="menu-item-3"
                   >
-                    Report
-                  </span>
+                    <div className="flex-1">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="ml-2 h-6 w-6 "
+                      >
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g
+                          id="SVGRepo_tracerCarrier"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        ></g>
+                        <g id="SVGRepo_iconCarrier">
+                          {" "}
+                          <path
+                            d="M6 14.4623H16.1909C17.6066 14.4623 18.472 12.7739 17.7261 11.4671L17.2365 10.6092C16.7547 9.76504 16.7547 8.69728 17.2365 7.85309L17.7261 6.99524C18.472 5.68842 17.6066 4 16.1909 4L6 4L6 14.4623ZM6 14.4623L6 20"
+                            stroke="#363853"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            transform="translate(-1.6, 0)"
+                          ></path>{" "}
+                        </g>
+                      </svg>
+                    </div>
+                    <div className="">Report</div>
+                    <div className="flex-1"></div>
+                  </div>
                 </div>
 
                 {/* IF USER HAS ACCESS TO MODIFY THIS THREAD */}
                 <div className="cursor-pointer" role="none">
-                  <span
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-200 hover:text-black "
+                  <div
+                    className="flex items-center py-2 text-sm text-gray-700 hover:bg-blue-200 hover:text-black "
                     role="menuitem"
                     id="menu-item-3"
                   >
-                    Edit
-                  </span>
-                  <span
-                    className="block rounded-b-md px-4 py-2 text-sm text-gray-700 hover:bg-blue-200 hover:text-black"
+                    <div className="flex-1">
+                      <svg
+                        fill="#000000"
+                        viewBox="0 0 1920 1920"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="ml-2 h-5 w-5 "
+                      >
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g
+                          id="SVGRepo_tracerCarrier"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        ></g>
+                        <g id="SVGRepo_iconCarrier">
+                          {" "}
+                          <path
+                            d="M277.974 49.076c65.267-65.379 171.733-65.49 237.448 0l232.186 232.187 1055.697 1055.809L1919.958 1920l-582.928-116.653-950.128-950.015 79.15-79.15 801.792 801.68 307.977-307.976-907.362-907.474L281.22 747.65 49.034 515.464c-65.379-65.603-65.379-172.069 0-237.448Zm1376.996 1297.96-307.977 307.976 45.117 45.116 384.999 77.023-77.023-385-45.116-45.116ZM675.355 596.258l692.304 692.304-79.149 79.15-692.304-692.305 79.149-79.15ZM396.642 111.88c-14.33 0-28.547 5.374-39.519 16.345l-228.94 228.94c-21.718 21.718-21.718 57.318 0 79.149l153.038 153.037 308.089-308.09-153.037-153.036c-10.972-10.971-25.301-16.345-39.63-16.345Z"
+                            fill-rule="evenodd"
+                          ></path>{" "}
+                        </g>
+                      </svg>
+                    </div>
+                    <div className="">Edit</div>
+                    <div className="flex-1"></div>
+                  </div>
+
+                  <div
+                    className="flex items-center py-2 text-sm text-gray-700 hover:bg-blue-200 hover:text-black "
                     role="menuitem"
-                    id="menu-item-4"
+                    id="menu-item-3"
                   >
-                    Delete
-                  </span>
+                    <div className="flex-1">
+                      <svg
+                        viewBox="0 0 1024 1024"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="#000000"
+                        className="ml-2 h-5 w-5 "
+                      >
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g
+                          id="SVGRepo_tracerCarrier"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        ></g>
+                        <g id="SVGRepo_iconCarrier">
+                          <path
+                            fill="#000000"
+                            d="M160 256H96a32 32 0 0 1 0-64h256V95.936a32 32 0 0 1 32-32h256a32 32 0 0 1 32 32V192h256a32 32 0 1 1 0 64h-64v672a32 32 0 0 1-32 32H192a32 32 0 0 1-32-32V256zm448-64v-64H416v64h192zM224 896h576V256H224v640zm192-128a32 32 0 0 1-32-32V416a32 32 0 0 1 64 0v320a32 32 0 0 1-32 32zm192 0a32 32 0 0 1-32-32V416a32 32 0 0 1 64 0v320a32 32 0 0 1-32 32z"
+                          ></path>
+                        </g>
+                      </svg>
+                    </div>
+                    <div className="">Delete</div>
+                    <div className="flex-1"></div>
+                  </div>
                 </div>
               </div>
             )}

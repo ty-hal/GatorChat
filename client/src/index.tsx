@@ -17,8 +17,10 @@ import TermsAndConditions from "./pages/TermsAndConditions";
 import Settings from "./pages/Settings";
 import FAQ from "./pages/FAQ";
 
-import SampleMessages from "./pages/SampleMessages";
-import SampleThreads from "./pages/SampleThreads";
+//Delete eventually
+import SampleMessages from "./pages/DeleteLater/SampleMessages";
+import SampleThreads from "./pages/DeleteLater/SampleThreads";
+import SampleThread1 from "./pages/DeleteLater/SampleThread1";
 
 // Uses local storage to detect user dark mode preference
 export const darkModeAtom = atomWithStorage("dark-mode", true);
@@ -48,6 +50,7 @@ export default function App() {
             <Route index element={<Home />} />
             <Route path="sample-messages" element={<SampleMessages />} />
             <Route path="sample-threads" element={<SampleThreads />} />
+            <Route path="sample-thread-1" element={<SampleThread1 />} />
 
             <Route path="sign-in" element={<SignIn />} />
             <Route path="register" element={<Register />} />

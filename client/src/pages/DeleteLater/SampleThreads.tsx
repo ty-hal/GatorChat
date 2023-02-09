@@ -1,5 +1,5 @@
-import Footer from "../components/Footer";
-import Thread from "../components/Thread";
+import Footer from "../../components/Footer";
+import Thread from "../../components/Thread";
 
 const SampleThreads = () => {
   // Would do an API call here to get threads

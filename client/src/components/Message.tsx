@@ -38,7 +38,9 @@ const Message: React.FC<Props> = ({
         {/* Username and Time  */}
         <div className="ml-4">
           <span className="font-bold">{username}</span>
-          <span className="hidden sm:inline"> posted at</span> {messageDate}
+          <span className="text-black dark:text-gray-300">
+            <span className="hidden sm:inline"> posted at</span> {messageDate}
+          </span>
         </div>
         {/* Message Menu  */}
         <div className="ml-auto mr-6">
@@ -82,39 +84,6 @@ const Message: React.FC<Props> = ({
               <div className="cursor-pointer" role="none">
                 <div
                   className="flex items-center py-2 text-sm text-gray-700 hover:rounded-t-md hover:bg-blue-200 hover:text-black"
-                  role="menuitem"
-                  id="menu-item-3"
-                >
-                  <div className="flex-1">
-                    <svg
-                      viewBox="0 0 16 16"
-                      xmlns="http://www.w3.org/2000/svg"
-                      version="1.1"
-                      fill="none"
-                      stroke="#000000"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="0.944"
-                      className="ml-2 h-6 w-6 "
-                    >
-                      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                      <g
-                        id="SVGRepo_tracerCarrier"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></g>
-                      <g id="SVGRepo_iconCarrier">
-                        {" "}
-                        <path d="m14.25 13.25c-.5-6-5.5-7.5-8-7v-3.5l-4.5 5.25 4.5 5.25v-3.5c2.50001-0.5 6.5 0.5 8 3.5z"></path>{" "}
-                      </g>
-                    </svg>
-                  </div>
-                  <div className="">Reply</div>
-                  <div className="flex-1"></div>
-                </div>
-
-                <div
-                  className="flex items-center py-2 text-sm text-gray-700 hover:bg-blue-200 hover:text-black "
                   role="menuitem"
                   id="menu-item-3"
                   onClick={(e) => {
@@ -261,36 +230,74 @@ const Message: React.FC<Props> = ({
         {messageContent}
       </div>
 
-      {/* Likes */}
-      <div
-        className="absolute left-3 bottom-3 flex cursor-pointer items-center rounded-md px-1 hover:bg-gray-300 dark:hover:bg-slate-700"
-        onClick={(e) => {
-          e.stopPropagation();
-          setShowDropdown(false);
-          e.currentTarget.children[0].classList.toggle("fill-red-600");
-          if (e.currentTarget.children[0].classList.contains("fill-red-600")) {
-            toggleLike(numLikes + 1);
-          } else {
-            toggleLike(numLikes - 1);
-          }
-        }}
-      >
-        <svg
-          id="like-image"
-          className="h-8 w-8 cursor-pointer stroke-red-600"
-          fill="none"
-          strokeWidth="1.5"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
+      {/* Bottom Bar */}
+      <div className="absolute left-3 bottom-3 flex space-x-2 text-base sm:space-x-3 md:space-x-6 md:text-lg">
+        {/* Likes */}
+        <div
+          className="flex cursor-pointer items-center rounded-md px-1 hover:bg-gray-300 dark:hover:bg-slate-700"
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowDropdown(false);
+            e.currentTarget.children[0].classList.toggle("fill-red-600");
+            if (
+              e.currentTarget.children[0].classList.contains("fill-red-600")
+            ) {
+              toggleLike(numLikes + 1);
+            } else {
+              toggleLike(numLikes - 1);
+            }
+          }}
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-          ></path>
-        </svg>
-        <div className="ml-2">{numLikes} likes</div>
+          <svg
+            id="like-image"
+            className="h-8 w-8 cursor-pointer stroke-red-600"
+            fill="none"
+            strokeWidth="1.5"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+            ></path>
+          </svg>
+          <div className="ml-2">{numLikes} likes</div>
+        </div>
+        {/* Reply  */}
+        <div
+          className="flex cursor-pointer items-center rounded-md px-1 hover:bg-gray-300 dark:hover:bg-slate-700"
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowDropdown(false);
+            console.log(`Reply to message ${id}`);
+          }}
+        >
+          <svg
+            viewBox="0 0 16 16"
+            xmlns="http://www.w3.org/2000/svg"
+            version="1.1"
+            fill="none"
+            stroke="#000000"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="0.9"
+            className="h-8 w-8 stroke-black dark:stroke-white"
+          >
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g
+              id="SVGRepo_tracerCarrier"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></g>
+            <g id="SVGRepo_iconCarrier">
+              {" "}
+              <path d="m14.25 13.25c-.5-6-5.5-7.5-8-7v-3.5l-4.5 5.25 4.5 5.25v-3.5c2.50001-0.5 6.5 0.5 8 3.5z"></path>{" "}
+            </g>
+          </svg>
+          <div className="ml-2">Reply</div>
+        </div>
       </div>
     </div>
   );

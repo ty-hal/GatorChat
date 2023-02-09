@@ -5,22 +5,19 @@ const Home = () => {
   return (
     <div className="bg-white dark:bg-gray-900">
       <Link to="/sample-messages">
-        <span
-          className="cursor-pointer font-medium text-gray-900 dark:text-white md:text-lg"
-          role="menuitem"
-          id="menu-item-0"
-        >
+        <div className="cursor-pointer font-medium text-gray-900 dark:text-white md:text-lg">
           Sample Messages
-        </span>
+        </div>
       </Link>
       <Link to="/sample-threads">
-        <span
-          className="cursor-pointer font-medium text-gray-900 dark:text-white md:text-lg"
-          role="menuitem"
-          id="menu-item-0"
-        >
+        <div className="cursor-pointer font-medium text-gray-900 dark:text-white md:text-lg">
           Sample Threads
-        </span>
+        </div>
+      </Link>
+      <Link to="/sample-thread-1">
+        <div className="cursor-pointer font-medium text-gray-900 dark:text-white md:text-lg">
+          Sample Thread (with messages)
+        </div>
       </Link>
       <Footer />
     </div>

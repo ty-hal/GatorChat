@@ -1,19 +1,20 @@
 package models
 
 import (
+	"time"
+
 	"github.com/team/swe-project/middleware"
-	"gorm.io/datatypes"
 )
 
 type Thread struct {
-	//gorm.Model
-	ThreadID     uint8          `json:"thread_id" gorm:"primary_key"`
-	UserID       uint8          `json:"user_id,omitempty"`
-	SectionID    uint8          `json:"section_id,omitempty"`
-	ThreadTitle  string         `json:"thread_title,omitempty"`
-	Content      string         `json:"content,omitempty"`
-	CreationDate datatypes.Date `json:"creation_date,omitempty"`
-	Likes        uint8          `json:"likes,omitempty"`
+	ThreadID     uint8     `json:"thread_id" gorm:"primary_key"`
+	UserID       uint8     `json:"user_id,omitempty"`
+	SectionID    uint8     `json:"section_id,omitempty"`
+	ThreadTitle  string    `json:"thread_title,omitempty"`
+	Content      string    `json:"content,omitempty"`
+	CreationDate time.Time `gorm:"column:creation_date;type:timestamp with time zone"`
+	UpdatedOn    time.Time `gorm:"column:updated_on;type:timestamp with time zone"`
+	Likes        uint8     `json:"likes,omitempty"`
 }
 
 func GetAllThreads() []Thread {

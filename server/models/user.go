@@ -2,22 +2,22 @@ package models
 
 import (
 	"errors"
+	"time"
 
 	"github.com/team/swe-project/middleware"
 	"golang.org/x/crypto/bcrypt"
 )
 
 type User struct {
-	//gorm.Model
-	UserID    uint8  `json:"user_id" gorm:"primary_key"`
-	FirstName string `json:"first_name,omitempty"`
-	LastName  string `json:"last_name,omitempty"`
-	Email     string `json:"email,omitempty"`
-	Password  string `json:"password,omitempty"`
-	//Major          string `json:"major,omitempty"`
-	ProfilePic string `json:"profile_pic,omitempty"`
-	Dark       bool   `json:"dark,omitempty"`
-	Likes      uint8  `json:"likes,omitempty"`
+	UserID       uint8     `json:"user_id" gorm:"primary_key"`
+	FirstName    string    `json:"first_name,omitempty"`
+	LastName     string    `json:"last_name,omitempty"`
+	Email        string    `json:"email,omitempty"`
+	Password     string    `json:"password,omitempty"`
+	ProfilePic   string    `json:"profile_pic,omitempty"`
+	Dark         bool      `json:"dark,omitempty"`
+	Likes        uint8     `json:"likes,omitempty"`
+	CreationDate time.Time `gorm:"column:updated_on;type:timestamp with time zone"`
 }
 
 func GetAllUsers() []User {

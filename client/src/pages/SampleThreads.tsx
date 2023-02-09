@@ -2,7 +2,7 @@ import Footer from "../components/Footer";
 import Thread from "../components/Thread";
 
 const SampleThreads = () => {
-  // Would do an API call here to get messages
+  // Would do an API call here to get threads
   const threads = [
     {
       id: 1,

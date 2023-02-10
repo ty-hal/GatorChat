@@ -34,7 +34,7 @@ func GetUserByID(id uint8) (User, error) {
 	err := middleware.DB.First(&user, id).Error
 
 	if err != nil {
-		return User{}, errors.New("could not find user")
+		return User{}, err
 	}
 
 	return user, nil

@@ -17,10 +17,14 @@ func GetAllMajors() []Major {
 	return majors
 }
 
-func GetMajorByID(major_id uint8) Major {
+func GetMajorByID(major_id uint8) (Major, error) {
 	var major Major
 
-	middleware.DB.First(&major, major_id)
+	err := middleware.DB.First(&major, major_id).Error
 
-	return major
+	if err != nil {
+		return Major{}, err
+	}
+
+	return major, nil
 }

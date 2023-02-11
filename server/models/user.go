@@ -125,7 +125,10 @@ func (u *User) GetClasses() []Class {
 
 	for _, userClass := range GetAllUserClassRows() {
 		if userClass.UserID == u.UserID {
-			classes = append(classes, GetClassByID(userClass.ClassID))
+			class, err := GetClassByID(userClass.ClassID)
+			if err == nil {
+				classes = append(classes, class)
+			}
 		}
 	}
 
@@ -137,7 +140,10 @@ func (u *User) GetRoles() []Role {
 
 	for _, userRole := range GetAllUserRoleRows() {
 		if userRole.UserID == u.UserID {
-			roles = append(roles, GetRoleByID(userRole.RoleID))
+			role, err := GetRoleByID(userRole.RoleID)
+			if err == nil {
+				roles = append(roles, role)
+			}
 		}
 	}
 
@@ -149,7 +155,10 @@ func (u *User) GetMajors() []Major {
 
 	for _, userMajor := range GetAllUserMajorRows() {
 		if userMajor.UserID == u.UserID {
-			majors = append(majors, GetMajorByID(userMajor.MajorID))
+			major, err := GetMajorByID(userMajor.MajorID)
+			if err == nil {
+				majors = append(majors, major)
+			}
 		}
 	}
 

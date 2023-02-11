@@ -17,10 +17,14 @@ func GetAllRoles() []Role {
 	return roles
 }
 
-func GetRoleByID(role_id uint8) Role {
+func GetRoleByID(role_id uint8) (Role, error) {
 	var role Role
 
-	middleware.DB.First(&role, role_id)
+	err := middleware.DB.First(&role, role_id).Error
 
-	return role
+	if err != nil {
+		return Role{}, err
+	}
+
+	return role, nil
 }

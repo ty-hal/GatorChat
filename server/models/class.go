@@ -17,10 +17,14 @@ func GetAllClasses() []Class {
 	return classes
 }
 
-func GetClassByID(class_id string) Class {
+func GetClassByID(class_id string) (Class, error) {
 	var class Class
 
-	middleware.DB.Where("class_id = ?", class_id).First(&class)
+	err := middleware.DB.Where("class_id = ?", class_id).First(&class).Error
 
-	return class
+	if err != nil {
+		return Class{}, err
+	}
+
+	return class, nil
 }

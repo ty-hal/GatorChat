@@ -119,3 +119,39 @@ func (u *User) GetPosts() []Post {
 
 	return posts
 }
+
+func (u *User) GetClasses() []Class {
+	var classes []Class
+
+	for _, userClass := range GetAllUserClassRows() {
+		if userClass.UserID == u.UserID {
+			classes = append(classes, GetClassByID(userClass.ClassID))
+		}
+	}
+
+	return classes
+}
+
+func (u *User) GetRoles() []Role {
+	var roles []Role
+
+	for _, userRole := range GetAllUserRoleRows() {
+		if userRole.UserID == u.UserID {
+			roles = append(roles, GetRoleByID(userRole.RoleID))
+		}
+	}
+
+	return roles
+}
+
+func (u *User) GetMajors() []Major {
+	var majors []Major
+
+	for _, userMajor := range GetAllUserMajorRows() {
+		if userMajor.UserID == u.UserID {
+			majors = append(majors, GetMajorByID(userMajor.MajorID))
+		}
+	}
+
+	return majors
+}

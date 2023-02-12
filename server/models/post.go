@@ -1,32 +1,19 @@
 package models
 
 import (
-	"errors"
 	"time"
 
 	"github.com/team/swe-project/middleware"
 )
 
 type Post struct {
-	ThreadID     uint8     `json:"post_id" gorm:"primary_key"`
+	PostID       uint8     `json:"post_id" gorm:"primary_key"`
 	UserID       uint8     `json:"user_id,omitempty"`
-	SectionID    uint8     `json:"thread_id,omitempty"`
+	ThreadID     uint8     `json:"thread_id,omitempty"`
 	Content      string    `json:"content,omitempty"`
 	CreationDate time.Time `gorm:"column:creation_date;type:timestamp with time zone"`
 	UpdatedOn    time.Time `gorm:"column:updated_on;type:timestamp with time zone"`
 	Likes        uint8     `json:"likes,omitempty"`
-}
-
-func GetPostByID(postID uint8) (Post, error) {
-	var post Post
-
-	err := middleware.DB.Find(&post, postID).Error
-
-	if err != nil {
-		return Post{}, errors.New("could not find post")
-	}
-
-	return post, nil
 }
 
 func GetAllPosts() []Post {
@@ -35,6 +22,24 @@ func GetAllPosts() []Post {
 	middleware.DB.Find(&posts)
 
 	return posts
+}
+
+func GetPostByID(postID uint8) (Post, error) {
+	var post Post
+
+	err := middleware.DB.Find(&post, postID).Error
+
+	if err != nil {
+		return Post{}, err
+	}
+
+	return post, nil
+}
+
+func CreatePost(post Post) Post {
+	middleware.DB.Create(&post)
+
+	return post
 }
 
 func (p *Post) GetThread() (Thread, error) {

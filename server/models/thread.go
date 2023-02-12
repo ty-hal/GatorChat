@@ -25,18 +25,29 @@ func GetAllThreads() []Thread {
 	return threads
 }
 
-func GetThreadById(threadID uint8) Thread {
+func GetThreadById(threadID uint8) (Thread, error) {
 	var thread Thread
 
-	middleware.DB.Find(&thread, threadID)
+	err := middleware.DB.First(&thread, threadID).Error
+
+	// Thread ID not found
+	if err != nil {
+		return Thread{}, err
+	}
+
+	return thread, nil
+}
+
+func CreateThread(thread Thread) Thread {
+	middleware.DB.Create(&thread)
 
 	return thread
 }
 
-func (t *Thread) GetCreator() (User, error) {
+func GetCreator(threadID uint8) (User, error) {
 	var user User
 
-	result := middleware.DB.First(&user, t.UserID)
+	result := middleware.DB.First(&user, threadID)
 	if result.Error != nil {
 		return user, result.Error
 	}
@@ -44,10 +55,10 @@ func (t *Thread) GetCreator() (User, error) {
 	return user, nil
 }
 
-func (t *Thread) GetSection() (Section, error) {
+func GetSection(threadID uint8) (Section, error) {
 	var section Section
 
-	result := middleware.DB.First(&section, t.SectionID)
+	result := middleware.DB.First(&section, threadID)
 	if result.Error != nil {
 		return section, result.Error
 	}
@@ -55,11 +66,11 @@ func (t *Thread) GetSection() (Section, error) {
 	return section, nil
 }
 
-func (t *Thread) GetPosts() []Post {
+func GetThreadPosts(threadID uint8) []Post {
 	var posts []Post
 
 	for _, post := range GetAllPosts() {
-		if post.ThreadID == t.ThreadID {
+		if post.ThreadID == threadID {
 			posts = append(posts, post)
 		}
 	}

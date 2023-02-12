@@ -34,7 +34,7 @@ func GetUserByID(id uint8) (User, error) {
 	err := middleware.DB.First(&user, id).Error
 
 	if err != nil {
-		return User{}, errors.New("could not find user")
+		return User{}, err
 	}
 
 	return user, nil
@@ -118,4 +118,49 @@ func (u *User) GetPosts() []Post {
 	}
 
 	return posts
+}
+
+func (u *User) GetClasses() []Class {
+	var classes []Class
+
+	for _, userClass := range GetAllUserClassRows() {
+		if userClass.UserID == u.UserID {
+			class, err := GetClassByID(userClass.ClassID)
+			if err == nil {
+				classes = append(classes, class)
+			}
+		}
+	}
+
+	return classes
+}
+
+func (u *User) GetRoles() []Role {
+	var roles []Role
+
+	for _, userRole := range GetAllUserRoleRows() {
+		if userRole.UserID == u.UserID {
+			role, err := GetRoleByID(userRole.RoleID)
+			if err == nil {
+				roles = append(roles, role)
+			}
+		}
+	}
+
+	return roles
+}
+
+func (u *User) GetMajors() []Major {
+	var majors []Major
+
+	for _, userMajor := range GetAllUserMajorRows() {
+		if userMajor.UserID == u.UserID {
+			major, err := GetMajorByID(userMajor.MajorID)
+			if err == nil {
+				majors = append(majors, major)
+			}
+		}
+	}
+
+	return majors
 }

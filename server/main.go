@@ -30,6 +30,24 @@ func main() {
 	}
 
 	fmt.Println()
+	fmt.Println(creator.FirstName + " " + creator.LastName + "'s Classes: ")
+	for _, class := range creator.GetClasses() {
+		fmt.Println(class.ClassName)
+	}
+
+	fmt.Println()
+	fmt.Println(creator.FirstName + " " + creator.LastName + "'s Roles: ")
+	for _, role := range creator.GetRoles() {
+		fmt.Println(role.RoleName)
+	}
+
+	fmt.Println()
+	fmt.Println(creator.FirstName + " " + creator.LastName + "'s Majors: ")
+	for _, major := range creator.GetMajors() {
+		fmt.Println(major.MajorName)
+	}
+
+	fmt.Println()
 	fmt.Println("Thread: " + thread.ThreadTitle)
 	fmt.Println(thread.Content)
 	fmt.Println("Posted on:", thread.CreationDate, "by "+creator.FirstName+" "+creator.LastName)

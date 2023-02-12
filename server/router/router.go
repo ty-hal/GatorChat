@@ -19,5 +19,14 @@ func Router() *mux.Router {
 	router.HandleFunc("/api/user/{id}", handlers.DeleteUser).Methods("DELETE")
 	router.HandleFunc("/api/user/{id}", handlers.UpdateUser).Methods("PUT")
 
+	// Class Routes
+	router.HandleFunc("/api/classes", handlers.GetAllClasses).Methods("GET")
+
+	// Major Routes
+	router.HandleFunc("/api/majors", handlers.GetAllMajors).Methods("GET")
+
+	// Role Routes
+	router.HandleFunc("/api/roles", handlers.GetAllRoles).Methods("GET")
+
 	return router
 }

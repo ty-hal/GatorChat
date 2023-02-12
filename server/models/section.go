@@ -24,3 +24,15 @@ func GetSectionByID(section_id uint8) Section {
 
 	return section
 }
+
+func (s *Section) GetThreads() []Thread {
+	var threads []Thread
+
+	for _, thread := range GetAllThreads() {
+		if thread.SectionID == s.SectionID {
+			threads = append(threads, thread)
+		}
+	}
+
+	return threads
+}

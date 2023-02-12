@@ -26,7 +26,7 @@ const Thread: React.FC<Props> = ({
 
   return (
     <div
-      className="relative mx-auto w-11/12 rounded-t-2xl border-b-8 border-gray-800 border-transparent bg-gray-200 py-8 text-center text-lg font-normal text-gray-900 shadow-xl dark:border-gray-700 dark:bg-gray-800 dark:text-white lg:w-4/5"
+      className="relative mx-auto w-11/12 rounded-t-2xl border-b-4 border-gray-500 border-transparent bg-gray-200 py-8 text-center text-lg font-normal text-gray-900 shadow-xl dark:border-gray-300 dark:bg-gray-800 dark:text-white lg:w-4/5"
       id="container"
       onClick={(e) => {
         e.stopPropagation();

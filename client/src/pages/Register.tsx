@@ -1,21 +1,219 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import ProfilePicture from "../components/ProfilePicture";
+import Select from "react-tailwindcss-select";
 
 interface userRegistration {
   first_name: String;
   last_name: String;
   email: String;
-  major: String;
+  majors: String[];
   password: String;
   profile_pic?: String;
 }
+
+const majorOptions = [
+  { value: "Accounting", label: "Accounting" },
+  { value: "Advertising", label: "Advertising" },
+  { value: "Aerospace Engineering", label: "Aerospace Engineering" },
+  { value: "African Languages", label: "African Languages" },
+  { value: "African-American Studies", label: "African-American Studies" },
+  {
+    value: "Agricultural Education and Communication",
+    label: "Agricultural Education and Communication",
+  },
+  {
+    value: "Agricultural Operations Management",
+    label: "Agricultural Operations Management",
+  },
+  { value: "Animal Sciences", label: "Animal Sciences" },
+  { value: "Anthropology", label: "Anthropology" },
+  {
+    value: "Applied Physiology and Kinesiology",
+    label: "Applied Physiology and Kinesiology",
+  },
+  { value: "Arabic", label: "Arabic" },
+  { value: "Architecture", label: "Architecture" },
+  { value: "Art History", label: "Art History" },
+  { value: "Art", label: "Art" },
+  { value: "Astronomy and Astrophysics", label: "Astronomy and Astrophysics" },
+  { value: "Biological Engineering", label: "Biological Engineering" },
+  { value: "Biology", label: "Biology" },
+  { value: "Biomedical Engineering", label: "Biomedical Engineering" },
+  { value: "Botany", label: "Botany" },
+  { value: "Business Administration", label: "Business Administration" },
+  { value: "Chemical Engineering", label: "Chemical Engineering" },
+  { value: "Chemistry", label: "Chemistry" },
+  { value: "Chinese", label: "Chinese" },
+  { value: "Civil Engineering", label: "Civil Engineering" },
+  { value: "Classical Studies", label: "Classical Studies" },
+  {
+    value: "Communication Sciences and Disorders",
+    label: "Communication Sciences and Disorders",
+  },
+  { value: "Computer Engineering", label: "Computer Engineering" },
+  { value: "Computer Science", label: "Computer Science" },
+  { value: "Construction Management", label: "Construction Management" },
+  { value: "Criminology", label: "Criminology" },
+  { value: "Dance", label: "Dance" },
+  { value: "Data Science", label: "Data Science" },
+  { value: "Dietetics", label: "Dietetics" },
+  { value: "Digital Arts and Sciences", label: "Digital Arts and Sciences" },
+  { value: "Dual Languages", label: "Dual Languages" },
+  { value: "Economics", label: "Economics" },
+  { value: "Education Sciences", label: "Education Sciences" },
+  { value: "Electrical Engineering", label: "Electrical Engineering" },
+  { value: "Elementary Education", label: "Elementary Education" },
+  { value: "Engineering Studies", label: "Engineering Studies" },
+  { value: "English", label: "English" },
+  { value: "Entomology and Nematology", label: "Entomology and Nematology" },
+  { value: "Environmental Engineering", label: "Environmental Engineering" },
+  {
+    value: "Environmental Management in Agriculture and Natural Resources",
+    label: "Environmental Management in Agriculture and Natural Resources",
+  },
+  { value: "Environmental Science", label: "Environmental Science" },
+  {
+    value: "Family, Youth and Community Sciences",
+    label: "Family, Youth and Community Sciences",
+  },
+  { value: "Finance", label: "Finance" },
+  {
+    value: "Food and Resource Economics",
+    label: "Food and Resource Economics",
+  },
+  { value: "Food Science", label: "Food Science" },
+  {
+    value: "Foreign Languages and Literatures",
+    label: "Foreign Languages and Literatures",
+  },
+  {
+    value: "Forest Resources and Conservation",
+    label: "Forest Resources and Conservation",
+  },
+  {
+    value: "French and Francophone Studies",
+    label: "French and Francophone Studies",
+  },
+  { value: "Geography", label: "Geography" },
+  { value: "Geology", label: "Geology" },
+  { value: "Geomatics", label: "Geomatics" },
+  { value: "German", label: "German" },
+  { value: "Graphic Design", label: "Graphic Design" },
+  {
+    value: "Health Education and Behavior",
+    label: "Health Education and Behavior",
+  },
+  { value: "Health Science", label: "Health Science" },
+  {
+    value:
+      "HebrewHispanic and Latin American Languages, Literatures and Linguistics",
+    label:
+      "HebrewHispanic and Latin American Languages, Literatures and Linguistics",
+  },
+  { value: "History", label: "History" },
+  { value: "Horticultural Science", label: "Horticultural Science" },
+  {
+    value: "Industrial and Systems Engineering",
+    label: "Industrial and Systems Engineering",
+  },
+  { value: "Information Systems", label: "Information Systems" },
+  { value: "Interdisciplinary Studies", label: "Interdisciplinary Studies" },
+  { value: "Interior Design", label: "Interior Design" },
+  { value: "International Studies", label: "International Studies" },
+  { value: "Italian", label: "Italian" },
+  { value: "Japanese", label: "Japanese" },
+  { value: "Jewish Studies", label: "Jewish Studies" },
+  { value: "Journalism", label: "Journalism" },
+  { value: "Landscape Architecture", label: "Landscape Architecture" },
+  { value: "Linguistics", label: "Linguistics" },
+  { value: "Management", label: "Management" },
+  { value: "Marine Sciences", label: "Marine Sciences" },
+  { value: "Marketing", label: "Marketing" },
+  {
+    value: "Materials Science and Engineering",
+    label: "Materials Science and Engineering",
+  },
+  { value: "Mathematics", label: "Mathematics" },
+  { value: "Mechanical Engineering", label: "Mechanical Engineering" },
+  {
+    value: "Media Production, Management, and Technology",
+    label: "Media Production, Management, and Technology",
+  },
+  {
+    value: "Microbiology and Cell Science",
+    label: "Microbiology and Cell Science",
+  },
+  { value: "Music", label: "Music" },
+  {
+    value: "Natural Resource Conservation",
+    label: "Natural Resource Conservation",
+  },
+  { value: "Nuclear Engineering", label: "Nuclear Engineering" },
+  { value: "Nursing", label: "Nursing" },
+  { value: "Nutritional Sciences", label: "Nutritional Sciences" },
+  { value: "Pharmacy", label: "Pharmacy" },
+  { value: "Philosophy", label: "Philosophy" },
+  { value: "Physics", label: "Physics" },
+  { value: "Plant Science", label: "Plant Science" },
+  { value: "Political Science", label: "Political Science" },
+  { value: "Portuguese", label: "Portuguese" },
+  { value: "Psychology", label: "Psychology" },
+  { value: "Public Health", label: "Public Health" },
+  { value: "Public Relations", label: "Public Relations" },
+  { value: "Religion", label: "Religion" },
+  { value: "Russian", label: "Russian" },
+  { value: "Sociology", label: "Sociology" },
+  { value: "Soil and Water Sciences", label: "Soil and Water Sciences" },
+  { value: "Spanish", label: "Spanish" },
+  { value: "Spanish and Portuguese", label: "Spanish and Portuguese" },
+  { value: "Sport Managemen", label: "Sport Managemen" },
+  { value: "Statistics", label: "Statistics" },
+  {
+    value: "Sustainability and the Built Environment",
+    label: "Sustainability and the Built Environment",
+  },
+  { value: "Sustainability Studies", label: "Sustainability Studies" },
+  { value: "Theatre", label: "Theatre" },
+  { value: "Theatre Performance", label: "Theatre Performance" },
+  { value: "Theatre Production", label: "Theatre Production" },
+  {
+    value: "Tourism, Hospitality and Event Management",
+    label: "Tourism, Hospitality and Event Management",
+  },
+  {
+    value: "Wildlife Ecology and Conservation",
+    label: "Wildlife Ecology and Conservation",
+  },
+  { value: "Women's Studies", label: "Women's Studies" },
+  { value: "Zoology", label: "Zoology" },
+];
+
+type majorObj = {
+  disabled: boolean;
+  label: string;
+  value: string;
+};
 
 const Register = () => {
   const [first_name, setFirstName] = useState("");
   const [last_name, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [major, setMajor] = useState("");
+  const [majorsValue, setMajorsValue] = useState(null);
+  const [majors, setMajors] = useState<string[]>([]);
+
+  const handleMajorChange = (value: any) => {
+    setMajorsValue(value);
+    if (value) {
+      let tempMajors = value.map((item: majorObj) => {
+        return item["value"];
+      });
+      setMajors(tempMajors);
+    } else {
+      setMajors([]);
+    }
+  };
+
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [selectedImage, setSelectedImage] = useState(false);
@@ -72,11 +270,12 @@ const Register = () => {
       first_name: first_name,
       last_name: last_name,
       email: email,
-      major: major,
+      majors: majors,
       password: password,
       profile_pic: profilePicture.file,
     };
 
+    console.log(registration);
     fetch("http://localhost:9000/api/user", {
       method: "POST",
       headers: {
@@ -199,230 +398,31 @@ const Register = () => {
                 >
                   Major
                 </label>
-                <select
-                  id="major"
-                  className="focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500"
-                  required
-                  defaultValue={"default"}
-                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                    setMajor(e.target.value);
+                <Select
+                  primaryColor={"indigo"}
+                  value={majorsValue}
+                  isMultiple={true}
+                  isSearchable={true}
+                  noOptionsMessage={"No majors found"}
+                  placeholder={"Select major(s)..."}
+                  classNames={{
+                    menuButton: ({ isDisabled }) =>
+                      `rounded-lg flex text-sm text-gray-900 dark:text-gray-400 border border-gray-300 dark:border-gray-600  focus:outline-none bg-gray-50 dark:bg-gray-700 ${
+                        isDisabled
+                          ? ""
+                          : "focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                      }`,
+                    menu: "absolute z-10 w-full bg-gray-50 dark:bg-gray-700 border rounded-lg py-1 mt-1.5 text-sm text-gray-900",
+                    listItem: ({ isSelected }) =>
+                      `block p-2 cursor-pointer select-none truncate rounded text-gray-900 dark:text-white ${
+                        isSelected
+                          ? ``
+                          : `hover:bg-blue-200 dark:hover:bg-blue-500 hover:text-gray-900`
+                      }`,
                   }}
-                >
-                  <option value="default" disabled>
-                    Select a major
-                  </option>
-                  <option value="Accounting">Accounting</option>
-                  <option value="Advertising">Advertising</option>
-                  <option value="Advertising">Advertising</option>
-                  <option value="Aerospace Engineering">
-                    Aerospace Engineering
-                  </option>
-                  <option value="African Languages">African Languages</option>
-                  <option value="African-American Studies">
-                    African-American Studies
-                  </option>
-                  <option value="Agricultural Education and Communication">
-                    Agricultural Education and Communication
-                  </option>
-                  <option value="Agricultural Operations Management">
-                    Agricultural Operations Management
-                  </option>
-                  <option value="Animal Sciences">Animal Sciences</option>
-                  <option value="Anthropology">Anthropology</option>
-                  <option value="Applied Physiology and Kinesiology">
-                    Applied Physiology and Kinesiology
-                  </option>
-                  <option value="Arabic">Arabic</option>
-                  <option value="Architecture">Architecture</option>
-                  <option value="Art History">Art History</option>
-                  <option value="Art">Art</option>
-                  <option value="Astronomy and Astrophysics">
-                    Astronomy and Astrophysics
-                  </option>
-                  <option value="Biological Engineering">
-                    Biological Engineering
-                  </option>
-                  <option value="Biology">Biology</option>
-                  <option value="Biomedical Engineering">
-                    Biomedical Engineering
-                  </option>
-                  <option value="Botany">Botany</option>
-                  <option value="Business Administration">
-                    Business Administration
-                  </option>
-                  <option value="Chemical Engineering">
-                    Chemical Engineering
-                  </option>
-                  <option value="Chemistry">Chemistry</option>
-                  <option value="Chinese">Chinese</option>
-                  <option value="Civil Engineering">Civil Engineering</option>
-                  <option value="Classical Studies">Classical Studies</option>
-                  <option value="Communication Sciences and Disorders">
-                    Communication Sciences and Disorders
-                  </option>
-                  <option value="Computer Engineering">
-                    Computer Engineering
-                  </option>
-                  <option value="Computer Science">Computer Science</option>
-                  <option value="Construction Management">
-                    Construction Management
-                  </option>
-                  <option value="Criminology">Criminology</option>
-                  <option value="Dance">Dance</option>
-                  <option value="Data Science">Data Science</option>
-                  <option value="Dietetics">Dietetics</option>
-                  <option value="Digital Arts and Sciences">
-                    Digital Arts and Sciences
-                  </option>
-                  <option value="Dual Languages">Dual Languages</option>
-                  <option value="Economics">Economics</option>
-                  <option value="Education Sciences">Education Sciences</option>
-                  <option value="Electrical Engineering">
-                    Electrical Engineering
-                  </option>
-                  <option value="Elementary Education">
-                    Elementary Education
-                  </option>
-                  <option value="Engineering Studies">
-                    Engineering Studies
-                  </option>
-                  <option value="English">English</option>
-                  <option value="Entomology and Nematology">
-                    Entomology and Nematology
-                  </option>
-                  <option value="Environmental Engineering">
-                    Environmental Engineering
-                  </option>
-                  <option value="Environmental Management in Agriculture and Natural Resources">
-                    Environmental Management in Agriculture and Natural
-                    Resources
-                  </option>
-                  <option value="Environmental Science">
-                    Environmental Science
-                  </option>
-                  <option value="Family, Youth and Community Sciences">
-                    Family, Youth and Community Sciences
-                  </option>
-                  <option value="Finance">Finance</option>
-                  <option value="Food and Resource Economics">
-                    Food and Resource Economics
-                  </option>
-                  <option value="Food Science">Food Science</option>
-                  <option value="Foreign Languages and Literatures">
-                    Foreign Languages and Literatures
-                  </option>
-                  <option value="Forest Resources and Conservation">
-                    Forest Resources and Conservation
-                  </option>
-                  <option value="French and Francophone Studies">
-                    French and Francophone Studies
-                  </option>
-                  <option value="Geography">Geography</option>
-                  <option value="Geology">Geology</option>
-                  <option value="Geomatics">Geomatics</option>
-                  <option value="German">German</option>
-                  <option value="Graphic Design">Graphic Design</option>
-                  <option value="Health Education and Behavior">
-                    Health Education and Behavior
-                  </option>
-                  <option value="Health Science">Health Science</option>
-                  <option value="HebrewHispanic and Latin American Languages, Literatures and Linguistics">
-                    HebrewHispanic and Latin American Languages, Literatures and
-                    Linguistics
-                  </option>
-                  <option value="History">History</option>
-                  <option value="Horticultural Science">
-                    Horticultural Science
-                  </option>
-                  <option value="Industrial and Systems Engineering">
-                    Industrial and Systems Engineering
-                  </option>
-                  <option value="Information Systems">
-                    Information Systems
-                  </option>
-                  <option value="Interdisciplinary Studies">
-                    Interdisciplinary Studies
-                  </option>
-                  <option value="Interior Design">Interior Design</option>
-                  <option value="International Studies">
-                    International Studies
-                  </option>
-                  <option value="Italian">Italian</option>
-                  <option value="Japanese">Japanese</option>
-                  <option value="Jewish Studies">Jewish Studies</option>
-                  <option value="Journalism">Journalism</option>
-                  <option value="Landscape Architecture">
-                    Landscape Architecture
-                  </option>
-                  <option value="Linguistics">Linguistics</option>
-                  <option value="Management">Management</option>
-                  <option value="Marine Sciences">Marine Sciences</option>
-                  <option value="Marketing">Marketing</option>
-                  <option value="Materials Science and Engineering">
-                    Materials Science and Engineering
-                  </option>
-                  <option value="Mathematics">Mathematics</option>
-                  <option value="Mechanical Engineering">
-                    Mechanical Engineering
-                  </option>
-                  <option value="Media Production, Management, and Technology">
-                    Media Production, Management, and Technology
-                  </option>
-                  <option value="Microbiology and Cell Science">
-                    Microbiology and Cell Science
-                  </option>
-                  <option value="Music">Music</option>
-                  <option value="Natural Resource Conservation">
-                    Natural Resource Conservation
-                  </option>
-                  <option value="Nuclear Engineering">
-                    Nuclear Engineering
-                  </option>
-                  <option value="Nursing">Nursing</option>
-                  <option value="Nutritional Sciences">
-                    Nutritional Sciences
-                  </option>
-                  <option value="Pharmacy">Pharmacy</option>
-                  <option value="Philosophy">Philosophy</option>
-                  <option value="Physics">Physics</option>
-                  <option value="Plant Science">Plant Science</option>
-                  <option value="Political Science">Political Science</option>
-                  <option value="Portuguese">Portuguese</option>
-                  <option value="Psychology">Psychology</option>
-                  <option value="Public Health">Public Health</option>
-                  <option value="Public Relations">Public Relations</option>
-                  <option value="Religion">Religion</option>
-                  <option value="Russian">Russian</option>
-                  <option value="Sociology">Sociology</option>
-                  <option value="Soil and Water Sciences">
-                    Soil and Water Sciences
-                  </option>
-                  <option value="Spanish">Spanish</option>
-                  <option value="Spanish and Portuguese">
-                    Spanish and Portuguese
-                  </option>
-                  <option value="Sport Managemen">Sport Managemen</option>
-                  <option value="Statistics">Statistics</option>
-                  <option value="Sustainability and the Built Environment">
-                    Sustainability and the Built Environment
-                  </option>
-                  <option value="Sustainability Studies">
-                    Sustainability Studies
-                  </option>
-                  <option value="Theatre">Theatre</option>
-                  <option value="Theatre Performance">
-                    Theatre Performance
-                  </option>
-                  <option value="Theatre Production">Theatre Production</option>
-                  <option value="Tourism, Hospitality and Event Management">
-                    Tourism, Hospitality and Event Management
-                  </option>
-                  <option value="Wildlife Ecology and Conservation">
-                    Wildlife Ecology and Conservation
-                  </option>
-                  <option value="Women's Studies">Women's Studies</option>
-                  <option value="Zoology">Zoology</option>
-                </select>
+                  onChange={handleMajorChange}
+                  options={majorOptions}
+                />
               </div>
               {/* Password */}
               <div>
@@ -558,14 +558,17 @@ const Register = () => {
               {/* Submit Button  */}
               <button
                 type="submit"
-                disabled={password === confirmPassword ? false : true}
+                disabled={
+                  password && password === confirmPassword ? false : true
+                }
                 className={
                   new RegExp(/[a-zA-Z .'*_`~-]+/).test(first_name) &&
                   new RegExp(/[a-zA-Z .'*_`~-]+/).test(last_name) &&
                   new RegExp(/[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@ufl\.edu/).test(
                     email
                   ) &&
-                  major &&
+                  majors.length > 0 &&
+                  password &&
                   password === confirmPassword
                     ? "w-full rounded-lg bg-blue-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                     : "w-full cursor-auto rounded-lg bg-gray-500 px-5 py-2.5 text-center text-sm font-medium text-white"

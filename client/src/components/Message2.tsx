@@ -22,7 +22,7 @@ const Message: React.FC<Props> = ({
 
   return (
     <div
-      className="relative mx-auto w-11/12 border-t-4 border-gray-700 bg-gray-200 py-8 text-center text-lg font-normal text-gray-900 shadow-xl dark:bg-gray-800 dark:text-white lg:w-4/5"
+      className="relative mx-auto w-11/12 border-t-2 border-gray-500 bg-gray-200 py-8 text-center text-lg font-normal text-gray-900 shadow-xl dark:border-gray-300 dark:bg-gray-800 dark:text-white lg:w-4/5"
       onClick={(e) => {
         e.stopPropagation();
         setShowDropdown(false);

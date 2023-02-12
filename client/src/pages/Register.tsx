@@ -199,16 +199,19 @@ const Register = () => {
   const [first_name, setFirstName] = useState("");
   const [last_name, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [majors, setMajors] = useState(null);
+  const [majorsValue, setMajorsValue] = useState(null);
+  const [majors, setMajors] = useState<string[]>([]);
+
   const handleMajorChange = (value: any) => {
-    console.log("value:", value, typeof value);
-    setMajors(value);
-
-    let userMajors = majors.map((item: any) => {
-      return item["value"];
-    });
-
-    console.log(userMajors);
+    setMajorsValue(value);
+    if (value) {
+      let tempMajors = value.map((item: majorObj) => {
+        return item["value"];
+      });
+      setMajors(tempMajors);
+    } else {
+      setMajors([]);
+    }
   };
 
   const [password, setPassword] = useState("");
@@ -267,11 +270,12 @@ const Register = () => {
       first_name: first_name,
       last_name: last_name,
       email: email,
-      majors: [""],
+      majors: majors,
       password: password,
       profile_pic: profilePicture.file,
     };
 
+    console.log(registration);
     fetch("http://localhost:9000/api/user", {
       method: "POST",
       headers: {
@@ -396,14 +400,14 @@ const Register = () => {
                 </label>
                 <Select
                   primaryColor={"indigo"}
-                  value={majors}
+                  value={majorsValue}
                   isMultiple={true}
                   isSearchable={true}
                   noOptionsMessage={"No majors found"}
                   placeholder={"Select major(s)..."}
                   classNames={{
                     menuButton: ({ isDisabled }) =>
-                      `rounded-lg flex text-sm text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600  focus:outline-none bg-gray-50 dark:bg-gray-700 ${
+                      `rounded-lg flex text-sm text-gray-900 dark:text-gray-400 border border-gray-300 dark:border-gray-600  focus:outline-none bg-gray-50 dark:bg-gray-700 ${
                         isDisabled
                           ? ""
                           : "focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
@@ -413,7 +417,7 @@ const Register = () => {
                       `block p-2 cursor-pointer select-none truncate rounded text-gray-900 dark:text-white ${
                         isSelected
                           ? ``
-                          : `hover:bg-blue-200 dark:hover:bg-blue-400 hover:text-gray-900`
+                          : `hover:bg-blue-200 dark:hover:bg-blue-500 hover:text-gray-900`
                       }`,
                   }}
                   onChange={handleMajorChange}
@@ -554,14 +558,17 @@ const Register = () => {
               {/* Submit Button  */}
               <button
                 type="submit"
-                disabled={password === confirmPassword ? false : true}
+                disabled={
+                  password && password === confirmPassword ? false : true
+                }
                 className={
                   new RegExp(/[a-zA-Z .'*_`~-]+/).test(first_name) &&
                   new RegExp(/[a-zA-Z .'*_`~-]+/).test(last_name) &&
                   new RegExp(/[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@ufl\.edu/).test(
                     email
                   ) &&
-                  majors &&
+                  majors.length > 0 &&
+                  password &&
                   password === confirmPassword
                     ? "w-full rounded-lg bg-blue-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                     : "w-full cursor-auto rounded-lg bg-gray-500 px-5 py-2.5 text-center text-sm font-medium text-white"

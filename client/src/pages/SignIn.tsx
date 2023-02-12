@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 interface userLogin {
@@ -12,6 +12,28 @@ const SignIn = () => {
   const [invalidEmail, setInvalidEmail] = useState(false); // If the user's password is invalid
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loginEmail, setLoginEmail] = useState<string>("");
+
+  useEffect(() => {
+    try {
+      let loginInformation = JSON.parse(
+        sessionStorage.getItem("login-information") || ""
+      );
+      setLoginEmail(loginInformation);
+      document
+        ?.getElementById("email")
+        ?.setAttribute("value", loginInformation);
+      setEmail(loginInformation);
+    } catch {
+      return;
+    }
+  }, []);
+  useEffect(() => {
+    if (email !== "") {
+      sessionStorage.setItem("login-information", JSON.stringify(email));
+    }
+  }, [email]);
+
   let navigate = useNavigate();
 
   const submit = (e: any) => {

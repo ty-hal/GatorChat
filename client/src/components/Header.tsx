@@ -102,15 +102,15 @@ const Layout = () => {
                   </div>
                   {showDropDown && (
                     <div
-                      className="absolute right-0 z-10 -mt-2 w-32 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                      className="absolute right-0 z-10 -mt-2 w-32 origin-top-right cursor-pointer divide-y divide-gray-300 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                       role="menu"
                       id="dropdown-content"
                       onMouseLeave={(): void => toggleDropDown()}
                     >
-                      <div className="py-1" role="none">
+                      <div>
                         <Link to="/settings">
                           <span
-                            className="block px-4 py-2 text-sm text-gray-700 hover:font-semibold"
+                            className="block px-4 py-2 text-sm text-gray-700 hover:rounded-t-md hover:bg-blue-300 hover:text-black"
                             role="menuitem"
                             id="menu-item-0"
                           >
@@ -118,16 +118,16 @@ const Layout = () => {
                           </span>
                         </Link>
                         <span
-                          className="block px-4 py-2 text-sm text-gray-700 hover:font-semibold"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300 hover:text-black"
                           role="menuitem"
                           id="menu-item-1"
                         >
                           My Account
                         </span>
                       </div>
-                      <div className="py-1" role="none">
+                      <div>
                         <span
-                          className="block py-2 pl-4 text-sm text-gray-700 hover:font-semibold"
+                          className="block py-2 pl-4 text-sm text-gray-700 hover:bg-blue-300 hover:text-black"
                           role="menuitem"
                           id="menu-item-6"
                           onClick={() => setDarkMode(!darkMode)}
@@ -136,7 +136,7 @@ const Layout = () => {
                         </span>
 
                         <span
-                          className="block px-4 py-2 text-sm text-gray-700 hover:font-semibold"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:rounded-b-md hover:bg-blue-300 hover:text-black"
                           role="menuitem"
                           id="menu-item-6"
                         >

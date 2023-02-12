@@ -57,7 +57,9 @@ Mypassword@123
           console.log("Invalid password");
         }
       })
-      .then((data) => data ? console.log("User Signed In") : console.log(data));
+      .then((data) =>
+        data ? console.log("User Signed In") : console.log(data)
+      );
   };
 
   return (

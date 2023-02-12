@@ -3,16 +3,27 @@ import { useState, useEffect } from "react";
 import ProfilePicture from "../components/ProfilePicture";
 import Select from "react-tailwindcss-select";
 
-interface userRegistration {
+type userRegistration = {
   first_name: String;
   last_name: String;
   email: String;
   majors: String[];
   password: String;
   profile_pic?: String;
-}
+};
+type storeageUserRegistration = {
+  first_name: String;
+  last_name: String;
+  email: String;
+  majors: majorObj[];
+};
+type majorObj = {
+  disabled: boolean;
+  label: string;
+  value: string;
+};
 
-const majorOptions = [
+let majorOptions = [
   { value: "Accounting", label: "Accounting" },
   { value: "Advertising", label: "Advertising" },
   { value: "Aerospace Engineering", label: "Aerospace Engineering" },
@@ -189,31 +200,12 @@ const majorOptions = [
   { value: "Zoology", label: "Zoology" },
 ];
 
-type majorObj = {
-  disabled: boolean;
-  label: string;
-  value: string;
-};
-
 const Register = () => {
   const [first_name, setFirstName] = useState("");
   const [last_name, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [majorsValue, setMajorsValue] = useState(null);
+  const [majorsValue, setMajorsValue] = useState<majorObj[]>([]);
   const [majors, setMajors] = useState<string[]>([]);
-
-  const handleMajorChange = (value: any) => {
-    setMajorsValue(value);
-    if (value) {
-      let tempMajors = value.map((item: majorObj) => {
-        return item["value"];
-      });
-      setMajors(tempMajors);
-    } else {
-      setMajors([]);
-    }
-  };
-
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [selectedImage, setSelectedImage] = useState(false);
@@ -221,9 +213,71 @@ const Register = () => {
     file: "",
   });
 
+  const [registrationInfo, setRegistrationInfo] =
+    useState<storeageUserRegistration>({
+      first_name: "",
+      last_name: "",
+      email: "",
+      majors: [],
+    });
+
   const [userExists, setUserExists] = useState(false);
   const [invalidForm, setInvalidForm] = useState(false);
   const [errorOccurred, setErrorOccured] = useState(false);
+
+  useEffect(() => {
+    setRegistrationInfo({
+      ...registrationInfo,
+      majors: majorsValue,
+    });
+  }, [majors]);
+  useEffect(() => {
+    try {
+      let registrationInformation = JSON.parse(
+        sessionStorage.getItem("registration-information") || ""
+      );
+      setRegistrationInfo(registrationInformation);
+      document
+        ?.getElementById("first-name")
+        ?.setAttribute("value", registrationInformation.first_name);
+      document
+        ?.getElementById("last-name")
+        ?.setAttribute("value", registrationInformation.last_name);
+      document
+        ?.getElementById("email")
+        ?.setAttribute("value", registrationInformation.email);
+      setMajorsValue(registrationInformation.majors);
+    } catch {
+      return;
+    }
+  }, []);
+  useEffect(() => {
+    if (
+      registrationInfo.first_name !== "" ||
+      registrationInfo.last_name !== "" ||
+      registrationInfo.email !== ""
+    ) {
+      sessionStorage.setItem(
+        "registration-information",
+        JSON.stringify(registrationInfo)
+      );
+    }
+  }, [registrationInfo]);
+  useEffect(() => {
+    const elem_confirmPassword = document.getElementById("confirm-password");
+    if (elem_confirmPassword !== null) {
+      if (confirmPassword === "") {
+        elem_confirmPassword.className =
+          "block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm";
+      } else if (password !== confirmPassword) {
+        elem_confirmPassword.className =
+          "block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-red-500  focus:outline-none focus:ring-1 dark:border-gray-600 dark:bg-gray-700 dark:placeholder-gray-400  focus:border-red-600  dark:focus:border-red-600 dark:focus:ring-red-600 focus:ring-red-600 sm:text-sm";
+      } else if (password === confirmPassword) {
+        elem_confirmPassword.className =
+          "block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm";
+      }
+    }
+  }, [confirmPassword, password]);
 
   let navigate = useNavigate();
 
@@ -246,23 +300,17 @@ const Register = () => {
       setProfilePicture({ ...profilePicture, file: base64 });
     }
   };
-
-  useEffect(() => {
-    const elem_confirmPassword = document.getElementById("confirm-password");
-    if (elem_confirmPassword !== null) {
-      if (confirmPassword === "") {
-        elem_confirmPassword.className =
-          "block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm";
-      } else if (password !== confirmPassword) {
-        elem_confirmPassword.className =
-          "block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-red-500  focus:outline-none focus:ring-1 dark:border-gray-600 dark:bg-gray-700 dark:placeholder-gray-400  focus:border-red-600  dark:focus:border-red-600 dark:focus:ring-red-600 focus:ring-red-600 sm:text-sm";
-      } else if (password === confirmPassword) {
-        elem_confirmPassword.className =
-          "block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm";
-      }
+  const handleMajorChange = (value: any) => {
+    setMajorsValue(value);
+    if (value) {
+      let tempMajors = value.map((item: majorObj) => {
+        return item["value"];
+      });
+      setMajors(tempMajors);
+    } else {
+      setMajors([]);
     }
-  }, [confirmPassword, password]);
-
+  };
   const submitForm = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -343,6 +391,10 @@ const Register = () => {
                     required
                     onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
                       setFirstName((e.target as HTMLInputElement).value);
+                      setRegistrationInfo({
+                        ...registrationInfo,
+                        first_name: (e.target as HTMLInputElement).value,
+                      });
                     }}
                   />
                 </div>
@@ -364,6 +416,10 @@ const Register = () => {
                     required
                     onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
                       setLastName((e.target as HTMLInputElement).value);
+                      setRegistrationInfo({
+                        ...registrationInfo,
+                        last_name: (e.target as HTMLInputElement).value,
+                      });
                     }}
                   />
                 </div>
@@ -387,6 +443,10 @@ const Register = () => {
                   required
                   onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
                     setEmail((e.target as HTMLInputElement).value);
+                    setRegistrationInfo({
+                      ...registrationInfo,
+                      email: (e.target as HTMLInputElement).value,
+                    });
                   }}
                 />
               </div>

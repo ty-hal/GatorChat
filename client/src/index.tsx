@@ -48,6 +48,7 @@ export default function App() {
           <Header />
           <Routes>
             <Route index element={<Home />} />
+            {/* Eventually delete these samples/turn them into actual pages */}
             <Route path="sample-messages" element={<SampleMessages />} />
             <Route path="sample-threads" element={<SampleThreads />} />
             <Route path="sample-thread-1" element={<SampleThread1 />} />

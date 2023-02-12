@@ -17,19 +17,23 @@ func GetAllSections() []Section {
 	return sections
 }
 
-func GetSectionByID(section_id uint8) Section {
+func GetSectionByID(section_id uint8) (Section, error) {
 	var section Section
 
-	middleware.DB.First(&section, section_id)
+	err := middleware.DB.First(&section, section_id).Error
 
-	return section
+	if err != nil {
+		return Section{}, err
+	}
+
+	return section, nil
 }
 
-func (s *Section) GetThreads() []Thread {
+func GetSectionThreads(section_id uint8) []Thread {
 	var threads []Thread
 
 	for _, thread := range GetAllThreads() {
-		if thread.SectionID == s.SectionID {
+		if thread.SectionID == section_id {
 			threads = append(threads, thread)
 		}
 	}

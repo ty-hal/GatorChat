@@ -16,6 +16,8 @@ type storeageUserRegistration = {
   last_name: String;
   email: String;
   majors: majorObj[];
+  password: String;
+  confirm_password: String;
 };
 type majorObj = {
   disabled: boolean;
@@ -219,6 +221,8 @@ const Register = () => {
       last_name: "",
       email: "",
       majors: [],
+      password: "",
+      confirm_password: "",
     });
 
   const [userExists, setUserExists] = useState(false);
@@ -253,6 +257,12 @@ const Register = () => {
       } else {
         setMajorsValue([]);
       }
+      document
+        ?.getElementById("password")
+        ?.setAttribute("value", registrationInformation.password);
+      document
+        ?.getElementById("confirm-password")
+        ?.setAttribute("value", registrationInformation.confirm_password);
     } catch {
       return;
     }
@@ -262,7 +272,9 @@ const Register = () => {
       registrationInfo.first_name !== "" ||
       registrationInfo.last_name !== "" ||
       registrationInfo.email !== "" ||
-      registrationInfo.majors
+      registrationInfo.majors ||
+      registrationInfo.password !== "" ||
+      registrationInfo.confirm_password !== ""
     ) {
       sessionStorage.setItem(
         "registration-information",
@@ -329,7 +341,7 @@ const Register = () => {
       password: password,
       profile_pic: profilePicture.file,
     };
-    
+
     fetch("http://localhost:9000/api/user", {
       method: "POST",
       headers: {
@@ -509,6 +521,10 @@ const Register = () => {
                   required
                   onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
                     setPassword((e.target as HTMLInputElement).value);
+                    setRegistrationInfo({
+                      ...registrationInfo,
+                      password: (e.target as HTMLInputElement).value,
+                    });
                   }}
                 />
               </div>
@@ -531,6 +547,10 @@ const Register = () => {
                   required
                   onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
                     setConfirmPassword((e.target as HTMLInputElement).value);
+                    setRegistrationInfo({
+                      ...registrationInfo,
+                      confirm_password: (e.target as HTMLInputElement).value,
+                    });
                   }}
                 />
               </div>

@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 interface userLogin {
-  email: String;
-  password: String;
+  email: string;
+  password: string;
 }
 
 const SignIn = () => {
@@ -12,27 +12,29 @@ const SignIn = () => {
   const [invalidEmail, setInvalidEmail] = useState(false); // If the user's password is invalid
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loginEmail, setLoginEmail] = useState<string>("");
-
+  const [loginInfo, setLoginInfo] = useState<userLogin>({
+    email: "",
+    password: "",
+  });
   useEffect(() => {
     try {
       let loginInformation = JSON.parse(
         sessionStorage.getItem("login-information") || ""
       );
-      setLoginEmail(loginInformation);
+      setLoginInfo(loginInformation);
+      document?.getElementById("email")?.setAttribute("value", loginInfo.email);
       document
-        ?.getElementById("email")
-        ?.setAttribute("value", loginInformation);
-      setEmail(loginInformation);
+        ?.getElementById("password")
+        ?.setAttribute("value", loginInfo.password);
     } catch {
       return;
     }
   }, []);
   useEffect(() => {
-    if (email !== "") {
-      sessionStorage.setItem("login-information", JSON.stringify(email));
+    if (loginInfo.email !== "" || loginInfo.password !== "") {
+      sessionStorage.setItem("login-information", JSON.stringify(loginInfo));
     }
-  }, [email]);
+  }, [loginInfo]);
 
   let navigate = useNavigate();
 
@@ -107,7 +109,13 @@ Mypassword@123
                 placeholder="email@ufl.edu"
                 required
                 pattern="[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@ufl\.edu"
-                onChange={(event) => setEmail(event.target.value)}
+                onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                  setEmail((e.target as HTMLInputElement).value);
+                  setLoginInfo({
+                    ...loginInfo,
+                    email: (e.target as HTMLInputElement).value,
+                  });
+                }}
               ></input>
               {invalidEmail && (
                 <span className="mt-1 ml-1 flex items-center text-sm font-medium tracking-wide text-red-500">
@@ -115,7 +123,7 @@ Mypassword@123
                 </span>
               )}
             </div>
-
+            {/* Password  */}
             <div>
               <label
                 htmlFor="password"
@@ -133,8 +141,12 @@ Mypassword@123
                   pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                   title="Must be at least 8 characters long and contain a number and uppercase letter"
                   required
-                  onChange={(event) => {
-                    setPassword(event.target.value);
+                  onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                    setPassword((e.target as HTMLInputElement).value);
+                    setLoginInfo({
+                      ...loginInfo,
+                      password: (e.target as HTMLInputElement).value,
+                    });
                   }}
                 />
                 <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">

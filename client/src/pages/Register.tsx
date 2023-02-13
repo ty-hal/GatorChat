@@ -246,7 +246,13 @@ const Register = () => {
       document
         ?.getElementById("email")
         ?.setAttribute("value", registrationInformation.email);
-      setMajorsValue(registrationInformation.majors);
+      if (registrationInformation.majors) {
+        if (registrationInformation.majors.length > 0) {
+          setMajorsValue(registrationInformation.majors);
+        }
+      } else {
+        setMajorsValue([]);
+      }
     } catch {
       return;
     }
@@ -255,7 +261,8 @@ const Register = () => {
     if (
       registrationInfo.first_name !== "" ||
       registrationInfo.last_name !== "" ||
-      registrationInfo.email !== ""
+      registrationInfo.email !== "" ||
+      registrationInfo.majors
     ) {
       sessionStorage.setItem(
         "registration-information",

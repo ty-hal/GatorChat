@@ -9,12 +9,14 @@ import (
 type Thread struct {
 	ThreadID     uint8     `json:"thread_id" gorm:"primary_key"`
 	UserID       uint8     `json:"user_id,omitempty"`
+	User         string    `json:"username" gorm:"-"`
 	SectionID    uint8     `json:"section_id,omitempty"`
 	ThreadTitle  string    `json:"thread_title,omitempty"`
 	Content      string    `json:"content,omitempty"`
 	CreationDate time.Time `gorm:"column:creation_date;type:timestamp with time zone"`
 	UpdatedOn    time.Time `gorm:"column:updated_on;type:timestamp with time zone"`
 	Likes        uint8     `json:"likes,omitempty"`
+	MessageCount uint8     `json:"messageCount,omitempty"`
 }
 
 func GetAllThreads() []Thread {
@@ -47,9 +49,9 @@ func CreateThread(thread Thread) Thread {
 func GetCreator(threadID uint8) (User, error) {
 	var user User
 
-	result := middleware.DB.First(&user, threadID)
-	if result.Error != nil {
-		return user, result.Error
+	result := middleware.DB.First(&user, threadID).Error
+	if result != nil {
+		return User{}, result
 	}
 
 	return user, nil

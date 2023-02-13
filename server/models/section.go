@@ -34,6 +34,14 @@ func GetSectionThreads(section_id uint8) []Thread {
 
 	for _, thread := range GetAllThreads() {
 		if thread.SectionID == section_id {
+			creator, err := GetUserByID(thread.UserID)
+
+			if err != nil {
+				thread.User = "Anonymous"
+			} else {
+				thread.User = creator.FirstName + " " + creator.LastName
+			}
+
 			threads = append(threads, thread)
 		}
 	}

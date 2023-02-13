@@ -329,8 +329,7 @@ const Register = () => {
       password: password,
       profile_pic: profilePicture.file,
     };
-
-    console.log(registration);
+    
     fetch("http://localhost:9000/api/user", {
       method: "POST",
       headers: {

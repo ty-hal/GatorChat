@@ -6,6 +6,7 @@ import Thread from "../../components/Thread";
 type ThreadType = {
   thread_id: number,
   user_id: number,
+  username: string,
   section_id: number,
   thread_title: string,
   content: string,
@@ -86,7 +87,7 @@ const SampleThreads = () => {
             <Thread
               key={thread.thread_id}
               id={thread.thread_id}
-              username={"test"}
+              username={thread.username}
               threadTitle={thread.thread_title}
               threadContent={thread.content}
               threadDate={new Date(thread.CreationDate).toLocaleString()}

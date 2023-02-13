@@ -22,10 +22,12 @@ const SignIn = () => {
         sessionStorage.getItem("login-information") || ""
       );
       setLoginInfo(loginInformation);
-      document?.getElementById("email")?.setAttribute("value", loginInfo.email);
+      document
+        ?.getElementById("email")
+        ?.setAttribute("value", loginInformation.email);
       document
         ?.getElementById("password")
-        ?.setAttribute("value", loginInfo.password);
+        ?.setAttribute("value", loginInformation.password);
     } catch {
       return;
     }

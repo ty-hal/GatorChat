@@ -19,8 +19,8 @@ import FAQ from "./pages/FAQ";
 
 //Delete eventually
 import SampleMessages from "./pages/DeleteLater/SampleMessages";
-import SampleThreads from "./pages/DeleteLater/SampleThreads";
-import SampleThread1 from "./pages/DeleteLater/SampleThread1";
+import SampleThreadsPreview from "./pages/DeleteLater/SampleThreadsPreview";
+import SampleThread from "./pages/DeleteLater/SampleThread";
 
 // Uses local storage to detect user dark mode preference
 export const darkModeAtom = atomWithStorage("dark-mode", true);
@@ -50,8 +50,11 @@ export default function App() {
             <Route index element={<Home />} />
             {/* Eventually delete these samples/turn them into actual pages */}
             <Route path="sample-messages" element={<SampleMessages />} />
-            <Route path="sample-threads" element={<SampleThreads />} />
-            <Route path="sample-thread-1" element={<SampleThread1 />} />
+            <Route
+              path="sample-threads-preview"
+              element={<SampleThreadsPreview />}
+            />
+            <Route path="sample-thread" element={<SampleThread />} />
 
             <Route path="sign-in" element={<SignIn />} />
             <Route path="register" element={<Register />} />

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProfilePicture from "./ProfilePicture";
 type Props = {
   id: number;
@@ -23,6 +23,65 @@ const Thread: React.FC<Props> = ({
 }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [numLikes, toggleLike] = useState<number>(likesCount);
+  const [postTimeDifference, setPostTimeDifference] = useState<string>("");
+
+  // Updates postTimeDifference with how long ago the thread was created
+  useEffect(() => {
+    let postTime = new Date(threadDate);
+    let currentTime = new Date();
+    const _MS_PER_YEAR = 1000 * 60 * 60 * 24 * 365;
+    const _MS_PER_MONTH = 1000 * 60 * 60 * 24 * 30;
+    const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+    const _MS_PER_HOUR = 1000 * 60 * 60;
+    const _MS_PER_MINUTE = 1000 * 60;
+
+    // Conver to UTC date format
+    const utcPost = Date.UTC(
+      postTime.getFullYear(),
+      postTime.getMonth(),
+      postTime.getDate(),
+      postTime.getHours(),
+      postTime.getMinutes(),
+      postTime.getSeconds()
+    );
+    const utcCurrent = Date.UTC(
+      currentTime.getFullYear(),
+      currentTime.getMonth(),
+      currentTime.getDate(),
+      currentTime.getHours(),
+      currentTime.getMinutes(),
+      currentTime.getSeconds()
+    );
+    let timeDifference = Math.floor(utcCurrent - utcPost);
+    if (timeDifference / _MS_PER_MINUTE < 1) {
+      setPostTimeDifference("now");
+    } else if (timeDifference / _MS_PER_HOUR < 1) {
+      let minutesAgo = Math.floor(timeDifference / _MS_PER_MINUTE).toString();
+      setPostTimeDifference(
+        minutesAgo === "1" ? "1 minute ago" : minutesAgo + " minutes ago"
+      );
+    } else if (timeDifference / _MS_PER_DAY < 1) {
+      let hoursAgo = Math.floor(timeDifference / _MS_PER_HOUR).toString();
+      setPostTimeDifference(
+        hoursAgo === "1" ? "1 hour ago" : hoursAgo + " hours ago"
+      );
+    } else if (timeDifference / _MS_PER_MONTH < 1) {
+      let daysAgo = Math.floor(timeDifference / _MS_PER_DAY).toString();
+      setPostTimeDifference(
+        daysAgo === "1" ? "1 day ago" : daysAgo + " days ago"
+      );
+    } else if (timeDifference / _MS_PER_YEAR < 1) {
+      let monthsAgo = Math.floor(timeDifference / _MS_PER_MONTH).toString();
+      setPostTimeDifference(
+        monthsAgo === "1" ? "1 month ago" : monthsAgo + " months ago"
+      );
+    } else {
+      let yearsAgo = Math.floor(timeDifference / _MS_PER_YEAR).toString();
+      setPostTimeDifference(
+        yearsAgo === "1" ? "1 year ago" : yearsAgo + " years ago"
+      );
+    }
+  }, []);
 
   return (
     <div
@@ -44,7 +103,8 @@ const Thread: React.FC<Props> = ({
         <div className="ml-4 text-base sm:text-lg">
           <span className="font-bold">{username}</span>
           <span className="text-black dark:text-gray-300">
-            <span className="hidden sm:inline"> posted at</span> {threadDate}
+            {" posted "}
+            {postTimeDifference}
           </span>
         </div>
       </div>

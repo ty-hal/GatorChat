@@ -13,8 +13,8 @@ type Thread struct {
 	SectionID    uint8     `json:"section_id,omitempty"`
 	ThreadTitle  string    `json:"thread_title,omitempty"`
 	Content      string    `json:"content,omitempty"`
-	CreationDate time.Time `gorm:"column:creation_date;type:timestamp with time zone"`
-	UpdatedOn    time.Time `gorm:"column:updated_on;type:timestamp with time zone"`
+	CreationDate time.Time `gorm:"-"`
+	UpdatedOn    time.Time `gorm:"-"`
 	Likes        uint8     `json:"likes,omitempty"`
 	MessageCount uint8     `json:"message_count,omitempty" gorm:"-"`
 }

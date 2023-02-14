@@ -11,8 +11,8 @@ type Post struct {
 	UserID       uint8     `json:"user_id,omitempty"`
 	ThreadID     uint8     `json:"thread_id,omitempty"`
 	Content      string    `json:"content,omitempty"`
-	CreationDate time.Time `gorm:"column:creation_date;type:timestamp with time zone"`
-	UpdatedOn    time.Time `gorm:"column:updated_on;type:timestamp with time zone"`
+	CreationDate time.Time `gorm:"-"`
+	UpdatedOn    time.Time `gorm:"-"`
 	Likes        uint8     `json:"likes,omitempty"`
 }
 

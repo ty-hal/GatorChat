@@ -17,7 +17,7 @@ type User struct {
 	ProfilePic   string    `json:"profile_pic,omitempty"`
 	Dark         bool      `json:"dark,omitempty"`
 	Likes        uint8     `json:"likes,omitempty"`
-	CreationDate time.Time `gorm:"column:updated_on;type:timestamp with time zone"`
+	CreationDate time.Time `gorm:"-"`
 }
 
 func GetAllUsers() []User {

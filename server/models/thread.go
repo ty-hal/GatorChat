@@ -16,7 +16,7 @@ type Thread struct {
 	CreationDate time.Time `gorm:"column:creation_date;type:timestamp with time zone"`
 	UpdatedOn    time.Time `gorm:"column:updated_on;type:timestamp with time zone"`
 	Likes        uint8     `json:"likes,omitempty"`
-	MessageCount uint8     `json:"messageCount,omitempty" gorm:"-"`
+	MessageCount uint8     `json:"message_count,omitempty" gorm:"-"`
 }
 
 func GetAllThreads() []Thread {

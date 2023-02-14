@@ -13,7 +13,7 @@ type ThreadType = {
   CreationDate: string;
   UpdatedOn: string;
   likes: number;
-  messageCount: number;
+  message_count: number;
 };
 
 const SampleThreadsPreview = () => {
@@ -47,7 +47,7 @@ const SampleThreadsPreview = () => {
               threadContent={thread.content}
               threadDate={thread.CreationDate}
               likesCount={thread.likes ? thread.likes : 0}
-              messagesCount={thread.messageCount ? thread.messageCount : 0}
+              messagesCount={thread.message_count ? thread.message_count : 0}
             />
           );
         })}

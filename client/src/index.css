@@ -13,35 +13,3 @@ input[type="file"]::file-selector-button {
 input[type="file"]::file-selector-button:hover {
     background: rgba(128, 128, 128, 0.763);
 }
-
-/* .title
-{
-    font-family:Verdana, Geneva, Tahoma, sans-serif;
-    font-size:x-large;
-    margin:10px;
-}
-.p{
-    font-family: Arial, Helvetica, sans-serif;
-    margin:10px;
-    size:100px;
-}
-.add-form 
-{
-    margin-bottom: 40px;
-}
-.container
-{
-    width:200px;
-    height:50px;
-    background-color:darkgrey;
-    margin:10px;
-}
-.button
-{
-    width:100px;
-    height:50px;
-    background-color: navy;
-    margin:20px;
-    font-size:20px;
-    color:green;
-} */

@@ -16,7 +16,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import Settings from "./pages/Settings";
 import FAQ from "./pages/FAQ";
-
+import Contactus from "./pages/Contactus";
 //Delete eventually
 import SampleMessages from "./pages/DeleteLater/SampleMessages";
 import SampleThreads from "./pages/DeleteLater/SampleThreads";
@@ -62,6 +62,7 @@ export default function App() {
             />
             <Route path="settings" element={<Settings />} />
             <Route path="faq" element={<FAQ />} />
+            <Route path="contactus" element = {<Contactus/>}/>
             <Route path="*" element={<NoPage />} />
           </Routes>
         </div>

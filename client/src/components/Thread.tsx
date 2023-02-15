@@ -1,5 +1,6 @@
 import { useState } from "react";
 import ProfilePicture from "./ProfilePicture";
+import MessageBox from "./MessageBox";
 type Props = {
   id: number;
   username: string;
@@ -23,6 +24,7 @@ const Thread: React.FC<Props> = ({
 }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [numLikes, toggleLike] = useState<number>(likesCount);
+  const [showchat, setchatbox] = useState<boolean>(false);
 
   // Used to change opacity of text
   let opacityCutoff: string = threadContent.substring(0, 400);
@@ -113,7 +115,9 @@ const Thread: React.FC<Props> = ({
             <span className="hidden sm:inline"> likes</span>
           </div>
         </div>
+        
         {/* Messages Count */}
+
         <div
           className="flex items-center rounded-md px-1 hover:bg-gray-300 dark:hover:bg-slate-700"
           id="messages-count"
@@ -143,7 +147,7 @@ const Thread: React.FC<Props> = ({
           <div className="ml-2">
             {messagesCount}
             <span className="hidden sm:inline"> messages</span>
-          </div>
+            </div>
         </div>
         {/* Share  */}
         <div

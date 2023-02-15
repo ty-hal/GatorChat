@@ -56,7 +56,11 @@ const Layout = () => {
         <nav className="flex h-14 w-screen justify-between text-gray-700 dark:bg-gray-900 dark:text-white">
           <div className="flex w-full items-center px-5 py-6 xl:px-12">
             {/* Logo  */}
-            <span className="font-heading text-3xl font-bold">Logo</span>
+            <Link to="/">
+              <span className="cursor-pointer rounded-lg p-1 text-3xl font-bold">
+                Logo
+              </span>
+            </Link>
             <ul className="font-heading absolute right-0 flex items-center space-x-8 px-4 ">
               {/* Navigation Bar */}
               <Link to="/">

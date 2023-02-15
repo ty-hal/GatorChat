@@ -27,6 +27,7 @@ const Thread: React.FC<Props> = ({
 
   // Updates postTimeDifference with how long ago the thread was created
   useEffect(() => {
+    console.log(threadDate);
     let postTime = new Date(threadDate);
     let currentTime = new Date();
     const _MS_PER_YEAR = 1000 * 60 * 60 * 24 * 365;

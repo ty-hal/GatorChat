@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Footer from "../../components/Footer";
 import Thread from "../../components/ThreadPreview";
+import CreateThread from "../../components/CreateThread";
 
 type ThreadType = {
   thread_id: number;
@@ -37,6 +38,8 @@ const SampleThreadsPreview = () => {
   return (
     <div className="bg-white dark:bg-gray-900">
       <div className="flex flex-col items-center rounded-xl p-10">
+        <CreateThread />
+
         {threads.map((thread) => {
           return (
             <Thread

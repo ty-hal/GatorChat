@@ -1,5 +1,5 @@
 import Footer from "../../components/Footer";
-import Message from "../../components/Message";
+import Message from "../../components/OldMessageFormat";
 
 const SampleMessages = () => {
   // Would do an API call here to get messages

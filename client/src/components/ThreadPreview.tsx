@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ProfilePicture from "./ProfilePicture";
 type Props = {
   id: number;
@@ -23,10 +23,83 @@ const Thread: React.FC<Props> = ({
 }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [numLikes, toggleLike] = useState<number>(likesCount);
+  const [postTimeDifference, setPostTimeDifference] = useState<string>("");
+
+  // Updates postTimeDifference with how long ago the thread was created
+  useEffect(() => {
+    console.log(threadDate);
+    let postTime = new Date(threadDate);
+    let currentTime = new Date();
+    const _MS_PER_YEAR = 1000 * 60 * 60 * 24 * 365;
+    const _MS_PER_MONTH = 1000 * 60 * 60 * 24 * 30;
+    const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+    const _MS_PER_HOUR = 1000 * 60 * 60;
+    const _MS_PER_MINUTE = 1000 * 60;
+
+    // Conver to UTC date format
+    const utcPost = Date.UTC(
+      postTime.getFullYear(),
+      postTime.getMonth(),
+      postTime.getDate(),
+      postTime.getHours(),
+      postTime.getMinutes(),
+      postTime.getSeconds()
+    );
+    const utcCurrent = Date.UTC(
+      currentTime.getFullYear(),
+      currentTime.getMonth(),
+      currentTime.getDate(),
+      currentTime.getHours(),
+      currentTime.getMinutes(),
+      currentTime.getSeconds()
+    );
+    let timeDifference = Math.floor(utcCurrent - utcPost);
+    if (timeDifference / _MS_PER_MINUTE < 1) {
+      setPostTimeDifference("now");
+    } else if (timeDifference / _MS_PER_HOUR < 1) {
+      let minutesAgo = Math.floor(timeDifference / _MS_PER_MINUTE).toString();
+      setPostTimeDifference(
+        minutesAgo === "1" ? "1 minute ago" : minutesAgo + " minutes ago"
+      );
+    } else if (timeDifference / _MS_PER_DAY < 1) {
+      let hoursAgo = Math.floor(timeDifference / _MS_PER_HOUR).toString();
+      setPostTimeDifference(
+        hoursAgo === "1" ? "1 hour ago" : hoursAgo + " hours ago"
+      );
+    } else if (timeDifference / _MS_PER_MONTH < 1) {
+      let daysAgo = Math.floor(timeDifference / _MS_PER_DAY).toString();
+      setPostTimeDifference(
+        daysAgo === "1" ? "1 day ago" : daysAgo + " days ago"
+      );
+    } else if (timeDifference / _MS_PER_YEAR < 1) {
+      let monthsAgo = Math.floor(timeDifference / _MS_PER_MONTH).toString();
+      setPostTimeDifference(
+        monthsAgo === "1" ? "1 month ago" : monthsAgo + " months ago"
+      );
+    } else {
+      let yearsAgo = Math.floor(timeDifference / _MS_PER_YEAR).toString();
+      setPostTimeDifference(
+        yearsAgo === "1" ? "1 year ago" : yearsAgo + " years ago"
+      );
+    }
+    // setPostTimeDifference(timeDifference.toString());
+    // setPostTimeDifference(Math.floor((utc2 - utc1) / _MS_PER_DAY).toString());
+    // setPostTimeDifference(Math.floor((utc2 - utc1) / _MS_PER_HOUR).toString());
+  }, []);
+
+  // Used to change opacity of text
+  let opacityCutoff: string = threadContent.substring(0, 400);
+  if (threadContent.length > 400) {
+    opacityCutoff = opacityCutoff.substring(
+      0,
+      Math.min(opacityCutoff.length, opacityCutoff.lastIndexOf(" "))
+    );
+  }
+  let lengthOpacityCutoff: number = opacityCutoff.length;
 
   return (
     <div
-      className="relative mx-auto w-11/12 rounded-t-2xl border-b-4 border-gray-500  bg-gray-200 py-8 text-center text-lg font-normal text-gray-900 shadow-xl dark:border-gray-300 dark:bg-gray-800 dark:text-white lg:w-4/5"
+      className="relative my-2 mx-auto w-11/12 cursor-pointer rounded-2xl border-2 border-transparent bg-gray-200 py-8 text-center text-lg font-normal text-gray-900 shadow-xl hover:border-blue-600 dark:bg-gray-800 dark:text-white lg:w-4/5"
       id="container"
       onClick={(e) => {
         e.stopPropagation();
@@ -43,8 +116,9 @@ const Thread: React.FC<Props> = ({
         {/* Username and Time  */}
         <div className="ml-4 text-base sm:text-lg">
           <span className="font-bold">{username}</span>
-          <span className="text-black dark:text-gray-300">
-            <span className="hidden sm:inline"> posted at</span> {threadDate}
+          <span className="text-md text-black dark:text-gray-300">
+            {" posted "}
+            {postTimeDifference}
           </span>
         </div>
       </div>
@@ -58,15 +132,18 @@ const Thread: React.FC<Props> = ({
       {/* Thread Content  */}
       <div
         id="thread-content"
-        className="text-md relative top-7 mx-8 mb-12 text-left text-black dark:text-white"
+        className="text-md relative top-7 mx-8 mb-12 max-h-60 overflow-hidden text-left text-black dark:text-gray-300 lg:max-h-44"
       >
-        {threadContent}
+        {threadContent.substring(0, lengthOpacityCutoff)}
+        <span className="opacity-60 dark:opacity-50">
+          {threadContent.substring(lengthOpacityCutoff)}
+        </span>
       </div>
       {/* Bottom Bar */}
       <div className="absolute left-3 bottom-3 flex space-x-2 text-base sm:space-x-3 md:space-x-6 md:text-lg">
         {/* Likes */}
         <div
-          className="flex cursor-pointer items-center rounded-md px-1 hover:bg-gray-300 dark:hover:bg-slate-700"
+          className="flex items-center rounded-md px-1 hover:bg-gray-300 dark:hover:bg-slate-700"
           onClick={(e) => {
             e.stopPropagation();
             setShowDropdown(false);
@@ -102,7 +179,7 @@ const Thread: React.FC<Props> = ({
         </div>
         {/* Messages Count */}
         <div
-          className="flex cursor-pointer items-center rounded-md px-1 hover:bg-gray-300 dark:hover:bg-slate-700"
+          className="flex items-center rounded-md px-1 hover:bg-gray-300 dark:hover:bg-slate-700"
           id="messages-count"
         >
           <svg
@@ -132,42 +209,9 @@ const Thread: React.FC<Props> = ({
             <span className="hidden sm:inline"> messages</span>
           </div>
         </div>
-        {/* Reply  */}
-        <div
-          className="flex cursor-pointer items-center rounded-md px-1 hover:bg-gray-300 dark:hover:bg-slate-700"
-          onClick={(e) => {
-            e.stopPropagation();
-            setShowDropdown(false);
-            console.log(`Reply to message ${id}`);
-          }}
-        >
-          <svg
-            viewBox="0 0 16 16"
-            xmlns="http://www.w3.org/2000/svg"
-            version="1.1"
-            fill="none"
-            stroke="#000000"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="0.9"
-            className="h-8 w-8 stroke-black dark:stroke-white"
-          >
-            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-            <g
-              id="SVGRepo_tracerCarrier"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            ></g>
-            <g id="SVGRepo_iconCarrier">
-              {" "}
-              <path d="m14.25 13.25c-.5-6-5.5-7.5-8-7v-3.5l-4.5 5.25 4.5 5.25v-3.5c2.50001-0.5 6.5 0.5 8 3.5z"></path>{" "}
-            </g>
-          </svg>
-          <div className="ml-2">Reply</div>
-        </div>
         {/* Share  */}
         <div
-          className="flex cursor-pointer items-center rounded-md px-1 hover:bg-gray-300 dark:hover:bg-slate-700"
+          className="flex items-center rounded-md px-1 hover:bg-gray-300 dark:hover:bg-slate-700"
           onClick={(e) => {
             e.stopPropagation();
             setShowDropdown(false);

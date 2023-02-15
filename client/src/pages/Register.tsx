@@ -240,29 +240,38 @@ const Register = () => {
       let registrationInformation = JSON.parse(
         sessionStorage.getItem("registration-information") || ""
       );
+      console.log(registrationInformation);
       setRegistrationInfo(registrationInformation);
       document
         ?.getElementById("first-name")
         ?.setAttribute("value", registrationInformation.first_name);
+      setFirstName(registrationInformation.first_name);
       document
         ?.getElementById("last-name")
         ?.setAttribute("value", registrationInformation.last_name);
+      setLastName(registrationInformation.last_name);
+
       document
         ?.getElementById("email")
         ?.setAttribute("value", registrationInformation.email);
+      setEmail(registrationInformation.email);
       if (registrationInformation.majors) {
-        if (registrationInformation.majors.length > 0) {
-          setMajorsValue(registrationInformation.majors);
-        }
+        // if (registrationInformation.majors.length > 0) {
+        //   setMajorsValue(registrationInformation.majors);
+        // }
+        handleMajorChange(registrationInformation.majors);
       } else {
         setMajorsValue([]);
       }
       document
         ?.getElementById("password")
         ?.setAttribute("value", registrationInformation.password);
+      setPassword(registrationInformation.password);
+
       document
         ?.getElementById("confirm-password")
         ?.setAttribute("value", registrationInformation.confirm_password);
+      setConfirmPassword(registrationInformation.confirm_password);
     } catch {
       return;
     }

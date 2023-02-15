@@ -42,6 +42,8 @@ func GetSectionThreads(section_id uint8) []Thread {
 				thread.User = creator.FirstName + " " + creator.LastName
 			}
 
+			thread.MessageCount = uint8(len(GetThreadPosts(thread.ThreadID)))
+
 			threads = append(threads, thread)
 		}
 	}

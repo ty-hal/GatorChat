@@ -1,6 +1,7 @@
 import Footer from "../../components/Footer";
 import Thread from "../../components/ThreadPost";
 import Message from "../../components/MessageFormat";
+import MessageBox from "../../components/MessageBox";
 
 const SampleThread = () => {
   // Would do an API call here to get thread and messages
@@ -75,11 +76,8 @@ const SampleThread = () => {
             />
           );
         })}
-        <div className="text-white">
-          Steven put the message/chat box thing here
-        </div>
+        <MessageBox />
       </div>
-
       <Footer />
     </div>
   );

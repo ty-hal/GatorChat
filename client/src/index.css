@@ -13,3 +13,12 @@ input[type="file"]::file-selector-button {
 input[type="file"]::file-selector-button:hover {
     background: rgba(128, 128, 128, 0.763);
 }
+
+[contentEditable=true]:empty:not(:focus):before {
+    content: attr(data-text);
+    color: gray;
+}
+
+[contentEditable=true]:focus {
+    outline: 0px solid transparent;
+}

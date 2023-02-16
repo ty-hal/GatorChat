@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { RTE } from "./RTE";
+import { RichTextEditor } from "./RichTextEditor";
 
 const CreateThread = () => {
   const [openEditor, toggleOpenEditor] = useState(false);
@@ -32,7 +32,7 @@ const CreateThread = () => {
               placeholder="Enter a title..."
             />
           </div>
-          <RTE />
+          <RichTextEditor />
         </div>
       )}
     </div>

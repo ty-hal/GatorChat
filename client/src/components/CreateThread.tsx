@@ -36,13 +36,14 @@ const CreateThread = () => {
           }}
         >
           <div className="mx-auto w-11/12">
-            <div className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
+            {/* <div className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
               Title
-            </div>
+            </div> */}
             <input
               type="text"
-              className="w-full break-normal rounded-lg border border-gray-300 bg-gray-50 p-2 text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-              placeholder="Enter a title..."
+              className="w-full break-normal rounded-lg border border-gray-300 bg-gray-50 p-2 text-gray-900 focus:border-gray-600 focus:outline-none focus:outline-0 focus:ring-0 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-gray-200"
+              // placeholder="Enter a title..."
+              placeholder="Title"
               maxLength={300}
               onChange={(e) => setTitle(e.currentTarget.value)}
             />
@@ -51,24 +52,26 @@ const CreateThread = () => {
             </div>
           </div>
           <div className="mx-auto w-11/12">
-            <div className="mt-2 text-lg font-semibold text-gray-900 dark:text-white">
+            {/* <div className="mt-2 text-lg font-semibold text-gray-900 dark:text-white">
               Text
-            </div>
+            </div> */}
             <RichTextEditor setText={setText} />
           </div>
 
-          {thread!.title && thread!.text !== "<p></p>" && (
-            <div className="mx-auto w-11/12 py-2">
-              <button
-                className="rounded-lg border border-black bg-blue-600 py-1 px-2 text-white  hover:bg-blue-800 dark:border-white"
-                onClick={() => {
-                  console.log(thread);
-                }}
-              >
-                Create thread
-              </button>
-            </div>
-          )}
+          {thread!.title &&
+            thread!.text !== "" &&
+            thread!.text !== "<p></p>" && (
+              <div className="mx-auto w-11/12 py-2">
+                <button
+                  className="rounded-lg border border-black bg-blue-600 py-1 px-2 text-white  hover:bg-blue-800 dark:border-white"
+                  onClick={() => {
+                    console.log(thread);
+                  }}
+                >
+                  Create thread
+                </button>
+              </div>
+            )}
         </div>
       )}
     </div>

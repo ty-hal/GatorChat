@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import ProfilePicture from "./ProfilePicture";
+
 type Props = {
   id: number;
   username: string;

@@ -38,7 +38,7 @@ const Home = () => {
           </Link>
         );
       })}
-       <Link to="/sample-messages">
+      <Link to="/sample-messages">
         <div className="cursor-pointer font-medium text-gray-900 dark:text-white md:text-lg">
           Sample Messages
         </div>
@@ -48,11 +48,11 @@ const Home = () => {
           Sample Threads
         </div>
       </Link>*/}
-      <Link to="/sample-thread-1">
+      <Link to="/sample-thread">
         <div className="cursor-pointer font-medium text-gray-900 dark:text-white md:text-lg">
           Sample Thread (with messages)
         </div>
-      </Link> 
+      </Link>
       <Footer />
     </div>
   );

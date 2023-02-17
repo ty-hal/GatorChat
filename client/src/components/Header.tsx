@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useAtom } from "jotai";
-import { darkModeAtom } from "../index";
+import { darkModeAtom } from "../App";
 
 const Layout = () => {
   const [showDropDown, setShowDropDown] = useState<boolean>(false);

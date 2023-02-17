@@ -13,3 +13,78 @@ input[type="file"]::file-selector-button {
 input[type="file"]::file-selector-button:hover {
     background: rgba(128, 128, 128, 0.763);
 }
+
+[contentEditable=true]:empty:not(:focus):before {
+    content: attr(data-text);
+    color: gray;
+}
+
+[contentEditable=true]:focus {
+    outline: 0px solid transparent;
+}
+
+#RTE-text h1 {
+    display: block;
+    font-size: 2em;
+    /* margin-top: 0.67em; */
+    /* margin-bottom: 0.67em; */
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+  }
+#RTE-text h2 {
+    display: block;
+    font-size: 1.5em;
+    /* margin-top: 0.83em; */
+    /* margin-bottom: 0.83em; */
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+  }
+#RTE-text h3 {
+    display: block;
+    font-size: 1.17em;
+    /* margin-top: 1em; */
+    /* margin-bottom: 1em; */
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+  }
+
+#RTE-text ol{
+    display: block;
+    list-style-type: decimal;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 40px;
+  }
+
+#RTE-text ul{
+    display: block;
+    list-style-type: disc;
+    margin-top: 1em;
+    margin-bottom: 1 em;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 40px;
+  }
+
+  #RTE-text hr{
+    display: block;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    margin-left: auto;
+    margin-right: auto;
+    border-style: inset;
+    border-width: 1px;
+  }
+
+  #rte-placeholder{
+    color: red;
+  }
+
+  .test:focus {
+    border: 1px solid red;
+}

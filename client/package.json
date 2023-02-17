@@ -6,7 +6,15 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@tiptap/extension-character-count": "^2.0.0-beta.217",
+    "@tiptap/extension-dropcursor": "^2.0.0-beta.217",
     "@tiptap/extension-heading": "^2.0.0-beta.217",
+    "@tiptap/extension-image": "^2.0.0-beta.217",
+    "@tiptap/extension-link": "^2.0.0-beta.217",
+    "@tiptap/extension-placeholder": "^2.0.0-beta.217",
+    "@tiptap/extension-text-align": "^2.0.0-beta.217",
+    "@tiptap/extension-typography": "^2.0.0-beta.217",
+    "@tiptap/extension-underline": "^2.0.0-beta.217",
     "@tiptap/pm": "^2.0.0-beta.217",
     "@tiptap/react": "^2.0.0-beta.217",
     "@tiptap/starter-kit": "^2.0.0-beta.217",
@@ -35,7 +43,8 @@
   "eslintConfig": {
     "extends": [
       "react-app",
-      "react-app/jest"
+      "react-app/jest",
+      "plugin:cypress/recommended"
     ]
   },
   "browserslist": {
@@ -51,6 +60,8 @@
     ]
   },
   "devDependencies": {
+    "cypress": "^12.5.1",
+    "eslint-plugin-cypress": "^2.12.1",
     "prettier": "^2.8.3",
     "prettier-plugin-tailwindcss": "^0.2.2",
     "react-router-dom": "^6.7.0",

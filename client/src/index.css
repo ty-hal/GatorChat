@@ -88,3 +88,9 @@ input[type="file"]::file-selector-button:hover {
   .test:focus {
     border: 1px solid red;
 }
+
+
+#RTE-text code{
+  background-color:rgba(0, 0, 0, 0.201);
+  padding: 2px;
+}

@@ -11,6 +11,10 @@ import Dropcursor from "@tiptap/extension-dropcursor";
 import Link from "@tiptap/extension-link";
 import Underline from "@tiptap/extension-underline";
 
+type Props = {
+  setText: React.Dispatch<React.SetStateAction<string>>;
+};
+
 const MenuBar = ({ editor }: any) => {
   const addImage = useCallback(() => {
     const url = window.prompt("URL");
@@ -51,9 +55,9 @@ const MenuBar = ({ editor }: any) => {
   }
 
   return (
-    <div className="mx-auto mt-4 flex w-11/12 flex-wrap items-center p-2 dark:bg-gray-800">
+    <div className="mb-2 flex w-full flex-wrap items-center dark:bg-gray-800">
       {/* Undo and Redo */}
-      <div className="flex rounded-l-md border-2 border-r-0 border-black p-1">
+      <div className="flex rounded-l-md border-4 border-r-2 border-black p-1">
         {/* Undo  */}
         <button
           onClick={() => editor.chain().focus().undo().run()}
@@ -89,8 +93,8 @@ const MenuBar = ({ editor }: any) => {
           </svg>
         </button>
       </div>
-      {/* Bold, Italics, Strikethrough, Code */}
-      <div className="flex border-2 border-x border-black p-1">
+      {/* Bold, Italics, Strikethrough, Underline, Code */}
+      <div className="flex border-4 border-x-4 border-black p-1">
         {/* Bold  */}
         <button
           onClick={() => editor.chain().focus().toggleBold().run()}
@@ -131,6 +135,7 @@ const MenuBar = ({ editor }: any) => {
         <button
           onClick={() => editor.chain().focus().toggleUnderline().run()}
           className={editor.isActive("underline") ? "is-active" : ""}
+          title="Underline"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -197,7 +202,7 @@ const MenuBar = ({ editor }: any) => {
         </button>
       </div>
       {/* Formatting  */}
-      <div className="flex border-2 border-x border-black p-1">
+      <div className="flex border-4 border-x-4 border-black p-1">
         {/* Paragraph  */}
         <button
           onClick={() => editor.chain().focus().setParagraph().run()}
@@ -321,7 +326,7 @@ const MenuBar = ({ editor }: any) => {
         </button>
       </div>
       {/* Align  */}
-      <div className="flex border-2 border-x border-black p-1">
+      <div className="flex border-4 border-x-4 border-black p-1">
         {/* Left Align  */}
         <button
           onClick={() => editor.chain().focus().setTextAlign("left").run()}
@@ -396,7 +401,7 @@ const MenuBar = ({ editor }: any) => {
         </button>
       </div>
       {/* List  */}
-      <div className="flex border-2 border-x border-black p-1">
+      <div className="flex border-4 border-x-4 border-black p-1">
         {/* Bullet List  */}
         <button
           onClick={() => editor.chain().focus().toggleBulletList().run()}
@@ -433,9 +438,10 @@ const MenuBar = ({ editor }: any) => {
         </button>
       </div>
       {/* Extra  */}
-      <div className="flex rounded-r-md border-2 border-x border-black p-1">
+      <div className="flex rounded-r-md border-4 border-x-4 border-black p-1">
         {/* Horizontal Rule  */}
         <button
+          id="horizontal-rule"
           onClick={() => editor.chain().focus().setHorizontalRule().run()}
           title="Horizontal rule"
         >
@@ -485,7 +491,7 @@ const MenuBar = ({ editor }: any) => {
   );
 };
 
-export const RichTextEditor = () => {
+export const RichTextEditor: React.FC<Props> = ({ setText }) => {
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -498,7 +504,7 @@ export const RichTextEditor = () => {
         types: ["heading", "paragraph"],
       }),
       CharacterCount.configure({
-        limit: 400,
+        limit: 4000,
       }),
       Typography,
       Image.configure({
@@ -521,6 +527,10 @@ export const RichTextEditor = () => {
     content: `
 
     `,
+    onUpdate: ({ editor }) => {
+      const html = editor.getHTML();
+      setText(html);
+    },
   });
 
   return (
@@ -533,19 +543,11 @@ export const RichTextEditor = () => {
       <MenuBar editor={editor} />
       <EditorContent
         editor={editor}
-        id="test"
-        className="mx-auto w-11/12 cursor-text rounded-lg border border-gray-300 bg-gray-50 p-2 text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+        className="mx-auto w-full cursor-text rounded-lg border border-gray-300 bg-gray-50 p-2 text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
       />
-      <div className="mx-auto mt-2 w-11/12 text-right text-gray-400">
-        {editor?.storage?.characterCount.characters()}/400 characters
+      <div className="mx-auto mt-2 w-full text-right text-gray-400">
+        {editor?.storage?.characterCount.characters()}/4000 characters
       </div>
-      <button
-        onClick={() => {
-          console.log("HTML Code: ", editor?.getHTML());
-        }}
-      >
-        Create thread
-      </button>
     </div>
   );
 };

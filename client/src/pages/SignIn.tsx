@@ -96,6 +96,7 @@ Mypassword@123
             Sign into your account
           </h1>
           <form className="space-y-4" onSubmit={submit}>
+            {/* Email */}
             <div>
               <label
                 htmlFor="email"

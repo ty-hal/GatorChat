@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -16,6 +16,9 @@ type Props = {
 };
 
 const MenuBar = ({ editor }: any) => {
+  const [paragraphDropdown, setParagraphDropdown] = useState<boolean>(false);
+  const [alignDropdown, setAlignDropdown] = useState<boolean>(false);
+
   const addImage = useCallback(() => {
     const url = window.prompt("URL");
 
@@ -55,7 +58,7 @@ const MenuBar = ({ editor }: any) => {
   }
 
   return (
-    <div className="flex w-full flex-wrap rounded-t-lg border-x border-t border-gray-600 bg-slate-400 dark:bg-slate-600">
+    <div className="mt-2 flex w-full flex-wrap rounded-t-lg border-x border-t border-gray-600 bg-slate-400 dark:bg-slate-600">
       {/* Undo and Redo */}
       <div className="flex border-r border-gray-700 p-1">
         {/* Undo  */}
@@ -69,7 +72,7 @@ const MenuBar = ({ editor }: any) => {
             viewBox="0 0 24 24"
             width="28"
             height="28"
-            className="cursor-pointer rounded-md fill-black p-1 hover:bg-gray-400 dark:fill-white dark:hover:bg-gray-700"
+            className="cursor-pointer rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white dark:hover:bg-gray-700"
           >
             <path fill="none" d="M0 0h24v24H0z" />
             <path d="M5.828 7l2.536 2.536L6.95 10.95 2 6l4.95-4.95 1.414 1.414L5.828 5H13a8 8 0 1 1 0 16H4v-2h9a6 6 0 1 0 0-12H5.828z" />
@@ -86,7 +89,7 @@ const MenuBar = ({ editor }: any) => {
             viewBox="0 0 24 24"
             width="28"
             height="28"
-            className="cursor-pointer rounded-md fill-black p-1 hover:bg-gray-400 dark:fill-white dark:hover:bg-gray-700"
+            className="cursor-pointer rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white dark:hover:bg-gray-700"
           >
             <path fill="none" d="M0 0h24v24H0z" />
             <path d="M18.172 7H11a6 6 0 1 0 0 12h9v2h-9a8 8 0 1 1 0-16h7.172l-2.536-2.536L17.05 1.05 22 6l-4.95 4.95-1.414-1.414L18.172 7z" />
@@ -107,7 +110,7 @@ const MenuBar = ({ editor }: any) => {
             viewBox="0 0 24 24"
             width="28"
             height="28"
-            className="rounded-md fill-black p-1 hover:bg-gray-400  dark:fill-white dark:hover:bg-gray-700"
+            className="rounded-md fill-black p-1 hover:bg-gray-200  dark:fill-white dark:hover:bg-gray-700"
           >
             <path fill="none" d="M0 0h24v24H0z" />
             <path d="M8 11h4.5a2.5 2.5 0 1 0 0-5H8v5zm10 4.5a4.5 4.5 0 0 1-4.5 4.5H6V4h6.5a4.5 4.5 0 0 1 3.256 7.606A4.498 4.498 0 0 1 18 15.5zM8 13v5h5.5a2.5 2.5 0 1 0 0-5H8z" />
@@ -125,7 +128,7 @@ const MenuBar = ({ editor }: any) => {
             viewBox="0 0 24 24"
             width="28"
             height="28"
-            className="rounded-md fill-black p-1 hover:bg-gray-400 dark:fill-white  dark:hover:bg-gray-700"
+            className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white  dark:hover:bg-gray-700"
           >
             <path fill="none" d="M0 0h24v24H0z" />
             <path d="M15 20H7v-2h2.927l2.116-12H9V4h8v2h-2.927l-2.116 12H15z" />
@@ -142,7 +145,7 @@ const MenuBar = ({ editor }: any) => {
             viewBox="0 0 24 24"
             width="28"
             height="28"
-            className="rounded-md fill-black p-1 hover:bg-gray-400 dark:fill-white  dark:hover:bg-gray-700"
+            className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white  dark:hover:bg-gray-700"
           >
             <path fill="none" d="M0 0h24v24H0z" />
             <path d="M8 3v9a4 4 0 1 0 8 0V3h2v9a6 6 0 1 1-12 0V3h2zM4 20h16v2H4v-2z" />
@@ -160,7 +163,7 @@ const MenuBar = ({ editor }: any) => {
             viewBox="0 0 24 24"
             width="28"
             height="28"
-            className="rounded-md fill-black p-1 hover:bg-gray-400 dark:fill-white  dark:hover:bg-gray-700"
+            className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white  dark:hover:bg-gray-700"
           >
             <path fill="none" d="M0 0h24v24H0z" />
             <path d="M17.154 14c.23.516.346 1.09.346 1.72 0 1.342-.524 2.392-1.571 3.147C14.88 19.622 13.433 20 11.586 20c-1.64 0-3.263-.381-4.87-1.144V16.6c1.52.877 3.075 1.316 4.666 1.316 2.551 0 3.83-.732 3.839-2.197a2.21 2.21 0 0 0-.648-1.603l-.12-.117H3v-2h18v2h-3.846zm-4.078-3H7.629a4.086 4.086 0 0 1-.481-.522C6.716 9.92 6.5 9.246 6.5 8.452c0-1.236.466-2.287 1.397-3.153C8.83 4.433 10.271 4 12.222 4c1.471 0 2.879.328 4.222.984v2.152c-1.2-.687-2.515-1.03-3.946-1.03-2.48 0-3.719.782-3.719 2.346 0 .42.218.786.654 1.099.436.313.974.562 1.613.75.62.18 1.297.414 2.03.699z" />
@@ -178,7 +181,7 @@ const MenuBar = ({ editor }: any) => {
             viewBox="0 0 24 24"
             width="28"
             height="28"
-            className="rounded-md fill-black p-1 hover:bg-gray-400 dark:fill-white  dark:hover:bg-gray-700"
+            className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white  dark:hover:bg-gray-700"
           >
             <path fill="none" d="M0 0h24v24H0z" />
             <path d="M23 12l-7.071 7.071-1.414-1.414L20.172 12l-5.657-5.657 1.414-1.414L23 12zM3.828 12l5.657 5.657-1.414 1.414L1 12l7.071-7.071 1.414 1.414L3.828 12z" />
@@ -194,7 +197,7 @@ const MenuBar = ({ editor }: any) => {
             viewBox="0 0 24 24"
             width="28"
             height="28"
-            className="rounded-md fill-black p-1 hover:bg-gray-400 dark:fill-white  dark:hover:bg-gray-700"
+            className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white  dark:hover:bg-gray-700"
           >
             <path fill="none" d="M0 0h24v24H0z" />
             <path d="M12.651 14.065L11.605 20H9.574l1.35-7.661-7.41-7.41L4.93 3.515 20.485 19.07l-1.414 1.414-6.42-6.42zm-.878-6.535l.27-1.53h-1.8l-2-2H20v2h-5.927L13.5 9.257 11.773 7.53z" />
@@ -203,10 +206,168 @@ const MenuBar = ({ editor }: any) => {
       </div>
       {/* Formatting  */}
       <div className="flex border-x border-gray-700 p-1">
+        <div className="flex w-10 items-center lg:hidden">
+          <div className="relative inline-block text-left">
+            <div
+              className="flex cursor-pointer justify-center"
+              id="menu-button"
+              onClick={() => {
+                setParagraphDropdown(!paragraphDropdown);
+                setAlignDropdown(false);
+              }}
+              title="Text format"
+            >
+              <div className="relative">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="28"
+                  height="28"
+                  className="rounded-md fill-black  p-1 dark:fill-white"
+                >
+                  <path fill="none" d="M0 0h24v24H0z" />
+                  <path d="M12 6v15h-2v-5a6 6 0 1 1 0-12h10v2h-3v15h-2V6h-3zm-2 0a4 4 0 1 0 0 8V6z" />
+                </svg>
+              </div>
+              <div className="relative -left-2">
+                {!paragraphDropdown && (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                    className="fill-black dark:fill-white"
+                  >
+                    <path fill="none" d="M0 0h24v24H0z" />
+                    <path d="M12 15l-4.243-4.243 1.415-1.414L12 12.172l2.828-2.829 1.415 1.414z" />
+                  </svg>
+                )}
+                {paragraphDropdown && (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                    className="fill-black dark:fill-white"
+                  >
+                    <path fill="none" d="M0 0h24v24H0z" />
+                    <path d="M12 11.828l-2.828 2.829-1.415-1.414L12 9l4.243 4.243-1.415 1.414L12 11.828z" />
+                  </svg>
+                )}
+              </div>
+            </div>
+            {paragraphDropdown && (
+              <div
+                className="absolute -left-1 z-10 mt-1  flex origin-top-right cursor-pointer rounded-md border border-gray-600 bg-slate-400 p-1  ring-black ring-opacity-5 focus:outline-none dark:border-gray-900 dark:bg-slate-600"
+                role="menu"
+                id="dropdown-content"
+                onClick={() => setParagraphDropdown(!paragraphDropdown)}
+              >
+                {/* Paragraph */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="28"
+                  height="28"
+                  className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white  dark:hover:bg-gray-700"
+                  onClick={() => editor.chain().focus().setParagraph().run()}
+                >
+                  <title>Paragraph</title>
+                  <path fill="none" d="M0 0h24v24H0z" />
+                  <path d="M12 6v15h-2v-5a6 6 0 1 1 0-12h10v2h-3v15h-2V6h-3zm-2 0a4 4 0 1 0 0 8V6z" />
+                </svg>
+                {/* H1  */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="28"
+                  height="28"
+                  className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white dark:hover:bg-gray-700"
+                  onClick={() =>
+                    editor.chain().focus().toggleHeading({ level: 1 }).run()
+                  }
+                >
+                  <title>H1</title>
+                  <path fill="none" d="M0 0H24V24H0z" />
+                  <path d="M13 20h-2v-7H4v7H2V4h2v7h7V4h2v16zm8-12v12h-2v-9.796l-2 .536V8.67L19.5 8H21z" />
+                </svg>
+                {/* H2  */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="28"
+                  height="28"
+                  className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white  dark:hover:bg-gray-700"
+                  onClick={() =>
+                    editor.chain().focus().toggleHeading({ level: 2 }).run()
+                  }
+                >
+                  <title>H2</title>
+                  <path fill="none" d="M0 0H24V24H0z" />
+                  <path d="M4 4v7h7V4h2v16h-2v-7H4v7H2V4h2zm14.5 4c2.071 0 3.75 1.679 3.75 3.75 0 .857-.288 1.648-.772 2.28l-.148.18L18.034 18H22v2h-7v-1.556l4.82-5.546c.268-.307.43-.709.43-1.148 0-.966-.784-1.75-1.75-1.75-.918 0-1.671.707-1.744 1.606l-.006.144h-2C14.75 9.679 16.429 8 18.5 8z" />
+                </svg>
+                {/* H3  */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="28"
+                  height="28"
+                  className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white  dark:hover:bg-gray-700"
+                  onClick={() =>
+                    editor.chain().focus().toggleHeading({ level: 3 }).run()
+                  }
+                >
+                  <title>H3</title>
+                  <path fill="none" d="M0 0H24V24H0z" />
+                  <path d="M22 8l-.002 2-2.505 2.883c1.59.435 2.757 1.89 2.757 3.617 0 2.071-1.679 3.75-3.75 3.75-1.826 0-3.347-1.305-3.682-3.033l1.964-.382c.156.806.866 1.415 1.718 1.415.966 0 1.75-.784 1.75-1.75s-.784-1.75-1.75-1.75c-.286 0-.556.069-.794.19l-1.307-1.547L19.35 10H15V8h7zM4 4v7h7V4h2v16h-2v-7H4v7H2V4h2z" />
+                </svg>
+                {/* Clear nodes  */}
+                <svg
+                  width="28"
+                  height="28"
+                  viewBox="0 0 24 24"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlnsXlink="http://www.w3.org/1999/xlink"
+                  className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white  dark:hover:bg-gray-700"
+                  onClick={() => editor.chain().focus().clearNodes().run()}
+                >
+                  <title>Clear formatting</title>
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></g>
+                  <g id="SVGRepo_iconCarrier">
+                    <g
+                      stroke="none"
+                      stroke-width="1"
+                      fill="white"
+                      fill-rule="evenodd"
+                    >
+                      {" "}
+                      <g
+                        id="ic_fluent_clear_formatting_24_filled"
+                        fill=""
+                        fill-rule="nonzero"
+                        className="fill-black dark:fill-white"
+                      >
+                        {" "}
+                        <path d="M17.5,12 C20.5375661,12 23,14.4624339 23,17.5 C23,20.5375661 20.5375661,23 17.5,23 C14.4624339,23 12,20.5375661 12,17.5 C12,14.4624339 14.4624339,12 17.5,12 Z M3,19 L11.1741301,19.000839 C11.3444377,19.7213878 11.6346696,20.395589 12.0225923,21.0012092 L3,21 C2.44771525,21 2,20.5522847 2,20 C2,19.4871642 2.38604019,19.0644928 2.88337887,19.0067277 L3,19 Z M15.0930472,14.9662824 L15.0237993,15.0241379 L14.9659438,15.0933858 C14.8478223,15.2638954 14.8478223,15.4914871 14.9659438,15.6619968 L15.0237993,15.7312446 L16.7933527,17.5006913 L15.0263884,19.2674911 L14.968533,19.3367389 C14.8504114,19.5072486 14.8504114,19.7348403 14.968533,19.9053499 L15.0263884,19.9745978 L15.0956363,20.0324533 C15.2661459,20.1505748 15.4937377,20.1505748 15.6642473,20.0324533 L15.7334952,19.9745978 L17.5003527,18.2076913 L19.2693951,19.9768405 L19.338643,20.0346959 C19.5091526,20.1528175 19.7367444,20.1528175 19.907254,20.0346959 L19.9765019,19.9768405 L20.0343574,19.9075926 C20.1524789,19.737083 20.1524789,19.5094912 20.0343574,19.3389816 L19.9765019,19.2697337 L18.2073527,17.5006913 L19.9792686,15.7312918 L20.0371241,15.6620439 C20.1552456,15.4915343 20.1552456,15.2639425 20.0371241,15.0934329 L19.9792686,15.024185 L19.9100208,14.9663296 C19.7395111,14.848208 19.5119194,14.848208 19.3414098,14.9663296 L19.2721619,15.024185 L17.5003527,16.7936913 L15.7309061,15.0241379 L15.6616582,14.9662824 C15.5155071,14.8650354 15.3274181,14.8505715 15.1692847,14.9228908 L15.0930472,14.9662824 L15.0930472,14.9662824 Z M16.0009262,3 C16.5790869,3 17.028058,3.48583239 16.999911,4.04804907 L16.987817,4.16138954 L16.742517,5.66138954 C16.653384,6.20643427 16.1392814,6.57602377 15.5942367,6.48689078 C15.0881237,6.40412444 14.7332961,5.9549302 14.7565535,5.45478856 L14.7687354,5.33861046 L14.8241095,5 L11.432,5 L9.672,16 L10,16 C10.5128358,16 10.9355072,16.3860402 10.9932723,16.8833789 L11,17 C11,17.5128358 10.6139598,17.9355072 10.1166211,17.9932723 L10,18 L7,18 C6.44771525,18 6,17.5522847 6,17 C6,16.4871642 6.38604019,16.0644928 6.88337887,16.0067277 L7,16 L7.647,16 L9.407,5 L5.84621647,5 L5.73511131,5.66483181 C5.64407722,6.20956223 5.12868824,6.57735578 4.58395781,6.48632169 C4.0781367,6.40179003 3.72487851,5.95136054 3.74988077,5.45130308 L3.76246793,5.33516819 L4.01314447,3.83516819 C4.08698095,3.39334494 4.44361349,3.05975771 4.87894231,3.00722806 L4.99946616,3 L16.0009262,3 Z"></path>
+                      </g>
+                    </g>
+                  </g>
+                </svg>
+              </div>
+            )}
+          </div>
+        </div>
+
         {/* Paragraph  */}
         <button
           onClick={() => editor.chain().focus().setParagraph().run()}
-          className={editor.isActive("paragraph") ? "is-active" : ""}
+          className="hidden lg:block"
           title="Paragraph"
         >
           <svg
@@ -214,7 +375,7 @@ const MenuBar = ({ editor }: any) => {
             viewBox="0 0 24 24"
             width="28"
             height="28"
-            className="rounded-md fill-black p-1 hover:bg-gray-400 dark:fill-white  dark:hover:bg-gray-700"
+            className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white  dark:hover:bg-gray-700"
           >
             <path fill="none" d="M0 0h24v24H0z" />
             <path d="M12 6v15h-2v-5a6 6 0 1 1 0-12h10v2h-3v15h-2V6h-3zm-2 0a4 4 0 1 0 0 8V6z" />
@@ -225,9 +386,7 @@ const MenuBar = ({ editor }: any) => {
           onClick={() =>
             editor.chain().focus().toggleHeading({ level: 1 }).run()
           }
-          className={
-            editor.isActive("heading", { level: 1 }) ? "is-active" : ""
-          }
+          className="hidden lg:block"
           title="H1"
         >
           <svg
@@ -235,7 +394,7 @@ const MenuBar = ({ editor }: any) => {
             viewBox="0 0 24 24"
             width="28"
             height="28"
-            className="rounded-md fill-black p-1 hover:bg-gray-400 dark:fill-white  dark:hover:bg-gray-700"
+            className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white  dark:hover:bg-gray-700"
           >
             <path fill="none" d="M0 0H24V24H0z" />
             <path d="M13 20h-2v-7H4v7H2V4h2v7h7V4h2v16zm8-12v12h-2v-9.796l-2 .536V8.67L19.5 8H21z" />
@@ -246,9 +405,7 @@ const MenuBar = ({ editor }: any) => {
           onClick={() =>
             editor.chain().focus().toggleHeading({ level: 2 }).run()
           }
-          className={
-            editor.isActive("heading", { level: 2 }) ? "is-active" : ""
-          }
+          className="hidden lg:block"
           title="H2"
         >
           <svg
@@ -256,7 +413,7 @@ const MenuBar = ({ editor }: any) => {
             viewBox="0 0 24 24"
             width="28"
             height="28"
-            className="rounded-md fill-black p-1 hover:bg-gray-400 dark:fill-white  dark:hover:bg-gray-700"
+            className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white  dark:hover:bg-gray-700"
           >
             <path fill="none" d="M0 0H24V24H0z" />
             <path d="M4 4v7h7V4h2v16h-2v-7H4v7H2V4h2zm14.5 4c2.071 0 3.75 1.679 3.75 3.75 0 .857-.288 1.648-.772 2.28l-.148.18L18.034 18H22v2h-7v-1.556l4.82-5.546c.268-.307.43-.709.43-1.148 0-.966-.784-1.75-1.75-1.75-.918 0-1.671.707-1.744 1.606l-.006.144h-2C14.75 9.679 16.429 8 18.5 8z" />
@@ -267,9 +424,7 @@ const MenuBar = ({ editor }: any) => {
           onClick={() =>
             editor.chain().focus().toggleHeading({ level: 3 }).run()
           }
-          className={
-            editor.isActive("heading", { level: 3 }) ? "is-active" : ""
-          }
+          className="hidden lg:block"
           title="H3"
         >
           <svg
@@ -277,7 +432,7 @@ const MenuBar = ({ editor }: any) => {
             viewBox="0 0 24 24"
             width="28"
             height="28"
-            className="rounded-md fill-black p-1 hover:bg-gray-400 dark:fill-white  dark:hover:bg-gray-700"
+            className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white  dark:hover:bg-gray-700"
           >
             <path fill="none" d="M0 0H24V24H0z" />
             <path d="M22 8l-.002 2-2.505 2.883c1.59.435 2.757 1.89 2.757 3.617 0 2.071-1.679 3.75-3.75 3.75-1.826 0-3.347-1.305-3.682-3.033l1.964-.382c.156.806.866 1.415 1.718 1.415.966 0 1.75-.784 1.75-1.75s-.784-1.75-1.75-1.75c-.286 0-.556.069-.794.19l-1.307-1.547L19.35 10H15V8h7zM4 4v7h7V4h2v16h-2v-7H4v7H2V4h2z" />
@@ -286,6 +441,7 @@ const MenuBar = ({ editor }: any) => {
         {/* Clear nodes  */}
         <button
           onClick={() => editor.chain().focus().clearNodes().run()}
+          className="hidden lg:block"
           title="Clear formatting"
         >
           <svg
@@ -295,7 +451,7 @@ const MenuBar = ({ editor }: any) => {
             version="1.1"
             xmlns="http://www.w3.org/2000/svg"
             xmlnsXlink="http://www.w3.org/1999/xlink"
-            className="rounded-md fill-black p-1 hover:bg-gray-400 dark:fill-white  dark:hover:bg-gray-700"
+            className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white  dark:hover:bg-gray-700"
           >
             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
             <g
@@ -327,10 +483,134 @@ const MenuBar = ({ editor }: any) => {
       </div>
       {/* Align  */}
       <div className="flex border-x border-gray-700 p-1">
+        {/* Dropdown Menu */}
+        <div className="flex w-10 items-center lg:hidden">
+          <div className="relative inline-block text-left">
+            <div
+              className="flex cursor-pointer justify-center"
+              id="menu-button"
+              onClick={() => {
+                setAlignDropdown(!alignDropdown);
+                setParagraphDropdown(false);
+              }}
+              title="Alignment"
+            >
+              <div className="relative">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="28"
+                  height="28"
+                  className="rounded-md fill-black  p-1 dark:fill-white"
+                >
+                  <path fill="none" d="M0 0h24v24H0z" />
+                  <path d="M3 4h18v2H3V4zm0 15h14v2H3v-2zm0-5h18v2H3v-2zm0-5h14v2H3V9z" />
+                </svg>
+              </div>
+              <div className="relative -left-2">
+                {!alignDropdown && (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                    className="fill-black dark:fill-white"
+                  >
+                    <path fill="none" d="M0 0h24v24H0z" />
+                    <path d="M12 15l-4.243-4.243 1.415-1.414L12 12.172l2.828-2.829 1.415 1.414z" />
+                  </svg>
+                )}
+                {alignDropdown && (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                    className="fill-black dark:fill-white"
+                  >
+                    <path fill="none" d="M0 0h24v24H0z" />
+                    <path d="M12 11.828l-2.828 2.829-1.415-1.414L12 9l4.243 4.243-1.415 1.414L12 11.828z" />
+                  </svg>
+                )}
+              </div>
+            </div>
+            {alignDropdown && (
+              <div
+                className="absolute -left-1 z-10 mt-1 flex origin-top-right cursor-pointer rounded-md border border-gray-600 bg-slate-400  p-1 ring-black ring-opacity-5 focus:outline-none  dark:border-gray-900 dark:bg-slate-600"
+                role="menu"
+                id="dropdown-content"
+                onClick={() => setAlignDropdown(!alignDropdown)}
+              >
+                {/* Left Align  */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="28"
+                  height="28"
+                  className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white  dark:hover:bg-gray-700"
+                  onClick={() =>
+                    editor.chain().focus().setTextAlign("left").run()
+                  }
+                >
+                  <title>Align left</title>
+                  <path fill="none" d="M0 0h24v24H0z" />
+                  <path d="M3 4h18v2H3V4zm0 15h14v2H3v-2zm0-5h18v2H3v-2zm0-5h14v2H3V9z" />
+                </svg>
+                {/* Center Align  */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="28"
+                  height="28"
+                  className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white  dark:hover:bg-gray-700"
+                  onClick={() =>
+                    editor.chain().focus().setTextAlign("center").run()
+                  }
+                >
+                  <title>Align center</title>
+
+                  <path fill="none" d="M0 0h24v24H0z" />
+                  <path d="M3 4h18v2H3V4zm2 15h14v2H5v-2zm-2-5h18v2H3v-2zm2-5h14v2H5V9z" />
+                </svg>
+                {/* Right Align  */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="28"
+                  height="28"
+                  className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white  dark:hover:bg-gray-700"
+                  onClick={() =>
+                    editor.chain().focus().setTextAlign("right").run()
+                  }
+                >
+                  <title>Align right</title>
+
+                  <path fill="none" d="M0 0h24v24H0z" />
+                  <path d="M3 4h18v2H3V4zm4 15h14v2H7v-2zm-4-5h18v2H3v-2zm4-5h14v2H7V9z" />
+                </svg>
+                {/* Justify Content  */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="28"
+                  height="28"
+                  className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white  dark:hover:bg-gray-700"
+                  onClick={() =>
+                    editor.chain().focus().setTextAlign("justify").run()
+                  }
+                >
+                  <title>Justify</title>
+                  <path fill="none" d="M0 0h24v24H0z" />
+                  <path d="M3 4h18v2H3V4zm0 15h18v2H3v-2zm0-5h18v2H3v-2zm0-5h18v2H3V9z" />
+                </svg>
+              </div>
+            )}
+          </div>
+        </div>
         {/* Left Align  */}
         <button
           onClick={() => editor.chain().focus().setTextAlign("left").run()}
-          className={editor.isActive({ textAlign: "left" }) ? "is-active" : ""}
+          className="hidden lg:block"
           title="Align left"
         >
           <svg
@@ -338,7 +618,7 @@ const MenuBar = ({ editor }: any) => {
             viewBox="0 0 24 24"
             width="28"
             height="28"
-            className="rounded-md fill-black p-1 hover:bg-gray-400 dark:fill-white  dark:hover:bg-gray-700"
+            className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white  dark:hover:bg-gray-700"
           >
             <path fill="none" d="M0 0h24v24H0z" />
             <path d="M3 4h18v2H3V4zm0 15h14v2H3v-2zm0-5h18v2H3v-2zm0-5h14v2H3V9z" />
@@ -347,9 +627,7 @@ const MenuBar = ({ editor }: any) => {
         {/* Center Align  */}
         <button
           onClick={() => editor.chain().focus().setTextAlign("center").run()}
-          className={
-            editor.isActive({ textAlign: "center" }) ? "is-active" : ""
-          }
+          className="hidden lg:block"
           title="Align center"
         >
           <svg
@@ -357,7 +635,7 @@ const MenuBar = ({ editor }: any) => {
             viewBox="0 0 24 24"
             width="28"
             height="28"
-            className="rounded-md fill-black p-1 hover:bg-gray-400 dark:fill-white  dark:hover:bg-gray-700"
+            className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white  dark:hover:bg-gray-700"
           >
             <path fill="none" d="M0 0h24v24H0z" />
             <path d="M3 4h18v2H3V4zm2 15h14v2H5v-2zm-2-5h18v2H3v-2zm2-5h14v2H5V9z" />
@@ -366,7 +644,7 @@ const MenuBar = ({ editor }: any) => {
         {/* Right Align  */}
         <button
           onClick={() => editor.chain().focus().setTextAlign("right").run()}
-          className={editor.isActive({ textAlign: "right" }) ? "is-active" : ""}
+          className="hidden lg:block"
           title="Align right"
         >
           <svg
@@ -374,7 +652,7 @@ const MenuBar = ({ editor }: any) => {
             viewBox="0 0 24 24"
             width="28"
             height="28"
-            className="rounded-md fill-black p-1 hover:bg-gray-400 dark:fill-white  dark:hover:bg-gray-700"
+            className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white  dark:hover:bg-gray-700"
           >
             <path fill="none" d="M0 0h24v24H0z" />
             <path d="M3 4h18v2H3V4zm4 15h14v2H7v-2zm-4-5h18v2H3v-2zm4-5h14v2H7V9z" />
@@ -383,9 +661,7 @@ const MenuBar = ({ editor }: any) => {
         {/* Justify Content  */}
         <button
           onClick={() => editor.chain().focus().setTextAlign("justify").run()}
-          className={
-            editor.isActive({ textAlign: "justify" }) ? "is-active" : ""
-          }
+          className="hidden lg:block"
           title="Justify"
         >
           <svg
@@ -393,7 +669,7 @@ const MenuBar = ({ editor }: any) => {
             viewBox="0 0 24 24"
             width="28"
             height="28"
-            className="rounded-md fill-black p-1 hover:bg-gray-400 dark:fill-white  dark:hover:bg-gray-700"
+            className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white  dark:hover:bg-gray-700"
           >
             <path fill="none" d="M0 0h24v24H0z" />
             <path d="M3 4h18v2H3V4zm0 15h18v2H3v-2zm0-5h18v2H3v-2zm0-5h18v2H3V9z" />
@@ -413,7 +689,7 @@ const MenuBar = ({ editor }: any) => {
             viewBox="0 0 24 24"
             width="28"
             height="28"
-            className="rounded-md fill-black p-1 hover:bg-gray-400 dark:fill-white  dark:hover:bg-gray-700"
+            className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white  dark:hover:bg-gray-700"
           >
             <path fill="none" d="M0 0h24v24H0z" />
             <path d="M8 4h13v2H8V4zM4.5 6.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 7a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 6.9a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zM8 11h13v2H8v-2zm0 7h13v2H8v-2z" />
@@ -430,7 +706,7 @@ const MenuBar = ({ editor }: any) => {
             viewBox="0 0 24 24"
             width="28"
             height="28"
-            className="rounded-md fill-black p-1 hover:bg-gray-400 dark:fill-white  dark:hover:bg-gray-700"
+            className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white  dark:hover:bg-gray-700"
           >
             <path fill="none" d="M0 0h24v24H0z" />
             <path d="M8 4h13v2H8V4zM5 3v3h1v1H3V6h1V4H3V3h2zM3 14v-2.5h2V11H3v-1h3v2.5H4v.5h2v1H3zm2 5.5H3v-1h2V18H3v-1h3v4H3v-1h2v-.5zM8 11h13v2H8v-2zm0 7h13v2H8v-2z" />
@@ -450,7 +726,7 @@ const MenuBar = ({ editor }: any) => {
             viewBox="0 0 24 24"
             width="28"
             height="28"
-            className="rounded-md fill-black p-1 hover:bg-gray-400 dark:fill-white  dark:hover:bg-gray-700"
+            className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white  dark:hover:bg-gray-700"
           >
             <path fill="none" d="M0 0h24v24H0z" />
             <path d="M2 11h2v2H2v-2zm4 0h12v2H6v-2zm14 0h2v2h-2v-2z" />
@@ -463,7 +739,7 @@ const MenuBar = ({ editor }: any) => {
             viewBox="0 0 24 24"
             width="28"
             height="28"
-            className="rounded-md fill-black p-1 hover:bg-gray-400 dark:fill-white  dark:hover:bg-gray-700"
+            className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white  dark:hover:bg-gray-700"
           >
             <path fill="none" d="M0 0h24v24H0z" />
             <path d="M18.364 15.536L16.95 14.12l1.414-1.414a5 5 0 1 0-7.071-7.071L9.879 7.05 8.464 5.636 9.88 4.222a7 7 0 0 1 9.9 9.9l-1.415 1.414zm-2.828 2.828l-1.415 1.414a7 7 0 0 1-9.9-9.9l1.415-1.414L7.05 9.88l-1.414 1.414a5 5 0 1 0 7.071 7.071l1.414-1.414 1.415 1.414zm-.708-10.607l1.415 1.415-7.071 7.07-1.415-1.414 7.071-7.07z" />
@@ -480,7 +756,7 @@ const MenuBar = ({ editor }: any) => {
             viewBox="0 0 24 24"
             width="28"
             height="28"
-            className="rounded-md fill-black p-1 hover:bg-gray-400 dark:fill-white  dark:hover:bg-gray-700"
+            className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white  dark:hover:bg-gray-700"
           >
             <path fill="none" d="M0 0h24v24H0z" />
             <path d="M4.828 21l-.02.02-.021-.02H2.992A.993.993 0 0 1 2 20.007V3.993A1 1 0 0 1 2.992 3h18.016c.548 0 .992.445.992.993v16.014a1 1 0 0 1-.992.993H4.828zM20 15V5H4v14L14 9l6 6zm0 2.828l-6-6L6.828 19H20v-1.172zM8 11a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" />
@@ -544,11 +820,10 @@ export const RichTextEditor: React.FC<Props> = ({ setText }) => {
       <EditorContent
         editor={editor}
         id="editor-content"
-        className="mx-auto w-full cursor-text rounded-b-lg border border-gray-300  bg-gray-50 p-2  text-gray-900 dark:border-gray-600
-        dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 focus:dark:border-blue-600"
-        // focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 dark:focus:border-blue-500 dark:focus:ring-blue-500
+        className="mx-auto w-full cursor-text rounded-b-lg border border-gray-600 bg-gray-50 p-2  text-gray-900 dark:border-gray-600
+        dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 focus:dark:border-blue-600 "
       />
-      <div className="mx-auto mt-2 w-full text-right text-gray-400">
+      <div className="mx-auto mt-1 w-full text-right text-gray-400">
         {editor?.storage?.characterCount.characters()}/4000 characters
       </div>
     </div>

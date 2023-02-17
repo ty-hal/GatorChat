@@ -23,6 +23,7 @@ const Contactus = () => {
           placeholder = "enter email here"></input>
         </div>
         </div>
+        {/* insert first name here*/}
         
       </div>
     </div>

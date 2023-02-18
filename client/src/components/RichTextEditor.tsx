@@ -12,7 +12,7 @@ import Link from "@tiptap/extension-link";
 import Underline from "@tiptap/extension-underline";
 
 type Props = {
-  setText: React.Dispatch<React.SetStateAction<string>>;
+  setText?: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const MenuBar = ({ editor }: any) => {
@@ -805,7 +805,9 @@ export const RichTextEditor: React.FC<Props> = ({ setText }) => {
     `,
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
-      setText(html);
+      if (setText) {
+        setText(html);
+      }
     },
   });
 

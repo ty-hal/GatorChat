@@ -194,6 +194,7 @@ Mypassword@123
                 </span>
               )}
             </div>
+            {/* Remember Me  */}
             <div className="flex items-center justify-between">
               <div className="flex items-start">
                 <div className="flex h-5 items-center">
@@ -221,8 +222,10 @@ Mypassword@123
                 <span> Forgot password?</span>
               </Link>
             </div>
+            {/* Submit */}
             <button
               type="submit"
+              id="submit"
               className="dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 w-full rounded-lg bg-blue-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300"
             >
               Sign in

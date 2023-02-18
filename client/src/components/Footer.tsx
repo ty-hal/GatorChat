@@ -37,9 +37,14 @@ const Footer = () => {
             </div>
 
             <div className="col-span-2 sm:col-span-1">
-              <p className="cursor-pointer font-medium text-gray-900 dark:text-white md:text-lg">
-                Contact Us
-              </p>
+              <Link to ="/contactus">
+                <span
+                className ="cursor-pointer font-medium text-gray-900 dark:text-white md:text-lg"
+                role = "menuitem"
+                id="menu-item-0">
+                  Contact Us
+                </span>
+              </Link>
             </div>
 
             <div className="col-span-2 sm:col-span-1">

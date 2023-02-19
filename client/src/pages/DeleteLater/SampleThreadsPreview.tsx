@@ -19,6 +19,7 @@ type ThreadType = {
 
 const SampleThreadsPreview = () => {
   const [threads, setThreads] = useState<ThreadType[]>([]);
+  const [loaded, setLoaded] = useState(false);
   const location = useLocation();
   const { section_id } = location.state;
   useEffect(() => {
@@ -32,13 +33,14 @@ const SampleThreadsPreview = () => {
       .then((data) => {
         setThreads(data);
         console.log(data);
-      });
+      })
+      .then(() => setLoaded(true));
   }, [section_id]);
 
   return (
     <div className="bg-white dark:bg-gray-900">
       <div className="flex flex-col items-center rounded-xl p-10">
-        <CreateThread />
+        {loaded && <CreateThread />}
 
         {threads.map((thread) => {
           return (

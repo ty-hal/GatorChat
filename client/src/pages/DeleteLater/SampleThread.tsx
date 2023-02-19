@@ -52,7 +52,7 @@ const SampleThread = () => {
   ];
 
   return (
-    <div className="bg-white dark:bg-gray-900">
+    <div className="bg-white dark:bg-gray-900 ">
       <div className="flex flex-col items-center px-4 pt-4">
         <Thread
           key={thread.id}

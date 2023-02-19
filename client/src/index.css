@@ -94,3 +94,9 @@ input[type="file"]::file-selector-button:hover {
   background-color:rgba(0, 0, 0, 0.201);
   padding: 2px;
 }
+
+#RTE-text blockquote{
+  margin-left: 40px;
+  padding-left: 18px;
+  border-left: 3px rgb(183, 183, 183) solid;
+}

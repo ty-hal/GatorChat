@@ -10,12 +10,15 @@ import Image from "@tiptap/extension-image";
 import Dropcursor from "@tiptap/extension-dropcursor";
 import Link from "@tiptap/extension-link";
 import Underline from "@tiptap/extension-underline";
+import Youtube from "@tiptap/extension-youtube";
+import Blockquote from "@tiptap/extension-blockquote";
 
 type Props = {
   setText?: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const MenuBar = ({ editor }: any) => {
+  const [textDropdown, setTextDropdown] = useState<boolean>(false);
   const [paragraphDropdown, setParagraphDropdown] = useState<boolean>(false);
   const [alignDropdown, setAlignDropdown] = useState<boolean>(false);
 
@@ -26,7 +29,6 @@ const MenuBar = ({ editor }: any) => {
       editor.chain().focus().setImage({ src: url }).run();
     }
   }, [editor]);
-
   const setLink = useCallback(() => {
     const previousUrl = editor.getAttributes("link").href;
     let url = window.prompt("URL", previousUrl);
@@ -52,7 +54,21 @@ const MenuBar = ({ editor }: any) => {
 
     console.log(editor.getAttributes("link").href);
   }, [editor]);
+  const addYoutubeVideo = () => {
+    const url = prompt("Enter YouTube URL");
 
+    if (url) {
+      console.log(window.innerWidth);
+
+      editor.commands.setYoutubeVideo({
+        src: url,
+        width:
+          window.innerWidth > 1100 ? 640 : window.innerWidth > 650 ? 320 : 160,
+        height:
+          window.innerWidth > 1100 ? 480 : window.innerWidth > 650 ? 240 : 120,
+      });
+    }
+  };
   if (!editor) {
     return null;
   }
@@ -96,13 +112,199 @@ const MenuBar = ({ editor }: any) => {
           </svg>
         </button>
       </div>
-      {/* Bold, Italics, Strikethrough, Underline, Code */}
+      {/* Text Styling */}
       <div className="flex border-x border-gray-700 p-1">
+        {/* Dropdown */}
+        <div className="flex w-10 items-center lg:hidden">
+          <div className="relative inline-block text-left">
+            <div
+              className="flex cursor-pointer justify-center"
+              id="menu-button"
+              onClick={() => {
+                setTextDropdown(!textDropdown);
+                setAlignDropdown(false);
+                setParagraphDropdown(false);
+              }}
+              title="Text style"
+            >
+              <div className="relative">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="28"
+                  height="28"
+                  className="rounded-md fill-black  p-1 dark:fill-white"
+                >
+                  <path fill="none" d="M0 0h24v24H0z" />
+                  <path d="M8 11h4.5a2.5 2.5 0 1 0 0-5H8v5zm10 4.5a4.5 4.5 0 0 1-4.5 4.5H6V4h6.5a4.5 4.5 0 0 1 3.256 7.606A4.498 4.498 0 0 1 18 15.5zM8 13v5h5.5a2.5 2.5 0 1 0 0-5H8z" />
+                </svg>
+              </div>
+              <div className="relative -left-2">
+                {!textDropdown && (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                    className="fill-black dark:fill-white"
+                  >
+                    <path fill="none" d="M0 0h24v24H0z" />
+                    <path d="M12 15l-4.243-4.243 1.415-1.414L12 12.172l2.828-2.829 1.415 1.414z" />
+                  </svg>
+                )}
+                {textDropdown && (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                    className="fill-black dark:fill-white"
+                  >
+                    <path fill="none" d="M0 0h24v24H0z" />
+                    <path d="M12 11.828l-2.828 2.829-1.415-1.414L12 9l4.243 4.243-1.415 1.414L12 11.828z" />
+                  </svg>
+                )}
+              </div>
+            </div>
+            {textDropdown && (
+              <div
+                className="absolute -left-1 z-10 mt-1  flex origin-top-right cursor-pointer rounded-md border border-gray-600 bg-slate-400 p-1  ring-black ring-opacity-5 focus:outline-none dark:border-gray-900 dark:bg-slate-600"
+                role="menu"
+                id="dropdown-content"
+                onClick={() => setTextDropdown(!textDropdown)}
+              >
+                {/* Bold  */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="28"
+                  height="28"
+                  className="rounded-md fill-black p-1 hover:bg-gray-200  dark:fill-white dark:hover:bg-gray-700"
+                  onClick={() => editor.chain().focus().toggleBold().run()}
+                >
+                  <title>Bold</title>
+
+                  <path fill="none" d="M0 0h24v24H0z" />
+                  <path d="M8 11h4.5a2.5 2.5 0 1 0 0-5H8v5zm10 4.5a4.5 4.5 0 0 1-4.5 4.5H6V4h6.5a4.5 4.5 0 0 1 3.256 7.606A4.498 4.498 0 0 1 18 15.5zM8 13v5h5.5a2.5 2.5 0 1 0 0-5H8z" />
+                </svg>
+
+                {/* Italic  */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="28"
+                  height="28"
+                  className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white  dark:hover:bg-gray-700"
+                  onClick={() => editor.chain().focus().toggleItalic().run()}
+                >
+                  <title>Italic</title>
+                  <path fill="none" d="M0 0h24v24H0z" />
+                  <path d="M15 20H7v-2h2.927l2.116-12H9V4h8v2h-2.927l-2.116 12H15z" />
+                </svg>
+                {/* Underline */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="28"
+                  height="28"
+                  className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white  dark:hover:bg-gray-700"
+                  onClick={() => editor.chain().focus().toggleUnderline().run()}
+                >
+                  <title>Underline</title>
+                  <path fill="none" d="M0 0h24v24H0z" />
+                  <path d="M8 3v9a4 4 0 1 0 8 0V3h2v9a6 6 0 1 1-12 0V3h2zM4 20h16v2H4v-2z" />
+                </svg>
+                {/* Strikethrough  */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="28"
+                  height="28"
+                  className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white  dark:hover:bg-gray-700"
+                  onClick={() => editor.chain().focus().toggleStrike().run()}
+                >
+                  <title>Strikethrough</title>
+                  <path fill="none" d="M0 0h24v24H0z" />
+                  <path d="M17.154 14c.23.516.346 1.09.346 1.72 0 1.342-.524 2.392-1.571 3.147C14.88 19.622 13.433 20 11.586 20c-1.64 0-3.263-.381-4.87-1.144V16.6c1.52.877 3.075 1.316 4.666 1.316 2.551 0 3.83-.732 3.839-2.197a2.21 2.21 0 0 0-.648-1.603l-.12-.117H3v-2h18v2h-3.846zm-4.078-3H7.629a4.086 4.086 0 0 1-.481-.522C6.716 9.92 6.5 9.246 6.5 8.452c0-1.236.466-2.287 1.397-3.153C8.83 4.433 10.271 4 12.222 4c1.471 0 2.879.328 4.222.984v2.152c-1.2-.687-2.515-1.03-3.946-1.03-2.48 0-3.719.782-3.719 2.346 0 .42.218.786.654 1.099.436.313.974.562 1.613.75.62.18 1.297.414 2.03.699z" />
+                </svg>
+                {/* Code */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="28"
+                  height="28"
+                  className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white  dark:hover:bg-gray-700"
+                  onClick={() => editor.chain().focus().toggleCode().run()}
+                >
+                  <title>Code</title>
+                  <path fill="none" d="M0 0h24v24H0z" />
+                  <path d="M23 12l-7.071 7.071-1.414-1.414L20.172 12l-5.657-5.657 1.414-1.414L23 12zM3.828 12l5.657 5.657-1.414 1.414L1 12l7.071-7.071 1.414 1.414L3.828 12z" />
+                </svg>
+                {/* Blockquote */}
+
+                <svg
+                  fill="#000000"
+                  viewBox="0 0 36 36"
+                  width="28"
+                  height="28"
+                  className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white  dark:hover:bg-gray-700"
+                  version="1.1"
+                  preserveAspectRatio="xMidYMid meet"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlnsXlink="http://www.w3.org/1999/xlink"
+                  onClick={() =>
+                    editor.chain().focus().toggleBlockquote().run()
+                  }
+                >
+                  <title>Blockquote</title>
+                  <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  ></g>
+                  <g id="SVGRepo_iconCarrier">
+                    {" "}
+                    <path
+                      d="M11.86,16.55a4.31,4.31,0,0,0-2.11.56,14.44,14.44,0,0,1,4.36-6,1.1,1.1,0,0,0-1.4-1.7c-4,3.25-5.78,7.75-5.78,10.54A5.08,5.08,0,0,0,10,24.58a4.4,4.4,0,0,0,1.88.44,4.24,4.24,0,1,0,0-8.47Z"
+                      className="clr-i-outline clr-i-outline-path-1"
+                    ></path>
+                    <path
+                      d="M23,16.55a4.29,4.29,0,0,0-2.11.56,14.5,14.5,0,0,1,4.35-6,1.1,1.1,0,1,0-1.39-1.7c-4,3.25-5.78,7.75-5.78,10.54a5.08,5.08,0,0,0,3,4.61A4.37,4.37,0,0,0,23,25a4.24,4.24,0,1,0,0-8.47Z"
+                      className="clr-i-outline clr-i-outline-path-2"
+                    ></path>{" "}
+                    <rect
+                      x="0"
+                      y="0"
+                      width="36"
+                      height="36"
+                      fill-opacity="0"
+                    ></rect>{" "}
+                  </g>
+                </svg>
+                {/* Clear marks */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="28"
+                  height="28"
+                  className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white  dark:hover:bg-gray-700"
+                  onClick={() => editor.chain().focus().unsetAllMarks().run()}
+                >
+                  <title>Clear marks</title>
+                  <path fill="none" d="M0 0h24v24H0z" />
+                  <path d="M12.651 14.065L11.605 20H9.574l1.35-7.661-7.41-7.41L4.93 3.515 20.485 19.07l-1.414 1.414-6.42-6.42zm-.878-6.535l.27-1.53h-1.8l-2-2H20v2h-5.927L13.5 9.257 11.773 7.53z" />
+                </svg>
+              </div>
+            )}
+          </div>
+        </div>
+
         {/* Bold  */}
         <button
           onClick={() => editor.chain().focus().toggleBold().run()}
           disabled={!editor.can().chain().focus().toggleBold().run()}
-          className={editor.isActive("bold") ? "is-active" : ""}
+          className="hidden lg:block"
           title="Bold"
         >
           <svg
@@ -120,7 +322,7 @@ const MenuBar = ({ editor }: any) => {
         <button
           onClick={() => editor.chain().focus().toggleItalic().run()}
           disabled={!editor.can().chain().focus().toggleItalic().run()}
-          className={editor.isActive("italic") ? "is-active" : ""}
+          className="hidden lg:block"
           title="Italic"
         >
           <svg
@@ -137,7 +339,7 @@ const MenuBar = ({ editor }: any) => {
         {/* Underline */}
         <button
           onClick={() => editor.chain().focus().toggleUnderline().run()}
-          className={editor.isActive("underline") ? "is-active" : ""}
+          className="hidden lg:block"
           title="Underline"
         >
           <svg
@@ -155,7 +357,7 @@ const MenuBar = ({ editor }: any) => {
         <button
           onClick={() => editor.chain().focus().toggleStrike().run()}
           disabled={!editor.can().chain().focus().toggleStrike().run()}
-          className={editor.isActive("strike") ? "is-active" : ""}
+          className="hidden lg:block"
           title="Strikethrough"
         >
           <svg
@@ -173,7 +375,7 @@ const MenuBar = ({ editor }: any) => {
         <button
           onClick={() => editor.chain().focus().toggleCode().run()}
           disabled={!editor.can().chain().focus().toggleCode().run()}
-          className={editor.isActive("code") ? "is-active" : ""}
+          className="hidden lg:block"
           title="Code"
         >
           <svg
@@ -187,10 +389,48 @@ const MenuBar = ({ editor }: any) => {
             <path d="M23 12l-7.071 7.071-1.414-1.414L20.172 12l-5.657-5.657 1.414-1.414L23 12zM3.828 12l5.657 5.657-1.414 1.414L1 12l7.071-7.071 1.414 1.414L3.828 12z" />
           </svg>
         </button>
+        {/* Blockquote */}
+        <button
+          onClick={() => editor.chain().focus().toggleBlockquote().run()}
+          className="hidden lg:block"
+          title="Blockquote"
+        >
+          <svg
+            fill="#000000"
+            viewBox="0 0 36 36"
+            width="28"
+            height="28"
+            className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white  dark:hover:bg-gray-700"
+            version="1.1"
+            preserveAspectRatio="xMidYMid meet"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlnsXlink="http://www.w3.org/1999/xlink"
+          >
+            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+            <g
+              id="SVGRepo_tracerCarrier"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            ></g>
+            <g id="SVGRepo_iconCarrier">
+              {" "}
+              <path
+                d="M11.86,16.55a4.31,4.31,0,0,0-2.11.56,14.44,14.44,0,0,1,4.36-6,1.1,1.1,0,0,0-1.4-1.7c-4,3.25-5.78,7.75-5.78,10.54A5.08,5.08,0,0,0,10,24.58a4.4,4.4,0,0,0,1.88.44,4.24,4.24,0,1,0,0-8.47Z"
+                className="clr-i-outline clr-i-outline-path-1"
+              ></path>
+              <path
+                d="M23,16.55a4.29,4.29,0,0,0-2.11.56,14.5,14.5,0,0,1,4.35-6,1.1,1.1,0,1,0-1.39-1.7c-4,3.25-5.78,7.75-5.78,10.54a5.08,5.08,0,0,0,3,4.61A4.37,4.37,0,0,0,23,25a4.24,4.24,0,1,0,0-8.47Z"
+                className="clr-i-outline clr-i-outline-path-2"
+              ></path>{" "}
+              <rect x="0" y="0" width="36" height="36" fill-opacity="0"></rect>{" "}
+            </g>
+          </svg>
+        </button>
         {/* Clear marks */}
         <button
           onClick={() => editor.chain().focus().unsetAllMarks().run()}
           title="Clear marks"
+          className="hidden lg:block"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -206,6 +446,7 @@ const MenuBar = ({ editor }: any) => {
       </div>
       {/* Formatting  */}
       <div className="flex border-x border-gray-700 p-1">
+        {/* Dropdown */}
         <div className="flex w-10 items-center lg:hidden">
           <div className="relative inline-block text-left">
             <div
@@ -213,6 +454,7 @@ const MenuBar = ({ editor }: any) => {
               id="menu-button"
               onClick={() => {
                 setParagraphDropdown(!paragraphDropdown);
+                setTextDropdown(false);
                 setAlignDropdown(false);
               }}
               title="Text format"
@@ -333,24 +575,24 @@ const MenuBar = ({ editor }: any) => {
                   onClick={() => editor.chain().focus().clearNodes().run()}
                 >
                   <title>Clear formatting</title>
-                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                   <g
                     id="SVGRepo_tracerCarrier"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   ></g>
                   <g id="SVGRepo_iconCarrier">
                     <g
                       stroke="none"
-                      stroke-width="1"
+                      strokeWidth="1"
                       fill="white"
-                      fill-rule="evenodd"
+                      fillRule="evenodd"
                     >
                       {" "}
                       <g
                         id="ic_fluent_clear_formatting_24_filled"
                         fill=""
-                        fill-rule="nonzero"
+                        fillRule="nonzero"
                         className="fill-black dark:fill-white"
                       >
                         {" "}
@@ -453,24 +695,19 @@ const MenuBar = ({ editor }: any) => {
             xmlnsXlink="http://www.w3.org/1999/xlink"
             className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white  dark:hover:bg-gray-700"
           >
-            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
             <g
               id="SVGRepo_tracerCarrier"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             ></g>
             <g id="SVGRepo_iconCarrier">
-              <g
-                stroke="none"
-                stroke-width="1"
-                fill="white"
-                fill-rule="evenodd"
-              >
+              <g stroke="none" strokeWidth="1" fill="white" fillRule="evenodd">
                 {" "}
                 <g
                   id="ic_fluent_clear_formatting_24_filled"
                   fill=""
-                  fill-rule="nonzero"
+                  fillRule="nonzero"
                   className="fill-black dark:fill-white"
                 >
                   {" "}
@@ -492,6 +729,7 @@ const MenuBar = ({ editor }: any) => {
               onClick={() => {
                 setAlignDropdown(!alignDropdown);
                 setParagraphDropdown(false);
+                setTextDropdown(false);
               }}
               title="Alignment"
             >
@@ -762,6 +1000,19 @@ const MenuBar = ({ editor }: any) => {
             <path d="M4.828 21l-.02.02-.021-.02H2.992A.993.993 0 0 1 2 20.007V3.993A1 1 0 0 1 2.992 3h18.016c.548 0 .992.445.992.993v16.014a1 1 0 0 1-.992.993H4.828zM20 15V5H4v14L14 9l6 6zm0 2.828l-6-6L6.828 19H20v-1.172zM8 11a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" />
           </svg>
         </button>
+        {/* YouTube */}
+        <button id="add" onClick={addYoutubeVideo} title="YouTube video">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width="28"
+            height="28"
+            className="rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white  dark:hover:bg-gray-700"
+          >
+            <path fill="none" d="M0 0h24v24H0z" />
+            <path d="M19.606 6.995c-.076-.298-.292-.523-.539-.592C18.63 6.28 16.5 6 12 6s-6.628.28-7.069.403c-.244.068-.46.293-.537.592C4.285 7.419 4 9.196 4 12s.285 4.58.394 5.006c.076.297.292.522.538.59C5.372 17.72 7.5 18 12 18s6.629-.28 7.069-.403c.244-.068.46-.293.537-.592C19.715 16.581 20 14.8 20 12s-.285-4.58-.394-5.005zm1.937-.497C22 8.28 22 12 22 12s0 3.72-.457 5.502c-.254.985-.997 1.76-1.938 2.022C17.896 20 12 20 12 20s-5.893 0-7.605-.476c-.945-.266-1.687-1.04-1.938-2.022C2 15.72 2 12 2 12s0-3.72.457-5.502c.254-.985.997-1.76 1.938-2.022C6.107 4 12 4 12 4s5.896 0 7.605.476c.945.266 1.687 1.04 1.938 2.022zM10 15.5v-7l6 3.5-6 3.5z" />
+          </svg>
+        </button>
       </div>
     </div>
   );
@@ -799,6 +1050,13 @@ export const RichTextEditor: React.FC<Props> = ({ setText }) => {
         },
       }),
       Underline,
+      Youtube.configure({
+        width:
+          window.innerWidth > 1100 ? 640 : window.innerWidth > 650 ? 320 : 160,
+        height:
+          window.innerWidth > 1100 ? 480 : window.innerWidth > 650 ? 240 : 120,
+      }),
+      Blockquote,
     ],
     content: `
 

@@ -86,7 +86,7 @@ const Thread: React.FC<Props> = ({
 
   return (
     <div
-      className="relative mx-auto w-11/12 rounded-t-2xl border-b-4 border-gray-500  bg-gray-200 py-8 text-center text-lg font-normal text-gray-900 shadow-xl dark:border-gray-300 dark:bg-gray-800 dark:text-white lg:w-4/5"
+      className="relative mx-auto w-11/12 rounded-t-2xl border-2 border-b-4 border-gray-500  bg-gray-200 py-8 text-center text-lg font-normal text-gray-900 shadow-xl dark:border-gray-300 dark:bg-gray-800 dark:text-white lg:w-4/5"
       id="container"
       onClick={(e) => {
         e.stopPropagation();
@@ -97,18 +97,20 @@ const Thread: React.FC<Props> = ({
       {/* Profile Picture, Username, Date, and Dropdown */}
       <div className="absolute top-3 flex w-full items-center">
         {/* Profile Picture */}
-        <div className="ml-3 h-8 w-8 overflow-hidden rounded-full bg-white dark:bg-gray-600 sm:h-10 sm:w-10">
+        <div className="ml-3 h-10 w-10 overflow-hidden rounded-full bg-white dark:bg-gray-600">
           <ProfilePicture image={profilePicture} />
         </div>
+
         {/* Username and Time  */}
-        <div className="ml-4 text-base sm:text-lg">
-          <span className="font-bold">{username}</span>
-          <span className="text-black dark:text-gray-300">
+        <div className="ml-4 flex flex-col text-left text-sm sm:flex-row sm:items-center sm:space-x-2">
+          <div className="text-base font-bold sm:text-lg">{username}</div>
+          <div className="text-black dark:text-gray-300 sm:text-base">
             {" posted "}
             {postTimeDifference}
-          </span>
+          </div>
         </div>
       </div>
+
       {/* Thread Title  */}
       <div
         id="thread-title"
@@ -116,15 +118,16 @@ const Thread: React.FC<Props> = ({
       >
         {threadTitle}
       </div>
+
       {/* Thread Content  */}
       <div
         id="thread-content"
-        className="text-md relative top-7 mx-8 mb-12 text-left text-black dark:text-white"
+        className="relative top-7 mx-8 mb-12 text-left text-base text-black dark:text-white md:text-lg"
       >
         {threadContent}
       </div>
       {/* Bottom Bar */}
-      <div className="absolute left-3 bottom-3 flex space-x-2 text-base sm:space-x-3 md:space-x-6 md:text-lg">
+      <div className="absolute left-3 bottom-3 flex space-x-2 text-sm sm:space-x-3 sm:text-base md:space-x-6">
         {/* Likes */}
         <div
           className="flex cursor-pointer items-center rounded-md px-1 hover:bg-gray-300 dark:hover:bg-slate-700"
@@ -143,7 +146,7 @@ const Thread: React.FC<Props> = ({
         >
           <svg
             id="like-image"
-            className="h-8 w-8 cursor-pointer stroke-red-600"
+            className="h-6 w-6 cursor-pointer stroke-red-600 sm:h-8 sm:w-8"
             fill="none"
             strokeWidth="1.5"
             viewBox="0 0 24 24"
@@ -169,7 +172,7 @@ const Thread: React.FC<Props> = ({
           <svg
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
-            className="h-7 w-7"
+            className="h-5 w-5 sm:h-7 sm:w-7"
           >
             <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
             <g
@@ -211,7 +214,7 @@ const Thread: React.FC<Props> = ({
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth="0.9"
-            className="h-8 w-8 stroke-black dark:stroke-white"
+            className="h-6 w-6 stroke-black dark:stroke-white sm:h-8 sm:w-8"
           >
             <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
             <g
@@ -240,7 +243,7 @@ const Thread: React.FC<Props> = ({
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             stroke="#000000"
-            className="h-7 w-7"
+            className="h-5 w-5 sm:h-7 sm:w-7"
           >
             <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
             <g
@@ -278,7 +281,7 @@ const Thread: React.FC<Props> = ({
               </defs>{" "}
             </g>
           </svg>
-          <div className="ml-2">Share</div>
+          <div className="ml-2 hidden sm:block">Share</div>
         </div>
         {/* Thread Menu  */}
         <div>
@@ -314,7 +317,7 @@ const Thread: React.FC<Props> = ({
           {showDropdown && (
             <div
               className={
-                "absolute z-10 w-28 origin-top-right divide-y divide-gray-300 rounded-md bg-white shadow-lg ring-1 ring-blue-200 focus:outline-none"
+                "absolute z-10 w-20 origin-top-right divide-y divide-gray-300 rounded-md bg-white shadow-lg ring-1 ring-blue-200 focus:outline-none md:w-28"
               }
               role="menu"
               id="Dropdown-content"
@@ -330,7 +333,7 @@ const Thread: React.FC<Props> = ({
                       fill="#000000"
                       viewBox="0 0 1920 1920"
                       xmlns="http://www.w3.org/2000/svg"
-                      className="ml-2 h-5 w-5"
+                      className="ml-1 h-5 w-5 md:ml-2"
                     >
                       <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                       <g
@@ -347,7 +350,7 @@ const Thread: React.FC<Props> = ({
                       </g>
                     </svg>
                   </div>
-                  <div className="">Save</div>
+                  <div className="ml-1  text-sm md:ml-0">Save</div>
                   <div className="flex-1"></div>
                 </div>
                 <div
@@ -360,7 +363,7 @@ const Thread: React.FC<Props> = ({
                       viewBox="0 0 24 24"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
-                      className="ml-2 h-6 w-6 "
+                      className="ml-1 h-6 w-6 md:ml-2 "
                     >
                       <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                       <g
@@ -398,7 +401,7 @@ const Thread: React.FC<Props> = ({
                       fill="#000000"
                       viewBox="0 0 1920 1920"
                       xmlns="http://www.w3.org/2000/svg"
-                      className="ml-2 h-5 w-5 "
+                      className="ml-1 h-5 w-5 md:ml-2 "
                     >
                       <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                       <g
@@ -415,7 +418,7 @@ const Thread: React.FC<Props> = ({
                       </g>
                     </svg>
                   </div>
-                  <div className="">Edit</div>
+                  <div className="ml-1 md:ml-0">Edit</div>
                   <div className="flex-1"></div>
                 </div>
 
@@ -429,7 +432,7 @@ const Thread: React.FC<Props> = ({
                       viewBox="0 0 1024 1024"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="#000000"
-                      className="ml-2 h-5 w-5 "
+                      className="ml-1 h-5 w-5 md:ml-2 "
                     >
                       <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                       <g
@@ -445,7 +448,7 @@ const Thread: React.FC<Props> = ({
                       </g>
                     </svg>
                   </div>
-                  <div className="">Delete</div>
+                  <div className="ml-1 md:ml-0">Delete</div>
                   <div className="flex-1"></div>
                 </div>
               </div>

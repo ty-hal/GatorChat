@@ -81,7 +81,7 @@ const Message: React.FC<Props> = ({
 
   return (
     <div
-      className="relative mx-auto w-11/12 border-t-2 border-gray-500 bg-gray-200 py-8 text-center text-lg font-normal text-gray-900 dark:border-gray-300 dark:bg-gray-800 dark:text-white lg:w-4/5"
+      className="relative mx-auto w-11/12 border-x-2 border-y border-gray-500 bg-gray-200 py-8 text-center text-lg font-normal text-gray-900 dark:border-gray-300 dark:bg-gray-800 dark:text-white lg:w-4/5"
       onClick={(e) => {
         e.stopPropagation();
         setShowDropdown(false);
@@ -94,13 +94,14 @@ const Message: React.FC<Props> = ({
         <div className="ml-3 h-10 w-10 overflow-hidden rounded-full bg-white dark:bg-gray-600">
           <ProfilePicture image={profilePicture} />
         </div>
+
         {/* Username and Time  */}
-        <div className="ml-4 text-base sm:text-lg">
-          <span className="font-bold">{username}</span>
-          <span className="text-black dark:text-gray-300">
+        <div className="ml-4 flex flex-col text-left text-sm sm:flex-row sm:items-center sm:space-x-2">
+          <div className="text-base font-bold sm:text-lg">{username}</div>
+          <div className="text-black dark:text-gray-300 sm:text-base">
             {" posted "}
             {postTimeDifference}
-          </span>
+          </div>
         </div>
         {/* Message Menu  */}
         <div className="ml-auto mr-6">
@@ -286,12 +287,15 @@ const Message: React.FC<Props> = ({
       </div>
 
       {/* Message Content  */}
-      <div id="message-content" className="relative top-7 mx-8 mb-12 text-left">
+      <div
+        id="message-content"
+        className="relative top-7 mx-6 mb-12 text-left text-base sm:mx-8 md:text-lg"
+      >
         {messageContent}
       </div>
 
       {/* Bottom Bar */}
-      <div className="absolute left-3 bottom-3 flex space-x-2 text-base sm:space-x-3 md:space-x-6 md:text-lg">
+      <div className="absolute left-3 bottom-3 flex space-x-2 text-sm sm:space-x-3 sm:text-base md:space-x-6 ">
         {/* Likes */}
         <div
           className="flex cursor-pointer items-center rounded-md px-1 hover:bg-gray-300 dark:hover:bg-slate-700"
@@ -310,7 +314,7 @@ const Message: React.FC<Props> = ({
         >
           <svg
             id="like-image"
-            className="h-8 w-8 cursor-pointer stroke-red-600"
+            className="h-6 w-6 cursor-pointer stroke-red-600 sm:h-8 sm:w-8"
             fill="none"
             strokeWidth="1.5"
             viewBox="0 0 24 24"
@@ -343,7 +347,7 @@ const Message: React.FC<Props> = ({
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth="0.9"
-            className="h-8 w-8 stroke-black dark:stroke-white"
+            className="h-6 w-6 stroke-black dark:stroke-white sm:h-8 sm:w-8"
           >
             <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
             <g

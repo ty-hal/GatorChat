@@ -12,13 +12,21 @@ const CreateThread = () => {
   const [text, setText] = useState<string>("");
   const [thread, setThread] = useState<thread>();
 
+  const submitThread = () => {
+    console.log(thread);
+    toggleOpenEditor(false);
+    setText("");
+    setTitle("");
+    // API CALL HERE
+  };
+
   useEffect(() => {
     setThread({ ...thread, title: title, text: text });
   }, [title, text]);
 
   return (
     <div
-      className="mx-auto w-11/12 cursor-pointer rounded-2xl border-2 border-gray-500 bg-gray-200 shadow-xl dark:border-gray-600 dark:bg-gray-800 lg:w-4/5"
+      className="mx-auto w-11/12 cursor-pointer rounded-2xl border-2 border-gray-500 bg-gray-200 shadow-md  dark:border-gray-600 dark:bg-gray-800 lg:w-4/5"
       id="container"
       onClick={(e) => {
         e.stopPropagation();
@@ -57,9 +65,7 @@ const CreateThread = () => {
               <div className="mx-auto w-11/12 py-2">
                 <button
                   className="rounded-lg border border-black bg-blue-600 py-1 px-2 text-white hover:bg-blue-700 dark:border-gray-200 dark:hover:bg-blue-800"
-                  onClick={() => {
-                    console.log(thread);
-                  }}
+                  onClick={submitThread}
                 >
                   Create thread
                 </button>

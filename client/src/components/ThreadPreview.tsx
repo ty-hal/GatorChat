@@ -99,7 +99,7 @@ const Thread: React.FC<Props> = ({
 
   return (
     <div
-      className="relative my-2 mx-auto w-11/12 cursor-pointer rounded-2xl border-2 border-transparent bg-gray-200 py-8 text-center text-lg font-normal text-gray-900 shadow-xl hover:border-blue-600 dark:bg-gray-800 dark:text-white lg:w-4/5"
+      className="relative my-2 mx-auto w-11/12 cursor-pointer rounded-2xl border-2 border-gray-500 bg-gray-200 py-8 text-center text-lg font-normal text-gray-900 shadow-md hover:border-blue-600 dark:bg-gray-800 dark:text-white lg:w-4/5"
       id="container"
       onClick={(e) => {
         e.stopPropagation();

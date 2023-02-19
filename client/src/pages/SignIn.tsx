@@ -25,9 +25,11 @@ const SignIn = () => {
       document
         ?.getElementById("email")
         ?.setAttribute("value", loginInformation.email);
+      setEmail(loginInformation.email);
       document
         ?.getElementById("password")
         ?.setAttribute("value", loginInformation.password);
+      setPassword(loginInformation.password);
     } catch {
       return;
     }
@@ -65,6 +67,10 @@ Mypassword@123
         if (response.status === 200) {
           setInvalidPassword(false);
           setInvalidEmail(false);
+          setLoginInfo({
+            email: "",
+            password: "",
+          });
           navigate("/"); // Navigate to home page
           return response.json();
         }

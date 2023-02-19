@@ -1,12 +1,23 @@
 import { useEffect, useState } from "react";
 import { RichTextEditor } from "./RichTextEditor";
 
+type Props = {
+  section_id: number
+}
+
 type thread = {
   title: string;
   text: string;
 };
 
-const CreateThread = () => {
+interface threadBody {
+  user_id: number;
+  section_id: number;
+  thread_title: string | undefined;
+  content: string | undefined;
+}
+
+const CreateThread: React.FC<Props> = ( { section_id }) => {
   const [openEditor, toggleOpenEditor] = useState(false);
   const [title, setTitle] = useState<string>("");
   const [text, setText] = useState<string>("");
@@ -17,7 +28,32 @@ const CreateThread = () => {
     toggleOpenEditor(false);
     setText("");
     setTitle("");
-    // API CALL HERE
+
+    const threadRequest: threadBody = {
+      user_id: 7, // REPLACE WITH REAL USER ID LATER
+      section_id: section_id,
+      thread_title: thread?.title,
+      content: thread?.text
+    }
+    
+    // Backend call to create a thread
+    fetch("http://localhost:9000/api/thread", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(threadRequest),
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          window.location.reload()
+          return response.json()
+        }
+      })
+      .then((data) =>{
+        console.log(data)
+      });
+
   };
 
   useEffect(() => {

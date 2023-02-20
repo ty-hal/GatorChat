@@ -11,7 +11,7 @@ type ThreadType = {
   section_id: number;
   thread_title: string;
   content: string;
-  creation_date: string;
+  CreationDate: string;
   updated_on: string;
   likes: number;
   message_count: number;
@@ -40,7 +40,7 @@ const SampleThreadsPreview = () => {
   return (
     <div className="bg-white dark:bg-gray-900">
       <div className="flex flex-col items-center rounded-xl p-10">
-        <CreateThread section_id={section_id} />
+        {loaded && <CreateThread section_id={section_id} />}
 
         {threads.map((thread) => {
           return (
@@ -50,7 +50,7 @@ const SampleThreadsPreview = () => {
               username={thread.username}
               threadTitle={thread.thread_title}
               threadContent={thread.content}
-              threadDate={thread.creation_date}
+              threadDate={thread.CreationDate}
               likesCount={thread.likes ? thread.likes : 0}
               messagesCount={thread.message_count ? thread.message_count : 0}
             />

@@ -36,7 +36,7 @@ const Thread: React.FC<Props> = ({
     const _MS_PER_HOUR = 1000 * 60 * 60;
     const _MS_PER_MINUTE = 1000 * 60;
 
-    // Conver to UTC date format
+    // Convert to UTC date format
     const utcPost = Date.UTC(
       postTime.getFullYear(),
       postTime.getMonth(),
@@ -88,14 +88,14 @@ const Thread: React.FC<Props> = ({
   }, []);
 
   // Used to change opacity of text
-  let opacityCutoff: string = threadContent.substring(0, 400);
+  let textCutoff: string = threadContent.substring(0, 400);
   if (threadContent.length > 400) {
-    opacityCutoff = opacityCutoff.substring(
+    textCutoff = textCutoff.substring(
       0,
-      Math.min(opacityCutoff.length, opacityCutoff.lastIndexOf(" "))
+      Math.min(textCutoff.length, textCutoff.lastIndexOf(" "))
     );
   }
-  let lengthOpacityCutoff: number = opacityCutoff.length;
+  let lengthTextCutoff: number = textCutoff.length;
 
   return (
     <div
@@ -133,12 +133,10 @@ const Thread: React.FC<Props> = ({
       <div
         id="thread-content"
         className="text-md relative top-7 mx-8 mb-12 max-h-60 overflow-hidden text-left text-black dark:text-gray-300 lg:max-h-44"
-      >
-        {threadContent.substring(0, lengthOpacityCutoff)}
-        <span className="opacity-60 dark:opacity-50">
-          {threadContent.substring(lengthOpacityCutoff)}
-        </span>
-      </div>
+        dangerouslySetInnerHTML={{
+          __html: threadContent.substring(0, lengthTextCutoff) + "...",
+        }}
+      ></div>
       {/* Bottom Bar */}
       <div className="absolute left-3 bottom-3 flex space-x-2 text-base sm:space-x-3 md:space-x-6 md:text-lg">
         {/* Likes */}

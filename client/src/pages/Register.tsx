@@ -485,31 +485,33 @@ const Register = () => {
                 >
                   Major
                 </label>
-                <Select
-                  primaryColor={"indigo"}
-                  value={majorsValue}
-                  isMultiple={true}
-                  isSearchable={true}
-                  noOptionsMessage={"No majors found"}
-                  placeholder={"Select major(s)..."}
-                  classNames={{
-                    menuButton: ({ isDisabled }) =>
-                      `rounded-lg flex text-sm text-gray-900 dark:text-gray-400 border border-gray-300 dark:border-gray-600  focus:outline-none bg-gray-50 dark:bg-gray-700 ${
-                        isDisabled
-                          ? ""
-                          : "focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                      }`,
-                    menu: "absolute z-10 w-full bg-gray-50 dark:bg-gray-700 border rounded-lg py-1 mt-1.5 text-sm text-gray-900",
-                    listItem: ({ isSelected }) =>
-                      `block p-2 cursor-pointer select-none truncate rounded text-gray-900 dark:text-white ${
-                        isSelected
-                          ? ``
-                          : `hover:bg-blue-200 dark:hover:bg-blue-500 hover:text-gray-900`
-                      }`,
-                  }}
-                  onChange={handleMajorChange}
-                  options={majorOptions}
-                />
+                <div id="majors-select">
+                  <Select
+                    primaryColor={"indigo"}
+                    value={majorsValue}
+                    isMultiple={true}
+                    isSearchable={true}
+                    noOptionsMessage={"No majors found"}
+                    placeholder={"Select major(s)..."}
+                    classNames={{
+                      menuButton: ({ isDisabled }) =>
+                        `rounded-lg flex text-sm text-gray-900 dark:text-gray-400 border border-gray-300 dark:border-gray-600  focus:outline-none bg-gray-50 dark:bg-gray-700 ${
+                          isDisabled
+                            ? ""
+                            : "focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                        }`,
+                      menu: "absolute z-10 w-full bg-gray-50 dark:bg-gray-700 border rounded-lg py-1 mt-1.5 text-sm text-gray-900",
+                      listItem: ({ isSelected }) =>
+                        `block p-2 cursor-pointer select-none truncate rounded text-gray-900 dark:text-white ${
+                          isSelected
+                            ? ``
+                            : `hover:bg-blue-200 dark:hover:bg-blue-500 hover:text-gray-900`
+                        }`,
+                    }}
+                    onChange={handleMajorChange}
+                    options={majorOptions}
+                  />
+                </div>
               </div>
               {/* Password */}
               <div>
@@ -653,6 +655,7 @@ const Register = () => {
               {/* Submit Button  */}
               <button
                 type="submit"
+                id="create-an-account"
                 disabled={
                   password && password === confirmPassword ? false : true
                 }

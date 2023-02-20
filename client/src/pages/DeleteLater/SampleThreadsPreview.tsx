@@ -11,7 +11,7 @@ type ThreadType = {
   section_id: number;
   thread_title: string;
   content: string;
-  CreationDate: string;
+  creation_date: string;
   updated_on: string;
   likes: number;
   message_count: number;
@@ -50,7 +50,7 @@ const SampleThreadsPreview = () => {
               username={thread.username}
               threadTitle={thread.thread_title}
               threadContent={thread.content}
-              threadDate={thread.CreationDate}
+              threadDate={thread.creation_date}
               likesCount={thread.likes ? thread.likes : 0}
               messagesCount={thread.message_count ? thread.message_count : 0}
             />

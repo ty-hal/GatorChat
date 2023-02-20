@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 interface userLogin {
   email: string;
   password: string;
+  remember_me?: boolean;
 }
 
 const SignIn = () => {
@@ -12,14 +13,20 @@ const SignIn = () => {
   const [invalidEmail, setInvalidEmail] = useState(false); // If the user's password is invalid
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const [loginInfo, setLoginInfo] = useState<userLogin>({
     email: "",
     password: "",
+    remember_me: false,
   });
+
+  // Set login info state
   useEffect(() => {
     try {
       let loginInformation = JSON.parse(
-        sessionStorage.getItem("login-information") || ""
+        localStorage.getItem("login-information") ||
+          sessionStorage.getItem("login-information") ||
+          ""
       );
       setLoginInfo(loginInformation);
       document
@@ -30,13 +37,23 @@ const SignIn = () => {
         ?.getElementById("password")
         ?.setAttribute("value", loginInformation.password);
       setPassword(loginInformation.password);
+      if (loginInformation.remember_me) {
+        document?.getElementById("remember")?.setAttribute("checked", "true");
+      }
+      setRememberMe(loginInformation.remember_me);
     } catch {
       return;
     }
   }, []);
   useEffect(() => {
     if (loginInfo.email !== "" || loginInfo.password !== "") {
-      sessionStorage.setItem("login-information", JSON.stringify(loginInfo));
+      if (!rememberMe) {
+        sessionStorage.setItem("login-information", JSON.stringify(loginInfo));
+        localStorage.removeItem("login-information");
+      } else {
+        localStorage.setItem("login-information", JSON.stringify(loginInfo));
+        sessionStorage.removeItem("login-information");
+      }
     }
   }, [loginInfo]);
 
@@ -209,7 +226,14 @@ Mypassword@123
                     aria-describedby="remember"
                     type="checkbox"
                     className="focus:ring-3 h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
-                  ></input>
+                    onClick={() => {
+                      setLoginInfo({
+                        ...loginInfo,
+                        remember_me: !rememberMe,
+                      });
+                      setRememberMe(!rememberMe);
+                    }}
+                  />
                 </div>
                 <div className="ml-3 text-sm">
                   <label

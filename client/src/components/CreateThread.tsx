@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { RichTextEditor } from "./RichTextEditor";
 
 type Props = {
-  section_id: number
-}
+  section_id: number;
+};
 
 type thread = {
   title: string;
@@ -17,7 +17,7 @@ interface threadBody {
   content: string | undefined;
 }
 
-const CreateThread: React.FC<Props> = ( { section_id }) => {
+const CreateThread: React.FC<Props> = ({ section_id }) => {
   const [openEditor, toggleOpenEditor] = useState(false);
   const [title, setTitle] = useState<string>("");
   const [text, setText] = useState<string>("");
@@ -33,9 +33,9 @@ const CreateThread: React.FC<Props> = ( { section_id }) => {
       user_id: 7, // REPLACE WITH REAL USER ID LATER
       section_id: section_id,
       thread_title: thread?.title,
-      content: thread?.text
-    }
-    
+      content: thread?.text,
+    };
+
     // Backend call to create a thread
     fetch("http://localhost:9000/api/thread", {
       method: "POST",
@@ -46,14 +46,13 @@ const CreateThread: React.FC<Props> = ( { section_id }) => {
     })
       .then((response) => {
         if (response.status === 200) {
-          window.location.reload()
-          return response.json()
+          window.location.reload();
+          return response.json();
         }
       })
-      .then((data) =>{
-        console.log(data)
+      .then((data) => {
+        console.log(data);
       });
-
   };
 
   useEffect(() => {
@@ -98,7 +97,7 @@ const CreateThread: React.FC<Props> = ( { section_id }) => {
           {thread!.title &&
             thread!.text !== "" &&
             thread!.text !== "<p></p>" && (
-              <div className="mx-auto w-11/12 py-2">
+              <div className="mx-auto w-11/12 pb-2">
                 <button
                   className="rounded-lg border border-black bg-blue-600 py-1 px-2 text-white hover:bg-blue-700 dark:border-gray-200 dark:hover:bg-blue-800"
                   onClick={submitThread}

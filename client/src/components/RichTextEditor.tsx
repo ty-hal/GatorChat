@@ -76,7 +76,7 @@ const MenuBar = ({ editor }: any) => {
   return (
     <div className="mt-2 flex w-full flex-wrap rounded-t-lg border-x border-t border-gray-600 bg-slate-400 dark:bg-slate-600">
       {/* Undo and Redo */}
-      <div className="flex border-r border-gray-700 px-1">
+      <div className="flex border-r border-gray-700 px-1 sm:space-x-1">
         {/* Undo  */}
         <button
           onClick={() => editor.chain().focus().undo().run()}
@@ -109,7 +109,7 @@ const MenuBar = ({ editor }: any) => {
         </button>
       </div>
       {/* Text Styling */}
-      <div className="flex border-x border-gray-700 pr-1 sm:p-1">
+      <div className="flex border-x border-gray-700 pr-1 sm:space-x-1 sm:p-1">
         {/* Dropdown */}
         <div className="flex  w-8 items-center sm:w-10 lg:hidden">
           <div className="relative inline-block text-left">
@@ -171,7 +171,11 @@ const MenuBar = ({ editor }: any) => {
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
-                  className="h-6 w-6 rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white dark:hover:bg-gray-700  sm:h-8 sm:w-8"
+                  className={
+                    editor.isActive("bold")
+                      ? "h-6 w-6 rounded-md bg-gray-200 fill-black p-1 dark:bg-gray-700 dark:fill-white sm:h-8 sm:w-8"
+                      : "h-6 w-6 rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white dark:hover:bg-gray-700 sm:h-8 sm:w-8"
+                  }
                   onClick={() => editor.chain().focus().toggleBold().run()}
                 >
                   <title>Bold</title>
@@ -184,7 +188,11 @@ const MenuBar = ({ editor }: any) => {
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
-                  className="h-6 w-6 rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white dark:hover:bg-gray-700 sm:h-8  sm:w-8"
+                  className={
+                    editor.isActive("italic")
+                      ? "h-6 w-6 rounded-md bg-gray-200 fill-black p-1 dark:bg-gray-700 dark:fill-white sm:h-8 sm:w-8"
+                      : "h-6 w-6 rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white dark:hover:bg-gray-700 sm:h-8 sm:w-8"
+                  }
                   onClick={() => editor.chain().focus().toggleItalic().run()}
                 >
                   <title>Italic</title>
@@ -195,7 +203,11 @@ const MenuBar = ({ editor }: any) => {
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
-                  className="h-6 w-6 rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white dark:hover:bg-gray-700 sm:h-8  sm:w-8"
+                  className={
+                    editor.isActive("underline")
+                      ? "h-6 w-6 rounded-md bg-gray-200 fill-black p-1 dark:bg-gray-700 dark:fill-white sm:h-8 sm:w-8"
+                      : "h-6 w-6 rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white dark:hover:bg-gray-700 sm:h-8 sm:w-8"
+                  }
                   onClick={() => editor.chain().focus().toggleUnderline().run()}
                 >
                   <title>Underline</title>
@@ -206,7 +218,11 @@ const MenuBar = ({ editor }: any) => {
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
-                  className="h-6 w-6 rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white dark:hover:bg-gray-700 sm:h-8  sm:w-8"
+                  className={
+                    editor.isActive("strike")
+                      ? "h-6 w-6 rounded-md bg-gray-200 fill-black p-1 dark:bg-gray-700 dark:fill-white sm:h-8 sm:w-8"
+                      : "h-6 w-6 rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white dark:hover:bg-gray-700 sm:h-8 sm:w-8"
+                  }
                   onClick={() => editor.chain().focus().toggleStrike().run()}
                 >
                   <title>Strikethrough</title>
@@ -217,53 +233,18 @@ const MenuBar = ({ editor }: any) => {
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
-                  className="h-6 w-6 rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white dark:hover:bg-gray-700 sm:h-8  sm:w-8"
+                  className={
+                    editor.isActive("code")
+                      ? "h-6 w-6 rounded-md bg-gray-200 fill-black p-1 dark:bg-gray-700 dark:fill-white sm:h-8 sm:w-8"
+                      : "h-6 w-6 rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white dark:hover:bg-gray-700 sm:h-8 sm:w-8"
+                  }
                   onClick={() => editor.chain().focus().toggleCode().run()}
                 >
                   <title>Code</title>
                   <path fill="none" d="M0 0h24v24H0z" />
                   <path d="M23 12l-7.071 7.071-1.414-1.414L20.172 12l-5.657-5.657 1.414-1.414L23 12zM3.828 12l5.657 5.657-1.414 1.414L1 12l7.071-7.071 1.414 1.414L3.828 12z" />
                 </svg>
-                {/* Blockquote */}
 
-                <svg
-                  fill="#000000"
-                  viewBox="0 0 36 36"
-                  className="h-6 w-6 rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white dark:hover:bg-gray-700 sm:h-8  sm:w-8"
-                  version="1.1"
-                  preserveAspectRatio="xMidYMid meet"
-                  xmlns="http://www.w3.org/2000/svg"
-                  xmlnsXlink="http://www.w3.org/1999/xlink"
-                  onClick={() =>
-                    editor.chain().focus().toggleBlockquote().run()
-                  }
-                >
-                  <title>Blockquote</title>
-                  <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                  <g
-                    id="SVGRepo_tracerCarrier"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  ></g>
-                  <g id="SVGRepo_iconCarrier">
-                    {" "}
-                    <path
-                      d="M11.86,16.55a4.31,4.31,0,0,0-2.11.56,14.44,14.44,0,0,1,4.36-6,1.1,1.1,0,0,0-1.4-1.7c-4,3.25-5.78,7.75-5.78,10.54A5.08,5.08,0,0,0,10,24.58a4.4,4.4,0,0,0,1.88.44,4.24,4.24,0,1,0,0-8.47Z"
-                      className="clr-i-outline clr-i-outline-path-1"
-                    ></path>
-                    <path
-                      d="M23,16.55a4.29,4.29,0,0,0-2.11.56,14.5,14.5,0,0,1,4.35-6,1.1,1.1,0,1,0-1.39-1.7c-4,3.25-5.78,7.75-5.78,10.54a5.08,5.08,0,0,0,3,4.61A4.37,4.37,0,0,0,23,25a4.24,4.24,0,1,0,0-8.47Z"
-                      className="clr-i-outline clr-i-outline-path-2"
-                    ></path>{" "}
-                    <rect
-                      x="0"
-                      y="0"
-                      width="36"
-                      height="36"
-                      fill-opacity="0"
-                    ></rect>{" "}
-                  </g>
-                </svg>
                 {/* Clear marks */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -284,7 +265,11 @@ const MenuBar = ({ editor }: any) => {
         <button
           onClick={() => editor.chain().focus().toggleBold().run()}
           disabled={!editor.can().chain().focus().toggleBold().run()}
-          className="hidden lg:block"
+          className={
+            editor.isActive("bold")
+              ? "hidden rounded-md bg-gray-200 dark:bg-gray-700 lg:block"
+              : "hidden lg:block"
+          }
           title="Bold"
         >
           <svg
@@ -300,7 +285,11 @@ const MenuBar = ({ editor }: any) => {
         <button
           onClick={() => editor.chain().focus().toggleItalic().run()}
           disabled={!editor.can().chain().focus().toggleItalic().run()}
-          className="hidden lg:block"
+          className={
+            editor.isActive("italic")
+              ? "hidden rounded-md bg-gray-200 dark:bg-gray-700 lg:block"
+              : "hidden lg:block"
+          }
           title="Italic"
         >
           <svg
@@ -315,7 +304,11 @@ const MenuBar = ({ editor }: any) => {
         {/* Underline */}
         <button
           onClick={() => editor.chain().focus().toggleUnderline().run()}
-          className="hidden lg:block"
+          className={
+            editor.isActive("underline")
+              ? "hidden rounded-md bg-gray-200 dark:bg-gray-700 lg:block"
+              : "hidden lg:block"
+          }
           title="Underline"
         >
           <svg
@@ -331,7 +324,11 @@ const MenuBar = ({ editor }: any) => {
         <button
           onClick={() => editor.chain().focus().toggleStrike().run()}
           disabled={!editor.can().chain().focus().toggleStrike().run()}
-          className="hidden lg:block"
+          className={
+            editor.isActive("strike")
+              ? "hidden rounded-md bg-gray-200 dark:bg-gray-700 lg:block"
+              : "hidden lg:block"
+          }
           title="Strikethrough"
         >
           <svg
@@ -347,7 +344,11 @@ const MenuBar = ({ editor }: any) => {
         <button
           onClick={() => editor.chain().focus().toggleCode().run()}
           disabled={!editor.can().chain().focus().toggleCode().run()}
-          className="hidden lg:block"
+          className={
+            editor.isActive("code")
+              ? "hidden rounded-md bg-gray-200 dark:bg-gray-700 lg:block"
+              : "hidden lg:block"
+          }
           title="Code"
         >
           <svg
@@ -359,41 +360,7 @@ const MenuBar = ({ editor }: any) => {
             <path d="M23 12l-7.071 7.071-1.414-1.414L20.172 12l-5.657-5.657 1.414-1.414L23 12zM3.828 12l5.657 5.657-1.414 1.414L1 12l7.071-7.071 1.414 1.414L3.828 12z" />
           </svg>
         </button>
-        {/* Blockquote */}
-        <button
-          onClick={() => editor.chain().focus().toggleBlockquote().run()}
-          className="hidden lg:block"
-          title="Blockquote"
-        >
-          <svg
-            fill="#000000"
-            viewBox="0 0 36 36"
-            className="h-6 w-6 rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white dark:hover:bg-gray-700 sm:h-8  sm:w-8"
-            version="1.1"
-            preserveAspectRatio="xMidYMid meet"
-            xmlns="http://www.w3.org/2000/svg"
-            xmlnsXlink="http://www.w3.org/1999/xlink"
-          >
-            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-            <g
-              id="SVGRepo_tracerCarrier"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            ></g>
-            <g id="SVGRepo_iconCarrier">
-              {" "}
-              <path
-                d="M11.86,16.55a4.31,4.31,0,0,0-2.11.56,14.44,14.44,0,0,1,4.36-6,1.1,1.1,0,0,0-1.4-1.7c-4,3.25-5.78,7.75-5.78,10.54A5.08,5.08,0,0,0,10,24.58a4.4,4.4,0,0,0,1.88.44,4.24,4.24,0,1,0,0-8.47Z"
-                className="clr-i-outline clr-i-outline-path-1"
-              ></path>
-              <path
-                d="M23,16.55a4.29,4.29,0,0,0-2.11.56,14.5,14.5,0,0,1,4.35-6,1.1,1.1,0,1,0-1.39-1.7c-4,3.25-5.78,7.75-5.78,10.54a5.08,5.08,0,0,0,3,4.61A4.37,4.37,0,0,0,23,25a4.24,4.24,0,1,0,0-8.47Z"
-                className="clr-i-outline clr-i-outline-path-2"
-              ></path>{" "}
-              <rect x="0" y="0" width="36" height="36" fill-opacity="0"></rect>{" "}
-            </g>
-          </svg>
-        </button>
+
         {/* Clear marks */}
         <button
           onClick={() => editor.chain().focus().unsetAllMarks().run()}
@@ -411,7 +378,7 @@ const MenuBar = ({ editor }: any) => {
         </button>
       </div>
       {/* Formatting  */}
-      <div className="flex border-x border-gray-700 pr-1 sm:p-1">
+      <div className="flex border-x border-gray-700 pr-1 sm:space-x-1 sm:p-1">
         {/* Dropdown */}
         <div className="flex w-8 items-center sm:w-10 lg:hidden">
           <div className="relative inline-block text-left">
@@ -473,7 +440,11 @@ const MenuBar = ({ editor }: any) => {
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
-                  className="h-6 w-6 rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white dark:hover:bg-gray-700 sm:h-8  sm:w-8"
+                  className={
+                    editor.isActive("paragraph")
+                      ? "h-6 w-6 rounded-md bg-gray-200 fill-black p-1 dark:bg-gray-700 dark:fill-white sm:h-8 sm:w-8"
+                      : "h-6 w-6 rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white dark:hover:bg-gray-700 sm:h-8 sm:w-8"
+                  }
                   onClick={() => editor.chain().focus().setParagraph().run()}
                 >
                   <title>Paragraph</title>
@@ -484,7 +455,11 @@ const MenuBar = ({ editor }: any) => {
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
-                  className="h-6 w-6 rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white dark:hover:bg-gray-700 sm:h-8 sm:w-8"
+                  className={
+                    editor.isActive("heading", { level: 1 })
+                      ? "h-6 w-6 rounded-md bg-gray-200 fill-black p-1 dark:bg-gray-700 dark:fill-white sm:h-8 sm:w-8"
+                      : "h-6 w-6 rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white dark:hover:bg-gray-700 sm:h-8 sm:w-8"
+                  }
                   onClick={() =>
                     editor.chain().focus().toggleHeading({ level: 1 }).run()
                   }
@@ -497,7 +472,11 @@ const MenuBar = ({ editor }: any) => {
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
-                  className="h-6 w-6 rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white dark:hover:bg-gray-700 sm:h-8  sm:w-8"
+                  className={
+                    editor.isActive("heading", { level: 2 })
+                      ? "h-6 w-6 rounded-md bg-gray-200 fill-black p-1 dark:bg-gray-700 dark:fill-white sm:h-8 sm:w-8"
+                      : "h-6 w-6 rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white dark:hover:bg-gray-700 sm:h-8 sm:w-8"
+                  }
                   onClick={() =>
                     editor.chain().focus().toggleHeading({ level: 2 }).run()
                   }
@@ -510,7 +489,11 @@ const MenuBar = ({ editor }: any) => {
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
-                  className="h-6 w-6 rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white dark:hover:bg-gray-700 sm:h-8  sm:w-8"
+                  className={
+                    editor.isActive("heading", { level: 3 })
+                      ? "h-6 w-6 rounded-md bg-gray-200 fill-black p-1 dark:bg-gray-700 dark:fill-white sm:h-8 sm:w-8"
+                      : "h-6 w-6 rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white dark:hover:bg-gray-700 sm:h-8 sm:w-8"
+                  }
                   onClick={() =>
                     editor.chain().focus().toggleHeading({ level: 3 }).run()
                   }
@@ -518,6 +501,49 @@ const MenuBar = ({ editor }: any) => {
                   <title>H3</title>
                   <path fill="none" d="M0 0H24V24H0z" />
                   <path d="M22 8l-.002 2-2.505 2.883c1.59.435 2.757 1.89 2.757 3.617 0 2.071-1.679 3.75-3.75 3.75-1.826 0-3.347-1.305-3.682-3.033l1.964-.382c.156.806.866 1.415 1.718 1.415.966 0 1.75-.784 1.75-1.75s-.784-1.75-1.75-1.75c-.286 0-.556.069-.794.19l-1.307-1.547L19.35 10H15V8h7zM4 4v7h7V4h2v16h-2v-7H4v7H2V4h2z" />
+                </svg>
+                {/* Blockquote */}
+                <svg
+                  fill="#000000"
+                  viewBox="0 0 36 36"
+                  className={
+                    editor.isActive("blockquote")
+                      ? "h-6 w-6 rounded-md bg-gray-200 fill-black p-1 dark:bg-gray-700 dark:fill-white sm:h-8 sm:w-8"
+                      : "h-6 w-6 rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white dark:hover:bg-gray-700 sm:h-8 sm:w-8"
+                  }
+                  version="1.1"
+                  preserveAspectRatio="xMidYMid meet"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlnsXlink="http://www.w3.org/1999/xlink"
+                  onClick={() =>
+                    editor.chain().focus().toggleBlockquote().run()
+                  }
+                >
+                  <title>Blockquote</title>
+                  <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  ></g>
+                  <g id="SVGRepo_iconCarrier">
+                    {" "}
+                    <path
+                      d="M11.86,16.55a4.31,4.31,0,0,0-2.11.56,14.44,14.44,0,0,1,4.36-6,1.1,1.1,0,0,0-1.4-1.7c-4,3.25-5.78,7.75-5.78,10.54A5.08,5.08,0,0,0,10,24.58a4.4,4.4,0,0,0,1.88.44,4.24,4.24,0,1,0,0-8.47Z"
+                      className="clr-i-outline clr-i-outline-path-1"
+                    ></path>
+                    <path
+                      d="M23,16.55a4.29,4.29,0,0,0-2.11.56,14.5,14.5,0,0,1,4.35-6,1.1,1.1,0,1,0-1.39-1.7c-4,3.25-5.78,7.75-5.78,10.54a5.08,5.08,0,0,0,3,4.61A4.37,4.37,0,0,0,23,25a4.24,4.24,0,1,0,0-8.47Z"
+                      className="clr-i-outline clr-i-outline-path-2"
+                    ></path>{" "}
+                    <rect
+                      x="0"
+                      y="0"
+                      width="36"
+                      height="36"
+                      fill-opacity="0"
+                    ></rect>{" "}
+                  </g>
                 </svg>
                 {/* Clear nodes  */}
                 <svg
@@ -563,7 +589,11 @@ const MenuBar = ({ editor }: any) => {
         {/* Paragraph  */}
         <button
           onClick={() => editor.chain().focus().setParagraph().run()}
-          className="hidden lg:block"
+          className={
+            editor.isActive("paragraph")
+              ? "hidden rounded-md bg-gray-200 dark:bg-gray-700 lg:block"
+              : "hidden lg:block"
+          }
           title="Paragraph"
         >
           <svg
@@ -580,7 +610,11 @@ const MenuBar = ({ editor }: any) => {
           onClick={() =>
             editor.chain().focus().toggleHeading({ level: 1 }).run()
           }
-          className="hidden lg:block"
+          className={
+            editor.isActive("heading", { level: 1 })
+              ? "hidden rounded-md bg-gray-200 dark:bg-gray-700 lg:block"
+              : "hidden lg:block"
+          }
           title="H1"
         >
           <svg
@@ -597,7 +631,11 @@ const MenuBar = ({ editor }: any) => {
           onClick={() =>
             editor.chain().focus().toggleHeading({ level: 2 }).run()
           }
-          className="hidden lg:block"
+          className={
+            editor.isActive("heading", { level: 2 })
+              ? "hidden rounded-md bg-gray-200 dark:bg-gray-700 lg:block"
+              : "hidden lg:block"
+          }
           title="H2"
         >
           <svg
@@ -614,7 +652,11 @@ const MenuBar = ({ editor }: any) => {
           onClick={() =>
             editor.chain().focus().toggleHeading({ level: 3 }).run()
           }
-          className="hidden lg:block"
+          className={
+            editor.isActive("heading", { level: 3 })
+              ? "hidden rounded-md bg-gray-200 dark:bg-gray-700 lg:block"
+              : "hidden lg:block"
+          }
           title="H3"
         >
           <svg
@@ -624,6 +666,45 @@ const MenuBar = ({ editor }: any) => {
           >
             <path fill="none" d="M0 0H24V24H0z" />
             <path d="M22 8l-.002 2-2.505 2.883c1.59.435 2.757 1.89 2.757 3.617 0 2.071-1.679 3.75-3.75 3.75-1.826 0-3.347-1.305-3.682-3.033l1.964-.382c.156.806.866 1.415 1.718 1.415.966 0 1.75-.784 1.75-1.75s-.784-1.75-1.75-1.75c-.286 0-.556.069-.794.19l-1.307-1.547L19.35 10H15V8h7zM4 4v7h7V4h2v16h-2v-7H4v7H2V4h2z" />
+          </svg>
+        </button>
+        {/* Blockquote */}
+        <button
+          onClick={() => editor.chain().focus().toggleBlockquote().run()}
+          className={
+            editor.isActive("blockquote")
+              ? "hidden rounded-md bg-gray-200 dark:bg-gray-700 lg:block"
+              : "hidden lg:block"
+          }
+          title="Blockquote"
+        >
+          <svg
+            fill="#000000"
+            viewBox="0 0 36 36"
+            className="h-6 w-6 rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white dark:hover:bg-gray-700 sm:h-8  sm:w-8"
+            version="1.1"
+            preserveAspectRatio="xMidYMid meet"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlnsXlink="http://www.w3.org/1999/xlink"
+          >
+            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+            <g
+              id="SVGRepo_tracerCarrier"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            ></g>
+            <g id="SVGRepo_iconCarrier">
+              {" "}
+              <path
+                d="M11.86,16.55a4.31,4.31,0,0,0-2.11.56,14.44,14.44,0,0,1,4.36-6,1.1,1.1,0,0,0-1.4-1.7c-4,3.25-5.78,7.75-5.78,10.54A5.08,5.08,0,0,0,10,24.58a4.4,4.4,0,0,0,1.88.44,4.24,4.24,0,1,0,0-8.47Z"
+                className="clr-i-outline clr-i-outline-path-1"
+              ></path>
+              <path
+                d="M23,16.55a4.29,4.29,0,0,0-2.11.56,14.5,14.5,0,0,1,4.35-6,1.1,1.1,0,1,0-1.39-1.7c-4,3.25-5.78,7.75-5.78,10.54a5.08,5.08,0,0,0,3,4.61A4.37,4.37,0,0,0,23,25a4.24,4.24,0,1,0,0-8.47Z"
+                className="clr-i-outline clr-i-outline-path-2"
+              ></path>{" "}
+              <rect x="0" y="0" width="36" height="36" fill-opacity="0"></rect>{" "}
+            </g>
           </svg>
         </button>
         {/* Clear nodes  */}
@@ -663,7 +744,7 @@ const MenuBar = ({ editor }: any) => {
         </button>
       </div>
       {/* Align  */}
-      <div className="flex border-x border-gray-700 pr-1 sm:p-1">
+      <div className="flex border-x border-gray-700 pr-1 sm:space-x-1 sm:p-1">
         {/* Dropdown Menu */}
         <div className="flex w-8 items-center sm:w-10 lg:hidden">
           <div className="relative inline-block text-left">
@@ -725,7 +806,11 @@ const MenuBar = ({ editor }: any) => {
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
-                  className="h-6 w-6 rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white dark:hover:bg-gray-700 sm:h-8  sm:w-8"
+                  className={
+                    editor.isActive({ textAlign: "left" })
+                      ? "h-6 w-6 rounded-md bg-gray-200 fill-black p-1 dark:bg-gray-700 dark:fill-white sm:h-8 sm:w-8"
+                      : "h-6 w-6 rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white dark:hover:bg-gray-700 sm:h-8 sm:w-8"
+                  }
                   onClick={() =>
                     editor.chain().focus().setTextAlign("left").run()
                   }
@@ -738,7 +823,11 @@ const MenuBar = ({ editor }: any) => {
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
-                  className="h-6 w-6 rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white dark:hover:bg-gray-700 sm:h-8  sm:w-8"
+                  className={
+                    editor.isActive({ textAlign: "center" })
+                      ? "h-6 w-6 rounded-md bg-gray-200 fill-black p-1 dark:bg-gray-700 dark:fill-white sm:h-8 sm:w-8"
+                      : "h-6 w-6 rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white dark:hover:bg-gray-700 sm:h-8 sm:w-8"
+                  }
                   onClick={() =>
                     editor.chain().focus().setTextAlign("center").run()
                   }
@@ -752,7 +841,11 @@ const MenuBar = ({ editor }: any) => {
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
-                  className="h-6 w-6 rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white dark:hover:bg-gray-700 sm:h-8  sm:w-8"
+                  className={
+                    editor.isActive({ textAlign: "right" })
+                      ? "h-6 w-6 rounded-md bg-gray-200 fill-black p-1 dark:bg-gray-700 dark:fill-white sm:h-8 sm:w-8"
+                      : "h-6 w-6 rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white dark:hover:bg-gray-700 sm:h-8 sm:w-8"
+                  }
                   onClick={() =>
                     editor.chain().focus().setTextAlign("right").run()
                   }
@@ -766,7 +859,11 @@ const MenuBar = ({ editor }: any) => {
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
-                  className="h-6 w-6 rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white dark:hover:bg-gray-700 sm:h-8  sm:w-8"
+                  className={
+                    editor.isActive({ textAlign: "justify" })
+                      ? "h-6 w-6 rounded-md bg-gray-200 fill-black p-1 dark:bg-gray-700 dark:fill-white sm:h-8 sm:w-8"
+                      : "h-6 w-6 rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white dark:hover:bg-gray-700 sm:h-8 sm:w-8"
+                  }
                   onClick={() =>
                     editor.chain().focus().setTextAlign("justify").run()
                   }
@@ -782,7 +879,11 @@ const MenuBar = ({ editor }: any) => {
         {/* Left Align  */}
         <button
           onClick={() => editor.chain().focus().setTextAlign("left").run()}
-          className="hidden lg:block"
+          className={
+            editor.isActive({ textAlign: "left" })
+              ? "hidden rounded-md bg-gray-200 dark:bg-gray-700 lg:block"
+              : "hidden lg:block"
+          }
           title="Align left"
         >
           <svg
@@ -797,7 +898,11 @@ const MenuBar = ({ editor }: any) => {
         {/* Center Align  */}
         <button
           onClick={() => editor.chain().focus().setTextAlign("center").run()}
-          className="hidden lg:block"
+          className={
+            editor.isActive({ textAlign: "center" })
+              ? "hidden rounded-md bg-gray-200 dark:bg-gray-700 lg:block"
+              : "hidden lg:block"
+          }
           title="Align center"
         >
           <svg
@@ -812,7 +917,11 @@ const MenuBar = ({ editor }: any) => {
         {/* Right Align  */}
         <button
           onClick={() => editor.chain().focus().setTextAlign("right").run()}
-          className="hidden lg:block"
+          className={
+            editor.isActive({ textAlign: "right" })
+              ? "hidden rounded-md bg-gray-200 dark:bg-gray-700 lg:block"
+              : "hidden lg:block"
+          }
           title="Align right"
         >
           <svg
@@ -827,7 +936,11 @@ const MenuBar = ({ editor }: any) => {
         {/* Justify Content  */}
         <button
           onClick={() => editor.chain().focus().setTextAlign("justify").run()}
-          className="hidden lg:block"
+          className={
+            editor.isActive({ textAlign: "justify" })
+              ? "hidden rounded-md bg-gray-200 dark:bg-gray-700 lg:block"
+              : "hidden lg:block"
+          }
           title="Justify"
         >
           <svg
@@ -841,11 +954,15 @@ const MenuBar = ({ editor }: any) => {
         </button>
       </div>
       {/* List  */}
-      <div className="flex border-x border-gray-700 p-1">
+      <div className="flex border-x border-gray-700 p-1 sm:space-x-1">
         {/* Bullet List  */}
         <button
           onClick={() => editor.chain().focus().toggleBulletList().run()}
-          className={editor.isActive("bulletList") ? "is-active" : ""}
+          className={
+            editor.isActive("bulletList")
+              ? "rounded-md bg-gray-200 dark:bg-gray-700"
+              : ""
+          }
           title="Bullet list"
         >
           <svg
@@ -860,7 +977,11 @@ const MenuBar = ({ editor }: any) => {
         {/* Ordered List  */}
         <button
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
-          className={editor.isActive("orderedList") ? "is-active" : ""}
+          className={
+            editor.isActive("orderedList")
+              ? "rounded-md bg-gray-200 dark:bg-gray-700"
+              : ""
+          }
           title="Ordered list"
         >
           <svg
@@ -874,7 +995,7 @@ const MenuBar = ({ editor }: any) => {
         </button>
       </div>
       {/* Extra  */}
-      <div className="flex border-l border-gray-700 p-1">
+      <div className="flex border-l border-gray-700 p-1 sm:space-x-1">
         {/* Horizontal Rule  */}
         <button
           id="horizontal-rule"

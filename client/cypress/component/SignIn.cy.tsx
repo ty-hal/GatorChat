@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
 import SignIn from "../../src/pages/SignIn";
+
 /// <reference types="cypress" />
 
 describe("<SignIn />", () => {
@@ -26,7 +27,7 @@ describe("<SignIn />", () => {
     cy.get("#submit").click();
   });
 
-  it("invalid login", () => {
+  it("valid login", () => {
     // see: https://on.cypress.io/mounting-react
     cy.mount(
       <BrowserRouter>

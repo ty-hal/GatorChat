@@ -42,7 +42,7 @@ export default function App() {
         <Route path="terms-and-conditions" element={<TermsAndConditions />} />
         <Route path="settings" element={<Settings />} />
         <Route path="faq" element={<FAQ />} />
-        <Route path="contactus" element={<Contactus />} />
+        <Route path="contact-us" element={<Contactus />} />
         <Route path="*" element={<NoPage />} />
       </Routes>
     </div>

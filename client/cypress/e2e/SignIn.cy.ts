@@ -12,7 +12,7 @@ describe('sign in spec', () => {
     cy.get("#email").type("random@ufl.edu");
     cy.get("#password").type("Mypassword@123");
     cy.get("#submit").click();
-    cy.url().should('not.include', '/sign-in');
+    cy.url().should("eq", Cypress.config().baseUrl + "/");
   })
 
   it('remember me feature', () => {
@@ -21,7 +21,6 @@ describe('sign in spec', () => {
     cy.get("#password").type("Something");
     cy.get("#remember").click();
     cy.window().its('localStorage').invoke('getItem', 'login-information').then(JSON.parse).should('deep.equal', {email: 'fake@email.com', password: 'Something', remember_me: true})
-
     cy.get("#remember").click();
     cy.window().its('localStorage').invoke('getItem', 'login-information').then(JSON.parse).should('deep.equal', null)
   })

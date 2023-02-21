@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useAtom } from "jotai";
 import { darkModeAtom } from "../App";
 
-const Layout = () => {
+const Header = () => {
   const [showDropDown, setShowDropDown] = useState<boolean>(false);
   const [darkMode, setDarkMode] = useAtom(darkModeAtom);
 
@@ -50,6 +50,7 @@ const Layout = () => {
       </svg>
     </div>
   );
+
   return (
     <div className="flex flex-wrap border-b-4 border-b-blue-600">
       <section className="relative mx-auto">
@@ -57,7 +58,10 @@ const Layout = () => {
           <div className="flex w-full items-center px-5 py-6 xl:px-12">
             {/* Logo  */}
             <Link to="/">
-              <span className="cursor-pointer rounded-lg p-1 text-3xl font-bold">
+              <span
+                className="cursor-pointer rounded-lg p-1 text-3xl font-bold"
+                id="logo"
+              >
                 Logo
               </span>
             </Link>
@@ -65,19 +69,28 @@ const Layout = () => {
               {/* Navigation Bar */}
               <Link to="/">
                 {" "}
-                <span className="rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2">
+                <span
+                  className="rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2"
+                  id="home"
+                >
                   Home
                 </span>
               </Link>
               <Link to="/sign-in">
                 {" "}
-                <span className="rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2">
+                <span
+                  className="rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2"
+                  id="sign-in"
+                >
                   Sign in
                 </span>
               </Link>
               <Link to="/register">
                 {" "}
-                <span className="mr-6 rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2">
+                <span
+                  className="mr-6 rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2"
+                  id="register"
+                >
                   Register
                 </span>
               </Link>
@@ -116,7 +129,7 @@ const Layout = () => {
                           <span
                             className="block px-4 py-2 text-sm text-gray-700 hover:rounded-t-md hover:bg-blue-300 hover:text-black"
                             role="menuitem"
-                            id="menu-item-0"
+                            id="settings"
                           >
                             Settings
                           </span>
@@ -124,7 +137,7 @@ const Layout = () => {
                         <span
                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300 hover:text-black"
                           role="menuitem"
-                          id="menu-item-1"
+                          id="my-account"
                         >
                           My Account
                         </span>
@@ -133,19 +146,21 @@ const Layout = () => {
                         <span
                           className="block py-2 pl-4 text-sm text-gray-700 hover:bg-blue-300 hover:text-black"
                           role="menuitem"
-                          id="menu-item-6"
+                          id="theme"
                           onClick={() => setDarkMode(!darkMode)}
                         >
                           {darkMode ? lightModeText : darkModeText}
                         </span>
 
-                        <span
-                          className="block px-4 py-2 text-sm text-gray-700 hover:rounded-b-md hover:bg-blue-300 hover:text-black"
-                          role="menuitem"
-                          id="menu-item-6"
-                        >
-                          Sign out
-                        </span>
+                        <Link to="/">
+                          <span
+                            className="block px-4 py-2 text-sm text-gray-700 hover:rounded-b-md hover:bg-blue-300 hover:text-black"
+                            role="menuitem"
+                            id="sign-out"
+                          >
+                            Sign out
+                          </span>
+                        </Link>
                       </div>
                     </div>
                   )}
@@ -159,4 +174,4 @@ const Layout = () => {
   );
 };
 
-export default Layout;
+export default Header;

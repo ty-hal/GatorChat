@@ -13,6 +13,7 @@ const ProfilePicture: React.FC<Props> = ({ image, className }) => {
     // If there is no image, return default image
     return (
       <svg
+        id="profilePicture"
         className="h-12 w-12 text-gray-400"
         fill="currentColor"
         viewBox="0 0 20 20"

@@ -1111,14 +1111,21 @@ export const RichTextEditor: React.FC<Props> = ({ setText }) => {
         e.stopPropagation()
       }
     >
-      <MenuBar editor={editor} />
-      <EditorContent
-        editor={editor}
-        id="editor-content"
-        className="mx-auto w-full cursor-text rounded-b-lg border border-gray-600 bg-gray-50 p-2  text-gray-900 dark:border-gray-600
+      <div id="menu-bar">
+        <MenuBar editor={editor} />
+      </div>
+      <div id="editor">
+        <EditorContent
+          editor={editor}
+          id="editor-content"
+          className="mx-auto w-full cursor-text rounded-b-lg border border-gray-600 bg-gray-50 p-2  text-gray-900 dark:border-gray-600
         dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 focus:dark:border-blue-600 "
-      />
-      <div className="mx-auto my-2 w-full text-right text-gray-400">
+        />
+      </div>
+      <div
+        className="mx-auto my-2 w-full text-right text-gray-400"
+        id="char-count"
+      >
         {editor?.storage?.characterCount.characters()}/4000 characters
       </div>
     </div>

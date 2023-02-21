@@ -91,20 +91,26 @@ const Message: React.FC<Props> = ({
       {/* Profile Picture, Username, Date, and Dropdown */}
       <div className="absolute top-3 flex w-full items-center">
         {/* Profile Picture */}
-        <div className="ml-3 h-10 w-10 overflow-hidden rounded-full bg-white dark:bg-gray-600">
+        <div
+          className="ml-3 h-10 w-10 overflow-hidden rounded-full bg-white dark:bg-gray-600"
+          id="profile-picture"
+        >
           <ProfilePicture image={profilePicture} />
         </div>
 
         {/* Username and Time  */}
         <div className="ml-4 flex flex-col text-left text-sm sm:flex-row sm:items-center sm:space-x-2">
           <div className="text-base font-bold sm:text-lg">{username}</div>
-          <div className="text-black dark:text-gray-300 sm:text-base">
+          <div
+            className="text-black dark:text-gray-300 sm:text-base"
+            id="post-time"
+          >
             {" posted "}
             {postTimeDifference}
           </div>
         </div>
         {/* Message Menu  */}
-        <div className="ml-auto mr-6">
+        <div className="ml-auto mr-6" id="dropdown-button">
           <svg
             onClick={(e) => {
               e.stopPropagation();
@@ -140,13 +146,14 @@ const Message: React.FC<Props> = ({
                 "absolute z-10 w-28 origin-top-right divide-y divide-gray-300 rounded-md bg-white shadow-lg ring-1 ring-blue-200 focus:outline-none"
               }
               role="menu"
-              id="Dropdown-content"
+              id="dropdown-content"
             >
               <div className="cursor-pointer" role="none">
+                {/* Copy */}
                 <div
                   className="flex items-center py-2 text-sm text-gray-700 hover:rounded-t-md hover:bg-blue-200 hover:text-black"
                   role="menuitem"
-                  id="menu-item-3"
+                  id="copy"
                   onClick={(e) => {
                     e.stopPropagation();
                     setShowDropdown(false);
@@ -181,7 +188,7 @@ const Message: React.FC<Props> = ({
                   <div className="">Copy</div>
                   <div className="flex-1"></div>
                 </div>
-
+                {/* Report */}
                 <div
                   className="flex items-center py-2 text-sm text-gray-700 hover:bg-blue-200 hover:text-black "
                   role="menuitem"
@@ -299,6 +306,7 @@ const Message: React.FC<Props> = ({
         {/* Likes */}
         <div
           className="flex cursor-pointer items-center rounded-md px-1 hover:bg-gray-300 dark:hover:bg-slate-700"
+          id="like-button"
           onClick={(e) => {
             e.stopPropagation();
             setShowDropdown(false);
@@ -327,7 +335,9 @@ const Message: React.FC<Props> = ({
               d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
             ></path>
           </svg>
-          <div className="ml-2">{numLikes} likes</div>
+          <div className="ml-2" id="num-likes">
+            {numLikes} likes
+          </div>
         </div>
         {/* Reply  */}
         <div

@@ -17,7 +17,7 @@ const Footer = () => {
                 <span
                   className="cursor-pointer font-medium text-gray-900 dark:text-white md:text-lg"
                   role="menuitem"
-                  id="menu-item-0"
+                  id="faq"
                 >
                   FAQs
                 </span>
@@ -29,7 +29,7 @@ const Footer = () => {
                 <span
                   className="cursor-pointer font-medium text-gray-900 dark:text-white md:text-lg"
                   role="menuitem"
-                  id="menu-item-0"
+                  id="settings"
                 >
                   Settings
                 </span>
@@ -37,11 +37,12 @@ const Footer = () => {
             </div>
 
             <div className="col-span-2 sm:col-span-1">
-              <Link to ="/contactus">
+              <Link to="/contact-us">
                 <span
-                className ="cursor-pointer font-medium text-gray-900 dark:text-white md:text-lg"
-                role = "menuitem"
-                id="menu-item-0">
+                  className="cursor-pointer font-medium text-gray-900 dark:text-white md:text-lg"
+                  role="menuitem"
+                  id="contact-us"
+                >
                   Contact Us
                 </span>
               </Link>
@@ -53,7 +54,9 @@ const Footer = () => {
                 className="cursor-pointer  text-gray-900 dark:text-white md:text-lg"
               >
                 {" "}
-                <span className="mr-4 font-medium">Sign in</span>
+                <span className="mr-4 font-medium" id="sign-in">
+                  Sign in
+                </span>
               </Link>
             </div>
 
@@ -63,7 +66,9 @@ const Footer = () => {
                 className="cursor-pointer  text-gray-900 dark:text-white md:text-lg"
               >
                 {" "}
-                <span className="mr-4 font-medium">Register</span>
+                <span className="mr-4 font-medium" id="register">
+                  Register
+                </span>
               </Link>
             </div>
 
@@ -84,8 +89,7 @@ const Footer = () => {
             <div className="col-span-2 lg:col-span-3 lg:flex lg:items-end">
               <form className="w-full">
                 <label htmlFor="UserEmail" className="sr-only">
-                  {" "}
-                  Email{" "}
+                  Email
                 </label>
 
                 <div className="border border-gray-100 p-2 focus-within:ring dark:border-gray-800 sm:flex sm:items-center sm:gap-4">
@@ -120,7 +124,12 @@ const Footer = () => {
                     className="text-gray-500 transition hover:opacity-75 dark:text-gray-400"
                   >
                     {" "}
-                    <span className="mr-4 font-medium">Terms & Conditions</span>
+                    <span
+                      className="mr-4 font-medium"
+                      id="terms-and-conditions"
+                    >
+                      Terms & Conditions
+                    </span>
                   </Link>
                 </li>
 

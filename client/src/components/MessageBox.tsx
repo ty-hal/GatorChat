@@ -19,6 +19,15 @@ const MessageBox: React.FC<props> = ({}) => {
   const submitMessage = () => {
     console.log(message);
     // API CALL TO POST MESSAGE
+
+    // After successful API call, clear states and message div
+    setMessage("");
+    setCurrentEmoji(null);
+    setSelectedImage(undefined);
+    let messageDiv = document.getElementById("message");
+    if (messageDiv) {
+      messageDiv.innerText = "";
+    }
   };
   useEffect(() => {
     if (messageElem && currentEmoji) {
@@ -59,6 +68,7 @@ const MessageBox: React.FC<props> = ({}) => {
       <div className="relative">
         <button
           type="button"
+          id="emoji-button"
           className="inline-flex 
         h-8 cursor-pointer 
         justify-center rounded-lg p-1 text-gray-500 hover:bg-gray-100 hover:text-gray-900 
@@ -84,7 +94,7 @@ const MessageBox: React.FC<props> = ({}) => {
           </svg>
         </button>
         {emojiPicker && (
-          <div className="absolute top-10  -left-12">
+          <div className="absolute top-10 -left-12" id="emoji-selector">
             <Picker
               data={data}
               previewPosition="none"
@@ -131,6 +141,7 @@ const MessageBox: React.FC<props> = ({}) => {
         className="inline-flex h-8 cursor-pointer justify-center rounded-full p-1 text-blue-600 hover:bg-blue-100 
             dark:text-blue-500 dark:hover:bg-gray-600 md:h-10 md:p-2"
         onClick={submitMessage}
+        id="submit-message"
       >
         <svg
           aria-hidden="true"

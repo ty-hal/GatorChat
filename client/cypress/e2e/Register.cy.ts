@@ -12,7 +12,7 @@ describe('register spec', () => {
     cy.get('#terms').click();
     cy.get('#create-an-account').click();
     // FIGURE OUT HOW TO DELETE USER BEFORE THIS RUNS
-    // cy.url().should('not.include', '/register');
+    // cy.url().should("eq", Cypress.config().baseUrl + "/");
   })
 
   it('try to register an existing account', () => {
@@ -48,7 +48,7 @@ describe('register spec', () => {
     cy.get('#create-an-account').should('not.be.disabled');
     cy.get('#terms').then($el => ($el[0] as HTMLInputElement).checkValidity()).should('be.false')
     cy.get('#terms').click();
-    // cy.url().should('not.include', '/register');
+    // cy.url().should("eq", Cypress.config().baseUrl + "/");
   })
 
 })

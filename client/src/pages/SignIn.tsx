@@ -178,6 +178,7 @@ Mypassword@123
                 <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                   <svg
                     fill="none"
+                    id="eye"
                     onClick={() => {
                       setShowPassword(!showPassword);
                     }}
@@ -244,13 +245,15 @@ Mypassword@123
                   </label>
                 </div>
               </div>
-              <Link
-                to="/forgot-password"
+              <div
                 className="text-sm font-medium text-blue-600 hover:underline"
+                id="forgot-password"
               >
-                {" "}
-                <span> Forgot password?</span>
-              </Link>
+                <Link to="/forgot-password">
+                  {" "}
+                  <span> Forgot password?</span>
+                </Link>
+              </div>
             </div>
             {/* Submit */}
             <button

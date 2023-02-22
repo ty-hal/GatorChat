@@ -12,7 +12,7 @@
 
 ### Backend:
 (WRITE STUFF)
-
+___
 ## Unit tests and Cypress test for frontend
 ### Unit (Cypress component) tests: 
 **Accordion**: renders, collapsed question, expanded question
@@ -39,9 +39,9 @@
 **Register**: successfully register account, try to register an existing account, try to register before entering all information
 
 **Sign In**:, unsuccessful login, successful login, remember me feature, forgot password, toggle show password
-
+___
 ## Unit tests for backend:
 (WRITE STUFF)
-
+___
 ## Documentation for backend API:
 (WRITE STUFF)

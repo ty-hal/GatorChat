@@ -33,7 +33,7 @@ const FAQ = () => {
       id: 5,
       question: "How do I start a new thread?",
       answer:
-        "To start a new thread, click on the 'New Thread' button within the forum you would like to post in. Enter a title and message for your thread, and click 'Post'.",
+        "To start a new thread, click on the 'New Thread' button within the forum you would like to post in. Enter a question and message for your thread, and click 'Post'.",
     },
     {
       id: 6,
@@ -76,9 +76,9 @@ const FAQ = () => {
         {FAQs.map((FAQs) => {
           return (
             <Accordion
-              title={FAQs.question}
+              question={FAQs.question}
               id={FAQs.id}
-              children={FAQs.answer}
+              answer={FAQs.answer}
               index={index}
               setIndex={setIndex}
               onClick={() => setIndex(0)}

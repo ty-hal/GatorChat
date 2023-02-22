@@ -38,11 +38,6 @@ const Home = () => {
           </Link>
         );
       })}
-      <Link to="/sample-messages">
-        <div className="cursor-pointer font-medium text-gray-900 dark:text-white md:text-lg">
-          Sample Messages
-        </div>
-      </Link>
       {/*<Link to="/sample-threads">
         <div className="cursor-pointer font-medium text-gray-900 dark:text-white md:text-lg">
           Sample Threads

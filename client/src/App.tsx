@@ -13,7 +13,6 @@ import Settings from "./pages/Settings";
 import FAQ from "./pages/FAQ";
 import Contactus from "./pages/Contactus";
 //Delete eventually
-import SampleMessages from "./pages/DeleteLater/SampleMessages";
 import SampleThreadsPreview from "./pages/DeleteLater/SampleThreadsPreview";
 import SampleThread from "./pages/DeleteLater/SampleThread";
 
@@ -29,7 +28,6 @@ export default function App() {
       <Routes>
         <Route index element={<Home />} />
         {/* Eventually delete these samples/turn them into actual pages */}
-        <Route path="sample-messages" element={<SampleMessages />} />
         <Route
           path="sample-threads-preview"
           element={<SampleThreadsPreview />}

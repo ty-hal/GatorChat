@@ -97,14 +97,20 @@ const Thread: React.FC<Props> = ({
       {/* Profile Picture, Username, Date, and Dropdown */}
       <div className="absolute top-3 flex w-full items-center">
         {/* Profile Picture */}
-        <div className="ml-3 h-10 w-10 overflow-hidden rounded-full bg-white dark:bg-gray-600">
+        <div
+          className="ml-3 h-10 w-10 overflow-hidden rounded-full bg-white dark:bg-gray-600"
+          id="profile-picture"
+        >
           <ProfilePicture image={profilePicture} />
         </div>
 
         {/* Username and Time  */}
         <div className="ml-4 flex flex-col text-left text-sm sm:flex-row sm:items-center sm:space-x-2">
           <div className="text-base font-bold sm:text-lg">{username}</div>
-          <div className="text-black dark:text-gray-300 sm:text-base">
+          <div
+            className="text-black dark:text-gray-300 sm:text-base"
+            id="post-time"
+          >
             {" posted "}
             {postTimeDifference}
           </div>
@@ -131,6 +137,7 @@ const Thread: React.FC<Props> = ({
         {/* Likes */}
         <div
           className="flex cursor-pointer items-center rounded-md px-1 hover:bg-gray-300 dark:hover:bg-slate-700"
+          id="like-button"
           onClick={(e) => {
             e.stopPropagation();
             setShowDropdown(false);
@@ -159,7 +166,7 @@ const Thread: React.FC<Props> = ({
               d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
             ></path>
           </svg>
-          <div className="ml-1">
+          <div className="ml-1" id="num-likes">
             {numLikes}
             <span className="hidden sm:inline"> likes</span>
           </div>

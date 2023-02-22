@@ -68,7 +68,10 @@ const CreateThread: React.FC<Props> = ({ section_id }) => {
         toggleOpenEditor(!openEditor);
       }}
     >
-      <div className="rounded-2xl py-2 text-center text-lg font-semibold text-gray-900 hover:bg-gray-400 dark:text-white dark:hover:bg-gray-700">
+      <div
+        className="rounded-2xl py-2 text-center text-lg font-semibold text-gray-900 hover:bg-gray-400 dark:text-white dark:hover:bg-gray-700"
+        id="create-a-thread"
+      >
         Create a thread
       </div>
       {openEditor && (
@@ -81,16 +84,20 @@ const CreateThread: React.FC<Props> = ({ section_id }) => {
           <div className="mx-auto w-11/12">
             <input
               type="text"
+              id="title"
               className="w-full break-normal rounded-lg border border-gray-600 bg-gray-50 p-2 text-gray-900 focus:border-gray-600 focus:outline-none focus:outline-0 focus:ring-0 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-gray-200"
               placeholder="Title"
               maxLength={300}
               onChange={(e) => setTitle(e.currentTarget.value)}
             />
-            <div className="mx-auto mt-2 w-full text-right text-gray-400">
+            <div
+              className="mx-auto mt-2 w-full text-right text-gray-400"
+              id="title-length"
+            >
               {title.length}/300 characters
             </div>
           </div>
-          <div className="mx-auto w-11/12">
+          <div className="mx-auto w-11/12" id="text">
             <RichTextEditor setText={setText} />
           </div>
 
@@ -101,6 +108,7 @@ const CreateThread: React.FC<Props> = ({ section_id }) => {
                 <button
                   className="rounded-lg border border-black bg-blue-600 py-1 px-2 text-white hover:bg-blue-700 dark:border-gray-200 dark:hover:bg-blue-800"
                   onClick={submitThread}
+                  id="submit"
                 >
                   Create thread
                 </button>

@@ -1,22 +1,24 @@
 type Props = {
-  title: string;
-  children: string;
+  question: string;
+  answer: string;
   id: number;
   index: number;
-  setIndex: React.Dispatch<React.SetStateAction<number>>;
-  onClick: () => void;
+  setIndex?: React.Dispatch<React.SetStateAction<number>>;
+  onClick?: () => void;
 };
 
 const Accordion: React.FC<Props> = ({
-  title,
-  children,
+  question,
+  answer,
   id,
   index,
   setIndex,
 }) => {
   const handleSetIndex = (id: number) => {
-    if (index !== id) setIndex(id);
-    else setIndex(0);
+    if (setIndex !== undefined) {
+      if (index !== id) setIndex(id);
+      else setIndex(0);
+    }
   };
 
   let expanded = (
@@ -34,7 +36,6 @@ const Accordion: React.FC<Props> = ({
       ></path>
     </svg>
   );
-
   let collapsed = (
     <svg
       data-accordion-icon
@@ -60,11 +61,11 @@ const Accordion: React.FC<Props> = ({
       >
         <div className="group flex cursor-pointer ">
           <div
-            id={`title-${id}`}
+            id={`question-${id}`}
             className="pl-4 font-bold text-white group-hover:text-blue-500 dark:text-gray-900  md:pl-10"
             onClick={() => {}}
           >
-            {title}
+            {question}
           </div>
         </div>
 
@@ -74,8 +75,11 @@ const Accordion: React.FC<Props> = ({
       </div>
 
       {index === id && (
-        <div className="mb-2 mt-0.5  h-auto w-full rounded-md border-l-2 border-blue-300  bg-blue-200 p-4 font-semibold text-gray-700 md:w-4/5 md:pl-10 2xl:w-3/4">
-          {children}
+        <div
+          className="mb-2 mt-0.5  h-auto w-full rounded-md border-l-2 border-blue-300  bg-blue-200 p-4 font-semibold text-gray-700 md:w-4/5 md:pl-10 2xl:w-3/4"
+          id="answer"
+        >
+          {answer}
         </div>
       )}
     </>

@@ -29,10 +29,10 @@ func GetSectionByID(section_id uint8) (Section, error) {
 	return section, nil
 }
 
-func GetSectionThreads(section_id uint8) []Thread {
+func GetSectionThreads(section_id uint8, pageNumber int, pageSize int) []Thread {
 	var threads []Thread
 
-	for _, thread := range GetAllThreads() {
+	for _, thread := range GetAllThreadsWithOffset(pageNumber, pageSize) {
 		if thread.SectionID == section_id {
 			creator, err := GetUserByID(thread.UserID)
 

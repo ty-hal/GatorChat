@@ -27,6 +27,14 @@ func GetAllThreads() []Thread {
 	return threads
 }
 
+func GetAllThreadsWithOffset(pageNumber int, pageSize int) []Thread {
+	var threads []Thread
+
+	middleware.DB.Offset((pageNumber - 1) * pageSize).Limit(pageSize).Find(&threads)
+
+	return threads
+}
+
 func GetThreadById(threadID uint8) (Thread, error) {
 	var thread Thread
 

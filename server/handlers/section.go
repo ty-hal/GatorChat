@@ -48,7 +48,10 @@ func GetSectionThreads(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	params := mux.Vars(r)
+	queryParams := r.URL.Query()
 	id, err := strconv.Atoi(params["id"])
+	pageNumber, _ := strconv.Atoi(queryParams.Get("pageNumber"))
+	pageSize, _ := strconv.Atoi(queryParams.Get("pageSize"))
 
 	// Invalid parameter
 	if err != nil {
@@ -57,7 +60,8 @@ func GetSectionThreads(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	section_threads := models.GetSectionThreads(uint8(id))
+	//section_threads := models.GetSectionThreads(uint8(id))
+	section_threads := models.GetSectionThreads(uint8(id), pageNumber, pageSize)
 
 	json.NewEncoder(w).Encode(section_threads)
 }

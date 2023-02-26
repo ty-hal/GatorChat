@@ -58,17 +58,11 @@ func CreateUser(user User) (User, error) {
 	return user, nil
 }
 
-func DeleteUser(id uint8) (User, error) {
-	var user User
-	var err error
+func DeleteUser(user User) (User, error) {
+	//result := middleware.DB.Where("", id).Delete()
 
-	db := middleware.DB.Delete(&user, id)
-
-	if db.RowsAffected == 0 {
-		err = errors.New("User Not Found")
-	}
-
-	return user, err
+	//return user, err
+	return user, nil
 }
 
 func (u *User) Update() {

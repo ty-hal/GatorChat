@@ -42,6 +42,16 @@ func CreatePost(post Post) Post {
 	return post
 }
 
+func DeletePost(post Post) (Post, error) {
+	result := middleware.DB.Unscoped().Where("post_id = ?", post.PostID).Delete(&Post{})
+
+	if result.Error != nil {
+		return post, result.Error
+	}
+
+	return post, nil
+}
+
 func (p *Post) GetThread() (Thread, error) {
 	var thread Thread
 

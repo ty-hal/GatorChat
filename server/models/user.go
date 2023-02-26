@@ -58,11 +58,11 @@ func CreateUser(user User) (User, error) {
 	return user, nil
 }
 
-func DeleteUser(user User) (User, error) {
+func DeleteUser(id uint8) (int, error) {
 	//result := middleware.DB.Where("", id).Delete()
 
 	//return user, err
-	return user, nil
+	return 1, nil
 }
 
 func (u *User) Update() {

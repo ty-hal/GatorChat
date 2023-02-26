@@ -58,9 +58,22 @@ func CreateUser(user User) (User, error) {
 	return user, nil
 }
 
+<<<<<<< HEAD
 //func (u *User) Update() {
 // figure out criteria for that later, gonna be multiple update functions
 //}
+=======
+func DeleteUser(id uint8) (int, error) {
+	//result := middleware.DB.Where("", id).Delete()
+
+	//return user, err
+	return 1, nil
+}
+
+func (u *User) Update() {
+	// figure out criteria for that later, gonna be multiple update functions
+}
+>>>>>>> 66aa8e673d28bcdabd68dfd59d35a61b78dba418
 
 func CheckSignIn(email string, password string) (User, error) {
 	var user User

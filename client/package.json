@@ -36,6 +36,7 @@
     "react-infinite-scroll-component": "^6.1.0",
     "react-scripts": "5.0.1",
     "react-tailwindcss-select": "^1.6.0",
+    "reactjs-popup": "^2.0.5",
     "tw-elements": "^1.0.0-alpha13",
     "typescript": "^4.9.4",
     "web-vitals": "^2.1.4"

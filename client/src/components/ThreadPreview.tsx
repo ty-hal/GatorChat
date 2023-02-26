@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import ProfilePicture from "./ProfilePicture";
+import { RichTextEditor } from "./RichTextEditor";
+import DeleteModal from "./DeleteThreadPopup";
+
 type Props = {
   id: number;
   username: string;
@@ -24,10 +27,15 @@ const Thread: React.FC<Props> = ({
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [numLikes, toggleLike] = useState<number>(likesCount);
   const [postTimeDifference, setPostTimeDifference] = useState<string>("");
+  const [edit, toggleEdit] = useState<boolean>(false);
+  const [title, setTitle] = useState<string>("");
+  const [content, setContent] = useState<string>("");
 
-  // Updates postTimeDifference with how long ago the thread was created
   useEffect(() => {
-    console.log(threadDate);
+    setTitle(threadTitle);
+    setContent(threadContent);
+
+    // Updates postTimeDifference with how long ago the thread was created
     let postTime = new Date(threadDate);
     let currentTime = new Date();
     const _MS_PER_YEAR = 1000 * 60 * 60 * 24 * 365;
@@ -82,10 +90,13 @@ const Thread: React.FC<Props> = ({
         yearsAgo === "1" ? "1 year ago" : yearsAgo + " years ago"
       );
     }
-    // setPostTimeDifference(timeDifference.toString());
-    // setPostTimeDifference(Math.floor((utc2 - utc1) / _MS_PER_DAY).toString());
-    // setPostTimeDifference(Math.floor((utc2 - utc1) / _MS_PER_HOUR).toString());
   }, []);
+
+  const editThread = () => {
+    console.log(title, content);
+    toggleEdit(false);
+    //Add API call here
+  };
 
   // Used to change opacity of text
   let textCutoff: string = threadContent.substring(0, 400);
@@ -128,21 +139,68 @@ const Thread: React.FC<Props> = ({
           </span>
         </div>
       </div>
-      {/* Thread Title  */}
-      <div
-        id="thread-title"
-        className="relative top-7 mx-8 mb-1 text-left text-xl font-bold sm:my-2 sm:text-2xl"
-      >
-        {threadTitle}
-      </div>
-      {/* Thread Content  */}
-      <div
-        id="thread-content"
-        className="text-md relative top-7 mx-8 mb-12 max-h-60 overflow-hidden text-left text-black dark:text-gray-300 lg:max-h-44"
-        dangerouslySetInnerHTML={{
-          __html: threadContent.substring(0, lengthTextCutoff) + "...",
-        }}
-      ></div>
+
+      {/* Edit thread  */}
+      {edit && (
+        <div id="thread-edit" className="relative top-7 mx-8 mb-2 sm:my-2">
+          <div className="mx-auto w-11/12">
+            <input
+              type="text"
+              id="title-edit"
+              className="w-full break-normal rounded-lg border border-gray-600 bg-gray-50 p-2 text-gray-900 focus:border-gray-600 focus:outline-none focus:outline-0 focus:ring-0 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-gray-200"
+              value={title}
+              maxLength={300}
+              onChange={(e) => setTitle(e.currentTarget.value)}
+            />
+            <div
+              className="mx-auto mt-2 w-full text-right text-gray-400"
+              id="title-length"
+            >
+              {title.length}/300 characters
+            </div>
+          </div>
+          <div className="mx-auto w-11/12 text-left" id="text">
+            <RichTextEditor setText={setContent} textContent={content} />
+          </div>
+          <div className="mx-auto mb-12 flex w-11/12 space-x-4">
+            <button
+              className="rounded-lg border border-black bg-blue-600 py-1 px-2 text-white hover:bg-blue-700 dark:border-gray-200 dark:hover:bg-blue-800"
+              onClick={editThread}
+              id="edit-thread"
+            >
+              Edit thread
+            </button>
+            <button
+              className="rounded-lg border border-black bg-red-600 py-1 px-2 text-white hover:bg-red-800 dark:border-gray-200 dark:hover:bg-red-800"
+              onClick={() => toggleEdit(false)}
+              id="edit-thread"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+
+      {!edit && (
+        <>
+          {/* Thread Title  */}
+          <div
+            id="thread-title"
+            className="relative top-7 mx-8 mb-1 text-left text-xl font-bold sm:my-2 sm:text-2xl"
+          >
+            {title}
+          </div>
+          {/* Thread Content  */}
+          <div
+            id="thread-content"
+            className="text-md relative top-7 mx-8 mb-12 overflow-hidden text-left text-black dark:text-gray-300 "
+            dangerouslySetInnerHTML={{
+              // __html: content.substring(0, lengthTextCutoff) + "...",
+              __html: content,
+            }}
+          ></div>
+        </>
+      )}
       {/* Bottom Bar */}
       <div className="absolute left-3 bottom-3 flex space-x-2 text-base sm:space-x-3 md:space-x-6 md:text-lg">
         {/* Likes */}
@@ -379,7 +437,8 @@ const Thread: React.FC<Props> = ({
                 <div
                   className="flex items-center py-2 text-sm text-gray-700 hover:bg-blue-200 hover:text-black "
                   role="menuitem"
-                  id="menu-item-3"
+                  id="edit"
+                  onClick={() => toggleEdit(!edit)}
                 >
                   <div className="flex-1">
                     <svg
@@ -433,7 +492,9 @@ const Thread: React.FC<Props> = ({
                       </g>
                     </svg>
                   </div>
-                  <div className="">Delete</div>
+                  <div className="">
+                    <DeleteModal />
+                  </div>
                   <div className="flex-1"></div>
                 </div>
               </div>

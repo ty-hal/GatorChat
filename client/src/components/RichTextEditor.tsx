@@ -15,6 +15,7 @@ import Blockquote from "@tiptap/extension-blockquote";
 
 type Props = {
   setText?: React.Dispatch<React.SetStateAction<string>>;
+  textContent?: string;
 };
 
 const MenuBar = ({ editor }: any) => {
@@ -1053,7 +1054,7 @@ const MenuBar = ({ editor }: any) => {
   );
 };
 
-export const RichTextEditor: React.FC<Props> = ({ setText }) => {
+export const RichTextEditor: React.FC<Props> = ({ setText, textContent }) => {
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -1071,7 +1072,6 @@ export const RichTextEditor: React.FC<Props> = ({ setText }) => {
       Typography,
       Image.configure({
         allowBase64: true,
-        // inline: true,
         HTMLAttributes: {
           class: "w-1/2 lg:w-1/3 mx-auto m-1",
         },
@@ -1093,9 +1093,7 @@ export const RichTextEditor: React.FC<Props> = ({ setText }) => {
       }),
       Blockquote,
     ],
-    content: `
-
-    `,
+    content: textContent ? textContent : "",
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
       if (setText) {

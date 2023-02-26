@@ -17,3 +17,15 @@ func GetAllUserRoleRows() []UserRoles {
 
 	return userRoles
 }
+
+func GetAllUserRoleRowsFromUser(user User) []UserRoles {
+	var userRoleRows []UserRoles
+
+	for _, userRoleRow := range GetAllUserRoleRows() {
+		if userRoleRow.UserID == user.UserID {
+			userRoleRows = append(userRoleRows, userRoleRow)
+		}
+	}
+
+	return userRoleRows
+}

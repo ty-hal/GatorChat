@@ -17,3 +17,15 @@ func GetAllUserClassRows() []UserClasses {
 
 	return userClasses
 }
+
+func GetAllUserClassRowsFromUser(user User) []UserClasses {
+	var userClassRows []UserClasses
+
+	for _, userClassRow := range GetAllUserClassRows() {
+		if userClassRow.UserID == user.UserID {
+			userClassRows = append(userClassRows, userClassRow)
+		}
+	}
+
+	return userClassRows
+}

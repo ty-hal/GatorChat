@@ -108,6 +108,7 @@ func SignIn(w http.ResponseWriter, r *http.Request) {
 }
 
 // DELETING WITH FOREGIN KEYS NOT FINISHED YET
+/*
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
@@ -131,7 +132,7 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode(user)
 }
-
+*/
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("UPDATE USER")
 }

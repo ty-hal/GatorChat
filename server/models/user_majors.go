@@ -17,3 +17,15 @@ func GetAllUserMajorRows() []UserMajors {
 
 	return userMajors
 }
+
+func GetAllUserMajorsFromUser(user User) []UserMajors {
+	var userMajorRows []UserMajors
+
+	for _, userMajorRow := range GetAllUserMajorRows() {
+		if userMajorRow.UserID == user.UserID {
+			userMajorRows = append(userMajorRows, userMajorRow)
+		}
+	}
+
+	return userMajorRows
+}

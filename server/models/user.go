@@ -58,22 +58,45 @@ func CreateUser(user User) (User, error) {
 	return user, nil
 }
 
-<<<<<<< HEAD
-//func (u *User) Update() {
-// figure out criteria for that later, gonna be multiple update functions
-//}
-=======
-func DeleteUser(id uint8) (int, error) {
-	//result := middleware.DB.Where("", id).Delete()
+func DeleteUser(user User) (User, error) {
+	result := middleware.DB.Where("user_id = ?", user.UserID).Delete(&User{})
 
-	//return user, err
-	return 1, nil
+	if result.Error != nil {
+		return user, result.Error
+	}
+
+	for _, userClass := range GetAllUserClassRowsFromUser(user) {
+		deletedUserClass := middleware.DB.Unscoped().Where("user_class_id = ?", userClass.UserClassID).Delete(&UserClasses{})
+
+		if deletedUserClass.Error != nil {
+			return user, deletedUserClass.Error
+		}
+	}
+
+	for _, userMajor := range GetAllUserMajorsFromUser(user) {
+		deletedUserMajor := middleware.DB.Unscoped().Where("user_major_id = ?", userMajor.UserMajorID).Delete(&UserMajors{})
+
+		if deletedUserMajor.Error != nil {
+			return user, deletedUserMajor.Error
+		}
+	}
+
+	for _, userRole := range GetAllUserRoleRowsFromUser(user) {
+		deletedUserRole := middleware.DB.Unscoped().Where("user_role_id = ?", userRole.UserRoleID).Delete(&UserRoles{})
+
+		if deletedUserRole.Error != nil {
+			return user, deletedUserRole.Error
+		}
+	}
+
+	//TODO: update use threads and posts id to 0 (delete user id) or delete
+
+	return user, nil
 }
 
 func (u *User) Update() {
 	// figure out criteria for that later, gonna be multiple update functions
 }
->>>>>>> 66aa8e673d28bcdabd68dfd59d35a61b78dba418
 
 func CheckSignIn(email string, password string) (User, error) {
 	var user User

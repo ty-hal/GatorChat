@@ -108,31 +108,34 @@ func SignIn(w http.ResponseWriter, r *http.Request) {
 }
 
 // DELETING WITH FOREGIN KEYS NOT FINISHED YET
-/*
+
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	params := mux.Vars(r)
-	id, err := strconv.Atoi(params["id"])
+	var user models.User
+	json.NewDecoder(r.Body).Decode(&user)
+	//params := mux.Vars(r)
+	//user, err := strconv.Atoi(params["id"])
 
 	// Invalid parameter
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("Invalid Parameter: id"))
-		return
-	}
+	/*
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte("Invalid Parameter: id"))
+			return
+		}*/
 
-	user, dbErr := models.DeleteUser(uint8(id))
+	userDeleted, userErr := models.DeleteUser(user)
 
-	if dbErr != nil {
+	if userErr != nil {
 		w.WriteHeader(http.StatusNotFound)
-		w.Write([]byte(dbErr.Error()))
+		w.Write([]byte(userErr.Error()))
 		return
 	}
 
-	json.NewEncoder(w).Encode(user)
+	json.NewEncoder(w).Encode(userDeleted)
 }
-*/
+
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("UPDATE USER")
 }

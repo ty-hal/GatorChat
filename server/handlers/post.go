@@ -63,4 +63,31 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(threadCreated)
 }
 
+func DeletePost(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	var post models.Post
+	json.NewDecoder(r.Body).Decode(&post)
+	//params := mux.Vars(r)
+	//user, err := strconv.Atoi(params["id"])
+
+	// Invalid parameter
+	/*
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte("Invalid Parameter: id"))
+			return
+		}*/
+
+	postDeleted, postErr := models.DeletePost(post)
+
+	if postErr != nil {
+		w.WriteHeader(http.StatusNotFound)
+		w.Write([]byte(postErr.Error()))
+		return
+	}
+
+	json.NewEncoder(w).Encode(postDeleted)
+}
+
 // Delete / Update Post

@@ -42,6 +42,16 @@ func CreatePost(post Post) Post {
 	return post
 }
 
+func UpdatePost(post Post, newContent string) (Post, error) {
+	result := middleware.DB.Model(&post).Update("content", newContent)
+
+	if result.Error != nil {
+		return post, result.Error
+	}
+
+	return post, nil
+}
+
 func DeletePost(post Post) (Post, error) {
 	result := middleware.DB.Unscoped().Where("post_id = ?", post.PostID).Delete(&Post{})
 

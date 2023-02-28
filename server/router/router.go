@@ -29,11 +29,13 @@ func Router() *mux.Router {
 	router.HandleFunc("/api/thread/{id}", handlers.GetThreadById).Methods("GET")
 	router.HandleFunc("/api/thread/{id}/posts", handlers.GetThreadPosts).Methods("GET")
 	router.HandleFunc("/api/thread", handlers.CreateThread).Methods("POST")
+	router.HandleFunc("/api/thread", handlers.DeleteThread).Methods("DELETE")
 
 	// Post Routes
 	router.HandleFunc("/api/posts", handlers.GetAllPosts).Methods("GET")
 	router.HandleFunc("/api/post/{id}", handlers.GetPostById).Methods("GET")
 	router.HandleFunc("/api/post", handlers.CreatePost).Methods("POST")
+	router.HandleFunc("/api/post", handlers.DeletePost).Methods("DELETE")
 
 	// Class Routes
 	router.HandleFunc("/api/classes", handlers.GetAllClasses).Methods("GET")

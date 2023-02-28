@@ -63,6 +63,33 @@ func CreateThread(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(threadCreated)
 }
 
+func DeleteThread(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	var thread models.Thread
+	json.NewDecoder(r.Body).Decode(&thread)
+	//params := mux.Vars(r)
+	//user, err := strconv.Atoi(params["id"])
+
+	// Invalid parameter
+	/*
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte("Invalid Parameter: id"))
+			return
+		}*/
+
+	threadDeleted, threadErr := models.DeleteThread(thread)
+
+	if threadErr != nil {
+		w.WriteHeader(http.StatusNotFound)
+		w.Write([]byte(threadErr.Error()))
+		return
+	}
+
+	json.NewEncoder(w).Encode(threadDeleted)
+}
+
 // Delete / Update Thread
 
 func GetThreadPosts(w http.ResponseWriter, r *http.Request) {

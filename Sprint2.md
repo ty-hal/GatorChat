@@ -55,25 +55,25 @@ ___
 ___
 ## Unit tests for backend:
 ### Threads: 
-**TestGetAllThreads**
-**TestGetThreadByIdValid**
-**TestGetThreadByIdInvalidParameter**
-**TestGetThreadByIdNotFound**
-**TestGetThreadPosts**
+**TestGetAllThreads**,
+**TestGetThreadByIdValid**,
+**TestGetThreadByIdInvalidParameter**,
+**TestGetThreadByIdNotFound**,
+**TestGetThreadPosts**,
 ### Users: 
-**TestGetAllUsers**
-**TestGetUserByIdValid**
-**TestGetUserByIdInvalid**
-**TestGetUserByIdNotFound**
+**TestGetAllUsers**,
+**TestGetUserByIdValid**,
+**TestGetUserByIdInvalid**,
+**TestGetUserByIdNotFound**,
 ### Sections:
-**TestGetAllSections**
-**TestGetSectionByIdValid**
-**TestGetSectionByIdInvalid**
-**TestGetSectionByIdNotFound**
+**TestGetAllSections**,
+**TestGetSectionByIdValid**,
+**TestGetSectionByIdInvalid**,
+**TestGetSectionByIdNotFound**,
 ### Posts:
-**TestGetAllPosts**
-**TestGetPostByIdValid**
-**TestGetPostByIdInvalid**
+**TestGetAllPosts**,
+**TestGetPostByIdValid**,
+**TestGetPostByIdInvalid**,
 
 ___
 ## Documentation for backend API:

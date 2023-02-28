@@ -25,6 +25,7 @@ const Thread: React.FC<Props> = ({
   messagesCount,
 }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
+  const [showDeleteThread, setShowDeleteThread] = useState<boolean>(false);
   const [numLikes, toggleLike] = useState<number>(likesCount);
   const [postTimeDifference, setPostTimeDifference] = useState<string>("");
   const [edit, toggleEdit] = useState<boolean>(false);
@@ -97,16 +98,6 @@ const Thread: React.FC<Props> = ({
     toggleEdit(false);
     //Add API call here
   };
-
-  // Used to change opacity of text
-  let textCutoff: string = threadContent.substring(0, 400);
-  if (threadContent.length > 400) {
-    textCutoff = textCutoff.substring(
-      0,
-      Math.min(textCutoff.length, textCutoff.lastIndexOf(" "))
-    );
-  }
-  let lengthTextCutoff: number = textCutoff.length;
 
   return (
     <div
@@ -195,7 +186,6 @@ const Thread: React.FC<Props> = ({
             id="thread-content"
             className="text-md relative top-7 mx-8 mb-12 overflow-hidden text-left text-black dark:text-gray-300 "
             dangerouslySetInnerHTML={{
-              // __html: content.substring(0, lengthTextCutoff) + "...",
               __html: content,
             }}
           ></div>
@@ -470,6 +460,7 @@ const Thread: React.FC<Props> = ({
                   className="flex items-center py-2 text-sm text-gray-700 hover:rounded-b-md hover:bg-blue-200 hover:text-black"
                   role="menuitem"
                   id="menu-item-3"
+                  onClick={() => setShowDeleteThread(true)}
                 >
                   <div className="flex-1">
                     <svg
@@ -492,13 +483,20 @@ const Thread: React.FC<Props> = ({
                       </g>
                     </svg>
                   </div>
-                  <div className="">
-                    <DeleteModal />
-                  </div>
+                  <div className="">Delete</div>
                   <div className="flex-1"></div>
                 </div>
               </div>
             </div>
+          )}
+          {/* Delete Popup  */}
+          {showDeleteThread && (
+            <DeleteModal
+              id={id}
+              threadTitle={title}
+              showDeleteThread={showDeleteThread}
+              setShowDeleteThread={setShowDeleteThread}
+            />
           )}
         </div>
       </div>

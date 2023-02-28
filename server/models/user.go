@@ -59,11 +59,6 @@ func CreateUser(user User) (User, error) {
 }
 
 func DeleteUser(user User) (User, error) {
-	result := middleware.DB.Where("user_id = ?", user.UserID).Delete(&User{})
-
-	if result.Error != nil {
-		return user, result.Error
-	}
 
 	for _, userClass := range GetAllUserClassRowsFromUser(user) {
 		deletedUserClass := middleware.DB.Unscoped().Where("user_class_id = ?", userClass.UserClassID).Delete(&UserClasses{})
@@ -87,6 +82,12 @@ func DeleteUser(user User) (User, error) {
 		if deletedUserRole.Error != nil {
 			return user, deletedUserRole.Error
 		}
+	}
+
+	result := middleware.DB.Where("user_id = ?", user.UserID).Delete(&User{})
+
+	if result.Error != nil {
+		return user, result.Error
 	}
 
 	//TODO: update use threads and posts id to 0 (delete user id) or delete

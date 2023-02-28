@@ -55,19 +55,19 @@ func CreateThread(thread Thread) Thread {
 }
 
 func DeleteThread(thread Thread) (Thread, error) {
-
-	result := middleware.DB.Unscoped().Where("thread_id = ?", thread.ThreadID).Delete(&Thread{})
-
-	if result.Error != nil {
-		return thread, result.Error
-	}
-
+	
 	for _, post := range GetThreadPosts(thread.ThreadID) {
 		deletedPost := middleware.DB.Unscoped().Where("post_id = ?", post.PostID).Delete(&Post{})
 
 		if deletedPost.Error != nil {
 			return thread, deletedPost.Error
 		}
+	}
+
+	result := middleware.DB.Unscoped().Where("thread_id = ?", thread.ThreadID).Delete(&Thread{})
+
+	if result.Error != nil {
+		return thread, result.Error
 	}
 
 	return thread, nil

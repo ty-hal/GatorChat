@@ -42,7 +42,15 @@ func CreatePost(post Post) Post {
 	return post
 }
 
-func UpdatePost(post Post, newContent string) (Post, error) {
+type UpdatePostHandler struct {
+	Post       Post
+	NewContent string
+}
+
+func UpdatePost(handlerParams UpdatePostHandler) (Post, error) {
+	post := handlerParams.Post
+	newContent := handlerParams.NewContent
+
 	result := middleware.DB.Model(&post).Update("content", newContent)
 
 	if result.Error != nil {

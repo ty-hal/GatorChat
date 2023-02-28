@@ -68,16 +68,6 @@ func DeleteThread(w http.ResponseWriter, r *http.Request) {
 
 	var thread models.Thread
 	json.NewDecoder(r.Body).Decode(&thread)
-	//params := mux.Vars(r)
-	//user, err := strconv.Atoi(params["id"])
-
-	// Invalid parameter
-	/*
-		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
-			w.Write([]byte("Invalid Parameter: id"))
-			return
-		}*/
 
 	threadDeleted, threadErr := models.DeleteThread(thread)
 

@@ -19,7 +19,12 @@
 - Configured Cypress and created numerous component and end-to-end tests to cover most of our web app functionality.
 
 ### Backend:
-(WRITE STUFF)
+- Implemented infinite scroller for threads so when the user scrolls to the bottom of the screen, new threads are loaded.
+  - As a user, I want my experience to be smooth and quick, so as a developer I will reduce lag by adding pagination.
+- When home page is loaded, grab sections from database. When section is clicked, grab threads for that section.
+  - As as user, I want to see all the sections and threads, so I will grab them from the database and display them to the screen
+- Create handlers for Sections/Threads/Posts that follow the layout of the User handler created in Sprint 1.
+  - As a developer, I want my request to be handled in an organized way, so I will create handlers to verify and organize requests.
 ___
 ## Unit tests and Cypress test for frontend
 ### Unit (Cypress component) tests: 
@@ -49,7 +54,248 @@ ___
 **Sign In**:, unsuccessful login, successful login, remember me feature, forgot password, toggle show password
 ___
 ## Unit tests for backend:
-(WRITE STUFF)
+### Threads: 
+**TestGetAllThreads**
+**TestGetThreadByIdValid**
+**TestGetThreadByIdInvalidParameter**
+**TestGetThreadByIdNotFound**
+**TestGetThreadPosts**
+### Users: 
+**TestGetAllUsers**
+**TestGetUserByIdValid**
+**TestGetUserByIdInvalid**
+**TestGetUserByIdNotFound**
+### Sections:
+**TestGetAllSections**
+**TestGetSectionByIdValid**
+**TestGetSectionByIdInvalid**
+**TestGetSectionByIdNotFound**
+### Posts:
+**TestGetAllPosts**
+**TestGetPostByIdValid**
+**TestGetPostByIdInvalid**
+
 ___
 ## Documentation for backend API:
-(WRITE STUFF)
+## Users 
+___
+
+### Get Users
+Return list of user objects
+- URL: `/api/users`
+- Method: `GET`
+- Status Responses
+  - 200 OK 
+
+### Get User By Id
+Return user
+- URL: `/api/user/:id`
+- Method: `GET`
+- Parameters: `id=[integer]`
+- Status Responses
+  - 200 OK 
+  - 400 BAD REQUEST 
+  - 404 NOT FOUND
+
+### Create User
+Return user created
+- URL: `/api/user`
+- Method: `POST`
+- Status Responses
+  - 200 OK 
+  - 400 BAD REQUEST 
+  - 409 STATUS CONFLICT
+- Example Body
+  ```json
+    {
+      "first_name": "First",
+      "last_name": "Last",
+      "email": "firstlast@ufl.edu",
+      "password": "Firstlast@1234",
+    }
+  ```
+
+### Delete User
+Return user deleted
+- URL: `/api/user/:id`
+- Method: `DELETE`
+- Parameters: `id=[integer]`
+- Status Responses
+  - 200 OK 
+  - 400 BAD REQUEST 
+  - 404 NOT FOUND
+
+### Update User
+Return user updated
+- URL: `/api/user/:id`
+- Method: `PUT`
+- Parameters: `id=[integer]`
+- Status Responses
+  - 200 OK 
+  - 400 BAD REQUEST 
+  - 404 NOT FOUND
+
+### Sign User In
+Return user
+- URL: `/api/user/signin`
+- Method: `PUT`
+- Status Responses
+  - 200 OK 
+  - 400 NOT FOUND
+  - 401 UNAUTHORIZED
+
+## Sections
+___
+
+### Get Sections
+Return list of section objects
+- URL: `/api/sections`
+- Method: `GET`
+- Status Responses
+  - 200 OK 
+
+### Get Section By Id
+Return section
+- URL: `/api/section/:id`
+- Method: `GET`
+- Parameters: `id=[integer]`
+- Status Responses
+  - 200 OK 
+  - 400 BAD REQUEST 
+  - 404 NOT FOUND
+
+### Get Section Threads
+Return list of thread objects
+- URL: `/api/section/:id/threads`
+- Method: `GET`
+- Parameters: `id=[integer]`
+- Status Responses
+  - 200 OK 
+  - 400 BAD REQUEST 
+  - 404 NOT FOUND
+
+## Threads
+___
+
+### Get Threads
+Return list of section threads
+- URL: `/api/threads`
+- Method: `GET`
+- Status Responses
+  - 200 OK 
+
+### Get Thread By Id
+Return thread
+- URL: `/api/thread/:id`
+- Method: `GET`
+- Parameters: `id=[integer]`
+- Status Responses
+  - 200 OK 
+  - 400 BAD REQUEST 
+  - 404 NOT FOUND
+
+### Create Thread
+Return thread created
+- URL: `/api/thread`
+- Method: `POST`
+- Status Responses
+  - 200 OK 
+  - 400 BAD REQUEST 
+  - 409 STATUS CONFLICT
+
+- Example Body
+  ```json
+    {
+      "user_id": 1,
+      "section_id": 1,
+      "thread_title": "Thread Title",
+      "content": "Thread Content",
+    }
+  ```
+
+### Delete Thread
+Return thread deleted
+- URL: `/api/thread/:id`
+- Method: `DELETE`
+- Parameters: `id=[integer]`
+- Status Responses
+  - 200 OK 
+  - 400 BAD REQUEST 
+  - 404 NOT FOUND
+
+### Update Thread
+Return thread updated
+- URL: `/api/thread/:id`
+- Method: `PUT`
+- Parameters: `id=[integer]`
+- Status Responses
+  - 200 OK 
+  - 400 BAD REQUEST 
+  - 404 NOT FOUND
+
+### Get Thread Posts
+Return list of thread objects
+- URL: `/api/thread/:id/posts`
+- Method: `GET`
+- Parameters: `id=[integer]`
+- Status Responses
+  - 200 OK 
+  - 400 BAD REQUEST 
+  - 404 NOT FOUND
+
+## Posts
+___
+
+### Get Posts
+Return list of section posts
+- URL: `/api/posts`
+- Method: `GET`
+- Status Responses
+  - 200 OK 
+
+### Get Post By Id
+Return post
+- URL: `/api/post/:id`
+- Method: `GET`
+- Parameters: `id=[integer]`
+- Status Responses
+  - 200 OK 
+  - 400 BAD REQUEST 
+  - 404 NOT FOUND
+
+### Create Post
+Return thread created
+- URL: `/api/post`
+- Method: `POST`
+- Status Responses
+  - 200 OK 
+  - 400 BAD REQUEST 
+  - 409 STATUS CONFLICT
+- Example Body
+  ```json
+    {
+      "user_id": 1,
+      "thread_id": 1,
+      "content": "Post Content",
+    }
+  ```
+
+### Delete Post
+Return post deleted
+- URL: `/api/post/:id`
+- Method: `DELETE`
+- Parameters: `id=[integer]`
+- Status Responses
+  - 200 OK 
+  - 400 BAD REQUEST 
+  - 404 NOT FOUND
+
+### Update Post
+Return post updated
+- URL: `/api/post/:id`
+- Method: `PUT`
+- Parameters: `id=[integer]`
+- Status Responses
+  - 200 OK 
+  - 400 BAD REQUEST 
+  - 404 NOT FOUND

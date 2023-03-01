@@ -1,3 +1,6 @@
+## Demo Video:
+https://youtu.be/CZwcavp-wSI
+
 ## Work completed in Sprint 2
 ### Frontend:
 - Created settings page where users can edit their account information.

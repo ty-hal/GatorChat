@@ -30,6 +30,7 @@ func Router() *mux.Router {
 	router.HandleFunc("/api/thread/{id}/posts", handlers.GetThreadPosts).Methods("GET")
 	router.HandleFunc("/api/thread", handlers.CreateThread).Methods("POST")
 	router.HandleFunc("/api/thread", handlers.DeleteThread).Methods("DELETE")
+	router.HandleFunc("/api/thread", handlers.UpdateThread).Methods("PUT")
 
 	// Post Routes
 	router.HandleFunc("/api/posts", handlers.GetAllPosts).Methods("GET")

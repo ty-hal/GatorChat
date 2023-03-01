@@ -63,6 +63,23 @@ func CreateThread(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(threadCreated)
 }
 
+func UpdateThread(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	var thread models.UpdateThreadHandler
+	json.NewDecoder(r.Body).Decode(&thread)
+
+	threadUpdated, threadErr := models.UpdateThread(thread)
+
+	if threadErr != nil {
+		w.WriteHeader(http.StatusNotFound)
+		w.Write([]byte(threadErr.Error()))
+		return
+	}
+
+	json.NewEncoder(w).Encode(threadUpdated)
+}
+
 func DeleteThread(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 

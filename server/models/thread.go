@@ -54,8 +54,30 @@ func CreateThread(thread Thread) Thread {
 	return thread
 }
 
+type UpdateThreadHandler struct {
+	Thread     Thread
+	NewTitle   string
+	NewContent string
+}
+
+func UpdateThread(handlerParams UpdateThreadHandler) (Thread, error) {
+	thread := handlerParams.Thread
+	newTitle := handlerParams.NewTitle
+	newContent := handlerParams.NewContent
+
+	if thread.ThreadTitle != newTitle || thread.Content != newContent {
+		result := middleware.DB.Model(&thread).Updates(Thread{ThreadTitle: newTitle, Content: newContent})
+
+		if result.Error != nil {
+			return thread, result.Error
+		}
+	}
+
+	return thread, nil
+}
+
 func DeleteThread(thread Thread) (Thread, error) {
-	
+
 	for _, post := range GetThreadPosts(thread.ThreadID) {
 		deletedPost := middleware.DB.Unscoped().Where("post_id = ?", post.PostID).Delete(&Post{})
 

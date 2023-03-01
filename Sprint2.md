@@ -56,14 +56,15 @@ ___
 
 **ThreadPreview**: renders, default profile picture exists, thread time posted relative to current time, add a like to the thread
 
-**ContactUs**: renders, enters name, enters email, does not submit.
-
-**Settings**: renders, enters new name, enters new email, enters new password, enters new major, submits.
-
 ### Cypress (end-to-end) tests:
 **Register**: successfully register account, try to register an existing account, try to register before entering all information
 
 **Sign In**:, unsuccessful login, successful login, remember me feature, forgot password, toggle show password
+
+**ContactUs**: renders, enters name, enters email, does not submit.
+
+**Settings**: renders, enters new name, enters new email, enters new password, enters new major, submits.
+
 ___
 ## Unit tests for backend:
 ### Threads: 

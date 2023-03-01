@@ -29,8 +29,8 @@
   - As a user, I want to be able to delete posts, threads, or my account, so I will create handlers to send delete requests.
 - Fix creation date of Posts/Threads/Users to accurately store time using timestamptz
   - As a user, I want to see when my post, thread, and account were created in my time zone, so I will store the posts', threads', and users' creation dates as a timestamptz.
-- Create queries, functions, and handlers for Posts/Threads/Users for updating rows in the database.
-  - As a user, I want to be able to edit and update posts, threads, or my account, so I will create handlers to send update requests.
+- Create queries, functions, and handlers for Posts and Threads for updating rows in the database.
+  - As a user, I want to be able to edit and update posts and threads, so I will create handlers to send update requests.
 ___
 ## Unit tests and Cypress test for frontend
 ### Unit (Cypress component) tests: 

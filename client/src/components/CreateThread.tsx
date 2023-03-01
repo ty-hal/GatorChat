@@ -101,7 +101,7 @@ const CreateThread: React.FC<Props> = ({ section_id }) => {
             <RichTextEditor setText={setText} />
           </div>
 
-          {thread!.title &&
+          {thread!.title.length > 2 &&
             thread!.text !== "" &&
             thread!.text !== "<p></p>" && (
               <div className="mx-auto w-11/12 pb-2">

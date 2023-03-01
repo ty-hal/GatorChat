@@ -1,4 +1,8 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
+import { useAtom } from "jotai";
+import { darkModeAtom } from "../App";
+import Picker from "@emoji-mart/react";
+import data from "@emoji-mart/data";
 
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -23,6 +27,17 @@ const MenuBar = ({ editor }: any) => {
   const [textDropdown, setTextDropdown] = useState<boolean>(false);
   const [paragraphDropdown, setParagraphDropdown] = useState<boolean>(false);
   const [alignDropdown, setAlignDropdown] = useState<boolean>(false);
+  const [darkMode, setDarkMode] = useAtom(darkModeAtom);
+  const [emojiPicker, toggleEmojiPicker] = useState(false);
+  const [currentEmoji, setCurrentEmoji] = useState(null);
+
+  // Add emoji
+  useEffect(() => {
+    if (currentEmoji) {
+      console.log(currentEmoji);
+      editor.commands.insertContent(currentEmoji);
+    }
+  }, [currentEmoji]);
 
   const addImage = useCallback(() => {
     const url = window.prompt("URL");
@@ -58,7 +73,6 @@ const MenuBar = ({ editor }: any) => {
   }, [editor]);
   const addYoutubeVideo = () => {
     const url = prompt("Enter YouTube URL");
-
     if (url) {
       console.log(window.innerWidth);
 
@@ -71,6 +85,7 @@ const MenuBar = ({ editor }: any) => {
       });
     }
   };
+
   if (!editor) {
     return null;
   }
@@ -547,6 +562,25 @@ const MenuBar = ({ editor }: any) => {
                     ></rect>{" "}
                   </g>
                 </svg>
+                {/* Horizontal Rule  */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  className={
+                    editor.isActive("horizontalRule")
+                      ? "h-6 w-6 rounded-md bg-gray-200 fill-black p-1 dark:bg-gray-700 dark:fill-white sm:h-8 sm:w-8"
+                      : "h-6 w-6 rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white dark:hover:bg-gray-700 sm:h-8 sm:w-8"
+                  }
+                  onClick={() =>
+                    editor.chain().focus().setHorizontalRule().run()
+                  }
+                >
+                  <title>Blockquote</title>
+
+                  <path fill="none" d="M0 0h24v24H0z" />
+                  <path d="M2 11h2v2H2v-2zm4 0h12v2H6v-2zm14 0h2v2h-2v-2z" />
+                </svg>
+
                 {/* Clear nodes  */}
                 <svg
                   viewBox="0 0 24 24"
@@ -707,6 +741,26 @@ const MenuBar = ({ editor }: any) => {
               ></path>{" "}
               <rect x="0" y="0" width="36" height="36" fill-opacity="0"></rect>{" "}
             </g>
+          </svg>
+        </button>
+        {/* Horizontal Rule  */}
+        <button
+          id="horizontal-rule"
+          onClick={() => editor.chain().focus().setHorizontalRule().run()}
+          title="Horizontal rule"
+          className={
+            editor.isActive("horizontalRule")
+              ? "hidden rounded-md bg-gray-200 dark:bg-gray-700 lg:block"
+              : "hidden lg:block"
+          }
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            className="h-6 w-6 rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white dark:hover:bg-gray-700 sm:h-8  sm:w-8"
+          >
+            <path fill="none" d="M0 0h24v24H0z" />
+            <path d="M2 11h2v2H2v-2zm4 0h12v2H6v-2zm14 0h2v2h-2v-2z" />
           </svg>
         </button>
         {/* Clear nodes  */}
@@ -998,21 +1052,6 @@ const MenuBar = ({ editor }: any) => {
       </div>
       {/* Extra  */}
       <div className="flex border-l border-gray-700 p-1 sm:space-x-1">
-        {/* Horizontal Rule  */}
-        <button
-          id="horizontal-rule"
-          onClick={() => editor.chain().focus().setHorizontalRule().run()}
-          title="Horizontal rule"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            className="h-6 w-6 rounded-md fill-black p-1 hover:bg-gray-200 dark:fill-white dark:hover:bg-gray-700 sm:h-8  sm:w-8"
-          >
-            <path fill="none" d="M0 0h24v24H0z" />
-            <path d="M2 11h2v2H2v-2zm4 0h12v2H6v-2zm14 0h2v2h-2v-2z" />
-          </svg>
-        </button>
         {/* Link  */}
         <button onClick={setLink} title="Hyperlink">
           <svg
@@ -1050,6 +1089,61 @@ const MenuBar = ({ editor }: any) => {
             <path d="M19.606 6.995c-.076-.298-.292-.523-.539-.592C18.63 6.28 16.5 6 12 6s-6.628.28-7.069.403c-.244.068-.46.293-.537.592C4.285 7.419 4 9.196 4 12s.285 4.58.394 5.006c.076.297.292.522.538.59C5.372 17.72 7.5 18 12 18s6.629-.28 7.069-.403c.244-.068.46-.293.537-.592C19.715 16.581 20 14.8 20 12s-.285-4.58-.394-5.005zm1.937-.497C22 8.28 22 12 22 12s0 3.72-.457 5.502c-.254.985-.997 1.76-1.938 2.022C17.896 20 12 20 12 20s-5.893 0-7.605-.476c-.945-.266-1.687-1.04-1.938-2.022C2 15.72 2 12 2 12s0-3.72.457-5.502c.254-.985.997-1.76 1.938-2.022C6.107 4 12 4 12 4s5.896 0 7.605.476c.945.266 1.687 1.04 1.938 2.022zM10 15.5v-7l6 3.5-6 3.5z" />
           </svg>
         </button>
+        {/* Emoji */}
+        <div className="relative flex" id="emoji">
+          <button
+            type="button"
+            id="emoji-button"
+            className=" "
+            title="Emoji"
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleEmojiPicker(!emojiPicker);
+            }}
+          >
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+              stroke-width="1.3"
+              className="h-6 w-6 rounded-md fill-none stroke-black p-1 hover:bg-gray-200  dark:stroke-white dark:hover:bg-gray-700 sm:h-8 sm:w-8"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-.464 5.535a1 1 0 10-1.415-1.414 3 3 0 01-4.242 0 1 1 0 00-1.415 1.414 5 5 0 007.072 0z"
+                clipRule="evenodd"
+              ></path>
+            </svg>
+          </button>
+          {emojiPicker && (
+            <div className="absolute right-0 top-10 z-10" id="emoji-selector">
+              <Picker
+                data={data}
+                previewPosition="none"
+                onEmojiSelect={(e: { native: React.SetStateAction<null> }) => {
+                  setCurrentEmoji(e.native);
+                  toggleEmojiPicker(!emojiPicker);
+                }}
+                categories={[
+                  "frequent",
+                  "people",
+                  "nature",
+                  "foods",
+                  "activity",
+                  "places",
+                  "objects",
+                  "symbols",
+                ]}
+                theme={darkMode === true ? "dark" : "light"}
+                onClickOutside={(e: any) => {
+                  e.stopPropagation();
+                  toggleEmojiPicker(false);
+                }}
+                autoFocus={true}
+              />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -1,9 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useAtom } from "jotai";
-import { darkModeAtom } from "../App";
+import React, { useState } from "react";
 import { RichTextEditor } from "./RichTextEditor";
-import Picker from "@emoji-mart/react";
-import data from "@emoji-mart/data";
 
 interface Props {
   thread_id: number;
@@ -15,11 +11,7 @@ interface messageBody {
 }
 
 const MessageBox: React.FC<Props> = ({ thread_id }) => {
-  const [darkMode, setDarkMode] = useAtom(darkModeAtom);
   const [message, setMessage] = useState<string>("");
-  const [emojiPicker, toggleEmojiPicker] = useState(false);
-  const [currentEmoji, setCurrentEmoji] = useState(null);
-
   const [openEditor, toggleOpenEditor] = useState(false);
 
   const submitMessage = () => {
@@ -29,7 +21,6 @@ const MessageBox: React.FC<Props> = ({ thread_id }) => {
     // After successful API call, clear states and message div
     toggleOpenEditor(false);
     setMessage("");
-    setCurrentEmoji(null);
 
     const messageRequest: messageBody = {
       user_id: 7, // REPLACE WITH REAL USER ID LATER
@@ -58,13 +49,6 @@ const MessageBox: React.FC<Props> = ({ thread_id }) => {
     // };
   };
 
-  useEffect(() => {
-    if (currentEmoji) {
-      setMessage(message + currentEmoji);
-      console.log(message);
-    }
-  }, [currentEmoji]);
-
   return (
     <div
       className="mx-auto flex w-11/12 rounded-b-lg border-2 border-t border-gray-500 bg-gray-200 px-1 py-4 shadow-xl dark:border-gray-300 dark:bg-gray-800 md:px-3 lg:w-4/5"
@@ -72,65 +56,6 @@ const MessageBox: React.FC<Props> = ({ thread_id }) => {
         e.stopPropagation();
       }}
     >
-      {/* Emoji */}
-      <div className="relative">
-        <button
-          type="button"
-          id="emoji-button"
-          className="inline-flex 
-        h-8 cursor-pointer 
-        justify-center rounded-lg p-1 text-gray-500 hover:bg-gray-100 hover:text-gray-900 
-        dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white 
-        md:h-10 md:p-2"
-          onClick={(e) => {
-            e.stopPropagation();
-            toggleEmojiPicker(!emojiPicker);
-          }}
-        >
-          <svg
-            aria-hidden="true"
-            className="h-6 w-6"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fillRule="evenodd"
-              d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-.464 5.535a1 1 0 10-1.415-1.414 3 3 0 01-4.242 0 1 1 0 00-1.415 1.414 5 5 0 007.072 0z"
-              clipRule="evenodd"
-            ></path>
-          </svg>
-        </button>
-        {emojiPicker && (
-          <div className="absolute top-10 -left-12" id="emoji-selector">
-            <Picker
-              data={data}
-              previewPosition="none"
-              onEmojiSelect={(e: { native: React.SetStateAction<null> }) => {
-                setCurrentEmoji(e.native);
-                toggleEmojiPicker(!emojiPicker);
-              }}
-              categories={[
-                "frequent",
-                "people",
-                "nature",
-                "foods",
-                "activity",
-                "places",
-                "objects",
-                "symbols",
-              ]}
-              theme={darkMode === true ? "dark" : "light"}
-              onClickOutside={(e: any) => {
-                e.stopPropagation();
-                toggleEmojiPicker(false);
-              }}
-              autoFocus={true}
-            />
-          </div>
-        )}
-      </div>
-
       {/* Message */}
       <div className="flex w-full justify-between">
         {openEditor ? (

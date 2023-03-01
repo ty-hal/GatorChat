@@ -27,12 +27,14 @@ const Thread: React.FC<Props> = ({
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [showDeleteThread, setShowDeleteThread] = useState<boolean>(false);
   const [edit, toggleEdit] = useState<boolean>(false);
-  const [tempContent, setTempContent] = useState<string>("");
 
   const [numLikes, toggleLike] = useState<number>(likesCount);
   const [postTimeDifference, setPostTimeDifference] = useState<string>("");
   const [title, setTitle] = useState<string>("");
+  const [tempTitle, setTempTitle] = useState<string>("");
+
   const [content, setContent] = useState<string>("");
+  const [tempContent, setTempContent] = useState<string>("");
 
   useEffect(() => {
     setTitle(threadTitle);
@@ -156,18 +158,21 @@ const Thread: React.FC<Props> = ({
             <RichTextEditor setText={setContent} textContent={content} />
           </div>
           <div className="mx-auto mb-12 flex w-11/12 space-x-4">
-            <button
-              className="rounded-lg border border-black bg-blue-600 py-1 px-2 text-white hover:bg-blue-700 dark:border-gray-200 dark:hover:bg-blue-800"
-              onClick={editThread}
-              id="edit-thread"
-            >
-              Edit thread
-            </button>
+            {title.length > 2 && content.length > 7 && (
+              <button
+                className="rounded-lg border border-black bg-blue-600 py-1 px-2 text-white hover:bg-blue-700 dark:border-gray-200 dark:hover:bg-blue-800"
+                onClick={editThread}
+                id="edit-thread"
+              >
+                Edit thread
+              </button>
+            )}
             <button
               className="rounded-lg border border-black bg-red-600 py-1 px-2 text-white hover:bg-red-800 dark:border-gray-200 dark:hover:bg-red-800"
               onClick={() => {
                 toggleEdit(false);
                 setContent(tempContent);
+                setTitle(tempTitle);
               }}
               id="cancel-edit"
             >
@@ -437,6 +442,7 @@ const Thread: React.FC<Props> = ({
                   onClick={() => {
                     toggleEdit(!edit);
                     setTempContent(content);
+                    setTempTitle(title);
                   }}
                 >
                   <div className="flex-1">

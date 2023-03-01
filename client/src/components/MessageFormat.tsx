@@ -245,7 +245,7 @@ const Message: React.FC<Props> = ({
         </div>
 
         {/* Message Menu  */}
-        <div>
+        <div id="dropdown-button">
           <svg
             onClick={(e) => {
               e.stopPropagation();

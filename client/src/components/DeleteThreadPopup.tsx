@@ -2,19 +2,19 @@ import { useState } from "react";
 
 type Props = {
   id: number;
-  threadTitle: string;
+  title?: string;
   showDeleteThread: boolean;
   setShowDeleteThread: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const PopupModal: React.FC<Props> = ({
   id,
-  threadTitle,
+  title,
   showDeleteThread,
   setShowDeleteThread,
 }) => {
   const deleteThread = () => {
-    console.log(threadTitle, "ID:", id);
+    console.log(title, "ID:", id);
     setShowDeleteThread(false);
     //Add API call here
   };
@@ -48,16 +48,18 @@ const PopupModal: React.FC<Props> = ({
                       className="text-base font-semibold leading-6 text-gray-900"
                       id="modal-title"
                     >
-                      Delete thread
+                      {title ? `Delete thread` : `Delete message`}
                     </h3>
                     <div className="mt-2">
                       <p className="text-sm text-gray-500">
-                        Are you sure you want to delete the thread{" "}
-                        <span className="font-bold text-black">
-                          {threadTitle}
-                        </span>
-                        ? The thread will be permanently removed. This action
-                        cannot be undone.
+                        {title
+                          ? `Are you sure you want to delete the thread 
+                        "${title}"?
+                        The thread will be permanently removed. This action
+                        cannot be undone.`
+                          : `Are you sure you want to delete this message?
+                        The message will be permanently removed. This action
+                        cannot be undone.`}
                       </p>
                     </div>
                   </div>

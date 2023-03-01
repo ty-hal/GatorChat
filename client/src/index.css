@@ -100,7 +100,7 @@ input[type="file"]::file-selector-button:hover {
   border-left: 3px rgb(183, 183, 183) solid;
 }
 
-#thread-content{
+#thread-preview-content{
   display: -webkit-box;
   -webkit-line-clamp: 8;
   -webkit-box-orient: vertical;

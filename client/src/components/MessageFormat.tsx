@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import ProfilePicture from "./ProfilePicture";
+import DeleteModal from "../components/DeleteThreadPopup";
+import { RichTextEditor } from "./RichTextEditor";
+
 type Props = {
   id: number;
   username: string;
@@ -18,11 +21,18 @@ const Message: React.FC<Props> = ({
   likesCount,
 }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
+  const [showDeleteThread, setShowDeleteThread] = useState<boolean>(false);
+  const [edit, toggleEdit] = useState<boolean>(false);
+  const [tempContent, setTempContent] = useState<string>("");
+
   const [numLikes, toggleLike] = useState<number>(likesCount);
   const [postTimeDifference, setPostTimeDifference] = useState<string>("");
+  const [content, setContent] = useState<string>("");
 
-  // Updates postTimeDifference with how long ago the thread was created
+  // Updates postTimeDifference with how long ago the message was created
   useEffect(() => {
+    setContent(messageContent);
+
     let postTime = new Date(messageDate);
     let currentTime = new Date();
     const _MS_PER_YEAR = 1000 * 60 * 60 * 24 * 365;
@@ -79,6 +89,13 @@ const Message: React.FC<Props> = ({
     }
   }, []);
 
+  // Update the message
+  const editMessage = () => {
+    console.log(content);
+    toggleEdit(false);
+    //Add API call here
+  };
+
   return (
     <div
       className="relative mx-auto w-11/12 border-x-2 border-y border-gray-500 bg-gray-200 py-8 text-center text-lg font-normal text-gray-900 dark:border-gray-300 dark:bg-gray-800 dark:text-white lg:w-4/5"
@@ -109,8 +126,126 @@ const Message: React.FC<Props> = ({
             {postTimeDifference}
           </div>
         </div>
+      </div>
+
+      {/* Edit message  */}
+      {edit && (
+        <div id="message-edit" className="relative top-7 mx-8 mb-2 sm:my-2">
+          <div className="mx-auto text-left" id="text">
+            <RichTextEditor
+              setText={setContent}
+              textContent={content}
+              charLimit={2000}
+            />
+          </div>
+          <div className="mx-auto mb-12 flex space-x-4">
+            <button
+              className="rounded-lg border border-black bg-blue-600 py-1 px-2 text-white hover:bg-blue-700 dark:border-gray-200 dark:hover:bg-blue-800"
+              onClick={editMessage}
+              id="edit-message"
+            >
+              Edit message
+            </button>
+            <button
+              className="rounded-lg border border-black bg-red-600 py-1 px-2 text-white hover:bg-red-800 dark:border-gray-200 dark:hover:bg-red-800"
+              onClick={() => {
+                toggleEdit(false);
+                setContent(tempContent);
+              }}
+              id="cancel-edit"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+      {/* Message Content  */}
+      {!edit && (
+        <>
+          <div
+            id="message-content"
+            className="relative top-7 mx-6 mb-12 text-left text-base sm:mx-8 md:text-lg"
+            dangerouslySetInnerHTML={{
+              __html: content,
+            }}
+          ></div>
+        </>
+      )}
+
+      {/* Bottom Bar */}
+      <div className="absolute left-3 bottom-3 flex space-x-2 text-sm sm:space-x-3 sm:text-base md:space-x-6 ">
+        {/* Likes */}
+        <div
+          className="flex cursor-pointer items-center rounded-md px-1 hover:bg-gray-300 dark:hover:bg-slate-700"
+          id="like-button"
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowDropdown(false);
+            e.currentTarget.children[0].classList.toggle("fill-red-600");
+            if (
+              e.currentTarget.children[0].classList.contains("fill-red-600")
+            ) {
+              toggleLike(numLikes + 1);
+            } else {
+              toggleLike(numLikes - 1);
+            }
+          }}
+        >
+          <svg
+            id="like-image"
+            className="h-6 w-6 cursor-pointer stroke-red-600 sm:h-8 sm:w-8"
+            fill="none"
+            strokeWidth="1.5"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+            ></path>
+          </svg>
+          <div className="ml-2" id="num-likes">
+            {numLikes} likes
+          </div>
+        </div>
+        {/* Reply  */}
+        <div
+          className="flex cursor-pointer items-center rounded-md px-1 hover:bg-gray-300 dark:hover:bg-slate-700"
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowDropdown(false);
+            console.log(`Reply to message ${id}`);
+          }}
+        >
+          <svg
+            viewBox="0 0 16 16"
+            xmlns="http://www.w3.org/2000/svg"
+            version="1.1"
+            fill="none"
+            stroke="#000000"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="0.9"
+            className="h-6 w-6 stroke-black dark:stroke-white sm:h-8 sm:w-8"
+          >
+            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+            <g
+              id="SVGRepo_tracerCarrier"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            ></g>
+            <g id="SVGRepo_iconCarrier">
+              {" "}
+              <path d="m14.25 13.25c-.5-6-5.5-7.5-8-7v-3.5l-4.5 5.25 4.5 5.25v-3.5c2.50001-0.5 6.5 0.5 8 3.5z"></path>{" "}
+            </g>
+          </svg>
+          <div className="ml-2">Reply</div>
+        </div>
+
         {/* Message Menu  */}
-        <div className="ml-auto mr-6" id="dropdown-button">
+        <div>
           <svg
             onClick={(e) => {
               e.stopPropagation();
@@ -230,7 +365,11 @@ const Message: React.FC<Props> = ({
                 <div
                   className="flex items-center py-2 text-sm text-gray-700 hover:bg-blue-200 hover:text-black "
                   role="menuitem"
-                  id="menu-item-3"
+                  id="edit"
+                  onClick={() => {
+                    toggleEdit(!edit);
+                    setTempContent(content);
+                  }}
                 >
                   <div className="flex-1">
                     <svg
@@ -261,7 +400,8 @@ const Message: React.FC<Props> = ({
                 <div
                   className="flex items-center py-2 text-sm text-gray-700 hover:rounded-b-md hover:bg-blue-200 hover:text-black"
                   role="menuitem"
-                  id="menu-item-3"
+                  id="delete"
+                  onClick={() => setShowDeleteThread(true)}
                 >
                   <div className="flex-1">
                     <svg
@@ -292,87 +432,14 @@ const Message: React.FC<Props> = ({
           )}
         </div>
       </div>
-
-      {/* Message Content  */}
-      <div
-        id="message-content"
-        className="relative top-7 mx-6 mb-12 text-left text-base sm:mx-8 md:text-lg"
-      >
-        {messageContent}
-      </div>
-
-      {/* Bottom Bar */}
-      <div className="absolute left-3 bottom-3 flex space-x-2 text-sm sm:space-x-3 sm:text-base md:space-x-6 ">
-        {/* Likes */}
-        <div
-          className="flex cursor-pointer items-center rounded-md px-1 hover:bg-gray-300 dark:hover:bg-slate-700"
-          id="like-button"
-          onClick={(e) => {
-            e.stopPropagation();
-            setShowDropdown(false);
-            e.currentTarget.children[0].classList.toggle("fill-red-600");
-            if (
-              e.currentTarget.children[0].classList.contains("fill-red-600")
-            ) {
-              toggleLike(numLikes + 1);
-            } else {
-              toggleLike(numLikes - 1);
-            }
-          }}
-        >
-          <svg
-            id="like-image"
-            className="h-6 w-6 cursor-pointer stroke-red-600 sm:h-8 sm:w-8"
-            fill="none"
-            strokeWidth="1.5"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-            ></path>
-          </svg>
-          <div className="ml-2" id="num-likes">
-            {numLikes} likes
-          </div>
-        </div>
-        {/* Reply  */}
-        <div
-          className="flex cursor-pointer items-center rounded-md px-1 hover:bg-gray-300 dark:hover:bg-slate-700"
-          onClick={(e) => {
-            e.stopPropagation();
-            setShowDropdown(false);
-            console.log(`Reply to message ${id}`);
-          }}
-        >
-          <svg
-            viewBox="0 0 16 16"
-            xmlns="http://www.w3.org/2000/svg"
-            version="1.1"
-            fill="none"
-            stroke="#000000"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="0.9"
-            className="h-6 w-6 stroke-black dark:stroke-white sm:h-8 sm:w-8"
-          >
-            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-            <g
-              id="SVGRepo_tracerCarrier"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            ></g>
-            <g id="SVGRepo_iconCarrier">
-              {" "}
-              <path d="m14.25 13.25c-.5-6-5.5-7.5-8-7v-3.5l-4.5 5.25 4.5 5.25v-3.5c2.50001-0.5 6.5 0.5 8 3.5z"></path>{" "}
-            </g>
-          </svg>
-          <div className="ml-2">Reply</div>
-        </div>
-      </div>
+      {/* Delete Popup  */}
+      {showDeleteThread && (
+        <DeleteModal
+          id={id}
+          showDeleteThread={showDeleteThread}
+          setShowDeleteThread={setShowDeleteThread}
+        />
+      )}
     </div>
   );
 };

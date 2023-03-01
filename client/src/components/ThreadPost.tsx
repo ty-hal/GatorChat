@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import ProfilePicture from "./ProfilePicture";
+import DeleteModal from "./DeleteThreadPopup";
+import { RichTextEditor } from "./RichTextEditor";
 
 type Props = {
   id: number;
@@ -23,11 +25,20 @@ const Thread: React.FC<Props> = ({
   messagesCount,
 }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
+  const [showDeleteThread, setShowDeleteThread] = useState<boolean>(false);
+  const [edit, toggleEdit] = useState<boolean>(false);
+  const [tempContent, setTempContent] = useState<string>("");
+
   const [numLikes, toggleLike] = useState<number>(likesCount);
   const [postTimeDifference, setPostTimeDifference] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
+  const [content, setContent] = useState<string>("");
 
   // Updates postTimeDifference with how long ago the thread was created
   useEffect(() => {
+    setTitle(threadTitle);
+    setContent(threadContent);
+
     let postTime = new Date(threadDate);
     let currentTime = new Date();
     const _MS_PER_YEAR = 1000 * 60 * 60 * 24 * 365;
@@ -84,6 +95,13 @@ const Thread: React.FC<Props> = ({
     }
   }, []);
 
+  // Edit the thread
+  const editThread = () => {
+    console.log(title, content);
+    toggleEdit(false);
+    //Add API call here
+  };
+
   return (
     <div
       className="relative mx-auto w-11/12 rounded-t-2xl border-2 border-b-4 border-gray-500  bg-gray-200 py-8 text-center text-lg font-normal text-gray-900 shadow-xl dark:border-gray-300 dark:bg-gray-800 dark:text-white lg:w-4/5"
@@ -91,7 +109,6 @@ const Thread: React.FC<Props> = ({
       onClick={(e) => {
         e.stopPropagation();
         setShowDropdown(false);
-        console.log(`Open thread ${id}`);
       }}
     >
       {/* Profile Picture, Username, Date, and Dropdown */}
@@ -117,21 +134,70 @@ const Thread: React.FC<Props> = ({
         </div>
       </div>
 
-      {/* Thread Title  */}
-      <div
-        id="thread-title"
-        className="relative top-7 mx-8 mb-1 text-left text-xl font-bold sm:my-2 sm:text-2xl"
-      >
-        {threadTitle}
-      </div>
+      {/* Edit thread  */}
+      {edit && (
+        <div id="thread-edit" className="relative top-7 mx-8 mb-2 sm:my-2">
+          <div className="mx-auto">
+            <input
+              type="text"
+              id="title-edit"
+              className="w-full break-normal rounded-lg border border-gray-600 bg-gray-50 p-2 text-lg text-gray-900 focus:border-gray-600 focus:outline-none focus:outline-0 focus:ring-0 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-gray-200"
+              value={title}
+              maxLength={300}
+              onChange={(e) => setTitle(e.currentTarget.value)}
+            />
+            <div
+              className="mx-auto mt-2 w-full text-right text-gray-400"
+              id="title-length"
+            >
+              {title.length}/300 characters
+            </div>
+          </div>
+          <div className="mx-auto text-left" id="text">
+            <RichTextEditor setText={setContent} textContent={content} />
+          </div>
+          <div className="mx-auto mb-12 flex space-x-4">
+            <button
+              className="rounded-lg border border-black bg-blue-600 py-1 px-2 text-white hover:bg-blue-700 dark:border-gray-200 dark:hover:bg-blue-800"
+              onClick={editThread}
+              id="edit-thread"
+            >
+              Edit thread
+            </button>
+            <button
+              className="rounded-lg border border-black bg-red-600 py-1 px-2 text-white hover:bg-red-800 dark:border-gray-200 dark:hover:bg-red-800"
+              onClick={() => {
+                toggleEdit(false);
+                setContent(tempContent);
+              }}
+              id="cancel-edit"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+      {/* Thread Content */}
+      {!edit && (
+        <>
+          {/* Thread Title  */}
+          <div
+            id="thread-title"
+            className="relative top-7 mx-8 mb-1 text-left text-xl font-bold sm:my-2 sm:text-2xl"
+          >
+            {title}
+          </div>
+          {/* Thread Content  */}
+          <div
+            id="thread-content"
+            className="relative top-7 mx-8 mb-12 text-left text-base text-black dark:text-white md:text-lg "
+            dangerouslySetInnerHTML={{
+              __html: content,
+            }}
+          ></div>
+        </>
+      )}
 
-      {/* Thread Content  */}
-      <div
-        id="thread-content"
-        className="relative top-7 mx-8 mb-12 text-left text-base text-black dark:text-white md:text-lg"
-      >
-        {threadContent}
-      </div>
       {/* Bottom Bar */}
       <div className="absolute left-3 bottom-3 flex space-x-2 text-sm sm:space-x-3 sm:text-base md:space-x-6">
         {/* Likes */}
@@ -401,7 +467,11 @@ const Thread: React.FC<Props> = ({
                 <div
                   className="flex items-center py-2 text-sm text-gray-700 hover:bg-blue-200 hover:text-black "
                   role="menuitem"
-                  id="menu-item-3"
+                  id="edit"
+                  onClick={() => {
+                    toggleEdit(!edit);
+                    setTempContent(content);
+                  }}
                 >
                   <div className="flex-1">
                     <svg
@@ -433,6 +503,10 @@ const Thread: React.FC<Props> = ({
                   className="flex items-center py-2 text-sm text-gray-700 hover:rounded-b-md hover:bg-blue-200 hover:text-black"
                   role="menuitem"
                   id="menu-item-3"
+                  onClick={() => {
+                    setShowDeleteThread(true);
+                    console.log(threadTitle);
+                  }}
                 >
                   <div className="flex-1">
                     <svg
@@ -462,6 +536,15 @@ const Thread: React.FC<Props> = ({
             </div>
           )}
         </div>
+        {/* Delete Popup  */}
+        {showDeleteThread && (
+          <DeleteModal
+            id={id}
+            title={threadTitle}
+            showDeleteThread={showDeleteThread}
+            setShowDeleteThread={setShowDeleteThread}
+          />
+        )}
       </div>
     </div>
   );

@@ -16,6 +16,7 @@ import Blockquote from "@tiptap/extension-blockquote";
 type Props = {
   setText?: React.Dispatch<React.SetStateAction<string>>;
   textContent?: string;
+  charLimit?: number;
 };
 
 const MenuBar = ({ editor }: any) => {
@@ -1054,7 +1055,12 @@ const MenuBar = ({ editor }: any) => {
   );
 };
 
-export const RichTextEditor: React.FC<Props> = ({ setText, textContent }) => {
+export const RichTextEditor: React.FC<Props> = ({
+  setText,
+  textContent,
+  charLimit,
+}) => {
+  let characterLimit = charLimit ? charLimit : 4000;
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -1067,7 +1073,7 @@ export const RichTextEditor: React.FC<Props> = ({ setText, textContent }) => {
         types: ["heading", "paragraph"],
       }),
       CharacterCount.configure({
-        limit: 4000,
+        limit: characterLimit,
       }),
       Typography,
       Image.configure({
@@ -1124,7 +1130,8 @@ export const RichTextEditor: React.FC<Props> = ({ setText, textContent }) => {
         className="mx-auto my-2 w-full text-right text-gray-400"
         id="char-count"
       >
-        {editor?.storage?.characterCount.characters()}/4000 characters
+        {editor?.storage?.characterCount.characters()}/{characterLimit}{" "}
+        characters
       </div>
     </div>
   );

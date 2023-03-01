@@ -26,9 +26,11 @@ const Thread: React.FC<Props> = ({
 }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [showDeleteThread, setShowDeleteThread] = useState<boolean>(false);
+  const [edit, toggleEdit] = useState<boolean>(false);
+  const [tempContent, setTempContent] = useState<string>("");
+
   const [numLikes, toggleLike] = useState<number>(likesCount);
   const [postTimeDifference, setPostTimeDifference] = useState<string>("");
-  const [edit, toggleEdit] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
 
@@ -163,15 +165,18 @@ const Thread: React.FC<Props> = ({
             </button>
             <button
               className="rounded-lg border border-black bg-red-600 py-1 px-2 text-white hover:bg-red-800 dark:border-gray-200 dark:hover:bg-red-800"
-              onClick={() => toggleEdit(false)}
-              id="edit-thread"
+              onClick={() => {
+                toggleEdit(false);
+                setContent(tempContent);
+              }}
+              id="cancel-edit"
             >
               Cancel
             </button>
           </div>
         </div>
       )}
-
+      {/* Thread Content */}
       {!edit && (
         <>
           {/* Thread Title  */}
@@ -183,7 +188,7 @@ const Thread: React.FC<Props> = ({
           </div>
           {/* Thread Content  */}
           <div
-            id="thread-content"
+            id="thread-preview-content"
             className="text-md relative top-7 mx-8 mb-12 overflow-hidden text-left text-black dark:text-gray-300 "
             dangerouslySetInnerHTML={{
               __html: content,
@@ -191,6 +196,7 @@ const Thread: React.FC<Props> = ({
           ></div>
         </>
       )}
+
       {/* Bottom Bar */}
       <div className="absolute left-3 bottom-3 flex space-x-2 text-base sm:space-x-3 md:space-x-6 md:text-lg">
         {/* Likes */}
@@ -428,7 +434,10 @@ const Thread: React.FC<Props> = ({
                   className="flex items-center py-2 text-sm text-gray-700 hover:bg-blue-200 hover:text-black "
                   role="menuitem"
                   id="edit"
-                  onClick={() => toggleEdit(!edit)}
+                  onClick={() => {
+                    toggleEdit(!edit);
+                    setTempContent(content);
+                  }}
                 >
                   <div className="flex-1">
                     <svg
@@ -493,7 +502,7 @@ const Thread: React.FC<Props> = ({
           {showDeleteThread && (
             <DeleteModal
               id={id}
-              threadTitle={title}
+              title={title}
               showDeleteThread={showDeleteThread}
               setShowDeleteThread={setShowDeleteThread}
             />

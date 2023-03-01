@@ -76,7 +76,7 @@ const SampleThread = () => {
             />
           );
         })}
-        <MessageBox />
+        <MessageBox thread_id={1} />
       </div>
       <Footer />
     </div>

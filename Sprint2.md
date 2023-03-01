@@ -17,6 +17,8 @@
 - Edited the thread and message components to display the post date relative to the current time, like "posted 2 hours ago" or "posted 17 days ago".
   - As a user, I want to easily see how long ago something was posted relative to the current time, so I will update this relative post date next to the username.
 - Configured Cypress and created numerous component and end-to-end tests to cover most of our web app functionality.
+- Created chatbox component where users can send messages into threads
+  -As a user, I want to be able to participate in threads with other users. Therefore, I, as a developer, will create a chatbox component so users can send messages into threads.
 
 ### Backend:
 - Implemented infinite scroller for threads so when the user scrolls to the bottom of the screen, new threads are loaded.
@@ -53,6 +55,10 @@ ___
 **ThreadPost**: renders, default profile picture exists, thread time posted relative to current time, add a like to the thread
 
 **ThreadPreview**: renders, default profile picture exists, thread time posted relative to current time, add a like to the thread
+
+**ContactUs**: renders, enters name, enters email, does not submit.
+
+**Settings**: renders, enters new name, enters new email, enters new password, enters new major, submits.
 
 ### Cypress (end-to-end) tests:
 **Register**: successfully register account, try to register an existing account, try to register before entering all information

@@ -30,6 +30,7 @@
     "dependencies": "^0.0.1",
     "eslint-plugin-cypress": "^2.12.1",
     "flowbite": "^1.6.2",
+    "infinite-scroller": "^0.0.11",
     "jotai": "^2.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

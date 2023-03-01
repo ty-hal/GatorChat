@@ -25,6 +25,12 @@
   - As as user, I want to see all the sections and threads, so I will grab them from the database and display them to the screen
 - Create handlers for Sections/Threads/Posts that follow the layout of the User handler created in Sprint 1.
   - As a developer, I want my request to be handled in an organized way, so I will create handlers to verify and organize requests.
+- Create queries, functions, and handlers for Posts/Threads/Users for deletion of rows in the database.
+  - As a user, I want to be able to delete posts, threads, or my account, so I will create handlers to send delete requests.
+- Fix creation date of Posts/Threads/Users to accurately store time using timestamptz
+  - As a user, I want to see when my post, thread, and account were created in my time zone, so I will store the posts', threads', and users' creation dates as a timestamptz.
+- Create queries, functions, and handlers for Posts/Threads/Users for updating rows in the database.
+  - As a user, I want to be able to edit and update posts, threads, or my account, so I will create handlers to send update requests.
 ___
 ## Unit tests and Cypress test for frontend
 ### Unit (Cypress component) tests: 
@@ -117,9 +123,9 @@ Return user created
 
 ### Delete User
 Return user deleted
-- URL: `/api/user/:id`
+- URL: `/api/user/`
 - Method: `DELETE`
-- Parameters: `id=[integer]`
+- Parameters: `user=[User]`
 - Status Responses
   - 200 OK 
   - 400 BAD REQUEST 
@@ -127,9 +133,9 @@ Return user deleted
 
 ### Update User
 Return user updated
-- URL: `/api/user/:id`
+- URL: `/api/user/`
 - Method: `PUT`
-- Parameters: `id=[integer]`
+- Parameters: `user=[User]`
 - Status Responses
   - 200 OK 
   - 400 BAD REQUEST 
@@ -215,9 +221,9 @@ Return thread created
 
 ### Delete Thread
 Return thread deleted
-- URL: `/api/thread/:id`
+- URL: `/api/thread/`
 - Method: `DELETE`
-- Parameters: `id=[integer]`
+- Parameters: `thread=[Thread]`
 - Status Responses
   - 200 OK 
   - 400 BAD REQUEST 
@@ -225,9 +231,9 @@ Return thread deleted
 
 ### Update Thread
 Return thread updated
-- URL: `/api/thread/:id`
+- URL: `/api/thread/`
 - Method: `PUT`
-- Parameters: `id=[integer]`
+- Parameters: `thread=[Thread]`
 - Status Responses
   - 200 OK 
   - 400 BAD REQUEST 
@@ -282,9 +288,9 @@ Return thread created
 
 ### Delete Post
 Return post deleted
-- URL: `/api/post/:id`
+- URL: `/api/post/`
 - Method: `DELETE`
-- Parameters: `id=[integer]`
+- Parameters: `post=[Post]`
 - Status Responses
   - 200 OK 
   - 400 BAD REQUEST 
@@ -292,9 +298,9 @@ Return post deleted
 
 ### Update Post
 Return post updated
-- URL: `/api/post/:id`
+- URL: `/api/post/`
 - Method: `PUT`
-- Parameters: `id=[integer]`
+- Parameters: `post=[Post]`
 - Status Responses
   - 200 OK 
   - 400 BAD REQUEST 

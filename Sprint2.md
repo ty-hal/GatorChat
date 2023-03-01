@@ -25,7 +25,7 @@
   - As as user, I want to see all the sections and threads, so I will grab them from the database and display them to the screen
 - Create handlers for Sections/Threads/Posts that follow the layout of the User handler created in Sprint 1.
   - As a developer, I want my request to be handled in an organized way, so I will create handlers to verify and organize requests.
-- Create queries, functions, and handlers for Posts/Threads/Users for deletion of rows in the database.
+- Create queries, functions, and handlers for Posts/Threads/Users for deleting rows in the database.
   - As a user, I want to be able to delete posts, threads, or my account, so I will create handlers to send delete requests.
 - Fix creation date of Posts/Threads/Users to accurately store time using timestamptz
   - As a user, I want to see when my post, thread, and account were created in my time zone, so I will store the posts', threads', and users' creation dates as a timestamptz.

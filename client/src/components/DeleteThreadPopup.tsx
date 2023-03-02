@@ -17,6 +17,13 @@ const PopupModal: React.FC<Props> = ({
     console.log(title, "ID:", id);
     setShowDeleteThread(false);
     //Add API call here
+
+    // fetch(`http://localhost:3000/api/thread/`, {
+    //   method: "DELETE",
+    //   headers: {
+    //     "content-type": "application/json",
+    //   },
+    // });
   };
 
   return (

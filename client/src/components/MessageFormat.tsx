@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import ProfilePicture from "./ProfilePicture";
 import DeleteModal from "../components/DeleteThreadPopup";
 import { RichTextEditor } from "./RichTextEditor";
+import { useAtom } from "jotai";
+import { messageBoxAtom } from "../pages/DeleteLater/SampleThread";
 
 type Props = {
   id: number;
@@ -10,6 +12,7 @@ type Props = {
   messageContent: string;
   messageDate: string;
   likesCount: number;
+  replyFunc: () => void;
 };
 
 const Message: React.FC<Props> = ({
@@ -19,6 +22,7 @@ const Message: React.FC<Props> = ({
   messageContent,
   messageDate,
   likesCount,
+  replyFunc,
 }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [showDeleteThread, setShowDeleteThread] = useState<boolean>(false);
@@ -28,6 +32,8 @@ const Message: React.FC<Props> = ({
   const [numLikes, toggleLike] = useState<number>(likesCount);
   const [postTimeDifference, setPostTimeDifference] = useState<string>("");
   const [content, setContent] = useState<string>("");
+
+  const [userMessageBox, setUserMessageBox] = useAtom(messageBoxAtom);
 
   // Updates postTimeDifference with how long ago the message was created
   useEffect(() => {
@@ -94,6 +100,13 @@ const Message: React.FC<Props> = ({
     console.log(content);
     toggleEdit(false);
     //Add API call here
+  };
+
+  const replyToMessage = () => {
+    replyFunc();
+    setUserMessageBox(
+      `<p></p><blockquote><p><strong>${username}</strong> posted ${postTimeDifference}:</p><p>${content}</p></blockquote><p></p>`
+    );
   };
 
   return (
@@ -217,6 +230,7 @@ const Message: React.FC<Props> = ({
             e.stopPropagation();
             setShowDropdown(false);
             console.log(`Reply to message ${id}`);
+            replyToMessage();
           }}
         >
           <svg

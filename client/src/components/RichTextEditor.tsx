@@ -1,5 +1,5 @@
 import { useCallback, useState, useEffect } from "react";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { darkModeAtom } from "../App";
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
@@ -17,6 +17,8 @@ import Underline from "@tiptap/extension-underline";
 import Youtube from "@tiptap/extension-youtube";
 import Blockquote from "@tiptap/extension-blockquote";
 
+import { messageBoxAtom } from "../pages/DeleteLater/SampleThread";
+
 type Props = {
   setText?: React.Dispatch<React.SetStateAction<string>>;
   textContent?: string;
@@ -31,6 +33,13 @@ const MenuBar = ({ editor }: any) => {
   const [emojiPicker, toggleEmojiPicker] = useState(false);
   const [currentEmoji, setCurrentEmoji] = useState(null);
 
+  // Add reply message
+  const replyMessage = useAtomValue(messageBoxAtom);
+  useEffect(() => {
+    console.log(replyMessage);
+    editor?.commands.insertContent(replyMessage);
+  }, [replyMessage]);
+
   // Add emoji
   useEffect(() => {
     if (currentEmoji) {
@@ -38,7 +47,6 @@ const MenuBar = ({ editor }: any) => {
       editor.commands.insertContent(currentEmoji);
     }
   }, [currentEmoji]);
-
   const addImage = useCallback(() => {
     const url = window.prompt("URL");
 
@@ -558,7 +566,7 @@ const MenuBar = ({ editor }: any) => {
                       y="0"
                       width="36"
                       height="36"
-                      fill-opacity="0"
+                      fillOpacity="0"
                     ></rect>{" "}
                   </g>
                 </svg>
@@ -739,7 +747,7 @@ const MenuBar = ({ editor }: any) => {
                 d="M23,16.55a4.29,4.29,0,0,0-2.11.56,14.5,14.5,0,0,1,4.35-6,1.1,1.1,0,1,0-1.39-1.7c-4,3.25-5.78,7.75-5.78,10.54a5.08,5.08,0,0,0,3,4.61A4.37,4.37,0,0,0,23,25a4.24,4.24,0,1,0,0-8.47Z"
                 className="clr-i-outline clr-i-outline-path-2"
               ></path>{" "}
-              <rect x="0" y="0" width="36" height="36" fill-opacity="0"></rect>{" "}
+              <rect x="0" y="0" width="36" height="36" fillOpacity="0"></rect>{" "}
             </g>
           </svg>
         </button>
@@ -1105,7 +1113,7 @@ const MenuBar = ({ editor }: any) => {
               aria-hidden="true"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
-              stroke-width="1.3"
+              strokeWidth="1.3"
               className="h-6 w-6 rounded-md fill-none stroke-black p-1 hover:bg-gray-200  dark:stroke-white dark:hover:bg-gray-700 sm:h-8 sm:w-8"
             >
               <path
@@ -1155,6 +1163,7 @@ export const RichTextEditor: React.FC<Props> = ({
   charLimit,
 }) => {
   let characterLimit = charLimit ? charLimit : 4000;
+
   const editor = useEditor({
     extensions: [
       StarterKit,

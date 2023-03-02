@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import ProfilePicture from "./ProfilePicture";
 import DeleteModal from "./DeleteThreadPopup";
 import { RichTextEditor } from "./RichTextEditor";
+import { useAtom } from "jotai";
+import { messageBoxAtom } from "../pages/DeleteLater/SampleThread";
 
 type Props = {
   id: number;
@@ -12,6 +14,7 @@ type Props = {
   threadDate: string;
   likesCount: number;
   messagesCount: number;
+  replyFunc: () => void;
 };
 
 const Thread: React.FC<Props> = ({
@@ -23,6 +26,7 @@ const Thread: React.FC<Props> = ({
   threadDate,
   likesCount,
   messagesCount,
+  replyFunc,
 }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [showDeleteThread, setShowDeleteThread] = useState<boolean>(false);
@@ -35,6 +39,8 @@ const Thread: React.FC<Props> = ({
 
   const [content, setContent] = useState<string>("");
   const [tempContent, setTempContent] = useState<string>("");
+
+  const [userMessageBox, setUserMessageBox] = useAtom(messageBoxAtom);
 
   // Updates postTimeDifference with how long ago the thread was created
   useEffect(() => {
@@ -102,6 +108,13 @@ const Thread: React.FC<Props> = ({
     console.log(title, content);
     toggleEdit(false);
     //Add API call here
+  };
+
+  const replyToThread = () => {
+    replyFunc();
+    setUserMessageBox(
+      `<blockquote><p><strong>${username}</strong> posted ${postTimeDifference}:</p><p>${content}</p></blockquote><p></p>`
+    );
   };
 
   return (
@@ -243,10 +256,7 @@ const Thread: React.FC<Props> = ({
           </div>
         </div>
         {/* Messages Count */}
-        <div
-          className="flex cursor-pointer items-center rounded-md px-1 hover:bg-gray-300 dark:hover:bg-slate-700"
-          id="messages-count"
-        >
+        <div className="flex items-center rounded-md px-1" id="messages-count">
           <svg
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
@@ -281,6 +291,7 @@ const Thread: React.FC<Props> = ({
             e.stopPropagation();
             setShowDropdown(false);
             console.log(`Reply to message ${id}`);
+            replyToThread();
           }}
         >
           <svg

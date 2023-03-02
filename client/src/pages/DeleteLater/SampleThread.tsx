@@ -2,9 +2,20 @@ import Footer from "../../components/Footer";
 import Thread from "../../components/ThreadPost";
 import Message from "../../components/MessageFormat";
 import MessageBox from "../../components/MessageBox";
+import { useRef } from "react";
+
+import { atom } from "jotai";
+export const messageBoxAtom = atom("");
 
 const SampleThread = () => {
   // Would do an API call here to get thread and messages
+  const dummy = useRef<null | HTMLDivElement>(null);
+  const replyFunc = () => {
+    if (dummy.current) {
+      dummy.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  };
+
   const thread = {
     id: 2,
     username: "John Doe",
@@ -63,6 +74,7 @@ const SampleThread = () => {
           threadDate={thread.threadDate}
           likesCount={thread.likesCount}
           messagesCount={thread.messagesCount}
+          replyFunc={replyFunc}
         />
         {messages.map((messages) => {
           return (
@@ -73,9 +85,11 @@ const SampleThread = () => {
               messageContent={messages.messageContent}
               messageDate={messages.messageDate}
               likesCount={messages.likesCount}
+              replyFunc={replyFunc}
             />
           );
         })}
+        <div ref={dummy}></div>
         <MessageBox thread_id={1} />
       </div>
       <Footer />

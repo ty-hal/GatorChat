@@ -17,6 +17,7 @@ func main() {
 
 	corsHandler := cors.New(cors.Options{
 		AllowedOrigins: []string{"http://localhost:3000"},
+		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE"},
 	})
 
 	fmt.Println("starting the server on port 9000...")

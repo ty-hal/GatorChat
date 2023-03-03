@@ -54,23 +54,17 @@ func CreateThread(thread Thread) Thread {
 	return thread
 }
 
-type UpdateThreadHandler struct {
-	Thread     Thread
-	NewTitle   string
-	NewContent string
+type UpdatedThread struct {
+	ThreadTitle string `json:"thread_title,omitempty"`
+	Content     string `json:"content,omitempty"`
 }
 
-func UpdateThread(handlerParams UpdateThreadHandler) (Thread, error) {
-	thread := handlerParams.Thread
-	newTitle := handlerParams.NewTitle
-	newContent := handlerParams.NewContent
+func UpdateThread(thread_id uint8, updatedThread UpdatedThread) (Thread, error) {
+	var thread Thread
+	err := middleware.DB.Model(&thread).Where("thread_id = ?", thread_id).Updates(Thread{ThreadTitle: updatedThread.ThreadTitle, Content: updatedThread.Content})
 
-	if thread.ThreadTitle != newTitle || thread.Content != newContent {
-		result := middleware.DB.Model(&thread).Updates(Thread{ThreadTitle: newTitle, Content: newContent})
-
-		if result.Error != nil {
-			return thread, result.Error
-		}
+	if err.Error != nil {
+		return thread, err.Error
 	}
 
 	return thread, nil

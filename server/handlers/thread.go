@@ -66,10 +66,20 @@ func CreateThread(w http.ResponseWriter, r *http.Request) {
 func UpdateThread(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	var thread models.UpdateThreadHandler
-	json.NewDecoder(r.Body).Decode(&thread)
+	params := mux.Vars(r)
+	id, err := strconv.Atoi(params["id"])
 
-	threadUpdated, threadErr := models.UpdateThread(thread)
+	// Invalid parameter
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("Invalid Parameter: id"))
+		return
+	}
+
+	var updatedThread models.UpdatedThread
+	json.NewDecoder(r.Body).Decode(&updatedThread)
+
+	threadUpdated, threadErr := models.UpdateThread(uint8(id), updatedThread)
 
 	if threadErr != nil {
 		w.WriteHeader(http.StatusNotFound)

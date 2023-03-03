@@ -15,8 +15,6 @@ type Props = {
 };
 
 interface threadBody {
-  user_id: number;
-  section_id: number;
   thread_title?: string | undefined;
   content?: string | undefined;
 }
@@ -109,29 +107,27 @@ const Thread: React.FC<Props> = ({
     toggleEdit(false);
 
     const threadRequest: threadBody = {
-      user_id: 7, // REPLACE WITH REAL USER ID LATER
-      section_id: 1, // REPLACE WITH REAL SECTION ID LATER
       thread_title: title,
       content: content,
     };
 
-    // Backend call to update a thread
-    // fetch("http://localhost:9000/api/thread", {
-    //   method: "PUT",
-    //   headers: {
-    //     "content-type": "application/json",
-    //   },
-    //   body: JSON.stringify(threadRequest),
-    // })
-    //   .then((response) => {
-    //     if (response.status === 200) {
-    //       window.location.reload();
-    //       return response.json();
-    //     }
-    //   })
-    //   .then((data) => {
-    //     console.log(data);
-    //   });
+    fetch(`http://localhost:9000/api/thread/${id}`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(threadRequest),
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          window.location.reload();
+          return response.json();
+        }
+      })
+      .then((data) => {
+        console.log(data);
+      });
+
   };
 
   return (

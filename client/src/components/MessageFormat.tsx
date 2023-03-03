@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ProfilePicture from "./ProfilePicture";
-import DeleteModal from "../components/DeleteThreadPopup";
+import DeleteModal from "./DeletePopup";
 import { RichTextEditor } from "./RichTextEditor";
 import { useAtom } from "jotai";
 import { messageBoxAtom } from "../pages/DeleteLater/SampleThread";
@@ -15,6 +15,12 @@ type Props = {
   replyFunc: () => void;
 };
 
+interface messageBody {
+  user_id: number;
+  thread_id: number;
+  content: string | undefined;
+}
+
 const Message: React.FC<Props> = ({
   id,
   username,
@@ -25,7 +31,7 @@ const Message: React.FC<Props> = ({
   replyFunc,
 }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
-  const [showDeleteThread, setShowDeleteThread] = useState<boolean>(false);
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [edit, toggleEdit] = useState<boolean>(false);
   const [tempContent, setTempContent] = useState<string>("");
 
@@ -47,7 +53,7 @@ const Message: React.FC<Props> = ({
     const _MS_PER_HOUR = 1000 * 60 * 60;
     const _MS_PER_MINUTE = 1000 * 60;
 
-    // Conver to UTC date format
+    // Convert to UTC date format
     const utcPost = Date.UTC(
       postTime.getFullYear(),
       postTime.getMonth(),
@@ -99,7 +105,30 @@ const Message: React.FC<Props> = ({
   const editMessage = () => {
     console.log(content);
     toggleEdit(false);
-    //Add API call here
+
+    const messageRequest: messageBody = {
+      user_id: 7, // REPLACE WITH REAL USER ID LATER
+      thread_id: 1, // REPLACE WITH REAL THREAD ID LATER
+      content: content,
+    };
+
+    // Backend call to update a message
+    // fetch("http://localhost:9000/api/post", {
+    //   method: "PUT",
+    //   headers: {
+    //     "content-type": "application/json",
+    //   },
+    //   body: JSON.stringify(messageRequest),
+    // })
+    //   .then((response) => {
+    //     if (response.status === 200) {
+    //       window.location.reload();
+    //       return response.json();
+    //     }
+    //   })
+    //   .then((data) => {
+    //     console.log(data);
+    //   });
   };
 
   const replyToMessage = () => {
@@ -153,14 +182,14 @@ const Message: React.FC<Props> = ({
           </div>
           <div className="mx-auto mb-12 flex space-x-4">
             <button
-              className="rounded-lg border border-black bg-blue-600 py-1 px-2 text-white hover:bg-blue-700 dark:border-gray-200 dark:hover:bg-blue-800"
+              className="rounded-lg border border-black bg-blue-600 py-0 px-2 text-base text-white hover:bg-blue-700 dark:border-gray-200 dark:hover:bg-blue-800 md:py-1"
               onClick={editMessage}
               id="edit-message"
             >
               Edit message
             </button>
             <button
-              className="rounded-lg border border-black bg-red-600 py-1 px-2 text-white hover:bg-red-800 dark:border-gray-200 dark:hover:bg-red-800"
+              className="rounded-lg border border-black bg-red-600 py-0 px-2 text-base text-white hover:bg-red-800 dark:border-gray-200 dark:hover:bg-red-800 md:px-1"
               onClick={() => {
                 toggleEdit(false);
                 setContent(tempContent);
@@ -402,7 +431,7 @@ const Message: React.FC<Props> = ({
                         {" "}
                         <path
                           d="M277.974 49.076c65.267-65.379 171.733-65.49 237.448 0l232.186 232.187 1055.697 1055.809L1919.958 1920l-582.928-116.653-950.128-950.015 79.15-79.15 801.792 801.68 307.977-307.976-907.362-907.474L281.22 747.65 49.034 515.464c-65.379-65.603-65.379-172.069 0-237.448Zm1376.996 1297.96-307.977 307.976 45.117 45.116 384.999 77.023-77.023-385-45.116-45.116ZM675.355 596.258l692.304 692.304-79.149 79.15-692.304-692.305 79.149-79.15ZM396.642 111.88c-14.33 0-28.547 5.374-39.519 16.345l-228.94 228.94c-21.718 21.718-21.718 57.318 0 79.149l153.038 153.037 308.089-308.09-153.037-153.036c-10.972-10.971-25.301-16.345-39.63-16.345Z"
-                          fill-rule="evenodd"
+                          fillRule="evenodd"
                         ></path>{" "}
                       </g>
                     </svg>
@@ -415,7 +444,7 @@ const Message: React.FC<Props> = ({
                   className="flex items-center py-2 text-sm text-gray-700 hover:rounded-b-md hover:bg-blue-200 hover:text-black"
                   role="menuitem"
                   id="delete"
-                  onClick={() => setShowDeleteThread(true)}
+                  onClick={() => setShowDeleteModal(true)}
                 >
                   <div className="flex-1">
                     <svg
@@ -447,11 +476,11 @@ const Message: React.FC<Props> = ({
         </div>
       </div>
       {/* Delete Popup  */}
-      {showDeleteThread && (
+      {showDeleteModal && (
         <DeleteModal
           id={id}
-          showDeleteThread={showDeleteThread}
-          setShowDeleteThread={setShowDeleteThread}
+          showDeleteModal={showDeleteModal}
+          setShowDeleteModal={setShowDeleteModal}
         />
       )}
     </div>

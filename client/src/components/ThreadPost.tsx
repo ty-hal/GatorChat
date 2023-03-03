@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ProfilePicture from "./ProfilePicture";
-import DeleteModal from "./DeleteThreadPopup";
+import DeleteModal from "./DeletePopup";
 import { RichTextEditor } from "./RichTextEditor";
 import { useAtom } from "jotai";
 import { messageBoxAtom } from "../pages/DeleteLater/SampleThread";
@@ -17,6 +17,13 @@ type Props = {
   replyFunc: () => void;
 };
 
+interface threadBody {
+  user_id: number;
+  section_id: number;
+  thread_title?: string | undefined;
+  content?: string | undefined;
+}
+
 const Thread: React.FC<Props> = ({
   id,
   username,
@@ -29,7 +36,7 @@ const Thread: React.FC<Props> = ({
   replyFunc,
 }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
-  const [showDeleteThread, setShowDeleteThread] = useState<boolean>(false);
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [edit, toggleEdit] = useState<boolean>(false);
 
   const [numLikes, toggleLike] = useState<number>(likesCount);
@@ -55,7 +62,7 @@ const Thread: React.FC<Props> = ({
     const _MS_PER_HOUR = 1000 * 60 * 60;
     const _MS_PER_MINUTE = 1000 * 60;
 
-    // Conver to UTC date format
+    // Convert to UTC date format
     const utcPost = Date.UTC(
       postTime.getFullYear(),
       postTime.getMonth(),
@@ -107,7 +114,31 @@ const Thread: React.FC<Props> = ({
   const editThread = () => {
     console.log(title, content);
     toggleEdit(false);
-    //Add API call here
+
+    const threadRequest: threadBody = {
+      user_id: 7, // REPLACE WITH REAL USER ID LATER
+      section_id: 1, // REPLACE WITH REAL SECTION ID LATER
+      thread_title: title,
+      content: content,
+    };
+
+    // Backend call to update a thread
+    // fetch("http://localhost:9000/api/thread", {
+    //   method: "PUT",
+    //   headers: {
+    //     "content-type": "application/json",
+    //   },
+    //   body: JSON.stringify(threadRequest),
+    // })
+    //   .then((response) => {
+    //     if (response.status === 200) {
+    //       window.location.reload();
+    //       return response.json();
+    //     }
+    //   })
+    //   .then((data) => {
+    //     console.log(data);
+    //   });
   };
 
   const replyToThread = () => {
@@ -156,13 +187,13 @@ const Thread: React.FC<Props> = ({
             <input
               type="text"
               id="title-edit"
-              className="w-full break-normal rounded-lg border border-gray-600 bg-gray-50 p-2 text-lg text-gray-900 focus:border-gray-600 focus:outline-none focus:outline-0 focus:ring-0 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-gray-200"
+              className="w-full break-normal rounded-lg border border-gray-600 bg-gray-50 p-2 text-base text-gray-900 focus:border-gray-600 focus:outline-none focus:outline-0 focus:ring-0 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-gray-200"
               value={title}
               maxLength={300}
               onChange={(e) => setTitle(e.currentTarget.value)}
             />
             <div
-              className="mx-auto mt-2 w-full text-right text-gray-400"
+              className="mx-auto mt-2 w-full text-right text-base text-black dark:text-gray-400"
               id="title-length"
             >
               {title.length}/300 characters
@@ -174,7 +205,7 @@ const Thread: React.FC<Props> = ({
           <div className="mx-auto mb-12 flex space-x-4">
             {title.length > 2 && content.length > 7 && (
               <button
-                className="rounded-lg border border-black bg-blue-600 py-1 px-2 text-white hover:bg-blue-700 dark:border-gray-200 dark:hover:bg-blue-800"
+                className="rounded-lg border border-black bg-blue-600 py-0 px-2 text-base text-white hover:bg-blue-700 dark:border-gray-200 dark:hover:bg-blue-800 md:py-1"
                 onClick={editThread}
                 id="edit-thread"
               >
@@ -182,7 +213,7 @@ const Thread: React.FC<Props> = ({
               </button>
             )}
             <button
-              className="rounded-lg border border-black bg-red-600 py-1 px-2 text-white hover:bg-red-800 dark:border-gray-200 dark:hover:bg-red-800"
+              className="rounded-lg border border-black bg-red-600 py-0 px-2 text-base text-white hover:bg-red-800 dark:border-gray-200 dark:hover:bg-red-800 md:py-1"
               onClick={() => {
                 toggleEdit(false);
                 setContent(tempContent);
@@ -521,7 +552,7 @@ const Thread: React.FC<Props> = ({
                   role="menuitem"
                   id="menu-item-3"
                   onClick={() => {
-                    setShowDeleteThread(true);
+                    setShowDeleteModal(true);
                     console.log(threadTitle);
                   }}
                 >
@@ -554,12 +585,12 @@ const Thread: React.FC<Props> = ({
           )}
         </div>
         {/* Delete Popup  */}
-        {showDeleteThread && (
+        {showDeleteModal && (
           <DeleteModal
             id={id}
             title={threadTitle}
-            showDeleteThread={showDeleteThread}
-            setShowDeleteThread={setShowDeleteThread}
+            showDeleteModal={showDeleteModal}
+            setShowDeleteModal={setShowDeleteModal}
           />
         )}
       </div>

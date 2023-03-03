@@ -37,9 +37,8 @@ const MessageBox: React.FC<Props> = ({ thread_id }) => {
       content: message,
     };
 
-    // Backend call to create a thread
-    // CHANGE THE API TO MESSAGE
-    //   fetch("http://localhost:9000/api/thread", {
+    // Backend call to create message
+    //   fetch("http://localhost:9000/api/post", {
     //     method: "POST",
     //     headers: {
     //       "content-type": "application/json",

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import ProfilePicture from "./ProfilePicture";
 import { RichTextEditor } from "./RichTextEditor";
-import DeleteModal from "./DeleteThreadPopup";
+import DeleteModal from "./DeletePopup";
 
 type Props = {
   id: number;
@@ -14,6 +14,13 @@ type Props = {
   messagesCount: number;
 };
 
+interface threadBody {
+  user_id: number;
+  section_id: number;
+  thread_title?: string | undefined;
+  content?: string | undefined;
+}
+
 const Thread: React.FC<Props> = ({
   id,
   username,
@@ -25,7 +32,7 @@ const Thread: React.FC<Props> = ({
   messagesCount,
 }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
-  const [showDeleteThread, setShowDeleteThread] = useState<boolean>(false);
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [edit, toggleEdit] = useState<boolean>(false);
 
   const [numLikes, toggleLike] = useState<number>(likesCount);
@@ -100,7 +107,31 @@ const Thread: React.FC<Props> = ({
   const editThread = () => {
     console.log(title, content);
     toggleEdit(false);
-    //Add API call here
+
+    const threadRequest: threadBody = {
+      user_id: 7, // REPLACE WITH REAL USER ID LATER
+      section_id: 1, // REPLACE WITH REAL SECTION ID LATER
+      thread_title: title,
+      content: content,
+    };
+
+    // Backend call to update a thread
+    // fetch("http://localhost:9000/api/thread", {
+    //   method: "PUT",
+    //   headers: {
+    //     "content-type": "application/json",
+    //   },
+    //   body: JSON.stringify(threadRequest),
+    // })
+    //   .then((response) => {
+    //     if (response.status === 200) {
+    //       window.location.reload();
+    //       return response.json();
+    //     }
+    //   })
+    //   .then((data) => {
+    //     console.log(data);
+    //   });
   };
 
   return (
@@ -148,7 +179,7 @@ const Thread: React.FC<Props> = ({
               onChange={(e) => setTitle(e.currentTarget.value)}
             />
             <div
-              className="mx-auto mt-2 w-full text-right text-gray-400"
+              className="mx-auto mt-2 w-full text-right text-base text-black dark:text-gray-400"
               id="title-length"
             >
               {title.length}/300 characters
@@ -160,7 +191,7 @@ const Thread: React.FC<Props> = ({
           <div className="mx-auto mb-12 flex w-11/12 space-x-4">
             {title.length > 2 && content.length > 7 && (
               <button
-                className="rounded-lg border border-black bg-blue-600 py-1 px-2 text-white hover:bg-blue-700 dark:border-gray-200 dark:hover:bg-blue-800"
+                className="rounded-lg border border-black bg-blue-600 py-0 px-2 text-base text-white hover:bg-blue-700 dark:border-gray-200 dark:hover:bg-blue-800 md:py-1"
                 onClick={editThread}
                 id="edit-thread"
               >
@@ -168,7 +199,7 @@ const Thread: React.FC<Props> = ({
               </button>
             )}
             <button
-              className="rounded-lg border border-black bg-red-600 py-1 px-2 text-white hover:bg-red-800 dark:border-gray-200 dark:hover:bg-red-800"
+              className="rounded-lg border border-black bg-red-600 px-2 py-0 text-base text-white hover:bg-red-800 dark:border-gray-200 dark:hover:bg-red-800 md:py-1"
               onClick={() => {
                 toggleEdit(false);
                 setContent(tempContent);
@@ -475,7 +506,7 @@ const Thread: React.FC<Props> = ({
                   className="flex items-center py-2 text-sm text-gray-700 hover:rounded-b-md hover:bg-blue-200 hover:text-black"
                   role="menuitem"
                   id="menu-item-3"
-                  onClick={() => setShowDeleteThread(true)}
+                  onClick={() => setShowDeleteModal(true)}
                 >
                   <div className="flex-1">
                     <svg
@@ -505,12 +536,12 @@ const Thread: React.FC<Props> = ({
             </div>
           )}
           {/* Delete Popup  */}
-          {showDeleteThread && (
+          {showDeleteModal && (
             <DeleteModal
               id={id}
               title={title}
-              showDeleteThread={showDeleteThread}
-              setShowDeleteThread={setShowDeleteThread}
+              showDeleteModal={showDeleteModal}
+              setShowDeleteModal={setShowDeleteModal}
             />
           )}
         </div>

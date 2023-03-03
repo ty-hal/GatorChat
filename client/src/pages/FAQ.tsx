@@ -76,6 +76,7 @@ const FAQ = () => {
         {FAQs.map((FAQs) => {
           return (
             <Accordion
+              key={FAQs.id}
               question={FAQs.question}
               id={FAQs.id}
               answer={FAQs.answer}

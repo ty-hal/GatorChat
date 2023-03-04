@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import ProfilePicture from "./ProfilePicture";
-import DeleteModal from "./DeletePopup";
+import DeletePopup from "./DeletePopup";
+import ReportPopup from "./ReportPopup";
 import { RichTextEditor } from "./RichTextEditor";
 import { useAtom } from "jotai";
 import { messageBoxAtom } from "../pages/DeleteLater/SampleThread";
@@ -16,8 +17,6 @@ type Props = {
 };
 
 interface messageBody {
-  user_id: number;
-  thread_id: number;
   content: string | undefined;
 }
 
@@ -31,7 +30,8 @@ const Message: React.FC<Props> = ({
   replyFunc,
 }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
-  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+  const [showDeletePopup, setShowDeletePopup] = useState<boolean>(false);
+  const [showReportPopup, setShowReportPopup] = useState<boolean>(false);
   const [edit, toggleEdit] = useState<boolean>(false);
   const [tempContent, setTempContent] = useState<string>("");
 
@@ -107,22 +107,21 @@ const Message: React.FC<Props> = ({
     toggleEdit(false);
 
     const messageRequest: messageBody = {
-      user_id: 7, // REPLACE WITH REAL USER ID LATER
-      thread_id: 1, // REPLACE WITH REAL THREAD ID LATER
       content: content,
     };
 
     // Backend call to update a message
-    // fetch("http://localhost:9000/api/post", {
+    // fetch(`http://localhost:9000/api/post/${id}`, {
     //   method: "PUT",
     //   headers: {
     //     "content-type": "application/json",
     //   },
     //   body: JSON.stringify(messageRequest),
-    // })
+    //   })
     //   .then((response) => {
     //     if (response.status === 200) {
-    //       window.location.reload();
+    //       // We dont need to reload here
+    //       // window.location.reload();
     //       return response.json();
     //     }
     //   })
@@ -286,7 +285,6 @@ const Message: React.FC<Props> = ({
           </svg>
           <div className="ml-2">Reply</div>
         </div>
-
         {/* Message Menu  */}
         <div id="dropdown-button">
           <svg
@@ -370,7 +368,8 @@ const Message: React.FC<Props> = ({
                 <div
                   className="flex items-center py-2 text-sm text-gray-700 hover:bg-blue-200 hover:text-black "
                   role="menuitem"
-                  id="menu-item-3"
+                  id="report"
+                  onClick={() => setShowReportPopup(true)}
                 >
                   <div className="flex-1">
                     <svg
@@ -405,6 +404,7 @@ const Message: React.FC<Props> = ({
 
               {/* IF USER HAS ACCESS TO MODIFY THIS MESSAGE */}
               <div className="cursor-pointer" role="none">
+                {/* Edit */}
                 <div
                   className="flex items-center py-2 text-sm text-gray-700 hover:bg-blue-200 hover:text-black "
                   role="menuitem"
@@ -439,12 +439,12 @@ const Message: React.FC<Props> = ({
                   <div className="">Edit</div>
                   <div className="flex-1"></div>
                 </div>
-
+                {/* Delete */}
                 <div
                   className="flex items-center py-2 text-sm text-gray-700 hover:rounded-b-md hover:bg-blue-200 hover:text-black"
                   role="menuitem"
                   id="delete"
-                  onClick={() => setShowDeleteModal(true)}
+                  onClick={() => setShowDeletePopup(true)}
                 >
                   <div className="flex-1">
                     <svg
@@ -476,11 +476,19 @@ const Message: React.FC<Props> = ({
         </div>
       </div>
       {/* Delete Popup  */}
-      {showDeleteModal && (
-        <DeleteModal
+      {showDeletePopup && (
+        <DeletePopup
           id={id}
-          showDeleteModal={showDeleteModal}
-          setShowDeleteModal={setShowDeleteModal}
+          showDeletePopup={showDeletePopup}
+          setShowDeletePopup={setShowDeletePopup}
+        />
+      )}
+      {/* Report Popup  */}
+      {showReportPopup && (
+        <ReportPopup
+          id={id}
+          showReportPopup={showReportPopup}
+          setShowReportPopup={setShowReportPopup}
         />
       )}
     </div>

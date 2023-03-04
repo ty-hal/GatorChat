@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import ProfilePicture from "./ProfilePicture";
 import { RichTextEditor } from "./RichTextEditor";
-import DeleteModal from "./DeletePopup";
+import DeletePopup from "./DeletePopup";
+import ReportPopup from "./ReportPopup";
 
 type Props = {
   id: number;
@@ -30,7 +31,8 @@ const Thread: React.FC<Props> = ({
   messagesCount,
 }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
-  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+  const [showDeletePopup, setShowDeletePopup] = useState<boolean>(false);
+  const [showReportPopup, setShowReportPopup] = useState<boolean>(false);
   const [edit, toggleEdit] = useState<boolean>(false);
 
   const [numLikes, toggleLike] = useState<number>(likesCount);
@@ -117,7 +119,7 @@ const Thread: React.FC<Props> = ({
         "content-type": "application/json",
       },
       body: JSON.stringify(threadRequest),
-      })
+    })
       .then((response) => {
         if (response.status === 200) {
           window.location.reload();
@@ -127,7 +129,6 @@ const Thread: React.FC<Props> = ({
       .then((data) => {
         console.log(data);
       });
-
   };
 
   return (
@@ -394,10 +395,11 @@ const Thread: React.FC<Props> = ({
               id="Dropdown-content"
             >
               <div className="cursor-pointer" role="none">
+                {/* Save */}
                 <div
                   className="flex items-center py-2 text-sm text-gray-700 hover:rounded-t-md hover:bg-blue-200 hover:text-black "
                   role="menuitem"
-                  id="menu-item-3"
+                  id="save"
                 >
                   <div className="flex-1">
                     <svg
@@ -424,10 +426,12 @@ const Thread: React.FC<Props> = ({
                   <div className="">Save</div>
                   <div className="flex-1"></div>
                 </div>
+                {/* Report */}
                 <div
                   className="flex items-center py-2 text-sm text-gray-700 hover:bg-blue-200 hover:text-black "
                   role="menuitem"
-                  id="menu-item-3"
+                  id="report"
+                  onClick={() => setShowReportPopup(true)}
                 >
                   <div className="flex-1">
                     <svg
@@ -462,6 +466,7 @@ const Thread: React.FC<Props> = ({
 
               {/* IF USER HAS ACCESS TO MODIFY THIS THREAD */}
               <div className="cursor-pointer" role="none">
+                {/* Edit */}
                 <div
                   className="flex items-center py-2 text-sm text-gray-700 hover:bg-blue-200 hover:text-black "
                   role="menuitem"
@@ -497,12 +502,12 @@ const Thread: React.FC<Props> = ({
                   <div className="">Edit</div>
                   <div className="flex-1"></div>
                 </div>
-
+                {/* Delete  */}
                 <div
                   className="flex items-center py-2 text-sm text-gray-700 hover:rounded-b-md hover:bg-blue-200 hover:text-black"
                   role="menuitem"
-                  id="menu-item-3"
-                  onClick={() => setShowDeleteModal(true)}
+                  id="delete"
+                  onClick={() => setShowDeletePopup(true)}
                 >
                   <div className="flex-1">
                     <svg
@@ -532,12 +537,21 @@ const Thread: React.FC<Props> = ({
             </div>
           )}
           {/* Delete Popup  */}
-          {showDeleteModal && (
-            <DeleteModal
+          {showDeletePopup && (
+            <DeletePopup
               id={id}
               title={title}
-              showDeleteModal={showDeleteModal}
-              setShowDeleteModal={setShowDeleteModal}
+              showDeletePopup={showDeletePopup}
+              setShowDeletePopup={setShowDeletePopup}
+            />
+          )}
+          {/* Report Popup  */}
+          {showReportPopup && (
+            <ReportPopup
+              id={id}
+              title={title}
+              showReportPopup={showReportPopup}
+              setShowReportPopup={setShowReportPopup}
             />
           )}
         </div>

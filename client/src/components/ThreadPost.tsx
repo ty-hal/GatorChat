@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import ProfilePicture from "./ProfilePicture";
-import DeleteModal from "./DeletePopup";
+import DeletePopup from "./DeletePopup";
+import ReportPopup from "./ReportPopup";
+
 import { RichTextEditor } from "./RichTextEditor";
 import { useAtom } from "jotai";
 import { messageBoxAtom } from "../pages/DeleteLater/SampleThread";
@@ -18,8 +20,6 @@ type Props = {
 };
 
 interface threadBody {
-  user_id: number;
-  section_id: number;
   thread_title?: string | undefined;
   content?: string | undefined;
 }
@@ -36,7 +36,8 @@ const Thread: React.FC<Props> = ({
   replyFunc,
 }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
-  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+  const [showDeletePopup, setShowDeletePopup] = useState<boolean>(false);
+  const [showReportPopup, setShowReportPopup] = useState<boolean>(false);
   const [edit, toggleEdit] = useState<boolean>(false);
 
   const [numLikes, toggleLike] = useState<number>(likesCount);
@@ -116,29 +117,27 @@ const Thread: React.FC<Props> = ({
     toggleEdit(false);
 
     const threadRequest: threadBody = {
-      user_id: 7, // REPLACE WITH REAL USER ID LATER
-      section_id: 1, // REPLACE WITH REAL SECTION ID LATER
       thread_title: title,
       content: content,
     };
 
-    // Backend call to update a thread
-    // fetch("http://localhost:9000/api/thread", {
-    //   method: "PUT",
-    //   headers: {
-    //     "content-type": "application/json",
-    //   },
-    //   body: JSON.stringify(threadRequest),
-    // })
-    //   .then((response) => {
-    //     if (response.status === 200) {
-    //       window.location.reload();
-    //       return response.json();
-    //     }
-    //   })
-    //   .then((data) => {
-    //     console.log(data);
-    //   });
+    fetch(`http://localhost:9000/api/thread/${id}`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(threadRequest),
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          // We dont need to reload here
+          // window.location.reload();
+          return response.json();
+        }
+      })
+      .then((data) => {
+        console.log(data);
+      });
   };
 
   const replyToThread = () => {
@@ -443,10 +442,11 @@ const Thread: React.FC<Props> = ({
               id="Dropdown-content"
             >
               <div className="cursor-pointer" role="none">
+                {/* Save */}
                 <div
                   className="flex items-center py-2 text-sm text-gray-700 hover:rounded-t-md hover:bg-blue-200 hover:text-black "
                   role="menuitem"
-                  id="menu-item-3"
+                  id="save"
                 >
                   <div className="flex-1">
                     <svg
@@ -473,10 +473,12 @@ const Thread: React.FC<Props> = ({
                   <div className="ml-1  text-sm md:ml-0">Save</div>
                   <div className="flex-1"></div>
                 </div>
+                {/* Report */}
                 <div
                   className="flex items-center py-2 text-sm text-gray-700 hover:bg-blue-200 hover:text-black "
                   role="menuitem"
-                  id="menu-item-3"
+                  id="report"
+                  onClick={() => setShowReportPopup(true)}
                 >
                   <div className="flex-1">
                     <svg
@@ -511,6 +513,7 @@ const Thread: React.FC<Props> = ({
 
               {/* IF USER HAS ACCESS TO MODIFY THIS THREAD */}
               <div className="cursor-pointer" role="none">
+                {/* Edit */}
                 <div
                   className="flex items-center py-2 text-sm text-gray-700 hover:bg-blue-200 hover:text-black "
                   role="menuitem"
@@ -546,13 +549,13 @@ const Thread: React.FC<Props> = ({
                   <div className="ml-1 md:ml-0">Edit</div>
                   <div className="flex-1"></div>
                 </div>
-
+                {/* Delete */}
                 <div
                   className="flex items-center py-2 text-sm text-gray-700 hover:rounded-b-md hover:bg-blue-200 hover:text-black"
                   role="menuitem"
-                  id="menu-item-3"
+                  id="delete"
                   onClick={() => {
-                    setShowDeleteModal(true);
+                    setShowDeletePopup(true);
                     console.log(threadTitle);
                   }}
                 >
@@ -585,12 +588,21 @@ const Thread: React.FC<Props> = ({
           )}
         </div>
         {/* Delete Popup  */}
-        {showDeleteModal && (
-          <DeleteModal
+        {showDeletePopup && (
+          <DeletePopup
             id={id}
             title={threadTitle}
-            showDeleteModal={showDeleteModal}
-            setShowDeleteModal={setShowDeleteModal}
+            showDeletePopup={showDeletePopup}
+            setShowDeletePopup={setShowDeletePopup}
+          />
+        )}
+        {/* Report Popup  */}
+        {showReportPopup && (
+          <ReportPopup
+            id={id}
+            title={title}
+            showReportPopup={showReportPopup}
+            setShowReportPopup={setShowReportPopup}
           />
         )}
       </div>

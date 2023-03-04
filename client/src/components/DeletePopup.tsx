@@ -1,21 +1,19 @@
-import { useState } from "react";
-
 type Props = {
   id: number;
   title?: string;
-  showDeleteModal: boolean;
-  setShowDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
+  showDeletePopup: boolean;
+  setShowDeletePopup: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const PopupModal: React.FC<Props> = ({
+const DeletePopup: React.FC<Props> = ({
   id,
   title,
-  showDeleteModal,
-  setShowDeleteModal,
+  showDeletePopup,
+  setShowDeletePopup,
 }) => {
   const deletePost = () => {
     console.log(title, "ID:", id);
-    setShowDeleteModal(false);
+    setShowDeletePopup(false);
 
     // API call to delete thread or message
     // // If the popup is for a thread
@@ -40,8 +38,8 @@ const PopupModal: React.FC<Props> = ({
 
   return (
     <>
-      {showDeleteModal && (
-        <div className="fixed inset-0 z-10 overflow-y-auto ">
+      {showDeletePopup && (
+        <div className="fixed inset-0 z-10 cursor-auto overflow-y-auto ">
           <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
             <div className="relative w-11/12 transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
               <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
@@ -84,8 +82,8 @@ const PopupModal: React.FC<Props> = ({
                   </div>
                   {/* X button  */}
                   <div
-                    className="-mt-1 -mr-2 hidden sm:block"
-                    onClick={() => setShowDeleteModal(false)}
+                    className="-mt-1 -mr-2 hidden cursor-pointer sm:block"
+                    onClick={() => setShowDeletePopup(false)}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -111,7 +109,7 @@ const PopupModal: React.FC<Props> = ({
                 <button
                   type="button"
                   className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                  onClick={() => setShowDeleteModal(false)}
+                  onClick={() => setShowDeletePopup(false)}
                 >
                   Cancel
                 </button>
@@ -124,4 +122,4 @@ const PopupModal: React.FC<Props> = ({
   );
 };
 
-export default PopupModal;
+export default DeletePopup;

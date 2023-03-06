@@ -1,4 +1,6 @@
+import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
+import { userIDAtom } from "../App";
 import { RichTextEditor } from "./RichTextEditor";
 
 type Props = {
@@ -17,11 +19,12 @@ interface threadBody {
   content: string | undefined;
 }
 
-const CreateThread: React.FC<Props> = ({ section_id }) => {
+const CreateThread: React.FC<Props> = ({ section_id}) => {
   const [openEditor, toggleOpenEditor] = useState(false);
   const [title, setTitle] = useState<string>("");
   const [text, setText] = useState<string>("");
   const [thread, setThread] = useState<thread>();
+  const [activeUserID, setActiveUserID] = useAtom(userIDAtom);
 
   const submitThread = () => {
     console.log(thread);
@@ -30,7 +33,7 @@ const CreateThread: React.FC<Props> = ({ section_id }) => {
     setTitle("");
 
     const threadRequest: threadBody = {
-      user_id: 7, // REPLACE WITH REAL USER ID LATER
+      user_id: activeUserID,
       section_id: section_id,
       thread_title: thread?.title,
       content: thread?.text,

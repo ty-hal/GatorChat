@@ -1,11 +1,30 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useAtom } from "jotai";
-import { darkModeAtom } from "../App";
+import { darkModeAtom, userIDAtom } from "../App";
 
 const Header = () => {
   const [showDropDown, setShowDropDown] = useState<boolean>(false);
   const [darkMode, setDarkMode] = useAtom(darkModeAtom);
+  const [userID, setUserID] = useAtom(userIDAtom);
+
+  const signOut = () => {
+    fetch("http://localhost:9000/api/user/logout", {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+      credentials: "include",
+    }).then((response) => {
+      // Successfully logged out
+      if (response.status === 200) {
+        setUserID(0);
+      } else {
+        console.log("Uncaught error -- debug!");
+        setUserID(0);
+      }
+    });
+  };
 
   const toggleDropDown = () => {
     setShowDropDown(!showDropDown);
@@ -76,24 +95,39 @@ const Header = () => {
                   Home
                 </span>
               </Link>
-              <Link to="/sign-in">
-                {" "}
-                <span
-                  className="rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2"
-                  id="sign-in"
-                >
-                  Sign in
-                </span>
-              </Link>
-              <Link to="/register">
-                {" "}
-                <span
-                  className="mr-6 rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2"
-                  id="register"
-                >
-                  Register
-                </span>
-              </Link>
+              {userID === 0 ? (
+                <>
+                  <Link to="/sign-in">
+                    {" "}
+                    <span
+                      className="rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2"
+                      id="sign-in"
+                    >
+                      Sign in
+                    </span>
+                  </Link>
+                  <Link to="/register">
+                    {" "}
+                    <span
+                      className="mr-6 rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2"
+                      id="register"
+                    >
+                      Register
+                    </span>
+                  </Link>
+                </>
+              ) : (
+                <Link to="/">
+                  <span
+                    className="mr-6 rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2"
+                    id="sign-out-header"
+                    onClick={signOut}
+                  >
+                    Sign out
+                  </span>
+                </Link>
+              )}
+
               {/* Dropdown Menu */}
               <div className="flex items-center">
                 <div className="relative inline-block text-left">
@@ -157,6 +191,7 @@ const Header = () => {
                             className="block px-4 py-2 text-sm text-gray-700 hover:rounded-b-md hover:bg-blue-300 hover:text-black"
                             role="menuitem"
                             id="sign-out"
+                            onClick={signOut}
                           >
                             Sign out
                           </span>

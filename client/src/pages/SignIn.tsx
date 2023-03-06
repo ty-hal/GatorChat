@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
+import { useAtom } from "jotai";
+import { userIDAtom } from "../App";
 interface userLogin {
   email: string;
   password: string;
@@ -19,6 +20,7 @@ const SignIn = () => {
     password: "",
     remember_me: false,
   });
+  const [userID, setUserID] = useAtom(userIDAtom);
 
   // Set login info state
   useEffect(() => {
@@ -107,9 +109,11 @@ Mypassword@123
           console.log("Invalid password");
         }
       })
-      .then((data) =>
-        data ? console.log("User Signed In") : console.log(data)
-      );
+      .then((data) => {
+        if (data) console.log("User Signed In");
+        console.log(data);
+        setUserID(data.user_id);
+      });
   };
 
   return (

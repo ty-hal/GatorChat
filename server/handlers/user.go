@@ -167,7 +167,7 @@ func ValidateUser(w http.ResponseWriter, r *http.Request) {
 	// Database Error
 	if err != nil {
 		// Error with database
-		w.WriteHeader(http.StatusNotFound)
+		w.WriteHeader(http.StatusConflict)
 		return
 	}
 	json.NewEncoder(w).Encode(user)

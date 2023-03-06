@@ -16,8 +16,9 @@ func main() {
 	middleware.Init()
 
 	corsHandler := cors.New(cors.Options{
-		AllowedOrigins: []string{"http://localhost:3000"},
-		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE"},
+		AllowedOrigins:   []string{"http://localhost:3000"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
+		AllowCredentials: true,
 	})
 
 	fmt.Println("starting the server on port 9000...")

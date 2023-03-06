@@ -14,9 +14,9 @@ type MessageType = {
   creation_date: string;
   updated_on: string;
   likes: number;
-  username?: string; // Fix the backend to get username
-  section_id?: number; // Fix the backend to get section id?
-  thread_title?: string; // Fix the backend to get thread title?
+  username: string;
+  section_id?: number; // We probably dont need this, right?
+  thread_title?: string; // We probably dont need this, right?
 };
 
 type ThreadType = {
@@ -101,8 +101,7 @@ const SampleThread = () => {
             <Message
               key={messages.post_id}
               id={messages.post_id}
-              // username={messages.username}
-              username={"Edit this"}
+              username={messages.username}
               messageContent={messages.content}
               messageDate={messages.creation_date}
               likesCount={messages.likes}

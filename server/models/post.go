@@ -9,6 +9,7 @@ import (
 type Post struct {
 	PostID       uint8     `json:"post_id" gorm:"primary_key"`
 	UserID       uint8     `json:"user_id,omitempty"`
+	User         string    `json:"username" gorm:"-"`
 	ThreadID     uint8     `json:"thread_id,omitempty"`
 	Content      string    `json:"content,omitempty"`
 	CreationDate time.Time `gorm:"-"`

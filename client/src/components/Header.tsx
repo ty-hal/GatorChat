@@ -10,7 +10,7 @@ const Header = () => {
 
   const signOut = () => {
     fetch("http://localhost:9000/api/user/logout", {
-      method: "GET",
+      method: "POST",
       headers: {
         "content-type": "application/json",
       },
@@ -72,8 +72,8 @@ const Header = () => {
 
   return (
     <div className="flex flex-wrap border-b-4 border-b-blue-600">
-      <section className="relative mx-auto">
-        <nav className="flex h-14 w-screen justify-between text-gray-700 dark:bg-gray-900 dark:text-white">
+      <section className="relative mx-auto w-full">
+        <nav className="flex h-14 w-full justify-between text-gray-700 dark:bg-gray-900 dark:text-white">
           <div className="flex w-full items-center px-5 py-6 xl:px-12">
             {/* Logo  */}
             <Link to="/">

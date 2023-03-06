@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/gorilla/mux"
@@ -13,14 +14,17 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 
-	"log"
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
 )
 
 // Added stuff below
-const SecretKey = "secret"
+
+//	if err != nil {
+//		log.Fatal("Error loading .env file")
+//	}
+var SecretKey = os.Getenv("secretkey")
 
 //above
 
@@ -94,7 +98,8 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 
 func SignIn(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-
+	fmt.Printf("%s", SecretKey)
+	fmt.Println(SecretKey)
 	type login struct {
 		Email    string `json:"email,omitempty"`
 		Password string `json:"password,omitempty"`
@@ -104,7 +109,6 @@ func SignIn(w http.ResponseWriter, r *http.Request) {
 	json.NewDecoder(r.Body).Decode(&loginInfo)
 
 	user, err := models.CheckSignIn(loginInfo.Email, loginInfo.Password)
-	// fmt.Print(strconv.Itoa(int(user.UserID)))
 
 	// User not Found
 	if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -123,7 +127,7 @@ func SignIn(w http.ResponseWriter, r *http.Request) {
 
 	token, err := claims.SignedString([]byte(SecretKey))
 	if err != nil {
-		log.Fatal(err)
+		w.WriteHeader(http.StatusUnauthorized)
 	}
 
 	cookie := http.Cookie{

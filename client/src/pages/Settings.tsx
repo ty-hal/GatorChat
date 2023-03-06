@@ -8,6 +8,7 @@ const Settings = () =>
   const [selectedImage, setSelectedImage] = useState<File>();
   const [username, setusername] = useState("");
   const [password, setpassword] = useState("");
+  const [conpassword, confirmpassword] = useState("");
   const[firstname,setfirstname] = useState("");
   const[lastname,setlastname] = useState("");
   const[major,setmajor] = useState("");
@@ -15,11 +16,18 @@ const Settings = () =>
   const submit = (e: any) =>
    {
     e.preventDefault();
-    console.log("First Name:" + firstname);
+    if(conpassword!= password)
+    {
+      alert("passwords do not match!")
+    }
+    else
+    {    
+      console.log("First Name:" + firstname);
     console.log("Last Name:" + lastname);
     console.log("Username:" + username);
     console.log("Password:" + password);
     console.log("Major:" + major);
+    }
     
     const login = {
       email: username,
@@ -108,8 +116,8 @@ const Settings = () =>
                 onChange={(event) => setusername(event.target.value)}
                 >
                 </input>
-                {/*password*/}
-                <label className=""> Password </label>
+                {/*new password*/}
+                <label className=""> New Password </label>
                 <input type = "password" 
                 name="password"
                 className="mr-20
@@ -126,6 +134,25 @@ const Settings = () =>
                 pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                 onChange={(event) => {
                   setpassword(event.target.value)}}>
+                </input>
+                {/*confirm new password*/}
+                <label className=""> Confirm Password </label>
+                <input type = "password" 
+                name="confirm password"
+                className="mr-20
+                w-11/12 sm:w-full bg-gray-50 border 
+                border-gray-300 text-gray-900 sm:text-sm 
+                rounded-lg focus:ring-blue-600 focus:border-blue-600 
+                focus:ring-1 focus:outline-none block p-2 dark:bg-gray-700 
+                dark:border-gray-600 dark:placeholder-gray-400 
+                dark:text-white dark:focus:ring-blue-500 
+                dark:focus:border-blue-500" 
+                id="confirm password" 
+                placeholder="••••••••"
+                title="Must be at least 8 characters long and contain a number and uppercase letter"
+                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                onChange={(event) => {
+                  confirmpassword(event.target.value)}}>
                 </input>
 
                 {/*major*/}

@@ -78,6 +78,7 @@ Mypassword@123
         "content-type": "application/json",
       },
       body: JSON.stringify(login),
+      credentials: "include",
     })
       .then((response) => {
         // User signed in

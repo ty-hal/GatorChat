@@ -6,7 +6,7 @@ const Footer = () => {
   const [userID, setUserID] = useAtom(userIDAtom);
   const signOut = () => {
     fetch("http://localhost:9000/api/user/logout", {
-      method: "GET",
+      method: "POST",
       headers: {
         "content-type": "application/json",
       },

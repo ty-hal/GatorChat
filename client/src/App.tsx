@@ -63,8 +63,8 @@ export default function App() {
       .then((data) => {
         if (data) {
           console.log("User signed in");
+          setUserID(data.user_id);
         }
-        setUserID(data.user_id);
       });
   }, []);
 

@@ -118,6 +118,14 @@ func GetThreadPosts(threadID uint8) []Post {
 
 	for _, post := range GetAllPosts() {
 		if post.ThreadID == threadID {
+			creator, err := GetUserByID(post.UserID)
+
+			if err != nil {
+				post.User = "Anonymous"
+			} else {
+				post.User = creator.FirstName + " " + creator.LastName
+			}
+
 			posts = append(posts, post)
 		}
 	}

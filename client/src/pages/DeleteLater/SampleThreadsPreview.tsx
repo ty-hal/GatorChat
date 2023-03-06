@@ -66,6 +66,7 @@ const SampleThreadsPreview = () => {
                 <Thread
                   key={thread.thread_id}
                   id={thread.thread_id}
+                  user_id = {thread.user_id}
                   username={thread.username}
                   threadTitle={thread.thread_title}
                   threadContent={thread.content}

@@ -112,9 +112,9 @@ const Settings = () =>
                 name ="email"
                 placeholder="email@ufl.edu"
                 pattern="[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@ufl\.edu"
-                title="Must use a UF email address"
+                title="Email cannot be changed"
                 onChange={(event) => setusername(event.target.value)}
-                >
+                readOnly>
                 </input>
                 {/*new password*/}
                 <label className=""> New Password </label>

@@ -8,6 +8,7 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
+	"github.com/team/swe-project/middleware"
 	"github.com/team/swe-project/models"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
@@ -91,7 +92,6 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(userCreated)
 }
 
-// TY EDITED SIGN IN
 func SignIn(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
@@ -131,54 +131,55 @@ func SignIn(w http.ResponseWriter, r *http.Request) {
 		Value:    token,
 		Expires:  time.Now().Add(time.Hour * 24),
 		HttpOnly: true,
-		Secure:   true,
+		Path:     "/",
 	}
 	http.SetCookie(w, &cookie)
 
 	json.NewEncoder(w).Encode(user)
-	json.NewEncoder(w).Encode(cookie)
 }
 
-// TY MADE THIS
 func ValidateUser(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-
-	fmt.Print("Go time")
+	// Get cookie
 	cookie, err := r.Cookie("jwt")
 	if err != nil {
-		log.Fatal("BADDD")
+		// Error with getting the cookie
+		w.WriteHeader(http.StatusNotFound)
+		return
 	}
-	// validate token, it will return Token and error
+	// Validate token with the secret key
 	token, err := jwt.ParseWithClaims(cookie.Value, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return []byte(SecretKey), nil
 	})
 	if err != nil {
-		log.Fatal("NOO")
-		// // check if Error is Signature Invalid Error
-		// if err == jwt.ErrSignatureInvalid {
-		// 	// return the Unauthorized Status
-		// 	w.WriteHeader(http.StatusUnauthorized)
-		// 	return
-		// }
-		// // Return the Bad Request for any other error
-		// w.WriteHeader(http.StatusBadRequest)
+		// User is unauthorized
+		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	// Validate the token if it expired or not
-	// if !token.Valid {
-	// 	// return the Unauthoried Status for expired token
-	// 	w.WriteHeader(http.StatusUnauthorized)
-	// 	return
-	// }
+	// json.NewEncoder(w).Encode(token)
+	//Get user info from the token
+	claims := token.Claims.(*jwt.StandardClaims)
+	var user models.User
+	err = middleware.DB.First(&user, "user_id = ?", claims.Issuer).Error
+	// Database Error
+	if err != nil {
+		// Error with database
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+	json.NewEncoder(w).Encode(user)
+}
 
-	//KEEP THIS:
-	// claims := token.Claims.(*jwt.StandardClaims)
-	// var user User
-	// middleware.DB.Where("id = ?", claims.Issuer).First(&user)
+func Logout(w http.ResponseWriter, r *http.Request) {
+	cookie := http.Cookie{
+		Name:     "jwt",
+		Value:    "",
+		Expires:  time.Now().Add(-time.Hour), // Set expired time to the past
+		HttpOnly: true,
+		Path:     "/",
+	}
+	http.SetCookie(w, &cookie)
 
-	// Send the username Dashboard message
-	json.NewEncoder(w).Encode(token)
-
+	json.NewEncoder(w).Encode("Successfully logged out")
 }
 
 // DELETING WITH FOREGIN KEYS NOT FINISHED YET

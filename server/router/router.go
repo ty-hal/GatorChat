@@ -16,7 +16,7 @@ func Router() *mux.Router {
 	router.HandleFunc("/api/user/{id}", handlers.GetUserById).Methods("GET")
 	router.HandleFunc("/api/user", handlers.CreateUser).Methods("POST")
 	router.HandleFunc("/api/user/signin", handlers.SignIn).Methods("POST")
-	router.HandleFunc("/api/user", handlers.DeleteUser).Methods("DELETE")
+	router.HandleFunc("/api/user/", handlers.DeleteUser).Methods("DELETE")
 	router.HandleFunc("/api/user/{id}", handlers.UpdateUser).Methods("PUT")
 
 	// Section Routes
@@ -29,7 +29,7 @@ func Router() *mux.Router {
 	router.HandleFunc("/api/thread/{id}", handlers.GetThreadById).Methods("GET")
 	router.HandleFunc("/api/thread/{id}/posts", handlers.GetThreadPosts).Methods("GET")
 	router.HandleFunc("/api/thread", handlers.CreateThread).Methods("POST")
-	router.HandleFunc("/api/thread", handlers.DeleteThread).Methods("DELETE")
+	router.HandleFunc("/api/thread/{id}", handlers.DeleteThread).Methods("DELETE")
 	router.HandleFunc("/api/thread/{id}", handlers.UpdateThread).Methods("PUT")
 
 	// Post Routes

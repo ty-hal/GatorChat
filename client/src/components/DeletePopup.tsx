@@ -15,25 +15,41 @@ const DeletePopup: React.FC<Props> = ({
     console.log(title, "ID:", id);
     setShowDeletePopup(false);
 
-    // API call to delete thread or message
-    // // If the popup is for a thread
-    // if (title) {
-    //   fetch(`http://localhost:9000/api/thread/${id}`, {
-    //     method: "DELETE",
-    //     headers: {
-    //       "content-type": "application/json",
-    //     },
-    //   });
-    // }
-    // // If the popup is for a message
-    // else {
-    //   fetch(`http://localhost:9000/api/post/${id}`, {
-    //     method: "DELETE",
-    //     headers: {
-    //       "content-type": "application/json",
-    //     },
-    //   });
-    // }
+    if (title) {
+      fetch(`http://localhost:9000/api/thread/${id}`, {
+        method: "DELETE",
+        headers: {
+          "content-type": "application/json",
+        },
+      })
+        .then((response) => {
+          if (response.status === 200) {
+            window.location.reload();
+            return response.json();
+          }
+        })
+        .then((data) => {
+          console.log(data);
+        });
+    }
+    // If the popup is for a message
+    else {
+      fetch(`http://localhost:9000/api/post/${id}`, {
+        method: "DELETE",
+        headers: {
+          "content-type": "application/json",
+        },
+      })
+        .then((response) => {
+          if (response.status === 200) {
+            window.location.reload();
+            return response.json();
+          }
+        })
+        .then((data) => {
+          console.log(data);
+        });
+    }
   };
 
   return (

@@ -93,10 +93,17 @@ func UpdateThread(w http.ResponseWriter, r *http.Request) {
 func DeleteThread(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	var thread models.Thread
-	json.NewDecoder(r.Body).Decode(&thread)
+	params := mux.Vars(r)
+	id, err := strconv.Atoi(params["id"])
 
-	threadDeleted, threadErr := models.DeleteThread(thread)
+	// Invalid parameter
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("Invalid Parameter: id"))
+		return
+	}
+
+	threadDeleted, threadErr := models.DeleteThread(uint8(id))
 
 	if threadErr != nil {
 		w.WriteHeader(http.StatusNotFound)
@@ -106,8 +113,6 @@ func DeleteThread(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode(threadDeleted)
 }
-
-// Delete / Update Thread
 
 func GetThreadPosts(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")

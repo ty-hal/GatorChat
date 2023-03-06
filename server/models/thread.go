@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/team/swe-project/middleware"
+	"gorm.io/gorm/clause"
 )
 
 type Thread struct {
@@ -61,7 +62,7 @@ type UpdatedThread struct {
 
 func UpdateThread(thread_id uint8, updatedThread UpdatedThread) (Thread, error) {
 	var thread Thread
-	err := middleware.DB.Model(&thread).Where("thread_id = ?", thread_id).Updates(Thread{ThreadTitle: updatedThread.ThreadTitle, Content: updatedThread.Content})
+	err := middleware.DB.Model(&thread).Clauses(clause.Returning{}).Where("thread_id = ?", thread_id).Updates(Thread{ThreadTitle: updatedThread.ThreadTitle, Content: updatedThread.Content})
 
 	if err.Error != nil {
 		return thread, err.Error
@@ -70,17 +71,18 @@ func UpdateThread(thread_id uint8, updatedThread UpdatedThread) (Thread, error) 
 	return thread, nil
 }
 
-func DeleteThread(thread Thread) (Thread, error) {
+func DeleteThread(threadID uint8) (Thread, error) {
 
-	for _, post := range GetThreadPosts(thread.ThreadID) {
+	for _, post := range GetThreadPosts(threadID) {
 		deletedPost := middleware.DB.Unscoped().Where("post_id = ?", post.PostID).Delete(&Post{})
 
 		if deletedPost.Error != nil {
-			return thread, deletedPost.Error
+			return Thread{}, deletedPost.Error
 		}
 	}
 
-	result := middleware.DB.Unscoped().Where("thread_id = ?", thread.ThreadID).Delete(&Thread{})
+	var thread Thread
+	result := middleware.DB.Clauses(clause.Returning{}).Unscoped().Where("thread_id = ?", threadID).Delete(&thread)
 
 	if result.Error != nil {
 		return thread, result.Error

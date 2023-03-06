@@ -11,7 +11,17 @@ import (
 	"github.com/team/swe-project/models"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
+
+	"log"
+	"time"
+
+	jwt "github.com/dgrijalva/jwt-go"
 )
+
+// Added stuff below
+const SecretKey = "secret"
+
+//above
 
 func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
@@ -81,6 +91,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(userCreated)
 }
 
+// TY EDITED SIGN IN
 func SignIn(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
@@ -93,6 +104,7 @@ func SignIn(w http.ResponseWriter, r *http.Request) {
 	json.NewDecoder(r.Body).Decode(&loginInfo)
 
 	user, err := models.CheckSignIn(loginInfo.Email, loginInfo.Password)
+	// fmt.Print(strconv.Itoa(int(user.UserID)))
 
 	// User not Found
 	if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -104,7 +116,69 @@ func SignIn(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusUnauthorized)
 	}
 
+	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
+		Issuer:    strconv.Itoa(int(user.UserID)),
+		ExpiresAt: time.Now().Add(time.Hour * 24).Unix(), //1 day
+	})
+
+	token, err := claims.SignedString([]byte(SecretKey))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	cookie := http.Cookie{
+		Name:     "jwt",
+		Value:    token,
+		Expires:  time.Now().Add(time.Hour * 24),
+		HttpOnly: true,
+		Secure:   true,
+	}
+	http.SetCookie(w, &cookie)
+
 	json.NewEncoder(w).Encode(user)
+	json.NewEncoder(w).Encode(cookie)
+}
+
+// TY MADE THIS
+func ValidateUser(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	fmt.Print("Go time")
+	cookie, err := r.Cookie("jwt")
+	if err != nil {
+		log.Fatal("BADDD")
+	}
+	// validate token, it will return Token and error
+	token, err := jwt.ParseWithClaims(cookie.Value, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
+		return []byte(SecretKey), nil
+	})
+	if err != nil {
+		log.Fatal("NOO")
+		// // check if Error is Signature Invalid Error
+		// if err == jwt.ErrSignatureInvalid {
+		// 	// return the Unauthorized Status
+		// 	w.WriteHeader(http.StatusUnauthorized)
+		// 	return
+		// }
+		// // Return the Bad Request for any other error
+		// w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	// Validate the token if it expired or not
+	// if !token.Valid {
+	// 	// return the Unauthoried Status for expired token
+	// 	w.WriteHeader(http.StatusUnauthorized)
+	// 	return
+	// }
+
+	//KEEP THIS:
+	// claims := token.Claims.(*jwt.StandardClaims)
+	// var user User
+	// middleware.DB.Where("id = ?", claims.Issuer).First(&user)
+
+	// Send the username Dashboard message
+	json.NewEncoder(w).Encode(token)
+
 }
 
 // DELETING WITH FOREGIN KEYS NOT FINISHED YET

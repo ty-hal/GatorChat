@@ -1,4 +1,7 @@
-const ForgotPassword = () => {
+import { useState, useEffect } from "react";
+const ForgotPassword = () => 
+{
+
   const submitForm = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Submit form");

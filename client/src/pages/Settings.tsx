@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import React from 'react'
 import { Dropdown } from "flowbite";
+import { useAtom } from "jotai";
+import { userIDAtom } from "../App";
 
 const Settings = () => 
 {
@@ -12,7 +14,7 @@ const Settings = () =>
   const[firstname,setfirstname] = useState("");
   const[lastname,setlastname] = useState("");
   const[major,setmajor] = useState("");
-
+  const [Id,setUserID] = useAtom(userIDAtom);
   const submit = (e: any) =>
    {
     e.preventDefault();
@@ -27,6 +29,7 @@ const Settings = () =>
     console.log("Username:" + username);
     console.log("Password:" + password);
     console.log("Major:" + major);
+    console.log("Userid:" + Id);
     }
     
     const login = {
@@ -34,7 +37,10 @@ const Settings = () =>
       password: password
     }
   }
-
+  const link:string = "http://localhost:9000/api/user/" + Id;
+  fetch(link, {method: "GET"})
+  .then((response)=>{return response.json()})
+  .then(data => {setusername(data.email)})
   return (
     <div className="Parent">
       <form onSubmit={submit}>
@@ -91,7 +97,8 @@ const Settings = () =>
                 dark:text-white dark:focus:ring-blue-500 
                 dark:focus:border-blue-500" id="last-name" 
                 placeholder="Last Name"
-                onChange={(event)=>{setlastname(event.target.value)}}>
+                onChange={(event)=>{setlastname(event.target.value)}}
+                >
                 </input>
                 </div>
                 
@@ -110,10 +117,10 @@ const Settings = () =>
                 dark:focus:border-blue-500" 
                 id="email" 
                 name ="email"
-                placeholder="email@ufl.edu"
+                value = {username}
                 pattern="[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@ufl\.edu"
                 title="Email cannot be changed"
-                onChange={(event) => setusername(event.target.value)}
+                //onChange={(event) => setusername(event.target.value)}
                 readOnly>
                 </input>
                 {/*new password*/}

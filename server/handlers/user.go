@@ -191,20 +191,17 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	var user models.User
-	json.NewDecoder(r.Body).Decode(&user)
-	//params := mux.Vars(r)
-	//user, err := strconv.Atoi(params["id"])
+	params := mux.Vars(r)
+	id, err := strconv.Atoi(params["id"])
 
 	// Invalid parameter
-	/*
-		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
-			w.Write([]byte("Invalid Parameter: id"))
-			return
-		}*/
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("Invalid Parameter: id"))
+		return
+	}
 
-	userDeleted, userErr := models.DeleteUser(user)
+	userDeleted, userErr := models.DeleteUser(uint8(id))
 
 	if userErr != nil {
 		w.WriteHeader(http.StatusNotFound)

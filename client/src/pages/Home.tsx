@@ -26,8 +26,15 @@ const Home = () => {
   return (
     <div className="bg-white dark:bg-gray-900">
       {sections.map((section) => {
+        let edited_section_name = section.section_name.replace(/[\W_]+/g, " ");
+        edited_section_name = edited_section_name
+          .replace(/\s+/g, "-")
+          .toLowerCase();
         return (
-          <Link to={`/section/${section.section_id}`} key={section.section_id}>
+          <Link
+            to={`/${edited_section_name}/${section.section_id}`}
+            key={section.section_id}
+          >
             <div className="cursor-pointer font-medium text-gray-900 dark:text-white md:text-lg">
               {section.section_name}
             </div>

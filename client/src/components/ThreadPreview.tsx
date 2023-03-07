@@ -10,6 +10,7 @@ import ReportPopup from "./ReportPopup";
 type Props = {
   thread_id: number;
   section_id: number;
+  section_name: string;
   user_id: number;
   username: string;
   profilePicture?: string;
@@ -28,6 +29,7 @@ interface threadBody {
 const Thread: React.FC<Props> = ({
   thread_id,
   section_id,
+  section_name,
   user_id,
   username,
   profilePicture,
@@ -42,7 +44,7 @@ const Thread: React.FC<Props> = ({
   const [showReportPopup, setShowReportPopup] = useState<boolean>(false);
   const [edit, toggleEdit] = useState<boolean>(false);
   const [activeUserID, setActiveUserID] = useAtom(userIDAtom);
-
+  const [thread_name, set_thread_name] = useState<string>("");
   const [numLikes, toggleLike] = useState<number>(likesCount);
   const [postTimeDifference, setPostTimeDifference] = useState<string>("");
   const [title, setTitle] = useState<string>("");
@@ -54,7 +56,8 @@ const Thread: React.FC<Props> = ({
   useEffect(() => {
     setTitle(threadTitle);
     setContent(threadContent);
-
+    let temp = threadTitle.replace(/[\W_]+/g, " ");
+    set_thread_name(temp.replace(/\s+/g, "-").toLowerCase().substring(0, 50));
     // Updates postTimeDifference with how long ago the thread was created
     let postTime = new Date(threadDate);
     let currentTime = new Date();
@@ -148,7 +151,8 @@ const Thread: React.FC<Props> = ({
         e.stopPropagation();
         setShowDropdown(false);
         console.log(`Open thread ${thread_id}`);
-        navigate(`/section/${section_id}/thread/${thread_id}`); // Navigate to the thread
+        // Navigate to the thread
+        navigate(`/${section_name}/${section_id}/${thread_name}/${thread_id}`);
       }}
     >
       {/* Profile Picture, Username, Date, and Dropdown */}
@@ -175,7 +179,11 @@ const Thread: React.FC<Props> = ({
 
       {/* Edit thread  */}
       {edit && (
-        <div id="thread-edit" className="relative top-7 mx-8 mb-2 sm:my-2">
+        <div
+          id="thread-edit"
+          className="relative top-7 mx-8 mb-2 sm:my-2"
+          onClick={(e) => e.stopPropagation()}
+        >
           <div className="mx-auto w-11/12">
             <input
               type="text"
@@ -199,7 +207,10 @@ const Thread: React.FC<Props> = ({
             {title.length > 2 && content.length > 7 && (
               <button
                 className="rounded-lg border border-black bg-blue-600 py-0 px-2 text-base text-white hover:bg-blue-700 dark:border-gray-200 dark:hover:bg-blue-800 md:py-1"
-                onClick={editThread}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  editThread();
+                }}
                 id="edit-thread"
               >
                 Edit thread
@@ -207,7 +218,8 @@ const Thread: React.FC<Props> = ({
             )}
             <button
               className="rounded-lg border border-black bg-red-600 px-2 py-0 text-base text-white hover:bg-red-800 dark:border-gray-200 dark:hover:bg-red-800 md:py-1"
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 toggleEdit(false);
                 setContent(tempContent);
                 setTitle(tempTitle);
@@ -225,14 +237,14 @@ const Thread: React.FC<Props> = ({
           {/* Thread Title  */}
           <div
             id="thread-title"
-            className="relative top-7 mx-8 mb-1 text-left text-xl font-bold sm:my-2 sm:text-2xl"
+            className="relative top-7 mx-8 mb-1 break-words text-left text-xl font-bold sm:my-2 sm:text-2xl"
           >
             {title}
           </div>
           {/* Thread Content  */}
           <div
             id="thread-preview-content"
-            className="text-md relative top-7 mx-8 mb-12 overflow-hidden text-left text-black dark:text-gray-300 "
+            className="text-md relative top-7 mx-8 mb-12 overflow-hidden break-words text-left text-black dark:text-gray-300"
             dangerouslySetInnerHTML={{
               __html: content,
             }}
@@ -410,6 +422,9 @@ const Thread: React.FC<Props> = ({
                   className="flex items-center py-2 text-sm text-gray-700 hover:rounded-t-md hover:bg-blue-200 hover:text-black "
                   role="menuitem"
                   id="save"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
                 >
                   <div className="flex-1">
                     <svg
@@ -441,7 +456,10 @@ const Thread: React.FC<Props> = ({
                   className="flex items-center py-2 text-sm text-gray-700 hover:bg-blue-200 hover:text-black "
                   role="menuitem"
                   id="report"
-                  onClick={() => setShowReportPopup(true)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowReportPopup(true);
+                  }}
                 >
                   <div className="flex-1">
                     <svg
@@ -482,7 +500,8 @@ const Thread: React.FC<Props> = ({
                     className="flex items-center py-2 text-sm text-gray-700 hover:bg-blue-200 hover:text-black "
                     role="menuitem"
                     id="edit"
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation();
                       toggleEdit(!edit);
                       setTempContent(content);
                       setTempTitle(title);
@@ -518,7 +537,10 @@ const Thread: React.FC<Props> = ({
                     className="flex items-center py-2 text-sm text-gray-700 hover:rounded-b-md hover:bg-blue-200 hover:text-black"
                     role="menuitem"
                     id="delete"
-                    onClick={() => setShowDeletePopup(true)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowDeletePopup(true);
+                    }}
                   >
                     <div className="flex-1">
                       <svg

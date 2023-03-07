@@ -19,7 +19,7 @@ type ThreadType = {
 };
 
 const Section = () => {
-  const { section_id } = useParams();
+  const { section_name, section_id } = useParams();
   const navigate = useNavigate();
 
   const [threads, setThreads] = useState<ThreadType[]>([]);
@@ -75,6 +75,7 @@ const Section = () => {
                 key={thread.thread_id} // For Javascript map purposes
                 thread_id={thread.thread_id}
                 section_id={thread.section_id}
+                section_name={section_name ? section_name : ""}
                 user_id={thread.user_id}
                 username={thread.username}
                 threadTitle={thread.thread_title}

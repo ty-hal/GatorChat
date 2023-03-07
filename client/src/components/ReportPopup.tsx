@@ -25,7 +25,10 @@ const ReportPopup: React.FC<Props> = ({
   return (
     <>
       {showReportPopup && (
-        <div className="fixed inset-0 z-10 cursor-auto overflow-y-auto">
+        <div
+          className="fixed inset-0 z-10 cursor-auto overflow-y-auto"
+          onClick={(e) => e.stopPropagation()}
+        >
           <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
             <div className="relative w-11/12 transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-3/4 sm:max-w-3xl">
               <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
@@ -62,6 +65,7 @@ const ReportPopup: React.FC<Props> = ({
                       <div
                         className="flex cursor-pointer items-center justify-center rounded-lg border-2 border-black p-2 text-center text-black hover:bg-red-300"
                         onClick={(e) => {
+                          e.stopPropagation();
                           e.currentTarget.classList.toggle("bg-red-300");
                           reportOption.includes("Harassment")
                             ? setReportOption(
@@ -77,6 +81,7 @@ const ReportPopup: React.FC<Props> = ({
                       <div
                         className="flex cursor-pointer items-center justify-center rounded-lg border-2 border-black p-2 text-center hover:bg-red-300"
                         onClick={(e) => {
+                          e.stopPropagation();
                           e.currentTarget.classList.toggle("bg-red-300");
                           reportOption.includes("Spam")
                             ? setReportOption(
@@ -90,6 +95,7 @@ const ReportPopup: React.FC<Props> = ({
                       <div
                         className="flex cursor-pointer items-center justify-center rounded-lg border-2 border-black p-2 text-center hover:bg-red-300"
                         onClick={(e) => {
+                          e.stopPropagation();
                           e.currentTarget.classList.toggle("bg-red-300");
                           reportOption.includes("Inappropriate content")
                             ? setReportOption(
@@ -108,6 +114,7 @@ const ReportPopup: React.FC<Props> = ({
                       <div
                         className="flex cursor-pointer items-center justify-center rounded-lg border-2 border-black p-2 text-center hover:bg-red-300"
                         onClick={(e) => {
+                          e.stopPropagation();
                           e.currentTarget.classList.toggle("bg-red-300");
                           reportOption.includes("Threatening violence")
                             ? setReportOption(
@@ -126,6 +133,7 @@ const ReportPopup: React.FC<Props> = ({
                       <div
                         className="flex cursor-pointer items-center justify-center rounded-lg border-2 border-black p-2 text-center hover:bg-red-300"
                         onClick={(e) => {
+                          e.stopPropagation();
                           e.currentTarget.classList.toggle("bg-red-300");
                           reportOption.includes("Hate")
                             ? setReportOption(
@@ -139,6 +147,7 @@ const ReportPopup: React.FC<Props> = ({
                       <div
                         className="flex cursor-pointer items-center justify-center rounded-lg border-2 border-black p-2 text-center hover:bg-red-300"
                         onClick={(e) => {
+                          e.stopPropagation();
                           e.currentTarget.classList.toggle("bg-red-300");
                           reportOption.includes("Sharing personal information")
                             ? setReportOption(
@@ -158,6 +167,7 @@ const ReportPopup: React.FC<Props> = ({
                       <div
                         className="flex cursor-pointer items-center justify-center rounded-lg border-2 border-black p-2 text-center hover:bg-red-300"
                         onClick={(e) => {
+                          e.stopPropagation();
                           e.currentTarget.classList.toggle("bg-red-300");
                           reportOption.includes("Self-harm or suicide")
                             ? setReportOption(
@@ -176,6 +186,7 @@ const ReportPopup: React.FC<Props> = ({
                       <div
                         className="flex cursor-pointer items-center justify-center rounded-lg border-2 border-black p-2 text-center hover:bg-red-300"
                         onClick={(e) => {
+                          e.stopPropagation();
                           e.currentTarget.classList.toggle("bg-red-300");
                           reportOption.includes("Copyright infringement")
                             ? setReportOption(
@@ -194,6 +205,7 @@ const ReportPopup: React.FC<Props> = ({
                       <div
                         className="flex cursor-pointer items-center justify-center rounded-lg border-2 border-black p-2 text-center hover:bg-red-300"
                         onClick={(e) => {
+                          e.stopPropagation();
                           e.currentTarget.classList.toggle("bg-red-300");
                           reportOption.includes("Impersonation")
                             ? setReportOption(
@@ -212,6 +224,7 @@ const ReportPopup: React.FC<Props> = ({
                       <div
                         className="flex cursor-pointer items-center justify-center rounded-lg border-2 border-black p-2 text-center hover:bg-red-300"
                         onClick={(e) => {
+                          e.stopPropagation();
                           e.currentTarget.classList.toggle("bg-red-300");
                           reportOption.includes("Scam")
                             ? setReportOption(
@@ -225,6 +238,7 @@ const ReportPopup: React.FC<Props> = ({
                       <div
                         className="flex cursor-pointer items-center justify-center rounded-lg border-2 border-black p-2 text-center hover:bg-red-300"
                         onClick={(e) => {
+                          e.stopPropagation();
                           e.currentTarget.classList.toggle("bg-red-300");
                           toggleOtherOption(!otherOption);
                         }}
@@ -263,7 +277,10 @@ const ReportPopup: React.FC<Props> = ({
                   {/* X button  */}
                   <div
                     className="-mt-1 -mr-2 hidden cursor-pointer sm:block"
-                    onClick={() => setShowReportPopup(false)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowReportPopup(false);
+                    }}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -283,14 +300,20 @@ const ReportPopup: React.FC<Props> = ({
                 <button
                   type="button"
                   className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
-                  onClick={reportPost}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    reportPost();
+                  }}
                 >
                   Report
                 </button>
                 <button
                   type="button"
                   className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                  onClick={() => setShowReportPopup(false)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowReportPopup(false);
+                  }}
                 >
                   Cancel
                 </button>

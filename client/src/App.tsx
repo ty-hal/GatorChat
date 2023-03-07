@@ -1,6 +1,8 @@
+import { useEffect } from "react";
+import { Routes, Route } from "react-router-dom";
+
 import { atom, useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
-import { Routes, Route } from "react-router-dom";
 
 import Header from "./components/Header";
 import Home from "./pages/Home";
@@ -11,14 +13,9 @@ import ForgotPassword from "./pages/ForgotPassword";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import Settings from "./pages/Settings";
 import FAQ from "./pages/FAQ";
-import Contactus from "./pages/Contactus";
-//Delete eventually
-import SampleThreadsPreview from "./pages/DeleteLater/SampleThreadsPreview";
-import SampleThread from "./pages/DeleteLater/SampleThread";
+import ContactUs from "./pages/ContactUs";
 import Section from "./pages/Section";
 import Thread from "./pages/Thread";
-
-import { useEffect } from "react";
 
 // Uses local storage to detect user dark mode preference
 export const darkModeAtom = atomWithStorage("dark-mode", true);
@@ -77,11 +74,10 @@ export default function App() {
       <Header />
       <Routes>
         <Route index element={<Home />} />
-        <Route path="sample-thread" element={<SampleThread />} />
         {/* Section and its threads */}
-        <Route path="section/:section_id" element={<Section />} />
+        <Route path=":section_name/:section_id" element={<Section />} />
         <Route
-          path="section/:section_id/thread/:thread_id"
+          path=":section_name/:section_id/:thread_name/:thread_id"
           element={<Thread />}
         />
 
@@ -91,7 +87,7 @@ export default function App() {
         <Route path="terms-and-conditions" element={<TermsAndConditions />} />
         <Route path="settings" element={<Settings />} />
         <Route path="faq" element={<FAQ />} />
-        <Route path="contact-us" element={<Contactus />} />
+        <Route path="contact-us" element={<ContactUs />} />
         <Route path="*" element={<NoPage />} />
       </Routes>
     </div>

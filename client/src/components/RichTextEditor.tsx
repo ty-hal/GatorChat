@@ -17,7 +17,7 @@ import Underline from "@tiptap/extension-underline";
 import Youtube from "@tiptap/extension-youtube";
 import Blockquote from "@tiptap/extension-blockquote";
 
-import { messageBoxAtom } from "../pages/DeleteLater/SampleThread";
+import { messageBoxAtom } from "../pages/Thread";
 
 type Props = {
   setText?: React.Dispatch<React.SetStateAction<string>>;

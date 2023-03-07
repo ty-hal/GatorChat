@@ -232,14 +232,14 @@ const Thread: React.FC<Props> = ({
           {/* Thread Title  */}
           <div
             id="thread-title"
-            className="relative top-7 mx-8 mb-1 text-left text-xl font-bold sm:my-2 sm:text-2xl"
+            className="relative top-7 mx-8 mb-1 break-words text-left text-xl font-bold sm:my-2 sm:text-2xl"
           >
             {title}
           </div>
           {/* Thread Content  */}
           <div
             id="thread-content"
-            className="relative top-7 mx-8 mb-12 text-left text-base text-black dark:text-white md:text-lg "
+            className="relative top-7 mx-8 mb-12 break-words text-left text-base text-black dark:text-white md:text-lg "
             dangerouslySetInnerHTML={{
               __html: content,
             }}

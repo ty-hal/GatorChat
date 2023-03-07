@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { atom } from "jotai";
 import Footer from "../components/Footer";
-import Thread from "../components/ThreadPost";
+import ThreadPost from "../components/ThreadPost";
 import Message from "../components/MessageFormat";
 import MessageBox from "../components/MessageBox";
 export const messageBoxAtom = atom("");
@@ -34,7 +34,7 @@ type ThreadType = {
 };
 
 const SampleThread = () => {
-  const { thread_id, section_id } = useParams();
+  const { thread_name, thread_id, section_name, section_id } = useParams();
   const navigate = useNavigate();
 
   const [thread, setThread] = useState<ThreadType>(Object);
@@ -93,7 +93,7 @@ const SampleThread = () => {
   return (
     <div className="bg-white dark:bg-gray-900 ">
       <div className="flex flex-col items-center px-4 pt-4">
-        <Thread
+        <ThreadPost
           key={thread.thread_id}
           thread_id={thread.thread_id}
           user_id={thread.user_id}

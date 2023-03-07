@@ -13,7 +13,7 @@ type Post struct {
 	User         string    `json:"username" gorm:"-"`
 	ThreadID     uint8     `json:"thread_id,omitempty"`
 	Content      string    `json:"content,omitempty"`
-	CreationDate time.Time `gorm:"-"`
+	CreationDate time.Time `json:"creation_date" gorm:"autoCreateTime"`
 	UpdatedOn    time.Time `gorm:"-"`
 	Likes        uint8     `json:"likes,omitempty"`
 }
@@ -49,10 +49,6 @@ type UpdatedPost struct {
 }
 
 func UpdatePost(post_id uint8, updatedPost UpdatedPost) (Post, error) {
-	// post := handlerParams.Post
-	// newContent := handlerParams.NewContent
-
-	// result := middleware.DB.Model(&post).Update("content", newContent)
 	var post Post
 	err := middleware.DB.Model(&post).Clauses(clause.Returning{}).Where("post_id = ?", post_id).Updates(Post{Content: updatedPost.Content})
 

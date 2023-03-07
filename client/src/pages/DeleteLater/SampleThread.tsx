@@ -87,7 +87,8 @@ const SampleThread = () => {
       <div className="flex flex-col items-center px-4 pt-4">
         <Thread
           key={thread.thread_id}
-          id={thread.thread_id}
+          thread_id={thread.thread_id}
+          user_id={thread.user_id}
           username={thread.username}
           threadTitle={thread.thread_title}
           threadContent={thread.content}
@@ -100,7 +101,8 @@ const SampleThread = () => {
           return (
             <Message
               key={messages.post_id}
-              id={messages.post_id}
+              post_id={messages.post_id}
+              user_id={messages.user_id}
               username={messages.username}
               messageContent={messages.content}
               messageDate={messages.creation_date}

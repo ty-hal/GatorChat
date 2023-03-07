@@ -4,10 +4,12 @@ import DeletePopup from "./DeletePopup";
 import ReportPopup from "./ReportPopup";
 import { RichTextEditor } from "./RichTextEditor";
 import { useAtom } from "jotai";
-import { messageBoxAtom } from "../pages/DeleteLater/SampleThread";
+import { userIDAtom } from "../App";
+import { messageBoxAtom } from "../pages/Thread";
 
 type Props = {
-  id: number;
+  post_id: number;
+  user_id: number;
   username: string;
   profilePicture?: string;
   messageContent: string;
@@ -21,7 +23,8 @@ interface messageBody {
 }
 
 const Message: React.FC<Props> = ({
-  id,
+  post_id,
+  user_id,
   username,
   profilePicture,
   messageContent,
@@ -34,6 +37,7 @@ const Message: React.FC<Props> = ({
   const [showReportPopup, setShowReportPopup] = useState<boolean>(false);
   const [edit, toggleEdit] = useState<boolean>(false);
   const [tempContent, setTempContent] = useState<string>("");
+  const [activeUserID, setActiveUserID] = useAtom(userIDAtom);
 
   const [numLikes, toggleLike] = useState<number>(likesCount);
   const [postTimeDifference, setPostTimeDifference] = useState<string>("");
@@ -111,7 +115,7 @@ const Message: React.FC<Props> = ({
     };
 
     // Backend call to update a message
-    fetch(`http://localhost:9000/api/post/${id}`, {
+    fetch(`http://localhost:9000/api/post/${post_id}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
@@ -141,7 +145,7 @@ const Message: React.FC<Props> = ({
       onClick={(e) => {
         e.stopPropagation();
         setShowDropdown(false);
-        console.log(`Message ${id}`);
+        console.log(`Message ${post_id}`);
       }}
     >
       {/* Profile Picture, Username, Date, and Dropdown */}
@@ -255,7 +259,7 @@ const Message: React.FC<Props> = ({
           onClick={(e) => {
             e.stopPropagation();
             setShowDropdown(false);
-            console.log(`Reply to message ${id}`);
+            console.log(`Reply to message ${post_id}`);
             replyToMessage();
           }}
         >
@@ -401,74 +405,76 @@ const Message: React.FC<Props> = ({
               </div>
 
               {/* IF USER HAS ACCESS TO MODIFY THIS MESSAGE */}
-              <div className="cursor-pointer" role="none">
-                {/* Edit */}
-                <div
-                  className="flex items-center py-2 text-sm text-gray-700 hover:bg-blue-200 hover:text-black "
-                  role="menuitem"
-                  id="edit"
-                  onClick={() => {
-                    toggleEdit(!edit);
-                    setTempContent(content);
-                  }}
-                >
-                  <div className="flex-1">
-                    <svg
-                      fill="#000000"
-                      viewBox="0 0 1920 1920"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="ml-2 h-5 w-5 "
-                    >
-                      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                      <g
-                        id="SVGRepo_tracerCarrier"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      ></g>
-                      <g id="SVGRepo_iconCarrier">
-                        {" "}
-                        <path
-                          d="M277.974 49.076c65.267-65.379 171.733-65.49 237.448 0l232.186 232.187 1055.697 1055.809L1919.958 1920l-582.928-116.653-950.128-950.015 79.15-79.15 801.792 801.68 307.977-307.976-907.362-907.474L281.22 747.65 49.034 515.464c-65.379-65.603-65.379-172.069 0-237.448Zm1376.996 1297.96-307.977 307.976 45.117 45.116 384.999 77.023-77.023-385-45.116-45.116ZM675.355 596.258l692.304 692.304-79.149 79.15-692.304-692.305 79.149-79.15ZM396.642 111.88c-14.33 0-28.547 5.374-39.519 16.345l-228.94 228.94c-21.718 21.718-21.718 57.318 0 79.149l153.038 153.037 308.089-308.09-153.037-153.036c-10.972-10.971-25.301-16.345-39.63-16.345Z"
-                          fillRule="evenodd"
-                        ></path>{" "}
-                      </g>
-                    </svg>
+              {user_id === activeUserID ? (
+                <div className="cursor-pointer" role="none">
+                  {/* Edit */}
+                  <div
+                    className="flex items-center py-2 text-sm text-gray-700 hover:bg-blue-200 hover:text-black "
+                    role="menuitem"
+                    id="edit"
+                    onClick={() => {
+                      toggleEdit(!edit);
+                      setTempContent(content);
+                    }}
+                  >
+                    <div className="flex-1">
+                      <svg
+                        fill="#000000"
+                        viewBox="0 0 1920 1920"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="ml-2 h-5 w-5 "
+                      >
+                        <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                        <g
+                          id="SVGRepo_tracerCarrier"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        ></g>
+                        <g id="SVGRepo_iconCarrier">
+                          {" "}
+                          <path
+                            d="M277.974 49.076c65.267-65.379 171.733-65.49 237.448 0l232.186 232.187 1055.697 1055.809L1919.958 1920l-582.928-116.653-950.128-950.015 79.15-79.15 801.792 801.68 307.977-307.976-907.362-907.474L281.22 747.65 49.034 515.464c-65.379-65.603-65.379-172.069 0-237.448Zm1376.996 1297.96-307.977 307.976 45.117 45.116 384.999 77.023-77.023-385-45.116-45.116ZM675.355 596.258l692.304 692.304-79.149 79.15-692.304-692.305 79.149-79.15ZM396.642 111.88c-14.33 0-28.547 5.374-39.519 16.345l-228.94 228.94c-21.718 21.718-21.718 57.318 0 79.149l153.038 153.037 308.089-308.09-153.037-153.036c-10.972-10.971-25.301-16.345-39.63-16.345Z"
+                            fillRule="evenodd"
+                          ></path>{" "}
+                        </g>
+                      </svg>
+                    </div>
+                    <div className="">Edit</div>
+                    <div className="flex-1"></div>
                   </div>
-                  <div className="">Edit</div>
-                  <div className="flex-1"></div>
-                </div>
-                {/* Delete */}
-                <div
-                  className="flex items-center py-2 text-sm text-gray-700 hover:rounded-b-md hover:bg-blue-200 hover:text-black"
-                  role="menuitem"
-                  id="delete"
-                  onClick={() => setShowDeletePopup(true)}
-                >
-                  <div className="flex-1">
-                    <svg
-                      viewBox="0 0 1024 1024"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="#000000"
-                      className="ml-2 h-5 w-5 "
-                    >
-                      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                      <g
-                        id="SVGRepo_tracerCarrier"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      ></g>
-                      <g id="SVGRepo_iconCarrier">
-                        <path
-                          fill="#000000"
-                          d="M160 256H96a32 32 0 0 1 0-64h256V95.936a32 32 0 0 1 32-32h256a32 32 0 0 1 32 32V192h256a32 32 0 1 1 0 64h-64v672a32 32 0 0 1-32 32H192a32 32 0 0 1-32-32V256zm448-64v-64H416v64h192zM224 896h576V256H224v640zm192-128a32 32 0 0 1-32-32V416a32 32 0 0 1 64 0v320a32 32 0 0 1-32 32zm192 0a32 32 0 0 1-32-32V416a32 32 0 0 1 64 0v320a32 32 0 0 1-32 32z"
-                        ></path>
-                      </g>
-                    </svg>
+                  {/* Delete */}
+                  <div
+                    className="flex items-center py-2 text-sm text-gray-700 hover:rounded-b-md hover:bg-blue-200 hover:text-black"
+                    role="menuitem"
+                    id="delete"
+                    onClick={() => setShowDeletePopup(true)}
+                  >
+                    <div className="flex-1">
+                      <svg
+                        viewBox="0 0 1024 1024"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="#000000"
+                        className="ml-2 h-5 w-5 "
+                      >
+                        <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                        <g
+                          id="SVGRepo_tracerCarrier"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        ></g>
+                        <g id="SVGRepo_iconCarrier">
+                          <path
+                            fill="#000000"
+                            d="M160 256H96a32 32 0 0 1 0-64h256V95.936a32 32 0 0 1 32-32h256a32 32 0 0 1 32 32V192h256a32 32 0 1 1 0 64h-64v672a32 32 0 0 1-32 32H192a32 32 0 0 1-32-32V256zm448-64v-64H416v64h192zM224 896h576V256H224v640zm192-128a32 32 0 0 1-32-32V416a32 32 0 0 1 64 0v320a32 32 0 0 1-32 32zm192 0a32 32 0 0 1-32-32V416a32 32 0 0 1 64 0v320a32 32 0 0 1-32 32z"
+                          ></path>
+                        </g>
+                      </svg>
+                    </div>
+                    <div className="">Delete</div>
+                    <div className="flex-1"></div>
                   </div>
-                  <div className="">Delete</div>
-                  <div className="flex-1"></div>
                 </div>
-              </div>
+              ) : null}
             </div>
           )}
         </div>
@@ -476,7 +482,7 @@ const Message: React.FC<Props> = ({
       {/* Delete Popup  */}
       {showDeletePopup && (
         <DeletePopup
-          id={id}
+          id={post_id}
           showDeletePopup={showDeletePopup}
           setShowDeletePopup={setShowDeletePopup}
         />
@@ -484,7 +490,7 @@ const Message: React.FC<Props> = ({
       {/* Report Popup  */}
       {showReportPopup && (
         <ReportPopup
-          id={id}
+          id={post_id}
           showReportPopup={showReportPopup}
           setShowReportPopup={setShowReportPopup}
         />

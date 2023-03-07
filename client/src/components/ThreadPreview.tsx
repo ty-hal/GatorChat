@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 import { useAtom } from "jotai";
 import { useNavigate } from "react-router-dom";
-
+import { userIDAtom } from "../App";
 import ProfilePicture from "./ProfilePicture";
 import { RichTextEditor } from "./RichTextEditor";
 import DeletePopup from "./DeletePopup";
 import ReportPopup from "./ReportPopup";
-import { userIDAtom } from "../App";
 
 type Props = {
   thread_id: number;

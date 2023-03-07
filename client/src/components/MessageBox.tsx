@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { RichTextEditor } from "./RichTextEditor";
-import { useAtomValue } from "jotai";
-import { messageBoxAtom } from "../pages/DeleteLater/SampleThread"; //EDIT THIS?
-import { useAtom } from "jotai";
+import { useAtomValue, useAtom } from "jotai";
+import { messageBoxAtom } from "../pages/Thread";
 import { userIDAtom } from "../App";
 
 interface Props {

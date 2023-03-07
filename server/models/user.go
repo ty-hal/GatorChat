@@ -6,6 +6,7 @@ import (
 
 	"github.com/team/swe-project/middleware"
 	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm/clause"
 )
 
 type User struct {
@@ -58,7 +59,13 @@ func CreateUser(user User) (User, error) {
 	return user, nil
 }
 
-func DeleteUser(user User) (User, error) {
+func DeleteUser(user_id uint8) (User, error) {
+
+	user, err := GetUserByID(user_id)
+
+	if err != nil {
+		return user, err
+	}
 
 	for _, userClass := range GetAllUserClassRowsFromUser(user) {
 		deletedUserClass := middleware.DB.Unscoped().Where("user_class_id = ?", userClass.UserClassID).Delete(&UserClasses{})
@@ -84,18 +91,32 @@ func DeleteUser(user User) (User, error) {
 		}
 	}
 
+	for _, thread := range user.GetThreads() {
+		err := middleware.DB.Model(&thread).Clauses(clause.Returning{}).Where("thread_id = ?", thread.ThreadID).Updates(Thread{UserID: 0})
+
+		if err.Error != nil {
+			return user, err.Error
+		}
+	}
+
+	for _, post := range user.GetPosts() {
+		err := middleware.DB.Model(&post).Clauses(clause.Returning{}).Where("post_id = ?", post.PostID).Updates(Post{UserID: 0})
+
+		if err.Error != nil {
+			return user, err.Error
+		}
+	}
+
 	result := middleware.DB.Where("user_id = ?", user.UserID).Delete(&User{})
 
 	if result.Error != nil {
 		return user, result.Error
 	}
 
-	//TODO: update use threads and posts id to 0 (delete user id) or delete
-
 	return user, nil
 }
 
-func (u *User) Update() {
+func Update() {
 	// figure out criteria for that later, gonna be multiple update functions
 }
 

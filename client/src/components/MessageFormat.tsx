@@ -111,23 +111,21 @@ const Message: React.FC<Props> = ({
     };
 
     // Backend call to update a message
-    // fetch(`http://localhost:9000/api/post/${id}`, {
-    //   method: "PUT",
-    //   headers: {
-    //     "content-type": "application/json",
-    //   },
-    //   body: JSON.stringify(messageRequest),
-    //   })
-    //   .then((response) => {
-    //     if (response.status === 200) {
-    //       // We dont need to reload here
-    //       // window.location.reload();
-    //       return response.json();
-    //     }
-    //   })
-    //   .then((data) => {
-    //     console.log(data);
-    //   });
+    fetch(`http://localhost:9000/api/post/${id}`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(messageRequest),
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        }
+      })
+      .then((data) => {
+        console.log(data);
+      });
   };
 
   const replyToMessage = () => {

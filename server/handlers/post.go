@@ -66,10 +66,20 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
 func UpdatePost(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	var post models.UpdatePostHandler
-	json.NewDecoder(r.Body).Decode(&post)
+	params := mux.Vars(r)
+	id, err := strconv.Atoi(params["id"])
 
-	postUpdated, postErr := models.UpdatePost(post)
+	// Invalid parameter
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("Invalid Parameter: id"))
+		return
+	}
+
+	var updatedPost models.UpdatedPost
+	json.NewDecoder(r.Body).Decode(&updatedPost)
+
+	postUpdated, postErr := models.UpdatePost(uint8(id), updatedPost)
 
 	if postErr != nil {
 		w.WriteHeader(http.StatusNotFound)
@@ -78,15 +88,21 @@ func UpdatePost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	json.NewEncoder(w).Encode(postUpdated)
+
 }
 
 func DeletePost(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	var post models.Post
-	json.NewDecoder(r.Body).Decode(&post)
-
-	postDeleted, postErr := models.DeletePost(post)
+	params := mux.Vars(r)
+	id, err := strconv.Atoi(params["id"])
+	// Invalid parameter
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("Invalid Parameter: id"))
+		return
+	}
+	postDeleted, postErr := models.DeletePost(uint8(id))
 
 	if postErr != nil {
 		w.WriteHeader(http.StatusNotFound)
@@ -95,6 +111,7 @@ func DeletePost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	json.NewEncoder(w).Encode(postDeleted)
+
 }
 
 // Delete / Update Post

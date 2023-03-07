@@ -130,8 +130,6 @@ const Thread: React.FC<Props> = ({
     })
       .then((response) => {
         if (response.status === 200) {
-          // We dont need to reload here
-          // window.location.reload();
           return response.json();
         }
       })

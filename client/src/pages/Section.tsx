@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import Footer from "../../components/Footer";
-import Thread from "../../components/ThreadPreview";
-import CreateThread from "../../components/CreateThread";
+import { useNavigate, useParams } from "react-router-dom";
+import Footer from "../components/Footer";
+import Thread from "../components/ThreadPreview";
+import CreateThread from "../components/CreateThread";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 type ThreadType = {
@@ -18,13 +18,14 @@ type ThreadType = {
   message_count: number;
 };
 
-const SampleThreadsPreview = () => {
+const Section = () => {
+  const { section_id } = useParams();
+  const navigate = useNavigate();
+
   const [threads, setThreads] = useState<ThreadType[]>([]);
   const [page, setPage] = useState(1);
   const [more, setMore] = useState(true);
   const [loaded, setLoaded] = useState(false);
-  const location = useLocation();
-  const { section_id } = location.state;
 
   const getThreads = () => {
     fetch(
@@ -41,6 +42,7 @@ const SampleThreadsPreview = () => {
         if (data) {
           setThreads((threads) => [...threads, ...data]);
           setPage((page) => page + 1);
+          console.log(data);
         } else {
           setMore(false);
         }
@@ -49,8 +51,13 @@ const SampleThreadsPreview = () => {
   };
 
   useEffect(() => {
+    // If section_id (URL param) is not a number, go back to the previous page
+    if (!/^\d+$/.test(section_id || "a")) {
+      navigate(-1);
+    }
     getThreads();
-  }, [section_id]);
+    console.log(section_id);
+  }, [section_id, navigate]);
 
   return (
     <InfiniteScroll
@@ -61,11 +68,11 @@ const SampleThreadsPreview = () => {
     >
       <div className="bg-white dark:bg-gray-900">
         <div className="flex flex-col items-center rounded-xl p-10">
-          {loaded && <CreateThread section_id={section_id} />}
+          {loaded && <CreateThread section_id={parseInt(section_id || "")} />}
           {threads.map((thread) => {
             return (
               <Thread
-                key={thread.thread_id}
+                key={thread.thread_id} // For Javascript map purposes
                 thread_id={thread.thread_id}
                 section_id={thread.section_id}
                 user_id={thread.user_id}
@@ -85,4 +92,4 @@ const SampleThreadsPreview = () => {
   );
 };
 
-export default SampleThreadsPreview;
+export default Section;

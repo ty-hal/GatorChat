@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react";
+import { useAtom } from "jotai";
+import { useNavigate } from "react-router-dom";
+
 import ProfilePicture from "./ProfilePicture";
 import { RichTextEditor } from "./RichTextEditor";
 import DeletePopup from "./DeletePopup";
 import ReportPopup from "./ReportPopup";
 import { userIDAtom } from "../App";
-import { atom, useAtom } from "jotai";
 
 type Props = {
-  id: number;
+  thread_id: number;
+  section_id: number;
   user_id: number;
   username: string;
   profilePicture?: string;
@@ -24,7 +27,8 @@ interface threadBody {
 }
 
 const Thread: React.FC<Props> = ({
-  id,
+  thread_id,
+  section_id,
   user_id,
   username,
   profilePicture,
@@ -118,7 +122,7 @@ const Thread: React.FC<Props> = ({
       content: content,
     };
 
-    fetch(`http://localhost:9000/api/thread/${id}`, {
+    fetch(`http://localhost:9000/api/thread/${thread_id}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
@@ -135,6 +139,7 @@ const Thread: React.FC<Props> = ({
         console.log(data);
       });
   };
+  let navigate = useNavigate();
 
   return (
     <div
@@ -143,7 +148,8 @@ const Thread: React.FC<Props> = ({
       onClick={(e) => {
         e.stopPropagation();
         setShowDropdown(false);
-        console.log(`Open thread ${id}`);
+        console.log(`Open thread ${thread_id}`);
+        navigate(`/section/${section_id}/thread/${thread_id}`); // Navigate to the thread
       }}
     >
       {/* Profile Picture, Username, Date, and Dropdown */}
@@ -470,7 +476,7 @@ const Thread: React.FC<Props> = ({
               </div>
 
               {/* IF USER HAS ACCESS TO MODIFY THIS THREAD */}
-              {user_id === activeUserID ? 
+              {user_id === activeUserID ? (
                 <div className="cursor-pointer" role="none">
                   {/* Edit */}
                   <div
@@ -539,13 +545,14 @@ const Thread: React.FC<Props> = ({
                     <div className="">Delete</div>
                     <div className="flex-1"></div>
                   </div>
-                </div> : null}
+                </div>
+              ) : null}
             </div>
           )}
           {/* Delete Popup  */}
           {showDeletePopup && (
             <DeletePopup
-              id={id}
+              id={thread_id}
               title={title}
               showDeletePopup={showDeletePopup}
               setShowDeletePopup={setShowDeletePopup}
@@ -554,7 +561,7 @@ const Thread: React.FC<Props> = ({
           {/* Report Popup  */}
           {showReportPopup && (
             <ReportPopup
-              id={id}
+              id={thread_id}
               title={title}
               showReportPopup={showReportPopup}
               setShowReportPopup={setShowReportPopup}

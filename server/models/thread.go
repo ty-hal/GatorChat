@@ -46,6 +46,14 @@ func GetThreadById(threadID uint8) (Thread, error) {
 		return Thread{}, err
 	}
 
+	creator, err := GetUserByID(thread.UserID)
+
+	if err != nil {
+		thread.User = "Anonymous"
+	} else {
+		thread.User = creator.FirstName + " " + creator.LastName
+	}
+
 	return thread, nil
 }
 

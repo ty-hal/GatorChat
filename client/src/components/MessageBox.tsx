@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { RichTextEditor } from "./RichTextEditor";
 import { useAtomValue } from "jotai";
-import { messageBoxAtom } from "../pages/DeleteLater/SampleThread";
+import { messageBoxAtom } from "../pages/DeleteLater/SampleThread"; //EDIT THIS?
+import { useAtom } from "jotai";
+import { userIDAtom } from "../App";
+
 interface Props {
   thread_id: number;
 }
@@ -12,6 +15,7 @@ interface messageBody {
 }
 
 const MessageBox: React.FC<Props> = ({ thread_id }) => {
+  const [userID, setUserID] = useAtom(userIDAtom);
   const [message, setMessage] = useState<string>("");
   const replyMessage = useAtomValue(messageBoxAtom);
 
@@ -25,36 +29,34 @@ const MessageBox: React.FC<Props> = ({ thread_id }) => {
 
   const submitMessage = () => {
     console.log(message);
-    // API CALL TO POST MESSAGE
 
     // After successful API call, clear states and message div
     toggleOpenEditor(false);
     setMessage("");
 
     const messageRequest: messageBody = {
-      user_id: 7, // REPLACE WITH REAL USER ID LATER
+      user_id: userID,
       thread_id: thread_id,
       content: message,
     };
 
     // Backend call to create message
-    //   fetch("http://localhost:9000/api/post", {
-    //     method: "POST",
-    //     headers: {
-    //       "content-type": "application/json",
-    //     },
-    //     body: JSON.stringify(messageRequest),
-    //   })
-    //     .then((response) => {
-    //       if (response.status === 200) {
-    //         window.location.reload();
-    //         return response.json();
-    //       }
-    //     })
-    //     .then((data) => {
-    //       console.log(data);
-    //     });
-    // };
+    fetch("http://localhost:9000/api/post", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(messageRequest),
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          window.location.reload();
+          return response.json();
+        }
+      })
+      .then((data) => {
+        console.log(data);
+      });
   };
 
   return (

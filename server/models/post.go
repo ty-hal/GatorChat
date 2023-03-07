@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/team/swe-project/middleware"
+	"gorm.io/gorm/clause"
 )
 
 type Post struct {
@@ -43,32 +44,33 @@ func CreatePost(post Post) Post {
 	return post
 }
 
-type UpdatePostHandler struct {
-	Post       Post
-	NewContent string
+type UpdatedPost struct {
+	Content string
 }
 
-func UpdatePost(handlerParams UpdatePostHandler) (Post, error) {
-	post := handlerParams.Post
-	newContent := handlerParams.NewContent
+func UpdatePost(post_id uint8, updatedPost UpdatedPost) (Post, error) {
+	// post := handlerParams.Post
+	// newContent := handlerParams.NewContent
 
-	result := middleware.DB.Model(&post).Update("content", newContent)
+	// result := middleware.DB.Model(&post).Update("content", newContent)
+	var post Post
+	err := middleware.DB.Model(&post).Clauses(clause.Returning{}).Where("post_id = ?", post_id).Updates(Post{Content: updatedPost.Content})
 
-	if result.Error != nil {
-		return post, result.Error
+	if err.Error != nil {
+		return post, err.Error
 	}
 
 	return post, nil
 }
 
-func DeletePost(post Post) (Post, error) {
-	result := middleware.DB.Unscoped().Where("post_id = ?", post.PostID).Delete(&Post{})
+func DeletePost(postID uint8) (Post, error) {
+	result := middleware.DB.Unscoped().Where("post_id = ?", postID).Delete(&Post{})
 
 	if result.Error != nil {
-		return post, result.Error
+		return Post{}, result.Error
 	}
 
-	return post, nil
+	return Post{}, nil
 }
 
 func (p *Post) GetThread() (Thread, error) {

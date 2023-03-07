@@ -38,8 +38,8 @@ func Router() *mux.Router {
 	router.HandleFunc("/api/posts", handlers.GetAllPosts).Methods("GET")
 	router.HandleFunc("/api/post/{id}", handlers.GetPostById).Methods("GET")
 	router.HandleFunc("/api/post", handlers.CreatePost).Methods("POST")
-	router.HandleFunc("/api/post", handlers.DeletePost).Methods("DELETE")
-	router.HandleFunc("/api/post", handlers.UpdatePost).Methods("PUT")
+	router.HandleFunc("/api/post/{id}", handlers.DeletePost).Methods("DELETE")
+	router.HandleFunc("/api/post/{id}", handlers.UpdatePost).Methods("PUT")
 
 	// Class Routes
 	router.HandleFunc("/api/classes", handlers.GetAllClasses).Methods("GET")

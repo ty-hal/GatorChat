@@ -15,6 +15,9 @@ import Contactus from "./pages/Contactus";
 //Delete eventually
 import SampleThreadsPreview from "./pages/DeleteLater/SampleThreadsPreview";
 import SampleThread from "./pages/DeleteLater/SampleThread";
+import Section from "./pages/Section";
+import Thread from "./pages/Thread";
+
 import { useEffect } from "react";
 
 // Uses local storage to detect user dark mode preference
@@ -26,6 +29,7 @@ export default function App() {
   const [darkMode] = useAtom(darkModeAtom);
   const [userID, setUserID] = useAtom(userIDAtom);
 
+  // Authenticate user upon render
   useEffect(() => {
     fetch("http://localhost:9000/api/user/validate", {
       method: "GET",
@@ -73,12 +77,13 @@ export default function App() {
       <Header />
       <Routes>
         <Route index element={<Home />} />
-        {/* Eventually delete these samples/turn them into actual pages */}
-        <Route
-          path="sample-threads-preview"
-          element={<SampleThreadsPreview />}
-        />
         <Route path="sample-thread" element={<SampleThread />} />
+        {/* Section and its threads */}
+        <Route path="section/:section_id" element={<Section />} />
+        <Route
+          path="section/:section_id/thread/:thread_id"
+          element={<Thread />}
+        />
 
         <Route path="sign-in" element={<SignIn />} />
         <Route path="register" element={<Register />} />

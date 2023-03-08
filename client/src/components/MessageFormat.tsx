@@ -11,9 +11,9 @@ type Props = {
   post_id: number;
   user_id: number;
   username: string;
-  profilePicture?: string;
   messageContent: string;
   messageDate: string;
+  updatedOn: string;
   likesCount: number;
   replyFunc: () => void;
 };
@@ -26,9 +26,9 @@ const Message: React.FC<Props> = ({
   post_id,
   user_id,
   username,
-  profilePicture,
   messageContent,
   messageDate,
+  updatedOn,
   likesCount,
   replyFunc,
 }) => {
@@ -38,17 +38,32 @@ const Message: React.FC<Props> = ({
   const [edit, toggleEdit] = useState<boolean>(false);
   const [tempContent, setTempContent] = useState<string>("");
   const [activeUserID, setActiveUserID] = useAtom(userIDAtom);
+  const [profilePicture, setProfilePicture] = useState<string>("");
 
   const [numLikes, toggleLike] = useState<number>(likesCount);
   const [postTimeDifference, setPostTimeDifference] = useState<string>("");
   const [content, setContent] = useState<string>("");
-
   const [userMessageBox, setUserMessageBox] = useAtom(messageBoxAtom);
 
-  // Updates postTimeDifference with how long ago the message was created
   useEffect(() => {
+    // GET and SET the user who posted the thread's profile picture
+    fetch(`http://localhost:9000/api/user/${user_id}`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.profile_pic) {
+          setProfilePicture(data.profile_pic);
+          // console.log(data.profile_pic);
+        }
+      });
+
     setContent(messageContent);
 
+    // Updates postTimeDifference with how long ago the message was created
     let postTime = new Date(messageDate);
     let currentTime = new Date();
     const _MS_PER_YEAR = 1000 * 60 * 60 * 24 * 365;
@@ -124,6 +139,8 @@ const Message: React.FC<Props> = ({
     })
       .then((response) => {
         if (response.status === 200) {
+          console.log("About to reload");
+          window.location.reload();
           return response.json();
         }
       })
@@ -155,7 +172,7 @@ const Message: React.FC<Props> = ({
           className="ml-3 h-10 w-10 overflow-hidden rounded-full bg-white dark:bg-gray-600"
           id="profile-picture"
         >
-          <ProfilePicture image={profilePicture} />
+          <ProfilePicture image={profilePicture} setImage={setProfilePicture} />
         </div>
 
         {/* Username and Time  */}
@@ -167,6 +184,9 @@ const Message: React.FC<Props> = ({
           >
             {" posted "}
             {postTimeDifference}
+            <span className="ml-2 text-sm">
+              {updatedOn !== messageDate ? "(edited)" : null}
+            </span>
           </div>
         </div>
       </div>

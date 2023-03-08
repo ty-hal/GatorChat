@@ -14,14 +14,14 @@ type Post struct {
 	ThreadID     uint8     `json:"thread_id,omitempty"`
 	Content      string    `json:"content,omitempty"`
 	CreationDate time.Time `json:"creation_date" gorm:"autoCreateTime"`
-	UpdatedOn    time.Time `gorm:"-"`
+	UpdatedOn    time.Time `json:"updated_on" gorm:"autoCreateTime"`
 	Likes        uint8     `json:"likes,omitempty"`
 }
 
 func GetAllPosts() []Post {
 	var posts []Post
 
-	middleware.DB.Find(&posts)
+	middleware.DB.Order("creation_date ASC").Find(&posts)
 
 	return posts
 }

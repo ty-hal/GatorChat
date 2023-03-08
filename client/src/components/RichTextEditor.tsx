@@ -11,11 +11,11 @@ import TextAlign from "@tiptap/extension-text-align";
 import CharacterCount from "@tiptap/extension-character-count";
 import Typography from "@tiptap/extension-typography";
 import Image from "@tiptap/extension-image";
-import Dropcursor from "@tiptap/extension-dropcursor";
+// import Dropcursor from "@tiptap/extension-dropcursor";
 import Link from "@tiptap/extension-link";
 import Underline from "@tiptap/extension-underline";
 import Youtube from "@tiptap/extension-youtube";
-import Blockquote from "@tiptap/extension-blockquote";
+// import Blockquote from "@tiptap/extension-blockquote";
 
 import { messageBoxAtom } from "../pages/Thread";
 
@@ -1185,7 +1185,7 @@ export const RichTextEditor: React.FC<Props> = ({
           class: "w-1/2 lg:w-1/3 mx-auto m-1",
         },
       }),
-      Dropcursor,
+      // Dropcursor,
       Link.configure({
         autolink: true,
         openOnClick: true,
@@ -1200,7 +1200,7 @@ export const RichTextEditor: React.FC<Props> = ({
         height:
           window.innerWidth > 1100 ? 480 : window.innerWidth > 650 ? 240 : 120,
       }),
-      Blockquote,
+      // Blockquote,
     ],
     content: textContent ? textContent : "",
     onUpdate: ({ editor }) => {

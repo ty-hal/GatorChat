@@ -364,7 +364,7 @@ const Register = () => {
           setUserExists(false);
           setInvalidForm(false);
           setErrorOccured(false);
-          navigate("/"); // Navigate to home page
+          navigate("/sign-in"); // Navigate to sign in page
           return response.json();
         }
 

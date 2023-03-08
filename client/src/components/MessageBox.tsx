@@ -97,7 +97,11 @@ const MessageBox: React.FC<Props> = ({ thread_id }) => {
             type="submit"
             className="inline-flex h-8 cursor-pointer justify-center rounded-full p-1 text-blue-600 hover:bg-blue-100 
             dark:text-blue-500 dark:hover:bg-gray-600 md:h-10 md:p-2"
-            onClick={submitMessage}
+            onClick={() => {
+              if (message.length > 0) {
+                submitMessage();
+              }
+            }}
             id="submit-message"
             title="Submit message"
           >

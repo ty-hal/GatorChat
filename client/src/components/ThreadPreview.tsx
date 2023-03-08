@@ -13,10 +13,10 @@ type Props = {
   section_name: string;
   user_id: number;
   username: string;
-  profilePicture?: string;
   threadTitle: string;
   threadContent: string;
   threadDate: string;
+  updatedOn: string;
   likesCount: number;
   messagesCount: number;
 };
@@ -32,10 +32,10 @@ const Thread: React.FC<Props> = ({
   section_name,
   user_id,
   username,
-  profilePicture,
   threadTitle,
   threadContent,
   threadDate,
+  updatedOn,
   likesCount,
   messagesCount,
 }) => {
@@ -46,6 +46,7 @@ const Thread: React.FC<Props> = ({
   const [activeUserID, setActiveUserID] = useAtom(userIDAtom);
   const [thread_name, set_thread_name] = useState<string>("");
   const [numLikes, toggleLike] = useState<number>(likesCount);
+  const [profilePicture, setProfilePicture] = useState<string>("");
   const [postTimeDifference, setPostTimeDifference] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [tempTitle, setTempTitle] = useState<string>("");
@@ -113,6 +114,23 @@ const Thread: React.FC<Props> = ({
         yearsAgo === "1" ? "1 year ago" : yearsAgo + " years ago"
       );
     }
+
+    // GET and SET the user who posted the thread's profile picture
+    fetch(`http://localhost:9000/api/user/${user_id}`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.profile_pic) {
+          setProfilePicture(data.profile_pic);
+          // console.log(data.profile_pic);
+        } else {
+          setProfilePicture("");
+        }
+      });
   }, []);
 
   const editThread = () => {
@@ -173,6 +191,9 @@ const Thread: React.FC<Props> = ({
           >
             {" posted "}
             {postTimeDifference}
+            <span className="ml-2 text-sm">
+              {updatedOn !== threadDate ? "(edited)" : null}
+            </span>
           </span>
         </div>
       </div>
@@ -329,8 +350,11 @@ const Thread: React.FC<Props> = ({
           onClick={(e) => {
             e.stopPropagation();
             setShowDropdown(false);
-            navigator.clipboard.writeText("COPY THREAD LINK");
+            navigator.clipboard.writeText(
+              window.location.href + `/${thread_name}/${thread_id}`
+            );
           }}
+          title="Copy link"
         >
           <svg
             viewBox="0 0 24 24"

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Footer from "../components/Footer";
-import Thread from "../components/ThreadPreview";
+import ThreadPreview from "../components/ThreadPreview";
 import CreateThread from "../components/CreateThread";
 import InfiniteScroll from "react-infinite-scroll-component";
 
@@ -71,7 +71,7 @@ const Section = () => {
           {loaded && <CreateThread section_id={parseInt(section_id || "")} />}
           {threads.map((thread) => {
             return (
-              <Thread
+              <ThreadPreview
                 key={thread.thread_id} // For Javascript map purposes
                 thread_id={thread.thread_id}
                 section_id={thread.section_id}
@@ -81,6 +81,7 @@ const Section = () => {
                 threadTitle={thread.thread_title}
                 threadContent={thread.content}
                 threadDate={thread.creation_date}
+                updatedOn={thread.updated_on}
                 likesCount={thread.likes ? thread.likes : 0}
                 messagesCount={thread.message_count ? thread.message_count : 0}
               />

@@ -15,7 +15,7 @@ type Thread struct {
 	ThreadTitle  string    `json:"thread_title,omitempty"`
 	Content      string    `json:"content,omitempty"`
 	CreationDate time.Time `json:"creation_date" gorm:"autoCreateTime"`
-	UpdatedOn    time.Time `json:"updated_on" gorm:"-"`
+	UpdatedOn    time.Time `json:"updated_on" gorm:"autoCreateTime"`
 	Likes        uint8     `json:"likes,omitempty"`
 	MessageCount uint8     `json:"message_count,omitempty" gorm:"-"`
 }

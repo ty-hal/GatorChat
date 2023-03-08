@@ -79,7 +79,6 @@ const SampleThread = () => {
     }
     getThread();
     getMessages();
-    console.log(section_id, thread_id);
   }, [section_id, thread_id, navigate]);
 
   //dummy ref is used to scroll down to message box after clicking reply button on any message/the thread
@@ -101,6 +100,7 @@ const SampleThread = () => {
           threadTitle={thread.thread_title}
           threadContent={thread.content}
           threadDate={thread.creation_date}
+          updatedOn={thread.updated_on}
           likesCount={thread.likes ? thread.likes : 0}
           messagesCount={messages.length}
           replyFunc={replyFunc}
@@ -114,6 +114,7 @@ const SampleThread = () => {
               username={messages.username}
               messageContent={messages.content}
               messageDate={messages.creation_date}
+              updatedOn={messages.updated_on}
               likesCount={messages.likes ? messages.likes : 0}
               replyFunc={replyFunc}
             />

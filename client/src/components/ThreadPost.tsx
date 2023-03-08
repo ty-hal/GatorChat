@@ -11,10 +11,10 @@ type Props = {
   thread_id: number;
   user_id: number;
   username: string;
-  profilePicture?: string;
   threadTitle: string;
   threadContent: string;
   threadDate: string;
+  updatedOn: string;
   likesCount: number;
   messagesCount: number;
   replyFunc: () => void;
@@ -29,10 +29,10 @@ const Thread: React.FC<Props> = ({
   thread_id,
   user_id,
   username,
-  profilePicture,
   threadTitle,
   threadContent,
   threadDate,
+  updatedOn,
   likesCount,
   messagesCount,
   replyFunc,
@@ -42,6 +42,7 @@ const Thread: React.FC<Props> = ({
   const [showReportPopup, setShowReportPopup] = useState<boolean>(false);
   const [edit, toggleEdit] = useState<boolean>(false);
   const [activeUserID, setActiveUserID] = useAtom(userIDAtom);
+  const [profilePicture, setProfilePicture] = useState<string>("");
 
   const [numLikes, toggleLike] = useState<number>(likesCount);
   const [postTimeDifference, setPostTimeDifference] = useState<string>("");
@@ -53,11 +54,11 @@ const Thread: React.FC<Props> = ({
 
   const [userMessageBox, setUserMessageBox] = useAtom(messageBoxAtom);
 
-  // Updates postTimeDifference with how long ago the thread was created
   useEffect(() => {
     setTitle(threadTitle);
     setContent(threadContent);
 
+    // Updates postTimeDifference with how long ago the thread was created
     let postTime = new Date(threadDate);
     let currentTime = new Date();
     const _MS_PER_YEAR = 1000 * 60 * 60 * 24 * 365;
@@ -112,6 +113,26 @@ const Thread: React.FC<Props> = ({
         yearsAgo === "1" ? "1 year ago" : yearsAgo + " years ago"
       );
     }
+
+    // console.log(user_id);
+    // GET and SET the user who posted the thread's profile picture
+    if (user_id !== undefined) {
+      fetch(`http://localhost:9000/api/user/${user_id}`, {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.profile_pic) {
+            setProfilePicture(data.profile_pic);
+            // console.log(data.profile_pic);
+          } else {
+            setProfilePicture("");
+          }
+        });
+    }
   }, []);
 
   // Edit the thread
@@ -133,6 +154,7 @@ const Thread: React.FC<Props> = ({
     })
       .then((response) => {
         if (response.status === 200) {
+          window.location.reload();
           return response.json();
         }
       })
@@ -176,6 +198,9 @@ const Thread: React.FC<Props> = ({
           >
             {" posted "}
             {postTimeDifference}
+            <span className="ml-2 text-sm">
+              {updatedOn !== threadDate ? "(edited)" : null}
+            </span>
           </div>
         </div>
       </div>
@@ -349,14 +374,16 @@ const Thread: React.FC<Props> = ({
           </svg>
           <div className="ml-2">Reply</div>
         </div>
+
         {/* Share  */}
         <div
           className="flex cursor-pointer items-center rounded-md px-1 hover:bg-gray-300 dark:hover:bg-slate-700"
           onClick={(e) => {
             e.stopPropagation();
             setShowDropdown(false);
-            navigator.clipboard.writeText("COPY THREAD LINK");
+            navigator.clipboard.writeText(window.location.href);
           }}
+          title="Copy link"
         >
           <svg
             viewBox="0 0 24 24"
@@ -403,6 +430,7 @@ const Thread: React.FC<Props> = ({
           </svg>
           <div className="ml-2 hidden sm:block">Share</div>
         </div>
+
         {/* Thread Menu  */}
         <div>
           <svg

@@ -31,7 +31,7 @@ func GetAllThreads() []Thread {
 func GetAllThreadsWithOffset(pageNumber int, pageSize int) []Thread {
 	var threads []Thread
 
-	middleware.DB.Offset((pageNumber - 1) * pageSize).Limit(pageSize).Find(&threads)
+	middleware.DB.Order("updated_on DESC").Offset((pageNumber - 1) * pageSize).Limit(pageSize).Find(&threads)
 
 	return threads
 }

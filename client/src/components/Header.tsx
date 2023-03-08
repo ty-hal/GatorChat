@@ -1,12 +1,35 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
 import { darkModeAtom, userIDAtom } from "../App";
+import ProfilePicture from "../components/ProfilePicture";
 
 const Header = () => {
   const [showDropDown, setShowDropDown] = useState<boolean>(false);
   const [darkMode, setDarkMode] = useAtom(darkModeAtom);
   const [userID, setUserID] = useAtom(userIDAtom);
+  const [profilePicture, setProfilePicture] = useState<string>("");
+
+  useEffect(() => {
+    // GET and SET the user who posted the thread's profile picture
+    if (userID !== undefined) {
+      fetch(`http://localhost:9000/api/user/${userID}`, {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.profile_pic) {
+            setProfilePicture(data.profile_pic);
+            console.log(data.profile_pic);
+          } else {
+            setProfilePicture("");
+          }
+        });
+    }
+  }, [userID]);
 
   const signOut = () => {
     fetch("http://localhost:9000/api/user/logout", {
@@ -71,11 +94,12 @@ const Header = () => {
   );
 
   return (
-    <div className="flex flex-wrap border-b-4 border-b-blue-600">
-      <section className="relative mx-auto w-full">
-        <nav className="flex h-14 w-full justify-between text-gray-700 dark:bg-gray-900 dark:text-white">
-          <div className="flex w-full items-center px-5 py-6 xl:px-12">
-            {/* Logo  */}
+    <div className="relative mx-auto flex w-full flex-wrap border-b-4 border-b-blue-600 dark:bg-gray-900">
+      <div className="flex h-14 justify-between text-gray-700  dark:text-white">
+        {/* dark:bg-gray-900 */}
+        <div className="flex items-center px-5 py-6 xl:px-12">
+          {/* Logo  */}
+          <div>
             <Link to="/">
               <span
                 className="cursor-pointer rounded-lg p-1 text-3xl font-bold"
@@ -84,58 +108,61 @@ const Header = () => {
                 Logo
               </span>
             </Link>
-            <ul className="font-heading absolute right-0 flex items-center space-x-8 px-4 ">
-              {/* Navigation Bar */}
-              <Link to="/">
-                {" "}
-                <span
-                  className="rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2"
-                  id="home"
-                >
-                  Home
-                </span>
-              </Link>
-              {userID === 0 ? (
-                <>
-                  <Link to="/sign-in">
-                    {" "}
-                    <span
-                      className="rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2"
-                      id="sign-in"
-                    >
-                      Sign in
-                    </span>
-                  </Link>
-                  <Link to="/register">
-                    {" "}
-                    <span
-                      className="mr-6 rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2"
-                      id="register"
-                    >
-                      Register
-                    </span>
-                  </Link>
-                </>
-              ) : (
-                <Link to="/">
+          </div>
+          {/* Nav */}
+          <div className="absolute right-0 flex items-center space-x-8 px-4 ">
+            {/* Navigation Bar */}
+            <Link to="/">
+              {" "}
+              <span
+                className="rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2"
+                id="home"
+              >
+                Home
+              </span>
+            </Link>
+            {userID === 0 ? (
+              <>
+                <Link to="/sign-in">
+                  {" "}
                   <span
-                    className="mr-6 rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2"
-                    id="sign-out-header"
-                    onClick={signOut}
+                    className="rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2"
+                    id="sign-in"
                   >
-                    Sign out
+                    Sign in
                   </span>
                 </Link>
-              )}
-
-              {/* Dropdown Menu */}
-              <div className="flex items-center">
-                <div className="relative inline-block text-left">
-                  <div
-                    className="mt-1 inline-flex w-full cursor-pointer justify-center rounded-md text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-200"
-                    id="menu-button"
-                    onMouseEnter={(): void => toggleDropDown()}
+                <Link to="/register">
+                  {" "}
+                  <span
+                    className="mr-6 rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2"
+                    id="register"
                   >
+                    Register
+                  </span>
+                </Link>
+              </>
+            ) : (
+              <Link to="/">
+                <span
+                  className="mr-6 rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2"
+                  id="sign-out-header"
+                  onClick={signOut}
+                >
+                  Sign out
+                </span>
+              </Link>
+            )}
+
+            {/* Dropdown Menu */}
+            <div className="flex items-center">
+              <div className="relative inline-block text-left">
+                <div
+                  className="mt-1 inline-flex w-full cursor-pointer justify-center rounded-md text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-200"
+                  id="menu-button"
+                  onMouseEnter={(): void => toggleDropDown()}
+                >
+                  {userID === 0 ? (
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-10 w-10 hover:text-blue-600"
@@ -150,14 +177,24 @@ const Header = () => {
                         d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                       />
                     </svg>
-                  </div>
-                  {showDropDown && (
+                  ) : (
                     <div
-                      className="absolute right-0 z-10 -mt-2 w-32 origin-top-right cursor-pointer divide-y divide-gray-300 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                      role="menu"
-                      id="dropdown-content"
-                      onMouseLeave={(): void => toggleDropDown()}
+                      className="ml-3 h-10 w-10 overflow-hidden rounded-full border-2 border-gray-900 dark:border-gray-300"
+                      id="profile-picture"
                     >
+                      <ProfilePicture image={profilePicture} />
+                    </div>
+                  )}
+                </div>
+                {showDropDown && (
+                  <div
+                    className="absolute right-0 z-10 -mt-2 w-32 origin-top-right cursor-pointer divide-y divide-gray-300 rounded-md bg-white  shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                    role="menu"
+                    id="dropdown-content"
+                    onMouseLeave={(): void => toggleDropDown()}
+                  >
+                    {/* Settings and My Account*/}
+                    {userID === 0 ? null : (
                       <div>
                         <Link to="/settings">
                           <span
@@ -176,16 +213,33 @@ const Header = () => {
                           My Account
                         </span>
                       </div>
-                      <div>
-                        <span
-                          className="block py-2 pl-4 text-sm text-gray-700 hover:bg-blue-300 hover:text-black"
-                          role="menuitem"
-                          id="theme"
-                          onClick={() => setDarkMode(!darkMode)}
-                        >
-                          {darkMode ? lightModeText : darkModeText}
-                        </span>
+                    )}
+                    {/* Dark Mode and Sign Out */}
+                    <div>
+                      <span
+                        className={
+                          userID === 0
+                            ? "block py-2 pl-4 text-sm text-gray-700 hover:rounded-t-md hover:bg-blue-300 hover:text-black"
+                            : "block py-2 pl-4 text-sm text-gray-700 hover:bg-blue-300 hover:text-black"
+                        }
+                        role="menuitem"
+                        id="theme"
+                        onClick={() => setDarkMode(!darkMode)}
+                      >
+                        {darkMode ? lightModeText : darkModeText}
+                      </span>
 
+                      {userID === 0 ? (
+                        <Link to="/sign-in">
+                          <span
+                            className="block px-4 py-2 text-sm text-gray-700 hover:rounded-b-md hover:bg-blue-300 hover:text-black"
+                            role="menuitem"
+                            id="sign-in-head"
+                          >
+                            Sign in
+                          </span>
+                        </Link>
+                      ) : (
                         <Link to="/">
                           <span
                             className="block px-4 py-2 text-sm text-gray-700 hover:rounded-b-md hover:bg-blue-300 hover:text-black"
@@ -196,15 +250,15 @@ const Header = () => {
                             Sign out
                           </span>
                         </Link>
-                      </div>
+                      )}
                     </div>
-                  )}
-                </div>
+                  </div>
+                )}
               </div>
-            </ul>
+            </div>
           </div>
-        </nav>
-      </section>
+        </div>
+      </div>
     </div>
   );
 };

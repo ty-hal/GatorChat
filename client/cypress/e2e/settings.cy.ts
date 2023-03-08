@@ -1,4 +1,4 @@
-describe('template spec', () => 
+describe('settings spec', () => 
 {
   //good enough
   it("login first",()=>{

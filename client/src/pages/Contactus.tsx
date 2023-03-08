@@ -1,8 +1,4 @@
-import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { Dropdown } from "flowbite";
-
-import React from "react";
+import { useState } from "react";
 
 const ContactUs = () => {
   const [name, setname] = useState("");

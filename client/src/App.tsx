@@ -13,7 +13,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import Settings from "./pages/Settings";
 import FAQ from "./pages/FAQ";
-import ContactUs from "./pages/Contactus";
+import ContactUs from "./pages/ContactUs";
 import Section from "./pages/Section";
 import Thread from "./pages/Thread";
 
@@ -80,7 +80,6 @@ export default function App() {
           path=":section_name/:section_id/:thread_name/:thread_id"
           element={<Thread />}
         />
-
         <Route path="sign-in" element={<SignIn />} />
         <Route path="register" element={<Register />} />
         <Route path="forgot-password" element={<ForgotPassword />} />

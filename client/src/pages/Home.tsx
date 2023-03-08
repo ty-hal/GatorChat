@@ -24,7 +24,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="bg-white dark:bg-gray-900">
+    <div className="min-h-screen bg-white dark:bg-gray-900">
       {sections.map((section) => {
         let edited_section_name = section.section_name.replace(/[\W_]+/g, " ");
         edited_section_name = edited_section_name

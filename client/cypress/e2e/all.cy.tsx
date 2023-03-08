@@ -1,4 +1,4 @@
-import "./ContactUs.cy";
+import "./contactus.cy";
 import "./Register.cy";
-import "./Settings.cy";
+import "./settings.cy";
 import "./SignIn.cy";

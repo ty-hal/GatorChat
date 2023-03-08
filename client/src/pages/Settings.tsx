@@ -120,6 +120,7 @@ const Settings = () =>
                 value = {username}
                 pattern="[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@ufl\.edu"
                 title="Email cannot be changed"
+                onClick={event=>alert("Contact support if you need to change your email")}
                 //onChange={(event) => setusername(event.target.value)}
                 readOnly>
                 </input>
@@ -154,7 +155,7 @@ const Settings = () =>
                 dark:border-gray-600 dark:placeholder-gray-400 
                 dark:text-white dark:focus:ring-blue-500 
                 dark:focus:border-blue-500" 
-                id="confirm password" 
+                id="confirm-password" 
                 placeholder="••••••••"
                 title="Must be at least 8 characters long and contain a number and uppercase letter"
                 pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"

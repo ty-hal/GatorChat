@@ -36,6 +36,8 @@
     "react-dom": "^18.2.0",
     "react-infinite-scroll-component": "^6.1.0",
     "react-scripts": "5.0.1",
+    "react-search-autocomplete": "^8.3.1",
+    "react-select-search": "^4.1.6",
     "react-tailwindcss-select": "^1.6.0",
     "reactjs-popup": "^2.0.5",
     "tw-elements": "^1.0.0-alpha13",

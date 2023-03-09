@@ -23,7 +23,6 @@ const Header = () => {
         .then((data) => {
           if (data.profile_pic) {
             setProfilePicture(data.profile_pic);
-            console.log(data.profile_pic);
           } else {
             setProfilePicture("");
           }

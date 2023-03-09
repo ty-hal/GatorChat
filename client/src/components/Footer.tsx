@@ -23,10 +23,7 @@ const Footer = () => {
   };
 
   return (
-    <div
-      aria-label="Site Footer"
-      className="absolute bottom-0 w-full bg-white dark:bg-gray-900"
-    >
+    <div aria-label="Site Footer" className="w-full bg-white dark:bg-gray-900">
       <div className="mx-auto  px-4 pt-16 pb-4 sm:px-6 lg:px-8">
         <div className="hidden sm:flex lg:items-start lg:gap-8">
           <div className="mt-8 grid grid-cols-3 gap-4 lg:mt-0 lg:grid-cols-6 lg:gap-y-10">

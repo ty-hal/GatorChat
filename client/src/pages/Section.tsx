@@ -66,7 +66,7 @@ const Section = () => {
       hasMore={more}
       loader={null}
     >
-      <div className="bg-white dark:bg-gray-900">
+      <div className="min-h-screen bg-white dark:bg-gray-900">
         <div className="flex flex-col items-center rounded-xl p-10">
           {loaded && <CreateThread section_id={parseInt(section_id || "")} />}
           {threads.map((thread) => {

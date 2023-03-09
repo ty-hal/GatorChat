@@ -10,9 +10,8 @@ type Props = {
 
 const ProfilePicture: React.FC<Props> = ({ image, className, setImage }) => {
   var profilePic = new Image();
-  // console.log(image);
-  if (image === "") console.log("EMPTY");
-  else console.log("NOT EMPTY");
+  // if (image === "") console.log("EMPTY");
+  // else console.log("NOT EMPTY");
 
   if (!image || image === "") {
     // If there is no image, return default image
@@ -38,15 +37,6 @@ const ProfilePicture: React.FC<Props> = ({ image, className, setImage }) => {
   } else {
     profilePic.src = image;
   }
-  // if (document.getElementById("profilePicture")) {
-  //   let img = document.getElementById("profilePicture") as HTMLImageElement;
-  //   if (img !== null) {
-  //     console.log("CHANGED IMG SRC");
-  //     img.src = profilePic.src;
-  //   }
-  // }
-
-  // return <img id="profilePicture" src="" alt="" className={className} />;
 
   return (
     <img

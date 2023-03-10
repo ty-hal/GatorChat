@@ -2,9 +2,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { atom } from "jotai";
 import Footer from "../components/Footer";
-import ThreadPost from "../components/ThreadPost";
-import Message from "../components/MessageFormat";
-import MessageBox from "../components/MessageBox";
+import ThreadPost from "../components/Thread/ThreadPost";
+import Message from "../components/Message/MessageFormat";
+import MessageBox from "../components/Message/MessageBox";
 export const messageBoxAtom = atom("");
 
 type MessageType = {

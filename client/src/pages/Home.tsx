@@ -2,6 +2,8 @@ import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
+import { darkModeAtom } from "../App";
+import { useAtomValue } from "jotai";
 
 type Section = {
   section_id: number;
@@ -16,6 +18,7 @@ type SearchBarItem = {
 const Home = () => {
   const [sections, setSections] = useState<Section[]>([]);
   const [searchBarItems, setSearchBarItems] = useState<SearchBarItem[]>([]);
+  const darkMode = useAtomValue(darkModeAtom);
 
   useEffect(() => {
     fetch("http://localhost:9000/api/sections", {
@@ -51,7 +54,7 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
-      <div className="mx-auto w-3/4 outline-none">
+      <div className="mx-auto w-3/4 pt-2 outline-none">
         <ReactSearchAutocomplete
           items={searchBarItems}
           fuseOptions={{ threshold: 0.3 }}
@@ -59,10 +62,16 @@ const Home = () => {
           formatResult={searchBarFormatResult}
           placeholder="Search sections..."
           styling={{
-            backgroundColor: "rgb(17 24 39)",
-            iconColor: "white",
-            color: "white",
-            hoverBackgroundColor: "rgb(28 100 242)",
+            backgroundColor: `${
+              darkMode ? "rgb(17 24 39)" : "rgb(255,255,255)"
+            }`,
+            iconColor: `${darkMode ? "rgb(255,255,255)" : "rgb(0,0,0)"}`,
+            color: `${darkMode ? "rgb(255,255,255)" : "rgb(0,0,0)"}`,
+            hoverBackgroundColor: `${
+              darkMode ? "rgb(28 100 242)" : "rgba(28, 99, 242, 0.7)"
+            }`,
+            border: `${darkMode ? "1px solid #dfe1e5" : "1px solid #000"}`,
+            clearIconMargin: "3px 8px 0 0",
           }}
         />
       </div>

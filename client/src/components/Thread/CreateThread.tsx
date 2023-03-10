@@ -1,7 +1,8 @@
-import { useAtom } from "jotai";
+import { useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
-import { userIDAtom } from "../App";
-import { RichTextEditor } from "./RichTextEditor";
+import { userIDAtom } from "../../App";
+import { RichTextEditor } from "../RichTextEditor";
+import SignInPopup from "../Popups/SignInPopup";
 
 type Props = {
   section_id: number;
@@ -19,12 +20,14 @@ interface threadBody {
   content: string | undefined;
 }
 
-const CreateThread: React.FC<Props> = ({ section_id}) => {
+const CreateThread: React.FC<Props> = ({ section_id }) => {
   const [openEditor, toggleOpenEditor] = useState(false);
   const [title, setTitle] = useState<string>("");
   const [text, setText] = useState<string>("");
   const [thread, setThread] = useState<thread>();
-  const [activeUserID, setActiveUserID] = useAtom(userIDAtom);
+  const activeUserID = useAtomValue(userIDAtom);
+  const [showSignInPopup, setShowSignInPopup] = useState<boolean>(false);
+  const [popupReason, setPopupReason] = useState<string>("");
 
   const submitThread = () => {
     console.log(thread);
@@ -68,6 +71,12 @@ const CreateThread: React.FC<Props> = ({ section_id}) => {
       id="container"
       onClick={(e) => {
         e.stopPropagation();
+        console.log(activeUserID);
+        setPopupReason("create thread");
+        if (!activeUserID || activeUserID <= 0) {
+          setShowSignInPopup(true);
+          return;
+        }
         toggleOpenEditor(!openEditor);
       }}
     >
@@ -118,6 +127,15 @@ const CreateThread: React.FC<Props> = ({ section_id}) => {
               </div>
             )}
         </div>
+      )}
+
+      {/* Sign In Popup  */}
+      {showSignInPopup && (
+        <SignInPopup
+          popupReason={popupReason}
+          showSignInPopup={showSignInPopup}
+          setShowSignInPopup={setShowSignInPopup}
+        />
       )}
     </div>
   );

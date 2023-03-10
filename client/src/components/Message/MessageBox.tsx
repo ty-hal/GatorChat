@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { RichTextEditor } from "./RichTextEditor";
-import { useAtomValue, useAtom } from "jotai";
-import { messageBoxAtom } from "../pages/Thread";
-import { userIDAtom } from "../App";
+import { RichTextEditor } from "../RichTextEditor";
+import { useAtomValue } from "jotai";
+import { messageBoxAtom } from "../../pages/Thread";
+import { userIDAtom } from "../../App";
+import SignInPopup from "../Popups/SignInPopup";
 
 interface Props {
   thread_id: number;
@@ -14,11 +15,13 @@ interface messageBody {
 }
 
 const MessageBox: React.FC<Props> = ({ thread_id }) => {
-  const [userID, setUserID] = useAtom(userIDAtom);
+  const activeUserID = useAtomValue(userIDAtom);
   const [message, setMessage] = useState<string>("");
   const replyMessage = useAtomValue(messageBoxAtom);
-
   const [openEditor, toggleOpenEditor] = useState(false);
+  const [showSignInPopup, setShowSignInPopup] = useState<boolean>(false);
+  const [popupReason, setPopupReason] = useState<string>("");
+
   useEffect(() => {
     if (replyMessage) {
       setMessage(replyMessage);
@@ -34,7 +37,7 @@ const MessageBox: React.FC<Props> = ({ thread_id }) => {
     setMessage("");
 
     const messageRequest: messageBody = {
-      user_id: userID,
+      user_id: activeUserID,
       thread_id: thread_id,
       content: message,
     };
@@ -67,7 +70,7 @@ const MessageBox: React.FC<Props> = ({ thread_id }) => {
     >
       {/* Message */}
       <div className="flex w-full justify-between">
-        {openEditor ? (
+        {openEditor && activeUserID && activeUserID > 0 ? (
           <div className="mx-2 -my-2 w-5/6 sm:w-full md:mx-4" id="text">
             <RichTextEditor
               setText={setMessage}
@@ -84,6 +87,11 @@ const MessageBox: React.FC<Props> = ({ thread_id }) => {
         dark:text-gray-400 dark:ring-blue-500 md:mx-4 md:text-base"
             onClick={(e) => {
               e.stopPropagation();
+              setPopupReason("reply");
+              if (!activeUserID || activeUserID <= 0) {
+                setShowSignInPopup(true);
+                return;
+              }
               toggleOpenEditor(true);
             }}
           >
@@ -98,7 +106,7 @@ const MessageBox: React.FC<Props> = ({ thread_id }) => {
             className="inline-flex h-8 cursor-pointer justify-center rounded-full p-1 text-blue-600 hover:bg-blue-100 
             dark:text-blue-500 dark:hover:bg-gray-600 md:h-10 md:p-2"
             onClick={() => {
-              if (message.length > 0) {
+              if (message.length > 0 && activeUserID && activeUserID > 0) {
                 submitMessage();
               }
             }}
@@ -139,6 +147,14 @@ const MessageBox: React.FC<Props> = ({ thread_id }) => {
           )}
         </div>
       </div>
+      {/* Sign In Popup  */}
+      {showSignInPopup && (
+        <SignInPopup
+          popupReason={popupReason}
+          showSignInPopup={showSignInPopup}
+          setShowSignInPopup={setShowSignInPopup}
+        />
+      )}
     </div>
   );
 };

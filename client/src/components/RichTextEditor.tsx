@@ -1,5 +1,5 @@
 import { useCallback, useState, useEffect } from "react";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtomValue } from "jotai";
 import { darkModeAtom } from "../App";
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
@@ -29,7 +29,7 @@ const MenuBar = ({ editor }: any) => {
   const [textDropdown, setTextDropdown] = useState<boolean>(false);
   const [paragraphDropdown, setParagraphDropdown] = useState<boolean>(false);
   const [alignDropdown, setAlignDropdown] = useState<boolean>(false);
-  const [darkMode, setDarkMode] = useAtom(darkModeAtom);
+  const darkMode = useAtomValue(darkModeAtom);
   const [emojiPicker, toggleEmojiPicker] = useState(false);
   const [currentEmoji, setCurrentEmoji] = useState(null);
 

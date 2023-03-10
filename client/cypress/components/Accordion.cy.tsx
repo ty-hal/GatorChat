@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { BrowserRouter } from "react-router-dom";
-import Accordion from "../../src/components/Accordion";
+import Accordion from "../../src/components/FAQsAccordion";
 
 describe("<Accordion />", () => {
   it("renders", () => {

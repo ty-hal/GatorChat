@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { useAtom } from "jotai";
+import { useAtomValue } from "jotai";
 import { useNavigate } from "react-router-dom";
-import { userIDAtom } from "../App";
-import ProfilePicture from "./ProfilePicture";
-import { RichTextEditor } from "./RichTextEditor";
-import DeletePopup from "./DeletePopup";
-import ReportPopup from "./ReportPopup";
+import { userIDAtom } from "../../App";
+import ProfilePicture from "../ProfilePicture";
+import { RichTextEditor } from "../RichTextEditor";
+import DeletePopup from "../Popups/DeletePopup";
+import ReportPopup from "../Popups/ReportPopup";
+import SignInPopup from "../Popups/SignInPopup";
 
 type Props = {
   thread_id: number;
@@ -42,8 +43,11 @@ const Thread: React.FC<Props> = ({
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [showDeletePopup, setShowDeletePopup] = useState<boolean>(false);
   const [showReportPopup, setShowReportPopup] = useState<boolean>(false);
+  const [showSignInPopup, setShowSignInPopup] = useState<boolean>(false);
+  const [popupReason, setPopupReason] = useState<string>("");
+
   const [edit, toggleEdit] = useState<boolean>(false);
-  const [activeUserID, setActiveUserID] = useAtom(userIDAtom);
+  const activeUserID = useAtomValue(userIDAtom);
   const [thread_name, set_thread_name] = useState<string>("");
   const [numLikes, toggleLike] = useState<number>(likesCount);
   const [profilePicture, setProfilePicture] = useState<string>("");
@@ -282,6 +286,11 @@ const Thread: React.FC<Props> = ({
           onClick={(e) => {
             e.stopPropagation();
             setShowDropdown(false);
+            setPopupReason("like message");
+            if (!activeUserID || activeUserID <= 0) {
+              setShowSignInPopup(true);
+              return;
+            }
             e.currentTarget.children[0].classList.toggle("fill-red-600");
             if (
               e.currentTarget.children[0].classList.contains("fill-red-600")
@@ -448,6 +457,12 @@ const Thread: React.FC<Props> = ({
                   id="save"
                   onClick={(e) => {
                     e.stopPropagation();
+                    setShowDropdown(false);
+                    setPopupReason("save thread");
+                    if (!activeUserID || activeUserID <= 0) {
+                      setShowSignInPopup(true);
+                      return;
+                    }
                   }}
                 >
                   <div className="flex-1">
@@ -610,6 +625,14 @@ const Thread: React.FC<Props> = ({
               title={title}
               showReportPopup={showReportPopup}
               setShowReportPopup={setShowReportPopup}
+            />
+          )}
+          {/* Sign In Popup  */}
+          {showSignInPopup && (
+            <SignInPopup
+              popupReason={popupReason}
+              showSignInPopup={showSignInPopup}
+              setShowSignInPopup={setShowSignInPopup}
             />
           )}
         </div>

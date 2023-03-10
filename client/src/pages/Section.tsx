@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Footer from "../components/Footer";
-import ThreadPreview from "../components/ThreadPreview";
-import CreateThread from "../components/CreateThread";
+import ThreadPreview from "../components/Thread/ThreadPreview";
+import CreateThread from "../components/Thread/CreateThread";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 type ThreadType = {

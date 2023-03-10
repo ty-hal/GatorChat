@@ -12,7 +12,7 @@ const Header = () => {
 
   useEffect(() => {
     // GET and SET the user who posted the thread's profile picture
-    if (userID !== undefined) {
+    if (userID !== undefined && userID > 0) {
       fetch(`http://localhost:9000/api/user/${userID}`, {
         method: "GET",
         headers: {
@@ -142,15 +142,15 @@ const Header = () => {
                 </Link>
               </>
             ) : (
-              <Link to="/">
-                <span
-                  className="mr-6 rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2"
-                  id="sign-out-header"
-                  onClick={signOut}
-                >
-                  Sign out
-                </span>
-              </Link>
+              // <Link to="">
+              <span
+                className="mr-6 rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2"
+                id="sign-out-header"
+                onClick={signOut}
+              >
+                Sign out
+              </span>
+              // </Link>
             )}
 
             {/* Dropdown Menu */}

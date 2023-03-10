@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Accordion from "../components/Accordion";
+import Accordion from "../components/FAQsAccordion";
 
 const FAQ = () => {
   const [index, setIndex] = useState(0);

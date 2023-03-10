@@ -1,70 +1,69 @@
 import { useEffect, useState } from "react";
-import ProfilePicture from "./ProfilePicture";
-import DeletePopup from "./DeletePopup";
-import ReportPopup from "./ReportPopup";
-import { RichTextEditor } from "./RichTextEditor";
 import { useAtom } from "jotai";
-import { userIDAtom } from "../App";
-import { messageBoxAtom } from "../pages/Thread";
+import { userIDAtom } from "../../App";
+import { messageBoxAtom } from "../../pages/Thread";
+import { RichTextEditor } from "../RichTextEditor";
+import ProfilePicture from "../ProfilePicture";
+import DeletePopup from "../Popups/DeletePopup";
+import ReportPopup from "../Popups/ReportPopup";
+import SignInPopup from "../Popups/SignInPopup";
 
 type Props = {
-  post_id: number;
+  thread_id: number;
   user_id: number;
   username: string;
-  messageContent: string;
-  messageDate: string;
+  threadTitle: string;
+  threadContent: string;
+  threadDate: string;
   updatedOn: string;
   likesCount: number;
+  messagesCount: number;
   replyFunc: () => void;
 };
 
-interface messageBody {
-  content: string | undefined;
+interface threadBody {
+  thread_title?: string | undefined;
+  content?: string | undefined;
 }
 
-const Message: React.FC<Props> = ({
-  post_id,
+const Thread: React.FC<Props> = ({
+  thread_id,
   user_id,
   username,
-  messageContent,
-  messageDate,
+  threadTitle,
+  threadContent,
+  threadDate,
   updatedOn,
   likesCount,
+  messagesCount,
   replyFunc,
 }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [showDeletePopup, setShowDeletePopup] = useState<boolean>(false);
   const [showReportPopup, setShowReportPopup] = useState<boolean>(false);
+  const [showSignInPopup, setShowSignInPopup] = useState<boolean>(false);
+  const [popupReason, setPopupReason] = useState<string>("");
+
   const [edit, toggleEdit] = useState<boolean>(false);
-  const [tempContent, setTempContent] = useState<string>("");
   const [activeUserID, setActiveUserID] = useAtom(userIDAtom);
   const [profilePicture, setProfilePicture] = useState<string>("");
 
   const [numLikes, toggleLike] = useState<number>(likesCount);
   const [postTimeDifference, setPostTimeDifference] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
+  const [tempTitle, setTempTitle] = useState<string>("");
+
   const [content, setContent] = useState<string>("");
+  const [tempContent, setTempContent] = useState<string>("");
+
   const [userMessageBox, setUserMessageBox] = useAtom(messageBoxAtom);
 
   useEffect(() => {
-    // GET and SET the user who posted the thread's profile picture
-    fetch(`http://localhost:9000/api/user/${user_id}`, {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.profile_pic) {
-          setProfilePicture(data.profile_pic);
-          // console.log(data.profile_pic);
-        }
-      });
+    setTitle(threadTitle);
+    setContent(threadContent);
 
-    setContent(messageContent);
-
-    // Updates postTimeDifference with how long ago the message was created
-    let postTime = new Date(messageDate);
+    // Updates postTimeDifference with how long ago the thread was created
+    let postTime = new Date(threadDate);
     let currentTime = new Date();
     const _MS_PER_YEAR = 1000 * 60 * 60 * 24 * 365;
     const _MS_PER_MONTH = 1000 * 60 * 60 * 24 * 30;
@@ -118,28 +117,47 @@ const Message: React.FC<Props> = ({
         yearsAgo === "1" ? "1 year ago" : yearsAgo + " years ago"
       );
     }
+
+    // console.log(user_id);
+    // GET and SET the user who posted the thread's profile picture
+    if (user_id !== undefined) {
+      fetch(`http://localhost:9000/api/user/${user_id}`, {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.profile_pic) {
+            setProfilePicture(data.profile_pic);
+            // console.log(data.profile_pic);
+          } else {
+            setProfilePicture("");
+          }
+        });
+    }
   }, []);
 
-  // Update the message
-  const editMessage = () => {
-    console.log(content);
+  // Edit the thread
+  const editThread = () => {
+    console.log(title, content);
     toggleEdit(false);
 
-    const messageRequest: messageBody = {
+    const threadRequest: threadBody = {
+      thread_title: title,
       content: content,
     };
 
-    // Backend call to update a message
-    fetch(`http://localhost:9000/api/post/${post_id}`, {
+    fetch(`http://localhost:9000/api/thread/${thread_id}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify(messageRequest),
+      body: JSON.stringify(threadRequest),
     })
       .then((response) => {
         if (response.status === 200) {
-          console.log("About to reload");
           window.location.reload();
           return response.json();
         }
@@ -149,20 +167,20 @@ const Message: React.FC<Props> = ({
       });
   };
 
-  const replyToMessage = () => {
+  const replyToThread = () => {
     replyFunc();
     setUserMessageBox(
-      `<p></p><blockquote><p><strong>${username}</strong> posted ${postTimeDifference}:</p><p>${content}</p></blockquote><p></p>`
+      `<blockquote><p><strong>${username}</strong> posted ${postTimeDifference}:</p><p>${content}</p></blockquote><p></p>`
     );
   };
 
   return (
     <div
-      className="relative mx-auto w-11/12 border-x-2 border-y border-gray-500 bg-gray-200 py-8 text-center text-lg font-normal text-gray-900 dark:border-gray-300 dark:bg-gray-800 dark:text-white lg:w-4/5"
+      className="relative mx-auto w-11/12 rounded-t-2xl border-2 border-b-4 border-gray-500  bg-gray-200 py-8 text-center text-lg font-normal text-gray-900 shadow-xl dark:border-gray-300 dark:bg-gray-800 dark:text-white lg:w-4/5"
+      id="container"
       onClick={(e) => {
         e.stopPropagation();
         setShowDropdown(false);
-        console.log(`Message ${post_id}`);
       }}
     >
       {/* Profile Picture, Username, Date, and Dropdown */}
@@ -172,7 +190,7 @@ const Message: React.FC<Props> = ({
           className="ml-3 h-10 w-10 overflow-hidden rounded-full bg-white dark:bg-gray-600"
           id="profile-picture"
         >
-          <ProfilePicture image={profilePicture} setImage={setProfilePicture} />
+          <ProfilePicture image={profilePicture} />
         </div>
 
         {/* Username and Time  */}
@@ -185,35 +203,50 @@ const Message: React.FC<Props> = ({
             {" posted "}
             {postTimeDifference}
             <span className="ml-2 text-sm">
-              {updatedOn !== messageDate ? "(edited)" : null}
+              {updatedOn !== threadDate ? "(edited)" : null}
             </span>
           </div>
         </div>
       </div>
 
-      {/* Edit message  */}
+      {/* Edit thread  */}
       {edit && (
-        <div id="message-edit" className="relative top-7 mx-8 mb-2 sm:my-2">
-          <div className="mx-auto text-left" id="text">
-            <RichTextEditor
-              setText={setContent}
-              textContent={content}
-              charLimit={2000}
+        <div id="thread-edit" className="relative top-7 mx-8 mb-2 sm:my-2">
+          <div className="mx-auto">
+            <input
+              type="text"
+              id="title-edit"
+              className="w-full break-normal rounded-lg border border-gray-600 bg-gray-50 p-2 text-base text-gray-900 focus:border-gray-600 focus:outline-none focus:outline-0 focus:ring-0 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-gray-200"
+              value={title}
+              maxLength={300}
+              onChange={(e) => setTitle(e.currentTarget.value)}
             />
+            <div
+              className="mx-auto mt-2 w-full text-right text-base text-black dark:text-gray-400"
+              id="title-length"
+            >
+              {title.length}/300 characters
+            </div>
+          </div>
+          <div className="mx-auto text-left" id="text">
+            <RichTextEditor setText={setContent} textContent={content} />
           </div>
           <div className="mx-auto mb-12 flex space-x-4">
+            {title.length > 2 && content.length > 7 && (
+              <button
+                className="rounded-lg border border-black bg-blue-600 py-0 px-2 text-base text-white hover:bg-blue-700 dark:border-gray-200 dark:hover:bg-blue-800 md:py-1"
+                onClick={editThread}
+                id="edit-thread"
+              >
+                Edit thread
+              </button>
+            )}
             <button
-              className="rounded-lg border border-black bg-blue-600 py-0 px-2 text-base text-white hover:bg-blue-700 dark:border-gray-200 dark:hover:bg-blue-800 md:py-1"
-              onClick={editMessage}
-              id="edit-message"
-            >
-              Edit message
-            </button>
-            <button
-              className="rounded-lg border border-black bg-red-600 py-0 px-2 text-base text-white hover:bg-red-800 dark:border-gray-200 dark:hover:bg-red-800 md:px-1"
+              className="rounded-lg border border-black bg-red-600 py-0 px-2 text-base text-white hover:bg-red-800 dark:border-gray-200 dark:hover:bg-red-800 md:py-1"
               onClick={() => {
                 toggleEdit(false);
                 setContent(tempContent);
+                setTitle(tempTitle);
               }}
               id="cancel-edit"
             >
@@ -222,12 +255,20 @@ const Message: React.FC<Props> = ({
           </div>
         </div>
       )}
-      {/* Message Content  */}
+      {/* Thread Content */}
       {!edit && (
         <>
+          {/* Thread Title  */}
           <div
-            id="message-content"
-            className="relative top-7 mx-6 mb-12 text-left text-base sm:mx-8 md:text-lg"
+            id="thread-title"
+            className="relative top-7 mx-8 mb-1 break-words text-left text-xl font-bold sm:my-2 sm:text-2xl"
+          >
+            {title}
+          </div>
+          {/* Thread Content  */}
+          <div
+            id="thread-content"
+            className="relative top-7 mx-8 mb-12 break-words text-left text-base text-black dark:text-white md:text-lg "
             dangerouslySetInnerHTML={{
               __html: content,
             }}
@@ -236,7 +277,7 @@ const Message: React.FC<Props> = ({
       )}
 
       {/* Bottom Bar */}
-      <div className="absolute left-3 bottom-3 flex space-x-2 text-sm sm:space-x-3 sm:text-base md:space-x-6 ">
+      <div className="absolute left-3 bottom-3 flex space-x-2 text-sm sm:space-x-3 sm:text-base md:space-x-6">
         {/* Likes */}
         <div
           className="flex cursor-pointer items-center rounded-md px-1 hover:bg-gray-300 dark:hover:bg-slate-700"
@@ -244,6 +285,11 @@ const Message: React.FC<Props> = ({
           onClick={(e) => {
             e.stopPropagation();
             setShowDropdown(false);
+            setPopupReason("like thread");
+            if (!activeUserID || activeUserID <= 0) {
+              setShowSignInPopup(true);
+              return;
+            }
             e.currentTarget.children[0].classList.toggle("fill-red-600");
             if (
               e.currentTarget.children[0].classList.contains("fill-red-600")
@@ -269,8 +315,38 @@ const Message: React.FC<Props> = ({
               d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
             ></path>
           </svg>
-          <div className="ml-2" id="num-likes">
-            {numLikes} likes
+          <div className="ml-1" id="num-likes">
+            {numLikes}
+            <span className="hidden sm:inline"> likes</span>
+          </div>
+        </div>
+        {/* Messages Count */}
+        <div className="flex items-center rounded-md px-1" id="messages-count">
+          <svg
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5 sm:h-7 sm:w-7"
+          >
+            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+            <g
+              id="SVGRepo_tracerCarrier"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            ></g>
+            <g id="SVGRepo_iconCarrier">
+              {" "}
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M6.84572 18.6204C6.74782 18.0072 6.4668 17.4522 6.05816 17.0088C4.18319 15.5427 3 13.3942 3 11C3 6.58173 7.02944 3 12 3C16.9706 3 21 6.58173 21 11C21 15.4183 16.9706 19 12 19C11.1546 19 10.3365 18.8964 9.56074 18.7027C9.45389 18.676 9.34187 18.72 9.28125 18.8119C9.15858 18.998 9.02331 19.1851 8.87719 19.3674C8.64734 19.6542 8.39065 19.9289 8.11392 20.1685C7.59543 20.6174 7.00662 20.943 6.39232 20.9932C6.37166 20.9949 6.35097 20.9963 6.33025 20.9974C6.28866 20.9995 6.26498 20.9519 6.28953 20.9182C6.30109 20.9024 6.3125 20.8865 6.32376 20.8704C6.67743 20.3664 6.88397 19.7586 6.88397 19.1044C6.88397 19.0915 6.88389 19.0786 6.88373 19.0658C6.88185 18.9146 6.86893 18.7659 6.84572 18.6204ZM4.66223 18.4535C2.45613 16.6579 1 14.0103 1 11C1 5.26221 6.15283 1 12 1C17.8472 1 23 5.26221 23 11C23 16.7378 17.8472 21 12 21C11.3978 21 10.8057 20.9559 10.2276 20.8709C9.93606 21.2084 9.60764 21.5363 9.24519 21.8294C8.55521 22.3873 7.59485 22.9353 6.43241 22.9948L6.43238 22.9948C4.55136 23.0909 3.75168 21.003 4.67402 19.7392C4.81033 19.5524 4.88397 19.3363 4.88397 19.1044C4.88397 18.8684 4.80711 18.6449 4.66223 18.4535Z"
+                fill=""
+                className="fill-black dark:fill-white"
+              ></path>{" "}
+            </g>
+          </svg>
+          <div className="ml-2">
+            {messagesCount}
+            <span className="hidden sm:inline"> messages</span>
           </div>
         </div>
         {/* Reply  */}
@@ -279,8 +355,13 @@ const Message: React.FC<Props> = ({
           onClick={(e) => {
             e.stopPropagation();
             setShowDropdown(false);
-            console.log(`Reply to message ${post_id}`);
-            replyToMessage();
+            setPopupReason("reply");
+            if (!activeUserID || activeUserID <= 0) {
+              setShowSignInPopup(true);
+              return;
+            }
+            console.log(`Reply to message ${thread_id}`);
+            replyToThread();
           }}
         >
           <svg
@@ -307,8 +388,65 @@ const Message: React.FC<Props> = ({
           </svg>
           <div className="ml-2">Reply</div>
         </div>
-        {/* Message Menu  */}
-        <div id="dropdown-button">
+
+        {/* Share  */}
+        <div
+          className="flex cursor-pointer items-center rounded-md px-1 hover:bg-gray-300 dark:hover:bg-slate-700"
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowDropdown(false);
+            navigator.clipboard.writeText(window.location.href);
+          }}
+          title="Copy link"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            stroke="#000000"
+            className="h-5 w-5 sm:h-7 sm:w-7"
+          >
+            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+            <g
+              id="SVGRepo_tracerCarrier"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            ></g>
+            <g id="SVGRepo_iconCarrier">
+              {" "}
+              <g clipPath="url(#clip0_429_11120)">
+                {" "}
+                <path
+                  d="M15 5L12 2M12 2L9 5M12 2L12 14"
+                  stroke="#292929"
+                  strokeWidth="2.4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="stroke-black dark:stroke-white"
+                ></path>{" "}
+                <path
+                  d="M6 9H4V18C4 19.1046 4.89543 20 6 20H18C19.1046 20 20 19.1046 20 18V9H18"
+                  stroke="#292929"
+                  strokeWidth="2.4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="stroke-black dark:stroke-white"
+                ></path>{" "}
+              </g>{" "}
+              <defs>
+                {" "}
+                <clipPath id="clip0_429_11120">
+                  {" "}
+                  <rect width="24" height="24" fill="white"></rect>{" "}
+                </clipPath>{" "}
+              </defs>{" "}
+            </g>
+          </svg>
+          <div className="ml-2 hidden sm:block">Share</div>
+        </div>
+
+        {/* Thread Menu  */}
+        <div>
           <svg
             onClick={(e) => {
               e.stopPropagation();
@@ -317,7 +455,7 @@ const Message: React.FC<Props> = ({
             fill="white"
             className="h-8 w-8 cursor-pointer rounded-md fill-gray-700 px-1 hover:bg-gray-300 dark:fill-white dark:hover:bg-slate-700"
             version="1.1"
-            id="message-menu"
+            id="thread-menu"
             xmlns="http://www.w3.org/2000/svg"
             xmlnsXlink="http://www.w3.org/1999/xlink"
             viewBox="0 0 32.055 32.055"
@@ -341,29 +479,33 @@ const Message: React.FC<Props> = ({
           {showDropdown && (
             <div
               className={
-                "absolute z-10 w-28 origin-top-right divide-y divide-gray-300 rounded-md bg-white shadow-lg ring-1 ring-blue-200 focus:outline-none"
+                "absolute z-10 w-20 origin-top-right divide-y divide-gray-300 rounded-md bg-white shadow-lg ring-1 ring-blue-200 focus:outline-none md:w-28"
               }
               role="menu"
-              id="dropdown-content"
+              id="Dropdown-content"
             >
               <div className="cursor-pointer" role="none">
-                {/* Copy */}
+                {/* Save */}
                 <div
-                  className="flex items-center py-2 text-sm text-gray-700 hover:rounded-t-md hover:bg-blue-200 hover:text-black"
+                  className="flex items-center py-2 text-sm text-gray-700 hover:rounded-t-md hover:bg-blue-200 hover:text-black "
                   role="menuitem"
-                  id="copy"
+                  id="save"
                   onClick={(e) => {
                     e.stopPropagation();
                     setShowDropdown(false);
-                    navigator.clipboard.writeText(messageContent);
+                    setPopupReason("save thread");
+                    if (!activeUserID || activeUserID <= 0) {
+                      setShowSignInPopup(true);
+                      return;
+                    }
                   }}
                 >
                   <div className="flex-1">
                     <svg
-                      viewBox="0 0 1024 1024"
-                      xmlns="http://www.w3.org/2000/svg"
                       fill="#000000"
-                      className="ml-2 h-6 w-6 "
+                      viewBox="0 0 1920 1920"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="ml-1 h-5 w-5 md:ml-2"
                     >
                       <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                       <g
@@ -372,18 +514,15 @@ const Message: React.FC<Props> = ({
                         strokeLinejoin="round"
                       ></g>
                       <g id="SVGRepo_iconCarrier">
+                        {" "}
                         <path
-                          fill="#000000"
-                          d="M768 832a128 128 0 0 1-128 128H192A128 128 0 0 1 64 832V384a128 128 0 0 1 128-128v64a64 64 0 0 0-64 64v448a64 64 0 0 0 64 64h448a64 64 0 0 0 64-64h64z"
-                        ></path>
-                        <path
-                          fill="#000000"
-                          d="M384 128a64 64 0 0 0-64 64v448a64 64 0 0 0 64 64h448a64 64 0 0 0 64-64V192a64 64 0 0 0-64-64H384zm0-64h448a128 128 0 0 1 128 128v448a128 128 0 0 1-128 128H384a128 128 0 0 1-128-128V192A128 128 0 0 1 384 64z"
-                        ></path>
+                          d="m960.481 1412.11 511.758 307.054V170.586c0-31.274-25.588-56.862-56.862-56.862H505.586c-31.274 0-56.862 25.588-56.862 56.862v1548.578l511.757-307.055ZM1585.963 1920 960.48 1544.711 335 1920V170.586C335 76.536 411.536 0 505.586 0h909.79c94.05 0 170.587 76.536 170.587 170.586V1920Z"
+                          fillRule="evenodd"
+                        ></path>{" "}
                       </g>
                     </svg>
                   </div>
-                  <div className="">Copy</div>
+                  <div className="ml-1  text-sm md:ml-0">Save</div>
                   <div className="flex-1"></div>
                 </div>
                 {/* Report */}
@@ -398,7 +537,7 @@ const Message: React.FC<Props> = ({
                       viewBox="0 0 24 24"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
-                      className="ml-2 h-7 w-7"
+                      className="ml-1 h-6 w-6 md:ml-2 "
                     >
                       <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                       <g
@@ -424,7 +563,7 @@ const Message: React.FC<Props> = ({
                 </div>
               </div>
 
-              {/* IF USER HAS ACCESS TO MODIFY THIS MESSAGE */}
+              {/* IF USER HAS ACCESS TO MODIFY THIS THREAD */}
               {user_id === activeUserID ? (
                 <div className="cursor-pointer" role="none">
                   {/* Edit */}
@@ -435,6 +574,7 @@ const Message: React.FC<Props> = ({
                     onClick={() => {
                       toggleEdit(!edit);
                       setTempContent(content);
+                      setTempTitle(title);
                     }}
                   >
                     <div className="flex-1">
@@ -442,7 +582,7 @@ const Message: React.FC<Props> = ({
                         fill="#000000"
                         viewBox="0 0 1920 1920"
                         xmlns="http://www.w3.org/2000/svg"
-                        className="ml-2 h-5 w-5 "
+                        className="ml-1 h-5 w-5 md:ml-2 "
                       >
                         <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                         <g
@@ -459,7 +599,7 @@ const Message: React.FC<Props> = ({
                         </g>
                       </svg>
                     </div>
-                    <div className="">Edit</div>
+                    <div className="ml-1 md:ml-0">Edit</div>
                     <div className="flex-1"></div>
                   </div>
                   {/* Delete */}
@@ -467,14 +607,17 @@ const Message: React.FC<Props> = ({
                     className="flex items-center py-2 text-sm text-gray-700 hover:rounded-b-md hover:bg-blue-200 hover:text-black"
                     role="menuitem"
                     id="delete"
-                    onClick={() => setShowDeletePopup(true)}
+                    onClick={() => {
+                      setShowDeletePopup(true);
+                      console.log(threadTitle);
+                    }}
                   >
                     <div className="flex-1">
                       <svg
                         viewBox="0 0 1024 1024"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="#000000"
-                        className="ml-2 h-5 w-5 "
+                        className="ml-1 h-5 w-5 md:ml-2 "
                       >
                         <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                         <g
@@ -490,7 +633,7 @@ const Message: React.FC<Props> = ({
                         </g>
                       </svg>
                     </div>
-                    <div className="">Delete</div>
+                    <div className="ml-1 md:ml-0">Delete</div>
                     <div className="flex-1"></div>
                   </div>
                 </div>
@@ -498,25 +641,35 @@ const Message: React.FC<Props> = ({
             </div>
           )}
         </div>
+        {/* Delete Popup  */}
+        {showDeletePopup && (
+          <DeletePopup
+            id={thread_id}
+            title={threadTitle}
+            showDeletePopup={showDeletePopup}
+            setShowDeletePopup={setShowDeletePopup}
+          />
+        )}
+        {/* Report Popup  */}
+        {showReportPopup && (
+          <ReportPopup
+            id={thread_id}
+            title={title}
+            showReportPopup={showReportPopup}
+            setShowReportPopup={setShowReportPopup}
+          />
+        )}
+        {/* Sign In Popup  */}
+        {showSignInPopup && (
+          <SignInPopup
+            popupReason={popupReason}
+            showSignInPopup={showSignInPopup}
+            setShowSignInPopup={setShowSignInPopup}
+          />
+        )}
       </div>
-      {/* Delete Popup  */}
-      {showDeletePopup && (
-        <DeletePopup
-          id={post_id}
-          showDeletePopup={showDeletePopup}
-          setShowDeletePopup={setShowDeletePopup}
-        />
-      )}
-      {/* Report Popup  */}
-      {showReportPopup && (
-        <ReportPopup
-          id={post_id}
-          showReportPopup={showReportPopup}
-          setShowReportPopup={setShowReportPopup}
-        />
-      )}
     </div>
   );
 };
 
-export default Message;
+export default Thread;

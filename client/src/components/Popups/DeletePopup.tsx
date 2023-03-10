@@ -79,7 +79,7 @@ const DeletePopup: React.FC<Props> = ({
                       />
                     </svg>
                   </div>
-                  <div className="mt-3 w-5/6 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                  <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:w-5/6 sm:text-left">
                     <h3
                       className="text-base font-semibold leading-6 text-gray-900"
                       id="modal-title"

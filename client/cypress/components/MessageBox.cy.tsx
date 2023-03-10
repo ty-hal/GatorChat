@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
-import MessageBox from "../../src/components/MessageBox";
+import MessageBox from "../../src/components/Message/MessageBox";
 
 describe("<MessageBox />", () => {
   it("renders", () => {

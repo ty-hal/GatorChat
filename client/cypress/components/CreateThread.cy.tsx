@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
-import CreateThread from "../../src/components/CreateThread";
+import CreateThread from "../../src/components/Thread/CreateThread";
 
 describe("<CreateThread />", () => {
   it("renders", () => {

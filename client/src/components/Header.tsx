@@ -239,16 +239,14 @@ const Header = () => {
                           </span>
                         </Link>
                       ) : (
-                        <Link to="/">
-                          <span
-                            className="block px-4 py-2 text-sm text-gray-700 hover:rounded-b-md hover:bg-blue-300 hover:text-black"
-                            role="menuitem"
-                            id="sign-out"
-                            onClick={signOut}
-                          >
-                            Sign out
-                          </span>
-                        </Link>
+                        <span
+                          className="block px-4 py-2 text-sm text-gray-700 hover:rounded-b-md hover:bg-blue-300 hover:text-black"
+                          role="menuitem"
+                          id="sign-out"
+                          onClick={signOut}
+                        >
+                          Sign out
+                        </span>
                       )}
                     </div>
                   </div>

@@ -6,6 +6,7 @@ import SignInPopup from "../Popups/SignInPopup";
 
 type Props = {
   section_id: number;
+  loaded: boolean;
 };
 
 type thread = {
@@ -20,7 +21,7 @@ interface threadBody {
   content: string | undefined;
 }
 
-const CreateThread: React.FC<Props> = ({ section_id }) => {
+const CreateThread: React.FC<Props> = ({ section_id, loaded }) => {
   const [openEditor, toggleOpenEditor] = useState(false);
   const [title, setTitle] = useState<string>("");
   const [text, setText] = useState<string>("");
@@ -67,17 +68,23 @@ const CreateThread: React.FC<Props> = ({ section_id }) => {
 
   return (
     <div
-      className="mx-auto w-11/12 cursor-pointer rounded-2xl border-2 border-gray-500 bg-gray-200 shadow-md  dark:border-gray-600 dark:bg-gray-800 lg:w-4/5"
+      className={
+        loaded
+          ? "mx-auto w-11/12 cursor-pointer rounded-2xl border-2 border-gray-500 bg-gray-200 shadow-md  dark:border-gray-600 dark:bg-gray-800 lg:w-4/5"
+          : "mx-auto w-11/12 animate-pulse rounded-2xl border-2 border-gray-500 bg-gray-200 shadow-md  dark:border-gray-600 dark:bg-gray-800 lg:w-4/5"
+      }
       id="container"
       onClick={(e) => {
-        e.stopPropagation();
-        console.log(activeUserID);
-        setPopupReason("create thread");
-        if (!activeUserID || activeUserID <= 0) {
-          setShowSignInPopup(true);
-          return;
+        if (loaded) {
+          e.stopPropagation();
+          console.log(activeUserID);
+          setPopupReason("create thread");
+          if (!activeUserID || activeUserID <= 0) {
+            setShowSignInPopup(true);
+            return;
+          }
+          toggleOpenEditor(!openEditor);
         }
-        toggleOpenEditor(!openEditor);
       }}
     >
       <div
@@ -103,7 +110,7 @@ const CreateThread: React.FC<Props> = ({ section_id }) => {
               onChange={(e) => setTitle(e.currentTarget.value)}
             />
             <div
-              className="mx-auto mt-2 w-full text-right text-gray-400"
+              className="mx-auto mt-2 w-full text-right text-base text-black dark:text-gray-400"
               id="title-length"
             >
               {title.length}/300 characters

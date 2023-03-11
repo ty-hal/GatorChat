@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
+
 import ProfilePicture from "../ProfilePicture";
 import DeletePopup from "../Popups/DeletePopup";
 import ReportPopup from "../Popups/ReportPopup";
 import SignInPopup from "../Popups/SignInPopup";
+import UserProfilePopup from "../Popups/UserProfilePopup";
+
 import { RichTextEditor } from "../RichTextEditor";
 import { useAtomValue, useAtom } from "jotai";
 import { userIDAtom } from "../../App";
@@ -37,6 +40,10 @@ const Message: React.FC<Props> = ({
   const [showDeletePopup, setShowDeletePopup] = useState<boolean>(false);
   const [showReportPopup, setShowReportPopup] = useState<boolean>(false);
   const [showSignInPopup, setShowSignInPopup] = useState<boolean>(false);
+  const [showUserProfilePopup, setShowUserProfilePopup] =
+    useState<boolean>(false);
+  const [showCopiedContent, setShowCopiedContent] = useState<boolean>(false);
+
   const [edit, toggleEdit] = useState<boolean>(false);
   const [tempContent, setTempContent] = useState<string>("");
   const activeUserID = useAtomValue(userIDAtom);
@@ -48,6 +55,7 @@ const Message: React.FC<Props> = ({
   const [_, setUserMessageBox] = useAtom(messageBoxAtom);
   const [popupReason, setPopupReason] = useState<string>("");
 
+  // Get data
   useEffect(() => {
     // GET and SET the user who posted the thread's profile picture
     fetch(`http://localhost:9000/api/user/${user_id}`, {
@@ -152,11 +160,31 @@ const Message: React.FC<Props> = ({
       });
   };
 
+  // Reply to the message
   const replyToMessage = () => {
     replyFunc();
     setUserMessageBox(
       `<p></p><blockquote><p><strong>${username}</strong> posted ${postTimeDifference}:</p><p>${content}</p></blockquote><p></p>`
     );
+  };
+
+  // Hide copied link popup after 1.5 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowCopiedContent(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, [showCopiedContent]);
+
+  const htmlToText = (html: string) => {
+    html = html.replace(/<\/div>/gi, "\n");
+    html = html.replace(/<\/li>/gi, "\n");
+    html = html.replace(/<li>/gi, "  *  ");
+    html = html.replace(/<\/ul>/gi, "\n");
+    html = html.replace(/<\/p>/gi, "\n");
+    html = html.replace(/<br\s*[\/]?>/gi, "\n");
+    html = html.replace(/<[^>]+>/gi, "");
+    return html;
   };
 
   return (
@@ -172,15 +200,27 @@ const Message: React.FC<Props> = ({
       <div className="absolute top-3 flex w-full items-center">
         {/* Profile Picture */}
         <div
-          className="ml-3 h-10 w-10 overflow-hidden rounded-full bg-white dark:bg-gray-600"
+          className="ml-3 h-10 w-10 cursor-pointer overflow-hidden rounded-full bg-white dark:bg-gray-600"
           id="profile-picture"
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowUserProfilePopup(true);
+          }}
         >
           <ProfilePicture image={profilePicture} />
         </div>
 
         {/* Username and Time  */}
         <div className="ml-4 flex flex-col text-left text-sm sm:flex-row sm:items-center sm:space-x-2">
-          <div className="text-base font-bold sm:text-lg">{username}</div>
+          <div
+            className="cursor-pointer text-base font-bold hover:underline sm:text-lg"
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowUserProfilePopup(true);
+            }}
+          >
+            {username}
+          </div>
           <div
             className="text-black dark:text-gray-300 sm:text-base"
             id="post-time"
@@ -368,7 +408,8 @@ const Message: React.FC<Props> = ({
                   onClick={(e) => {
                     e.stopPropagation();
                     setShowDropdown(false);
-                    navigator.clipboard.writeText(messageContent);
+                    navigator.clipboard.writeText(htmlToText(messageContent));
+                    setShowCopiedContent(true);
                   }}
                 >
                   <div className="flex-1">
@@ -511,7 +552,36 @@ const Message: React.FC<Props> = ({
             </div>
           )}
         </div>
+        {showCopiedContent && (
+          <div className="absolute -right-8 top-8 z-10 flex w-4/5 items-center rounded-lg border-2 border-blue-600 bg-gray-50 p-2 text-center font-normal text-gray-900 shadow-xl transition-all">
+            <svg
+              viewBox="0 0 1024 1024"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="#000000"
+              className="h-6 w-6"
+            >
+              <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+              <g
+                id="SVGRepo_tracerCarrier"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              ></g>
+              <g id="SVGRepo_iconCarrier">
+                <path
+                  fill="#000000"
+                  d="M768 832a128 128 0 0 1-128 128H192A128 128 0 0 1 64 832V384a128 128 0 0 1 128-128v64a64 64 0 0 0-64 64v448a64 64 0 0 0 64 64h448a64 64 0 0 0 64-64h64z"
+                ></path>
+                <path
+                  fill="#000000"
+                  d="M384 128a64 64 0 0 0-64 64v448a64 64 0 0 0 64 64h448a64 64 0 0 0 64-64V192a64 64 0 0 0-64-64H384zm0-64h448a128 128 0 0 1 128 128v448a128 128 0 0 1-128 128H384a128 128 0 0 1-128-128V192A128 128 0 0 1 384 64z"
+                ></path>
+              </g>
+            </svg>
+            <div className="mx-auto">Copied message!</div>
+          </div>
+        )}
       </div>
+
       {/* Delete Popup  */}
       {showDeletePopup && (
         <DeletePopup
@@ -534,6 +604,14 @@ const Message: React.FC<Props> = ({
           popupReason={popupReason}
           showSignInPopup={showSignInPopup}
           setShowSignInPopup={setShowSignInPopup}
+        />
+      )}
+      {/* User Profile Popup  */}
+      {showUserProfilePopup && (
+        <UserProfilePopup
+          userID={user_id}
+          showUserProfilePopup={showUserProfilePopup}
+          setShowUserProfilePopup={setShowUserProfilePopup}
         />
       )}
     </div>

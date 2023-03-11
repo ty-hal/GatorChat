@@ -7,6 +7,7 @@ import ProfilePicture from "../ProfilePicture";
 import DeletePopup from "../Popups/DeletePopup";
 import ReportPopup from "../Popups/ReportPopup";
 import SignInPopup from "../Popups/SignInPopup";
+import UserProfilePopup from "../Popups/UserProfilePopup";
 
 type Props = {
   thread_id: number;
@@ -43,6 +44,9 @@ const Thread: React.FC<Props> = ({
   const [showReportPopup, setShowReportPopup] = useState<boolean>(false);
   const [showSignInPopup, setShowSignInPopup] = useState<boolean>(false);
   const [popupReason, setPopupReason] = useState<string>("");
+  const [showUserProfilePopup, setShowUserProfilePopup] =
+    useState<boolean>(false);
+  const [showCopiedLink, setShowCopiedLink] = useState<boolean>(false);
 
   const [edit, toggleEdit] = useState<boolean>(false);
   const [activeUserID, setActiveUserID] = useAtom(userIDAtom);
@@ -58,6 +62,7 @@ const Thread: React.FC<Props> = ({
 
   const [userMessageBox, setUserMessageBox] = useAtom(messageBoxAtom);
 
+  // Get data
   useEffect(() => {
     setTitle(threadTitle);
     setContent(threadContent);
@@ -167,6 +172,7 @@ const Thread: React.FC<Props> = ({
       });
   };
 
+  // Reply to the thread
   const replyToThread = () => {
     replyFunc();
     setUserMessageBox(
@@ -174,9 +180,17 @@ const Thread: React.FC<Props> = ({
     );
   };
 
+  // Hide copied link popup after 1.5 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowCopiedLink(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, [showCopiedLink]);
+
   return (
     <div
-      className="relative mx-auto w-11/12 rounded-t-2xl border-2 border-b-4 border-gray-500  bg-gray-200 py-8 text-center text-lg font-normal text-gray-900 shadow-xl dark:border-gray-300 dark:bg-gray-800 dark:text-white lg:w-4/5"
+      className="relative mx-auto w-11/12 rounded-t-2xl border-2 border-b-4  border-gray-500 bg-gray-200 py-8 text-center text-lg font-normal text-gray-900 shadow-xl dark:border-gray-300 dark:bg-gray-800 dark:text-white lg:w-4/5"
       id="container"
       onClick={(e) => {
         e.stopPropagation();
@@ -187,15 +201,27 @@ const Thread: React.FC<Props> = ({
       <div className="absolute top-3 flex w-full items-center">
         {/* Profile Picture */}
         <div
-          className="ml-3 h-10 w-10 overflow-hidden rounded-full bg-white dark:bg-gray-600"
+          className="ml-3 h-10 w-10 cursor-pointer overflow-hidden rounded-full bg-white dark:bg-gray-600"
           id="profile-picture"
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowUserProfilePopup(true);
+          }}
         >
           <ProfilePicture image={profilePicture} />
         </div>
 
         {/* Username and Time  */}
         <div className="ml-4 flex flex-col text-left text-sm sm:flex-row sm:items-center sm:space-x-2">
-          <div className="text-base font-bold sm:text-lg">{username}</div>
+          <div
+            className="cursor-pointer text-base font-bold hover:underline sm:text-lg"
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowUserProfilePopup(true);
+            }}
+          >
+            {username}
+          </div>
           <div
             className="text-black dark:text-gray-300 sm:text-base"
             id="post-time"
@@ -396,6 +422,7 @@ const Thread: React.FC<Props> = ({
             e.stopPropagation();
             setShowDropdown(false);
             navigator.clipboard.writeText(window.location.href);
+            setShowCopiedLink(true);
           }}
           title="Copy link"
         >
@@ -444,7 +471,34 @@ const Thread: React.FC<Props> = ({
           </svg>
           <div className="ml-2 hidden sm:block">Share</div>
         </div>
-
+        {showCopiedLink && (
+          <div className="absolute right-0 top-8 z-10 flex w-2/5 items-center rounded-lg border-2 border-blue-600 bg-gray-50 p-2 text-center font-normal text-gray-900 shadow-xl transition-all">
+            <svg
+              viewBox="0 0 1024 1024"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="#000000"
+              className="h-6 w-6"
+            >
+              <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+              <g
+                id="SVGRepo_tracerCarrier"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              ></g>
+              <g id="SVGRepo_iconCarrier">
+                <path
+                  fill="#000000"
+                  d="M768 832a128 128 0 0 1-128 128H192A128 128 0 0 1 64 832V384a128 128 0 0 1 128-128v64a64 64 0 0 0-64 64v448a64 64 0 0 0 64 64h448a64 64 0 0 0 64-64h64z"
+                ></path>
+                <path
+                  fill="#000000"
+                  d="M384 128a64 64 0 0 0-64 64v448a64 64 0 0 0 64 64h448a64 64 0 0 0 64-64V192a64 64 0 0 0-64-64H384zm0-64h448a128 128 0 0 1 128 128v448a128 128 0 0 1-128 128H384a128 128 0 0 1-128-128V192A128 128 0 0 1 384 64z"
+                ></path>
+              </g>
+            </svg>
+            <div className="mx-auto">Copied link!</div>
+          </div>
+        )}
         {/* Thread Menu  */}
         <div>
           <svg
@@ -665,6 +719,14 @@ const Thread: React.FC<Props> = ({
             popupReason={popupReason}
             showSignInPopup={showSignInPopup}
             setShowSignInPopup={setShowSignInPopup}
+          />
+        )}
+        {/* User Profile Popup  */}
+        {showUserProfilePopup && (
+          <UserProfilePopup
+            userID={user_id}
+            showUserProfilePopup={showUserProfilePopup}
+            setShowUserProfilePopup={setShowUserProfilePopup}
           />
         )}
       </div>

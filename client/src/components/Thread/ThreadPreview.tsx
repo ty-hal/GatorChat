@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useAtomValue } from "jotai";
 import { useNavigate } from "react-router-dom";
 import { userIDAtom } from "../../App";
+import SkeletonThreadPreview from "./SkeletonThreadPreview";
 import ProfilePicture from "../ProfilePicture";
 import { RichTextEditor } from "../RichTextEditor";
 import DeletePopup from "../Popups/DeletePopup";
@@ -48,6 +49,7 @@ const Thread: React.FC<Props> = ({
   const [popupReason, setPopupReason] = useState<string>("");
   const [showUserProfilePopup, setShowUserProfilePopup] =
     useState<boolean>(false);
+  const [showCopiedLink, setShowCopiedLink] = useState<boolean>(false);
 
   const [edit, toggleEdit] = useState<boolean>(false);
   const activeUserID = useAtomValue(userIDAtom);
@@ -61,6 +63,9 @@ const Thread: React.FC<Props> = ({
   const [content, setContent] = useState<string>("");
   const [tempContent, setTempContent] = useState<string>("");
 
+  let navigate = useNavigate();
+
+  // Load data
   useEffect(() => {
     setTitle(threadTitle);
     setContent(threadContent);
@@ -140,6 +145,7 @@ const Thread: React.FC<Props> = ({
       });
   }, []);
 
+  // Edit thread
   const editThread = () => {
     console.log(title, content);
     toggleEdit(false);
@@ -166,7 +172,14 @@ const Thread: React.FC<Props> = ({
         console.log(data);
       });
   };
-  let navigate = useNavigate();
+
+  // Hide copied link popup after 1.5 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowCopiedLink(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, [showCopiedLink]);
 
   return (
     <div
@@ -377,6 +390,7 @@ const Thread: React.FC<Props> = ({
             navigator.clipboard.writeText(
               window.location.href + `/${thread_name}/${thread_id}`
             );
+            setShowCopiedLink(true);
           }}
           title="Copy link"
         >
@@ -425,6 +439,34 @@ const Thread: React.FC<Props> = ({
           </svg>
           <div className="ml-2">Share</div>
         </div>
+        {showCopiedLink && (
+          <div className="absolute right-0 top-8 z-10 flex w-2/5 items-center rounded-lg border-2 border-blue-600 bg-gray-50 p-2 text-center font-normal text-gray-900 shadow-xl transition-all">
+            <svg
+              viewBox="0 0 1024 1024"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="#000000"
+              className="h-6 w-6"
+            >
+              <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+              <g
+                id="SVGRepo_tracerCarrier"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              ></g>
+              <g id="SVGRepo_iconCarrier">
+                <path
+                  fill="#000000"
+                  d="M768 832a128 128 0 0 1-128 128H192A128 128 0 0 1 64 832V384a128 128 0 0 1 128-128v64a64 64 0 0 0-64 64v448a64 64 0 0 0 64 64h448a64 64 0 0 0 64-64h64z"
+                ></path>
+                <path
+                  fill="#000000"
+                  d="M384 128a64 64 0 0 0-64 64v448a64 64 0 0 0 64 64h448a64 64 0 0 0 64-64V192a64 64 0 0 0-64-64H384zm0-64h448a128 128 0 0 1 128 128v448a128 128 0 0 1-128 128H384a128 128 0 0 1-128-128V192A128 128 0 0 1 384 64z"
+                ></path>
+              </g>
+            </svg>
+            <div className="mx-auto">Copied link!</div>
+          </div>
+        )}
         {/* Thread Menu  */}
         <div>
           <svg

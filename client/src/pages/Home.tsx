@@ -77,16 +77,13 @@ const Home = () => {
       </div>
       <div className="mx-auto w-full">
         {/* Display the sections */}
-        {sections.map((section) => {
-          let edited_section_name = section.section_name.replace(
-            /[\W_]+/g,
-            " "
-          );
-          edited_section_name = edited_section_name
+        {sections.map((section, index) => {
+          let edited_section_name = section.section_name
+            .replace(/[\W_]+/g, " ")
             .replace(/\s+/g, "-")
             .toLowerCase();
           return (
-            <div className="ml-8 w-fit py-1">
+            <div className="ml-8 w-fit py-1" key={index}>
               <Link
                 to={`/${edited_section_name}/${section.section_id}`}
                 key={section.section_id}

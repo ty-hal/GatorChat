@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 import ThreadPreview from "../components/Thread/ThreadPreview";
 import CreateThread from "../components/Thread/CreateThread";
 import InfiniteScroll from "react-infinite-scroll-component";
+import SkeletonThreadPreview from "../components/Thread/SkeletonThreadPreview";
 
 type ThreadType = {
   thread_id: number;
@@ -68,25 +69,38 @@ const Section = () => {
     >
       <div className="min-h-screen bg-white dark:bg-gray-900">
         <div className="flex flex-col items-center rounded-xl p-10">
-          {loaded && <CreateThread section_id={parseInt(section_id || "")} />}
-          {threads.map((thread) => {
-            return (
-              <ThreadPreview
-                key={thread.thread_id} // For Javascript map purposes
-                thread_id={thread.thread_id}
-                section_id={thread.section_id}
-                section_name={section_name ? section_name : ""}
-                user_id={thread.user_id}
-                username={thread.username}
-                threadTitle={thread.thread_title}
-                threadContent={thread.content}
-                threadDate={thread.creation_date}
-                updatedOn={thread.updated_on}
-                likesCount={thread.likes ? thread.likes : 0}
-                messagesCount={thread.message_count ? thread.message_count : 0}
-              />
-            );
-          })}
+          <CreateThread
+            section_id={parseInt(section_id || "")}
+            loaded={loaded}
+          />
+          {loaded ? (
+            threads.map((thread, index) => {
+              return (
+                <ThreadPreview
+                  key={index} // For Javascript map purposes
+                  thread_id={thread.thread_id}
+                  section_id={thread.section_id}
+                  section_name={section_name ? section_name : ""}
+                  user_id={thread.user_id}
+                  username={thread.username}
+                  threadTitle={thread.thread_title}
+                  threadContent={thread.content}
+                  threadDate={thread.creation_date}
+                  updatedOn={thread.updated_on}
+                  likesCount={thread.likes ? thread.likes : 0}
+                  messagesCount={
+                    thread.message_count ? thread.message_count : 0
+                  }
+                />
+              );
+            })
+          ) : (
+            <>
+              <SkeletonThreadPreview />
+              <SkeletonThreadPreview />
+              <SkeletonThreadPreview />
+            </>
+          )}
         </div>
         <Footer />
       </div>

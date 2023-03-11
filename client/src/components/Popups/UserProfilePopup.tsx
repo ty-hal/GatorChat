@@ -78,7 +78,7 @@ const UserProfilePopup: React.FC<Props> = ({
           }}
         >
           <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-            <div className="relative w-11/12 transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+            <div className="relative w-11/12 transform overflow-hidden rounded-lg border-2 border-blue-600 bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
               <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <div className="sm:flex sm:items-start">
                   <div className="flex flex-col space-y-3 text-center sm:ml-4 sm:w-11/12">
@@ -109,7 +109,11 @@ const UserProfilePopup: React.FC<Props> = ({
                       id="majors"
                     >
                       <span className="font-semibold">
-                        {userInfo && userInfo.majors ? "Majors: " : ""}
+                        {userInfo && userInfo.majors
+                          ? userInfo.majors.length > 1
+                            ? "Majors: "
+                            : "Major: "
+                          : ""}
                       </span>
                       {userInfo && userInfo.majors
                         ? arrayToString(userInfo.majors)
@@ -121,7 +125,11 @@ const UserProfilePopup: React.FC<Props> = ({
                       id="classes"
                     >
                       <span className="font-semibold">
-                        {userInfo && userInfo.classes ? "Classes: " : ""}
+                        {userInfo && userInfo.classes
+                          ? userInfo.classes.length > 1
+                            ? "Classes: "
+                            : "Class: "
+                          : ""}
                       </span>
                       {userInfo && userInfo.classes
                         ? arrayToString(userInfo.classes)

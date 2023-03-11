@@ -175,7 +175,7 @@ const Message: React.FC<Props> = ({
           className="ml-3 h-10 w-10 overflow-hidden rounded-full bg-white dark:bg-gray-600"
           id="profile-picture"
         >
-          <ProfilePicture image={profilePicture} setImage={setProfilePicture} />
+          <ProfilePicture image={profilePicture} />
         </div>
 
         {/* Username and Time  */}

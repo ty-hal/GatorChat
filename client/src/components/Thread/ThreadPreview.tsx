@@ -7,6 +7,7 @@ import { RichTextEditor } from "../RichTextEditor";
 import DeletePopup from "../Popups/DeletePopup";
 import ReportPopup from "../Popups/ReportPopup";
 import SignInPopup from "../Popups/SignInPopup";
+import UserProfilePopup from "../Popups/UserProfilePopup";
 
 type Props = {
   thread_id: number;
@@ -45,6 +46,8 @@ const Thread: React.FC<Props> = ({
   const [showReportPopup, setShowReportPopup] = useState<boolean>(false);
   const [showSignInPopup, setShowSignInPopup] = useState<boolean>(false);
   const [popupReason, setPopupReason] = useState<string>("");
+  const [showUserProfilePopup, setShowUserProfilePopup] =
+    useState<boolean>(false);
 
   const [edit, toggleEdit] = useState<boolean>(false);
   const activeUserID = useAtomValue(userIDAtom);
@@ -183,19 +186,31 @@ const Thread: React.FC<Props> = ({
         <div
           className="ml-3 h-8 w-8 overflow-hidden rounded-full bg-white dark:bg-gray-600 sm:h-10 sm:w-10"
           id="profile-picture"
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowUserProfilePopup(true);
+          }}
         >
           <ProfilePicture image={profilePicture} />
         </div>
         {/* Username and Time  */}
-        <div className="ml-4 text-base sm:text-lg">
-          <span className="font-bold">{username}</span>
+        <div className="ml-4 break-words text-left text-base sm:text-lg">
+          <span
+            className="font-bold hover:underline"
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowUserProfilePopup(true);
+            }}
+          >
+            {username}
+          </span>
           <span
             className="text-md text-black dark:text-gray-300"
             id="post-time"
           >
             {" posted "}
             {postTimeDifference}
-            <span className="ml-2 text-sm">
+            <span className="ml-2 break-words text-sm">
               {updatedOn !== threadDate ? "(edited)" : null}
             </span>
           </span>
@@ -633,6 +648,14 @@ const Thread: React.FC<Props> = ({
               popupReason={popupReason}
               showSignInPopup={showSignInPopup}
               setShowSignInPopup={setShowSignInPopup}
+            />
+          )}
+          {/* User Profile Popup  */}
+          {showUserProfilePopup && (
+            <UserProfilePopup
+              userID={user_id}
+              showUserProfilePopup={showUserProfilePopup}
+              setShowUserProfilePopup={setShowUserProfilePopup}
             />
           )}
         </div>

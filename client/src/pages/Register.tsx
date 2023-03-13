@@ -291,6 +291,27 @@ const Register = () => {
       );
     }
   }, [registrationInfo]);
+
+  const clearRegistration = () => {
+    setRegistrationInfo({
+      first_name: "",
+      last_name: "",
+      email: "",
+      majors: [],
+      password: "",
+      confirm_password: "",
+    })
+
+    sessionStorage.setItem("registration-information", JSON.stringify({
+      first_name: "",
+      last_name: "",
+      email: "",
+      majors: [],
+      password: "",
+      confirm_password: "",
+    }))
+  }
+
   useEffect(() => {
     const elem_confirmPassword = document.getElementById("confirm-password");
     if (elem_confirmPassword !== null) {
@@ -386,7 +407,8 @@ const Register = () => {
           console.log("Error Occurred. Please try again");
         }
       })
-      .then((data) => (data ? console.log("User Created") : console.log(data)));
+      .then((data) => (data ? clearRegistration() : null
+      ));
   };
 
   return (

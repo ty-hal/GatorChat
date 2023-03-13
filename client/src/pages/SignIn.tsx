@@ -59,6 +59,20 @@ const SignIn = () => {
     }
   }, [loginInfo]);
 
+  const clearLogin = () => {
+    setLoginInfo({
+      email: "",
+      password: "",
+      remember_me: false,
+    })
+
+    sessionStorage.setItem("login-information", JSON.stringify({
+      email: "",
+      password: "",
+      remember_me: false,
+    }))
+  }
+
   let navigate = useNavigate();
 
   const submit = (e: any) => {
@@ -110,8 +124,7 @@ Mypassword@123
         }
       })
       .then((data) => {
-        if (data) console.log("User Signed In");
-        console.log(data);
+        clearLogin()
         setUserID(data.user_id);
       });
   };

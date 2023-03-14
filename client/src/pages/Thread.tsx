@@ -36,7 +36,7 @@ type ThreadType = {
   message_count: number;
 };
 
-const SampleThread = () => {
+const Thread = () => {
   const { thread_name, thread_id, section_name, section_id } = useParams();
   const navigate = useNavigate();
 
@@ -153,4 +153,4 @@ const SampleThread = () => {
   );
 };
 
-export default SampleThread;
+export default Thread;

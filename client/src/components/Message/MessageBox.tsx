@@ -62,12 +62,7 @@ const MessageBox: React.FC<Props> = ({ thread_id }) => {
   };
 
   return (
-    <div
-      className="mx-auto flex w-11/12 rounded-b-lg border-2 border-t border-gray-500 bg-gray-200 px-1 py-4 shadow-xl dark:border-gray-300 dark:bg-gray-800 md:px-3 lg:w-4/5"
-      onClick={(e) => {
-        e.stopPropagation();
-      }}
-    >
+    <div className="mx-auto flex w-11/12 rounded-b-lg border-2 border-t border-gray-500 bg-gray-200 px-1 py-4 shadow-xl dark:border-gray-300 dark:bg-gray-800 md:px-3 lg:w-4/5">
       {/* Message */}
       <div className="flex w-full justify-between">
         {openEditor && activeUserID && activeUserID > 0 ? (
@@ -86,7 +81,6 @@ const MessageBox: React.FC<Props> = ({ thread_id }) => {
          dark:bg-gray-800  
         dark:text-gray-400 dark:ring-blue-500 md:mx-4 md:text-base"
             onClick={(e) => {
-              e.stopPropagation();
               setPopupReason("reply");
               if (!activeUserID || activeUserID <= 0) {
                 setShowSignInPopup(true);

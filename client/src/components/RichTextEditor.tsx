@@ -48,7 +48,7 @@ const MenuBar = ({ editor }: any) => {
     }
   }, [currentEmoji]);
   const addImage = useCallback(() => {
-    const url = window.prompt("URL");
+    const url = window.prompt("Enter image URL");
 
     if (url && editor) {
       editor.chain().focus().setImage({ src: url }).run();

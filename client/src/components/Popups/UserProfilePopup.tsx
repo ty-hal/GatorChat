@@ -80,8 +80,8 @@ const UserProfilePopup: React.FC<Props> = ({
     >
       {loaded ? (
         <div className="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
-          <div className="relative w-11/12 transform overflow-hidden rounded-lg border-2 border-blue-600 bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-            <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+          <div className="relative w-11/12 transform overflow-hidden rounded-xl border-2 border-blue-600 bg-gray-200 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+            <div className="bg-gray-200 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
               <div className="sm:flex sm:items-start">
                 <div className="flex flex-col space-y-3 text-center sm:ml-4 sm:w-11/12">
                   {/* Username */}
@@ -93,7 +93,7 @@ const UserProfilePopup: React.FC<Props> = ({
                   </div>
                   {/* Profile Picture */}
                   <div
-                    className="mx-auto h-32 w-32 overflow-hidden rounded-full bg-white dark:bg-gray-600"
+                    className="mx-auto h-32 w-32 overflow-hidden rounded-full border-2 bg-white dark:border-0 dark:bg-gray-600 "
                     id="profile-picture"
                   >
                     <ProfilePicture

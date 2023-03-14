@@ -1,11 +1,44 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAtom } from "jotai";
 import { darkModeAtom, userIDAtom } from "../App";
 import ProfilePicture from "../components/ProfilePicture";
 
 const Header = () => {
-  const [showDropDown, setShowDropDown] = useState<boolean>(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [showDropdown, setShowDropdown] = useState<boolean>(false);
+  const [listening, setListening] = useState(false);
+
+  // Creates event listener to toggle dropdown menu
+  useEffect(() => {
+    listenForOutsideClick(
+      listening,
+      setListening,
+      dropdownRef,
+      setShowDropdown
+    );
+  }, []);
+
+  // Toggles user dropdown menu if user clicks outside of the menu
+  const listenForOutsideClick = (
+    listening: boolean,
+    setListening: React.Dispatch<React.SetStateAction<boolean>>,
+    dropdownRef: React.RefObject<HTMLDivElement>,
+    setShowDropdown: React.Dispatch<React.SetStateAction<boolean>>
+  ) => {
+    if (listening) return;
+    if (!dropdownRef.current) return;
+    setListening(true);
+    [`click`, `touchstart`].forEach((type) => {
+      document.addEventListener(`click`, (evt) => {
+        const cur = dropdownRef.current;
+        const node = evt.target;
+        if (cur && node && cur.contains(node as Node)) return;
+        setShowDropdown(false);
+      });
+    });
+  };
+
   const [darkMode, setDarkMode] = useAtom(darkModeAtom);
   const [userID, setUserID] = useAtom(userIDAtom);
   const [profilePicture, setProfilePicture] = useState<string>("");
@@ -48,8 +81,8 @@ const Header = () => {
     });
   };
 
-  const toggleDropDown = () => {
-    setShowDropDown(!showDropDown);
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
   };
 
   let darkModeText = (
@@ -155,11 +188,14 @@ const Header = () => {
 
             {/* Dropdown Menu */}
             <div className="flex items-center">
-              <div className="relative inline-block text-left">
+              <div
+                className="relative inline-block text-left"
+                ref={dropdownRef}
+              >
                 <div
                   className="mt-1 inline-flex w-full cursor-pointer justify-center rounded-md text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-200"
                   id="menu-button"
-                  onMouseEnter={(): void => toggleDropDown()}
+                  onClick={() => toggleDropdown()}
                 >
                   {userID === 0 ? (
                     <svg
@@ -185,12 +221,12 @@ const Header = () => {
                     </div>
                   )}
                 </div>
-                {showDropDown && (
+                {showDropdown && (
                   <div
                     className="absolute right-0 z-10 -mt-2 w-32 origin-top-right cursor-pointer divide-y divide-gray-300 rounded-md bg-white  shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                     role="menu"
                     id="dropdown-content"
-                    onMouseLeave={(): void => toggleDropDown()}
+                    onClick={() => toggleDropdown()}
                   >
                     {/* Settings and My Account*/}
                     {userID === 0 ? null : (

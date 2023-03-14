@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import ProfilePicture from "../ProfilePicture";
 import DeletePopup from "../Popups/DeletePopup";
@@ -37,6 +37,29 @@ const Message: React.FC<Props> = ({
   replyFunc,
 }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [listening, setListening] = useState(false);
+
+  // Toggles user dropdown menu if user clicks outside of the menu
+  const listenForOutsideClick = (
+    listening: boolean,
+    setListening: React.Dispatch<React.SetStateAction<boolean>>,
+    menuRef: React.RefObject<HTMLDivElement>,
+    setShowDropdown: React.Dispatch<React.SetStateAction<boolean>>
+  ) => {
+    if (listening) return;
+    if (!menuRef.current) return;
+    setListening(true);
+    [`click`, `touchstart`].forEach((type) => {
+      document.addEventListener(`click`, (evt) => {
+        const cur = menuRef.current;
+        const node = evt.target;
+        if (cur && node && cur.contains(node as Node)) return;
+        setShowDropdown(false);
+      });
+    });
+  };
+
   const [showDeletePopup, setShowDeletePopup] = useState<boolean>(false);
   const [showReportPopup, setShowReportPopup] = useState<boolean>(false);
   const [showSignInPopup, setShowSignInPopup] = useState<boolean>(false);
@@ -73,6 +96,12 @@ const Message: React.FC<Props> = ({
       });
 
     setContent(messageContent);
+    listenForOutsideClick(
+      listening,
+      setListening,
+      dropdownRef,
+      setShowDropdown
+    );
 
     // Updates postTimeDifference with how long ago the message was created
     let postTime = new Date(messageDate);
@@ -191,7 +220,6 @@ const Message: React.FC<Props> = ({
     <div
       className="relative mx-auto w-11/12 border-x-2 border-y border-gray-500 bg-gray-200 py-8 text-center text-lg font-normal text-gray-900 dark:border-gray-300 dark:bg-gray-800 dark:text-white lg:w-4/5"
       onClick={(e) => {
-        e.stopPropagation();
         setShowDropdown(false);
         console.log(`Message ${post_id}`);
       }}
@@ -361,7 +389,7 @@ const Message: React.FC<Props> = ({
           <div className="ml-2">Reply</div>
         </div>
         {/* Message Menu  */}
-        <div id="dropdown-button">
+        <div id="dropdown-button" ref={dropdownRef}>
           <svg
             onClick={(e) => {
               e.stopPropagation();

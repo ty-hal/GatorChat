@@ -37,6 +37,14 @@ const SkeletonThreadPost = () => {
         id="thread-preview-content"
         className="relative top-11 mx-8 mb-2 h-4 w-5/6 rounded bg-gray-400 dark:bg-gray-600"
       ></div>
+      <div
+        id="thread-preview-content"
+        className="relative top-11 mx-8 mb-2 h-4 w-5/6 rounded bg-gray-400 dark:bg-gray-600"
+      ></div>
+      <div
+        id="thread-preview-content"
+        className="relative top-11 mx-8 mb-2 h-4 w-5/6 rounded bg-gray-400 dark:bg-gray-600"
+      ></div>
     </div>
   );
 };

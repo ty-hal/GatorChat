@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAtom } from "jotai";
 import { userIDAtom } from "../../App";
 import { messageBoxAtom } from "../../pages/Thread";
@@ -62,10 +62,40 @@ const Thread: React.FC<Props> = ({
 
   const [userMessageBox, setUserMessageBox] = useAtom(messageBoxAtom);
 
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [listening, setListening] = useState(false);
+
+  // Toggles user dropdown menu if user clicks outside of the menu
+  const listenForOutsideClick = (
+    listening: boolean,
+    setListening: React.Dispatch<React.SetStateAction<boolean>>,
+    menuRef: React.RefObject<HTMLDivElement>,
+    setShowDropdown: React.Dispatch<React.SetStateAction<boolean>>
+  ) => {
+    if (listening) return;
+    if (!menuRef.current) return;
+    setListening(true);
+    [`click`, `touchstart`].forEach((type) => {
+      document.addEventListener(`click`, (evt) => {
+        const cur = menuRef.current;
+        const node = evt.target;
+        if (cur && node && cur.contains(node as Node)) return;
+        setShowDropdown(false);
+      });
+    });
+  };
+
   // Get data
   useEffect(() => {
     setTitle(threadTitle);
     setContent(threadContent);
+
+    listenForOutsideClick(
+      listening,
+      setListening,
+      dropdownRef,
+      setShowDropdown
+    );
 
     // Updates postTimeDifference with how long ago the thread was created
     let postTime = new Date(threadDate);
@@ -193,7 +223,6 @@ const Thread: React.FC<Props> = ({
       className="relative mx-auto w-11/12 rounded-t-2xl border-2 border-b-4  border-gray-500 bg-gray-200 py-8 text-center text-lg font-normal text-gray-900 shadow-xl dark:border-gray-300 dark:bg-gray-800 dark:text-white lg:w-4/5"
       id="container"
       onClick={(e) => {
-        e.stopPropagation();
         setShowDropdown(false);
       }}
     >
@@ -500,7 +529,7 @@ const Thread: React.FC<Props> = ({
           </div>
         )}
         {/* Thread Menu  */}
-        <div>
+        <div ref={dropdownRef}>
           <svg
             onClick={(e) => {
               e.stopPropagation();

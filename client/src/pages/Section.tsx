@@ -5,6 +5,8 @@ import ThreadPreview from "../components/Thread/ThreadPreview";
 import CreateThread from "../components/Thread/CreateThread";
 import InfiniteScroll from "react-infinite-scroll-component";
 import SkeletonThreadPreview from "../components/Thread/SkeletonThreadPreview";
+import { useAtomValue } from "jotai";
+import { userIDAtom } from "../App";
 
 type ThreadType = {
   thread_id: number;
@@ -17,6 +19,7 @@ type ThreadType = {
   updated_on: string;
   likes: number;
   message_count: number;
+  user_liked: boolean;
 };
 
 const Section = () => {
@@ -27,10 +30,11 @@ const Section = () => {
   const [page, setPage] = useState(1);
   const [more, setMore] = useState(true);
   const [loaded, setLoaded] = useState(false);
+  const activeUserID = useAtomValue(userIDAtom)
 
   const getThreads = () => {
     fetch(
-      `http://localhost:9000/api/section/${section_id}/threads?pageNumber=${page}&pageSize=${4}`,
+      `http://localhost:9000/api/section/${section_id}/threads?pageNumber=${page}&pageSize=${4}&activeUser=${activeUserID}`,
       {
         method: "GET",
         headers: {
@@ -43,7 +47,6 @@ const Section = () => {
         if (data) {
           setThreads((threads) => [...threads, ...data]);
           setPage((page) => page + 1);
-          console.log(data);
         } else {
           setMore(false);
         }
@@ -57,7 +60,6 @@ const Section = () => {
       navigate(-1);
     }
     getThreads();
-    console.log(section_id);
   }, [section_id, navigate]);
 
   return (
@@ -75,6 +77,7 @@ const Section = () => {
           />
           {loaded ? (
             threads.map((thread, index) => {
+              console.log(thread)
               return (
                 <ThreadPreview
                   key={index} // For Javascript map purposes
@@ -91,6 +94,7 @@ const Section = () => {
                   messagesCount={
                     thread.message_count ? thread.message_count : 0
                   }
+                  userLiked={thread.user_liked}
                 />
               );
             })

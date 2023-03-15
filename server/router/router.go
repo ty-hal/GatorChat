@@ -50,5 +50,9 @@ func Router() *mux.Router {
 	// Role Routes
 	router.HandleFunc("/api/roles", handlers.GetAllRoles).Methods("GET")
 
+	// Misc Routes
+	router.HandleFunc("/api/like", handlers.Like).Methods("GET")
+	router.HandleFunc("/api/unlike", handlers.UnLike).Methods("GET")
+
 	return router
 }

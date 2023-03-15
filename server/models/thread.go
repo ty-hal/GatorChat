@@ -16,8 +16,9 @@ type Thread struct {
 	Content      string    `json:"content,omitempty"`
 	CreationDate time.Time `json:"creation_date" gorm:"autoCreateTime"`
 	UpdatedOn    time.Time `json:"updated_on" gorm:"autoCreateTime"`
-	Likes        uint8     `json:"likes,omitempty"`
+	Likes        int64     `json:"likes,omitempty" gorm:"-"`
 	MessageCount uint8     `json:"message_count,omitempty" gorm:"-"`
+	UserLiked    bool      `json:"user_liked" gorm:"-"`
 }
 
 func GetAllThreads() []Thread {
@@ -139,4 +140,11 @@ func GetThreadPosts(threadID uint8) []Post {
 	}
 
 	return posts
+}
+
+func GetThreadLikes(threadID uint8) int64 {
+	var count int64
+
+	middleware.DB.Table("likes").Where("thread_id = ?", threadID).Count(&count)
+	return count
 }

@@ -29,7 +29,7 @@ func GetSectionByID(section_id uint8) (Section, error) {
 	return section, nil
 }
 
-func GetSectionThreads(section_id uint8, pageNumber int, pageSize int) []Thread {
+func GetSectionThreads(section_id uint8, pageNumber int, pageSize int, activeUser uint8) []Thread {
 	var threads []Thread
 
 	for _, thread := range GetAllThreadsWithOffset(pageNumber, pageSize) {
@@ -41,6 +41,10 @@ func GetSectionThreads(section_id uint8, pageNumber int, pageSize int) []Thread 
 			} else {
 				thread.User = creator.FirstName + " " + creator.LastName
 			}
+
+			thread.Likes = GetThreadLikes(thread.ThreadID)
+
+			thread.UserLiked = CheckThreadLike(activeUser, thread.ThreadID)
 
 			thread.MessageCount = uint8(len(GetThreadPosts(thread.ThreadID)))
 

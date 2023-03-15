@@ -52,6 +52,7 @@ func GetSectionThreads(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(params["id"])
 	pageNumber, _ := strconv.Atoi(queryParams.Get("pageNumber"))
 	pageSize, _ := strconv.Atoi(queryParams.Get("pageSize"))
+	activeUser, _ := strconv.Atoi(queryParams.Get("activeUser"))
 
 	// Invalid parameter
 	if err != nil {
@@ -61,7 +62,7 @@ func GetSectionThreads(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//section_threads := models.GetSectionThreads(uint8(id))
-	section_threads := models.GetSectionThreads(uint8(id), pageNumber, pageSize)
+	section_threads := models.GetSectionThreads(uint8(id), pageNumber, pageSize, uint8(activeUser))
 
 	json.NewEncoder(w).Encode(section_threads)
 }

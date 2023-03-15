@@ -22,6 +22,7 @@ type Props = {
   updatedOn: string;
   likesCount: number;
   messagesCount: number;
+  userLiked: boolean;
 };
 
 interface threadBody {
@@ -41,6 +42,7 @@ const Thread: React.FC<Props> = ({
   updatedOn,
   likesCount,
   messagesCount,
+  userLiked
 }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [showDeletePopup, setShowDeletePopup] = useState<boolean>(false);
@@ -54,6 +56,7 @@ const Thread: React.FC<Props> = ({
   const [edit, toggleEdit] = useState<boolean>(false);
   const activeUserID = useAtomValue(userIDAtom);
   const [thread_name, set_thread_name] = useState<string>("");
+  const [liked, setLiked] = useState<boolean>(userLiked)
   const [numLikes, toggleLike] = useState<number>(likesCount);
   const [profilePicture, setProfilePicture] = useState<string>("");
   const [postTimeDifference, setPostTimeDifference] = useState<string>("");
@@ -206,6 +209,34 @@ const Thread: React.FC<Props> = ({
       });
   };
 
+  const likeThread = () => {
+    fetch(`http://localhost:9000/api/like?activeUser=${activeUserID}&threadID=${thread_id}&messageID=${0}`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setLiked(true)
+        toggleLike(numLikes + 1)
+      })
+  }
+
+  const unlikeThread = () => {
+    fetch(`http://localhost:9000/api/unlike?activeUser=${activeUserID}&threadID=${thread_id}&messageID=${0}`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      setLiked(false)
+      toggleLike(numLikes - 1)
+    })
+  }
+
   // Hide copied link popup after 1.5 seconds
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -351,20 +382,18 @@ const Thread: React.FC<Props> = ({
               setShowSignInPopup(true);
               return;
             }
-            e.currentTarget.children[0].classList.toggle("fill-red-600");
-            if (
-              e.currentTarget.children[0].classList.contains("fill-red-600")
-            ) {
-              toggleLike(numLikes + 1);
-            } else {
-              toggleLike(numLikes - 1);
+            if (liked) {
+              unlikeThread()
+            }
+            else {
+              likeThread()
             }
           }}
-        >
+        > 
           <svg
             id="like-image"
             className="h-8 w-8 cursor-pointer stroke-red-600"
-            fill="none"
+            fill={liked ? "#dc2626" : "none"}
             strokeWidth="1.5"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"

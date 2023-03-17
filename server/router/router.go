@@ -20,6 +20,8 @@ func Router() *mux.Router {
 	router.HandleFunc("/api/user/signin", handlers.SignIn).Methods("POST")
 	router.HandleFunc("/api/user/{id}", handlers.DeleteUser).Methods("DELETE")
 	router.HandleFunc("/api/user/{id}", handlers.UpdateUser).Methods("PUT")
+	router.HandleFunc("/api/user/{id}", handlers.GetClasses).Methods("GET")
+	router.HandleFunc("/api/user/{id}", handlers.GetMajors).Methods("GET")
 
 	// Section Routes
 	router.HandleFunc("/api/sections", handlers.GetAllSections).Methods("GET")

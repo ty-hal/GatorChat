@@ -13,14 +13,13 @@ export const messageBoxAtom = atom("");
 type MessageType = {
   thread_id: number;
   user_id: number;
+  username: string;
   post_id: number;
   content: string;
   creation_date: string;
-  updated_on: string;
+  updated_at: string;
   likes: number;
-  username: string;
-  section_id?: number; // We probably dont need this, right?
-  thread_title?: string; // We probably dont need this, right?
+  user_liked: boolean;
 };
 
 type ThreadType = {
@@ -31,9 +30,10 @@ type ThreadType = {
   thread_title: string;
   content: string;
   creation_date: string;
-  updated_on: string;
+  updated_at: string;
   likes: number;
   message_count: number;
+  user_liked: boolean;
 };
 
 const Thread = () => {
@@ -109,9 +109,10 @@ const Thread = () => {
             threadTitle={thread.thread_title}
             threadContent={thread.content}
             threadDate={thread.creation_date}
-            updatedOn={thread.updated_on}
+            updatedOn={thread.updated_at}
             likesCount={thread.likes ? thread.likes : 0}
             messagesCount={messages.length}
+            userLiked={thread.user_liked}
             replyFunc={replyFunc}
           />
         ) : (
@@ -128,8 +129,9 @@ const Thread = () => {
                 username={messages.username}
                 messageContent={messages.content}
                 messageDate={messages.creation_date}
-                updatedOn={messages.updated_on}
+                updatedOn={messages.updated_at}
                 likesCount={messages.likes ? messages.likes : 0}
+                userLiked={messages.user_liked}
                 replyFunc={replyFunc}
               />
             );

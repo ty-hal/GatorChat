@@ -25,4 +25,7 @@ func main() {
 
 	log.Fatal(http.ListenAndServe(":9000", corsHandler.Handler(r)))
 
+	// Close database connection
+	sqlDB, _ := middleware.DB.DB()
+	defer sqlDB.Close()
 }

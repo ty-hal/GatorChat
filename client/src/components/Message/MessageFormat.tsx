@@ -19,6 +19,7 @@ type Props = {
   messageDate: string;
   updatedOn: string;
   likesCount: number;
+  userLiked: boolean;
   replyFunc: () => void;
 };
 
@@ -34,6 +35,7 @@ const Message: React.FC<Props> = ({
   messageDate,
   updatedOn,
   likesCount,
+  userLiked,
   replyFunc,
 }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
@@ -70,6 +72,7 @@ const Message: React.FC<Props> = ({
   const [edit, toggleEdit] = useState<boolean>(false);
   const [tempContent, setTempContent] = useState<string>("");
   const activeUserID = useAtomValue(userIDAtom);
+  const [liked, setLiked] = useState<boolean>(userLiked)
   const [profilePicture, setProfilePicture] = useState<string>("");
 
   const [numLikes, toggleLike] = useState<number>(likesCount);
@@ -197,6 +200,35 @@ const Message: React.FC<Props> = ({
     );
   };
 
+  const likeMessage = () => {
+    fetch(`http://localhost:9000/api/like?activeUser=${activeUserID}&threadID=${0}&postID=${post_id}`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setLiked(true)
+        toggleLike(numLikes + 1)
+      })
+  }
+
+  const unlikeMessage= () => {
+    fetch(`http://localhost:9000/api/unlike?activeUser=${activeUserID}&threadID=${0}&postID=${post_id}`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      setLiked(false)
+      toggleLike(numLikes - 1)
+    })
+  }
+
+
   // Hide copied link popup after 1.5 seconds
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -320,20 +352,18 @@ const Message: React.FC<Props> = ({
               setShowSignInPopup(true);
               return;
             }
-            e.currentTarget.children[0].classList.toggle("fill-red-600");
-            if (
-              e.currentTarget.children[0].classList.contains("fill-red-600")
-            ) {
-              toggleLike(numLikes + 1);
-            } else {
-              toggleLike(numLikes - 1);
+            if (liked) {
+              unlikeMessage()
+            }
+            else {
+              likeMessage()
             }
           }}
         >
           <svg
             id="like-image"
             className="h-6 w-6 cursor-pointer stroke-red-600 sm:h-8 sm:w-8"
-            fill="none"
+            fill={liked ? "#dc2626" : "none"}
             strokeWidth="1.5"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"

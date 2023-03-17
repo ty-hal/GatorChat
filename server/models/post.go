@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/team/swe-project/middleware"
+	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
 
@@ -14,8 +15,9 @@ type Post struct {
 	ThreadID     uint8     `json:"thread_id,omitempty"`
 	Content      string    `json:"content,omitempty"`
 	CreationDate time.Time `json:"creation_date" gorm:"autoCreateTime"`
-	UpdatedOn    time.Time `json:"updated_on" gorm:"autoCreateTime"`
-	Likes        uint8     `json:"likes,omitempty"`
+	UpdatedAt    time.Time `json:"updated_at" gorm:"autoCreateTime"`
+	Likes        uint8     `json:"likes"`
+	UserLiked    bool      `json:"user_liked" gorm:"-"`
 }
 
 func GetAllPosts() []Post {
@@ -41,6 +43,7 @@ func GetPostByID(postID uint8) (Post, error) {
 func CreatePost(post Post) Post {
 	middleware.DB.Create(&post)
 
+	middleware.DB.Table("threads").Where("thread_id = ?", post.ThreadID).Omit("updated_at").Update("message_count", gorm.Expr("message_count + ?", 1))
 	return post
 }
 
@@ -60,12 +63,14 @@ func UpdatePost(post_id uint8, updatedPost UpdatedPost) (Post, error) {
 }
 
 func DeletePost(postID uint8) (Post, error) {
-	result := middleware.DB.Unscoped().Where("post_id = ?", postID).Delete(&Post{})
+	var post Post
+	result := middleware.DB.Clauses(clause.Returning{}).Unscoped().Where("post_id = ?", postID).Delete(&post)
 
 	if result.Error != nil {
 		return Post{}, result.Error
 	}
 
+	middleware.DB.Table("threads").Where("thread_id = ?", post.ThreadID).Omit("updated_at").Update("message_count", gorm.Expr("message_count + ?", -1))
 	return Post{}, nil
 }
 

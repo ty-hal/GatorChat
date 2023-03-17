@@ -16,7 +16,7 @@ type ThreadType = {
   thread_title: string;
   content: string;
   creation_date: string;
-  updated_on: string;
+  updated_at: string;
   likes: number;
   message_count: number;
   user_liked: boolean;
@@ -89,7 +89,7 @@ const Section = () => {
                   threadTitle={thread.thread_title}
                   threadContent={thread.content}
                   threadDate={thread.creation_date}
-                  updatedOn={thread.updated_on}
+                  updatedOn={thread.updated_at}
                   likesCount={thread.likes ? thread.likes : 0}
                   messagesCount={
                     thread.message_count ? thread.message_count : 0

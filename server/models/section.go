@@ -42,11 +42,7 @@ func GetSectionThreads(section_id uint8, pageNumber int, pageSize int, activeUse
 				thread.User = creator.FirstName + " " + creator.LastName
 			}
 
-			thread.Likes = GetThreadLikes(thread.ThreadID)
-
 			thread.UserLiked = CheckThreadLike(activeUser, thread.ThreadID)
-
-			thread.MessageCount = uint8(len(GetThreadPosts(thread.ThreadID)))
 
 			threads = append(threads, thread)
 		}

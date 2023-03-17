@@ -57,10 +57,10 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Create Thread
-	threadCreated := models.CreatePost(post)
+	// Create Post
+	postCreated := models.CreatePost(post)
 
-	json.NewEncoder(w).Encode(threadCreated)
+	json.NewEncoder(w).Encode(postCreated)
 }
 
 func UpdatePost(w http.ResponseWriter, r *http.Request) {

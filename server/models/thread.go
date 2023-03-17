@@ -15,9 +15,9 @@ type Thread struct {
 	ThreadTitle  string    `json:"thread_title,omitempty"`
 	Content      string    `json:"content,omitempty"`
 	CreationDate time.Time `json:"creation_date" gorm:"autoCreateTime"`
-	UpdatedOn    time.Time `json:"updated_on" gorm:"autoCreateTime"`
-	Likes        int64     `json:"likes,omitempty" gorm:"-"`
-	MessageCount uint8     `json:"message_count,omitempty" gorm:"-"`
+	UpdatedAt    time.Time `json:"updated_at" gorm:"autoCreateTime"`
+	Likes        uint8     `json:"likes"`
+	MessageCount uint8     `json:"message_count"`
 	UserLiked    bool      `json:"user_liked" gorm:"-"`
 }
 
@@ -32,7 +32,7 @@ func GetAllThreads() []Thread {
 func GetAllThreadsWithOffset(pageNumber int, pageSize int) []Thread {
 	var threads []Thread
 
-	middleware.DB.Order("updated_on DESC").Offset((pageNumber - 1) * pageSize).Limit(pageSize).Find(&threads)
+	middleware.DB.Order("updated_at DESC").Offset((pageNumber - 1) * pageSize).Limit(pageSize).Find(&threads)
 
 	return threads
 }
@@ -54,6 +54,8 @@ func GetThreadById(threadID uint8) (Thread, error) {
 	} else {
 		thread.User = creator.FirstName + " " + creator.LastName
 	}
+
+	thread.UserLiked = CheckThreadLike(thread.UserID, thread.ThreadID)
 
 	return thread, nil
 }
@@ -134,6 +136,8 @@ func GetThreadPosts(threadID uint8) []Post {
 			} else {
 				post.User = creator.FirstName + " " + creator.LastName
 			}
+
+			post.UserLiked = CheckMessageLike(post.UserID, post.PostID)
 
 			posts = append(posts, post)
 		}

@@ -210,7 +210,7 @@ const Thread: React.FC<Props> = ({
   };
 
   const likeThread = () => {
-    fetch(`http://localhost:9000/api/like?activeUser=${activeUserID}&threadID=${thread_id}&messageID=${0}`, {
+    fetch(`http://localhost:9000/api/like?activeUser=${activeUserID}&threadID=${thread_id}&postID=${0}`, {
       method: "GET",
       headers: {
         "content-type": "application/json",
@@ -224,7 +224,7 @@ const Thread: React.FC<Props> = ({
   }
 
   const unlikeThread = () => {
-    fetch(`http://localhost:9000/api/unlike?activeUser=${activeUserID}&threadID=${thread_id}&messageID=${0}`, {
+    fetch(`http://localhost:9000/api/unlike?activeUser=${activeUserID}&threadID=${thread_id}&postID=${0}`, {
       method: "GET",
       headers: {
         "content-type": "application/json",

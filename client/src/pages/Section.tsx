@@ -30,7 +30,7 @@ const Section = () => {
   const [page, setPage] = useState(1);
   const [more, setMore] = useState(true);
   const [loaded, setLoaded] = useState(false);
-  const activeUserID = useAtomValue(userIDAtom)
+  const activeUserID = useAtomValue(userIDAtom);
 
   const getThreads = () => {
     fetch(
@@ -44,8 +44,14 @@ const Section = () => {
     )
       .then((response) => response.json())
       .then((data) => {
-        if (data) {
-          setThreads((threads) => [...threads, ...data]);
+        if (data && more) {
+          setThreads((threads) => [
+            ...threads,
+            ...data.filter(
+              (thread: ThreadType) =>
+                !threads.some((t) => t.thread_id === thread.thread_id)
+            ),
+          ]);
           setPage((page) => page + 1);
         } else {
           setMore(false);
@@ -77,7 +83,6 @@ const Section = () => {
           />
           {loaded ? (
             threads.map((thread, index) => {
-              console.log(thread)
               return (
                 <ThreadPreview
                   key={index} // For Javascript map purposes

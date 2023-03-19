@@ -42,7 +42,7 @@ const Thread: React.FC<Props> = ({
   updatedOn,
   likesCount,
   messagesCount,
-  userLiked
+  userLiked,
 }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [showDeletePopup, setShowDeletePopup] = useState<boolean>(false);
@@ -56,7 +56,7 @@ const Thread: React.FC<Props> = ({
   const [edit, toggleEdit] = useState<boolean>(false);
   const activeUserID = useAtomValue(userIDAtom);
   const [thread_name, set_thread_name] = useState<string>("");
-  const [liked, setLiked] = useState<boolean>(userLiked)
+  const [liked, setLiked] = useState<boolean>(userLiked);
   const [numLikes, toggleLike] = useState<number>(likesCount);
   const [profilePicture, setProfilePicture] = useState<string>("");
   const [postTimeDifference, setPostTimeDifference] = useState<string>("");
@@ -210,32 +210,38 @@ const Thread: React.FC<Props> = ({
   };
 
   const likeThread = () => {
-    fetch(`http://localhost:9000/api/like?activeUser=${activeUserID}&threadID=${thread_id}&postID=${0}`, {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-      },
-    })
+    fetch(
+      `http://localhost:9000/api/like?activeUser=${activeUserID}&threadID=${thread_id}&postID=${0}`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
-        setLiked(true)
-        toggleLike(numLikes + 1)
-      })
-  }
+        setLiked(true);
+        toggleLike(numLikes + 1);
+      });
+  };
 
   const unlikeThread = () => {
-    fetch(`http://localhost:9000/api/unlike?activeUser=${activeUserID}&threadID=${thread_id}&postID=${0}`, {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-      },
-    })
-    .then((response) => response.json())
-    .then((data) => {
-      setLiked(false)
-      toggleLike(numLikes - 1)
-    })
-  }
+    fetch(
+      `http://localhost:9000/api/unlike?activeUser=${activeUserID}&threadID=${thread_id}&postID=${0}`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setLiked(false);
+        toggleLike(numLikes - 1);
+      });
+  };
 
   // Hide copied link popup after 1.5 seconds
   useEffect(() => {
@@ -383,13 +389,12 @@ const Thread: React.FC<Props> = ({
               return;
             }
             if (liked) {
-              unlikeThread()
-            }
-            else {
-              likeThread()
+              unlikeThread();
+            } else {
+              likeThread();
             }
           }}
-        > 
+        >
           <svg
             id="like-image"
             className="h-8 w-8 cursor-pointer stroke-red-600"

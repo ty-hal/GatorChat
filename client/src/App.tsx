@@ -13,7 +13,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import Settings from "./pages/Settings";
 import FAQ from "./pages/FAQ";
-import ContactUs from "./pages/Contactus";
+import ContactUs from "./pages/ContactUs";
 import Section from "./pages/Section";
 import Thread from "./pages/Thread";
 

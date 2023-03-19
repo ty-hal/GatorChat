@@ -24,6 +24,8 @@ func GetThreadById(w http.ResponseWriter, r *http.Request) {
 
 	params := mux.Vars(r)
 	id, err := strconv.Atoi(params["id"])
+	queryParams := r.URL.Query()
+	activeUser, _ := strconv.Atoi(queryParams.Get("activeUser"))
 
 	// Invalid parameter
 	if err != nil {
@@ -32,7 +34,7 @@ func GetThreadById(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	thread, db_err := models.GetThreadById(uint8(id))
+	thread, db_err := models.GetThreadById(uint8(id), uint8(activeUser))
 
 	// Thread not found
 	if errors.Is(db_err, gorm.ErrRecordNotFound) {
@@ -119,6 +121,8 @@ func GetThreadPosts(w http.ResponseWriter, r *http.Request) {
 
 	params := mux.Vars(r)
 	id, err := strconv.Atoi(params["id"])
+	queryParams := r.URL.Query()
+	activeUser, _ := strconv.Atoi(queryParams.Get("activeUser"))
 
 	// Invalid parameter
 	if err != nil {
@@ -127,7 +131,7 @@ func GetThreadPosts(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	thread_posts := models.GetThreadPosts(uint8(id))
+	thread_posts := models.GetThreadPosts(uint8(id), uint8(activeUser))
 
 	json.NewEncoder(w).Encode(thread_posts)
 }

@@ -37,7 +37,7 @@ func GetAllThreadsWithOffset(pageNumber int, pageSize int) []Thread {
 	return threads
 }
 
-func GetThreadById(threadID uint8) (Thread, error) {
+func GetThreadById(threadID uint8, activeUser uint8) (Thread, error) {
 	var thread Thread
 
 	err := middleware.DB.First(&thread, threadID).Error
@@ -55,7 +55,7 @@ func GetThreadById(threadID uint8) (Thread, error) {
 		thread.User = creator.FirstName + " " + creator.LastName
 	}
 
-	thread.UserLiked = CheckThreadLike(thread.UserID, thread.ThreadID)
+	thread.UserLiked = CheckThreadLike(activeUser, thread.ThreadID)
 
 	return thread, nil
 }
@@ -84,7 +84,7 @@ func UpdateThread(thread_id uint8, updatedThread UpdatedThread) (Thread, error) 
 
 func DeleteThread(threadID uint8) (Thread, error) {
 
-	for _, post := range GetThreadPosts(threadID) {
+	for _, post := range GetThreadPosts(threadID, 0) {
 		deletedPost := middleware.DB.Unscoped().Where("post_id = ?", post.PostID).Delete(&Post{})
 
 		if deletedPost.Error != nil {
@@ -124,7 +124,7 @@ func GetSection(threadID uint8) (Section, error) {
 	return section, nil
 }
 
-func GetThreadPosts(threadID uint8) []Post {
+func GetThreadPosts(threadID uint8, activeUser uint8) []Post {
 	var posts []Post
 
 	for _, post := range GetAllPosts() {
@@ -137,7 +137,7 @@ func GetThreadPosts(threadID uint8) []Post {
 				post.User = creator.FirstName + " " + creator.LastName
 			}
 
-			post.UserLiked = CheckMessageLike(post.UserID, post.PostID)
+			post.UserLiked = CheckMessageLike(activeUser, post.PostID)
 
 			posts = append(posts, post)
 		}

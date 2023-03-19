@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import { atom } from "jotai";
+import { atom, useAtomValue } from "jotai";
 import Footer from "../components/Footer";
 import ThreadPost from "../components/Thread/ThreadPost";
 import Message from "../components/Message/MessageFormat";
@@ -8,6 +8,7 @@ import MessageBox from "../components/Message/MessageBox";
 import SkeletonThreadPost from "../components/Thread/SkeletonThreadPost";
 import SkeletonMessage from "../components/Message/SkeletonMessage";
 import SkeletonMessageBox from "../components/Message/SkeletonMessageBox";
+import { userIDAtom } from "../App";
 export const messageBoxAtom = atom("");
 
 type MessageType = {
@@ -44,10 +45,11 @@ const Thread = () => {
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [threadLoaded, setThreadLoaded] = useState(false);
   const [messageLoaded, setMessageLoaded] = useState(false);
+  const activeUserID = useAtomValue(userIDAtom)
 
   // API call here to get thread and messages
   const getThread = () => {
-    fetch(`http://localhost:9000/api/thread/${thread_id}`, {
+    fetch(`http://localhost:9000/api/thread/${thread_id}?activeUser=${activeUserID}`, {
       method: "GET",
       headers: {
         "content-type": "application/json",
@@ -63,7 +65,7 @@ const Thread = () => {
       });
   };
   const getMessages = () => {
-    fetch(`http://localhost:9000/api/thread/${thread_id}/posts`, {
+    fetch(`http://localhost:9000/api/thread/${thread_id}/posts?activeUser=${activeUserID}`, {
       method: "GET",
       headers: {
         "content-type": "application/json",

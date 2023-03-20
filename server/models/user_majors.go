@@ -18,13 +18,18 @@ func GetAllUserMajorRows() []UserMajors {
 	return userMajors
 }
 
-func GetAllMajorsFromUser(userID uint8) []Major {
+func GetUserMajorRowsFromUser(userID uint8) []UserMajors {
 	var userMajorRows []UserMajors
-	var userMajors []Major
 
 	middleware.DB.Find(&userMajorRows, "user_id = ?", userID)
 
-	for _, userMajorRow := range userMajorRows {
+	return userMajorRows
+}
+
+func GetAllMajorsFromUser(userID uint8) []Major {
+	var userMajors []Major
+
+	for _, userMajorRow := range GetUserMajorRowsFromUser(userID) {
 		if userMajorRow.UserID == userID {
 			major, err := GetMajorByID(userMajorRow.MajorID)
 			if err == nil {

@@ -67,7 +67,7 @@ func DeleteUser(user_id uint8) (User, error) {
 		return user, err
 	}
 
-	for _, userClass := range GetAllClassesFromUser(user_id) {
+	for _, userClass := range GetUserClassRowsFromUser(user_id) {
 		deletedUserClass := middleware.DB.Unscoped().Where("user_class_id = ?", userClass.UserClassID).Delete(&UserClasses{})
 
 		if deletedUserClass.Error != nil {
@@ -75,7 +75,7 @@ func DeleteUser(user_id uint8) (User, error) {
 		}
 	}
 
-	for _, userMajor := range GetAllMajorsFromUser(user_id) {
+	for _, userMajor := range GetUserMajorRowsFromUser(user_id) {
 		deletedUserMajor := middleware.DB.Unscoped().Where("user_major_id = ?", userMajor.UserMajorID).Delete(&UserMajors{})
 
 		if deletedUserMajor.Error != nil {

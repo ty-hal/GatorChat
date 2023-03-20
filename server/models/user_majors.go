@@ -18,10 +18,20 @@ func GetAllUserMajorRows() []UserMajors {
 	return userMajors
 }
 
-func GetAllMajorsFromUser(userID uint8) []UserMajors {
+func GetAllMajorsFromUser(userID uint8) []Major {
 	var userMajorRows []UserMajors
+	var userMajors []Major
 
 	middleware.DB.Find(&userMajorRows, "user_id = ?", userID)
 
-	return userMajorRows
+	for _, userMajorRow := range userMajorRows {
+		if userMajorRow.UserID == userID {
+			major, err := GetMajorByID(userMajorRow.MajorID)
+			if err == nil {
+				userMajors = append(userMajors, major)
+			}
+		}
+	}
+
+	return userMajors
 }

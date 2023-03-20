@@ -18,10 +18,20 @@ func GetAllUserClassRows() []UserClasses {
 	return userClasses
 }
 
-func GetAllClassesFromUser(userID uint8) []UserClasses {
+func GetAllClassesFromUser(userID uint8) []Class {
 	var userClassRows []UserClasses
+	var userClasses []Class
 
 	middleware.DB.Find(&userClassRows, "user_id = ?", userID)
 
-	return userClassRows
+	for _, userClassRow := range userClassRows {
+		if userClassRow.UserID == userID {
+			class, err := GetClassByID(userClassRow.ClassID)
+			if err == nil {
+				userClasses = append(userClasses, class)
+			}
+		}
+	}
+
+	return userClasses
 }

@@ -5,12 +5,12 @@ import (
 )
 
 type EmbeddedSections struct {
-	SectionEmbedID  uint8 `json:"section_embed_id"`
-	SectionParentID uint8 `json:"section_parent_id"`
-	SectionChildID  uint8 `json:"section_child_id"`
+	SectionEmbedID  uint8 `json:"section_embed_id" gorm:"primary_key"`
+	SectionParentID uint8 `json:"section_parent_id,omitempty"`
+	SectionChildID  uint8 `json:"section_child_id,omitempty"`
 }
 
-func GetAllEmbeddedSections() []EmbeddedSections {
+func GetAllEmbeddedSectionRows() []EmbeddedSections {
 	var embeddedSections []EmbeddedSections
 
 	middleware.DB.Find(&embeddedSections)

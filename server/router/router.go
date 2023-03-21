@@ -27,6 +27,7 @@ func Router() *mux.Router {
 	router.HandleFunc("/api/sections", handlers.GetAllSections).Methods("GET")
 	router.HandleFunc("/api/section/{id}", handlers.GetSectionById).Methods("GET")
 	router.HandleFunc("/api/section/{id}/threads", handlers.GetSectionThreads).Methods("GET")
+	router.HandleFunc("/api/section/{id}/sections", handlers.GetChildSections).Methods("GET")
 
 	// Thread Routes
 	router.HandleFunc("/api/threads", handlers.GetAllThreads).Methods("GET")

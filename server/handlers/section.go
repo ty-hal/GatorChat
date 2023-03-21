@@ -66,3 +66,21 @@ func GetSectionThreads(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode(section_threads)
 }
+
+func GetChildSections(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	params := mux.Vars(r)
+
+	id, err := strconv.Atoi(params["id"])
+
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("Invalid Parameter: id"))
+		return
+	}
+
+	child_sections := models.GetChildSections(uint8(id))
+
+	json.NewEncoder(w).Encode(child_sections)
+}

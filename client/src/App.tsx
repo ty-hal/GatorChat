@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
 import { atom, useAtom } from "jotai";
@@ -13,7 +13,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import Settings from "./pages/Settings";
 import FAQ from "./pages/FAQ";
-import ContactUs from "./pages/Contactus";
+import ContactUs from "./pages/ContactUs";
 import Section from "./pages/Section";
 import Thread from "./pages/Thread";
 
@@ -25,6 +25,7 @@ export const userIDAtom = atom<number>(0);
 export default function App() {
   const [darkMode] = useAtom(darkModeAtom);
   const [userID, setUserID] = useAtom(userIDAtom);
+  const [checkedCookie, setCheckedCookie] = useState<boolean>(false);
 
   // Authenticate user upon render
   useEffect(() => {
@@ -66,6 +67,7 @@ export default function App() {
           console.log("User signed in");
           setUserID(data.user_id);
         }
+        setCheckedCookie(true);
       });
   }, []);
 
@@ -75,7 +77,13 @@ export default function App() {
       <Routes>
         <Route index element={<Home />} />
         {/* Section and its threads */}
-        <Route path=":section_name/:section_id" element={<Section />} />
+        <Route
+          path=":section_name/:section_id"
+          element={
+            <Section activeUserID={userID} checkedCookie={checkedCookie} />
+          }
+        />
+
         <Route
           path=":section_name/:section_id/:thread_name/:thread_id"
           element={<Thread />}

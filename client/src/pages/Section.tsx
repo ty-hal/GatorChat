@@ -22,7 +22,12 @@ type ThreadType = {
   user_liked: boolean;
 };
 
-const Section = () => {
+interface Props {
+  activeUserID: number;
+  checkedCookie: boolean;
+}
+
+const Section: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
   const { section_name, section_id } = useParams();
   const navigate = useNavigate();
 
@@ -30,9 +35,10 @@ const Section = () => {
   const [page, setPage] = useState(1);
   const [more, setMore] = useState(true);
   const [loaded, setLoaded] = useState(false);
-  const activeUserID = useAtomValue(userIDAtom);
+  // let activeUserID = useAtomValue(userIDAtom);
 
   const getThreads = () => {
+    console.log(activeUserID);
     fetch(
       `http://localhost:9000/api/section/${section_id}/threads?pageNumber=${page}&pageSize=${4}&activeUser=${activeUserID}`,
       {
@@ -57,7 +63,10 @@ const Section = () => {
           setMore(false);
         }
       })
-      .then(() => setLoaded(true));
+      .then(() => {
+        console.log(threads);
+        setLoaded(true);
+      });
   };
 
   useEffect(() => {
@@ -65,8 +74,12 @@ const Section = () => {
     if (!/^\d+$/.test(section_id || "a")) {
       navigate(-1);
     }
-    getThreads();
-  }, [section_id, navigate]);
+    // If user authentication is checked
+    if (checkedCookie) {
+      // console.log(activeUserID);
+      getThreads();
+    }
+  }, [section_id, navigate, checkedCookie]);
 
   return (
     <InfiniteScroll

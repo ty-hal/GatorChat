@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { useAtomValue } from "jotai";
 import { useNavigate } from "react-router-dom";
 import { userIDAtom } from "../../App";
-import SkeletonThreadPreview from "./SkeletonThreadPreview";
 import ProfilePicture from "../ProfilePicture";
 import { RichTextEditor } from "../RichTextEditor";
 import DeletePopup from "../Popups/DeletePopup";

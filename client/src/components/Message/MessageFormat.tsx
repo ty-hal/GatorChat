@@ -72,7 +72,7 @@ const Message: React.FC<Props> = ({
   const [edit, toggleEdit] = useState<boolean>(false);
   const [tempContent, setTempContent] = useState<string>("");
   const activeUserID = useAtomValue(userIDAtom);
-  const [liked, setLiked] = useState<boolean>(userLiked)
+  const [liked, setLiked] = useState<boolean>(userLiked);
   const [profilePicture, setProfilePicture] = useState<string>("");
 
   const [numLikes, toggleLike] = useState<number>(likesCount);
@@ -201,33 +201,38 @@ const Message: React.FC<Props> = ({
   };
 
   const likeMessage = () => {
-    fetch(`http://localhost:9000/api/like?activeUser=${activeUserID}&threadID=${0}&postID=${post_id}`, {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-      },
-    })
+    fetch(
+      `http://localhost:9000/api/like?activeUser=${activeUserID}&threadID=${0}&postID=${post_id}`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
-        setLiked(true)
-        toggleLike(numLikes + 1)
-      })
-  }
+        setLiked(true);
+        toggleLike(numLikes + 1);
+      });
+  };
 
-  const unlikeMessage= () => {
-    fetch(`http://localhost:9000/api/unlike?activeUser=${activeUserID}&threadID=${0}&postID=${post_id}`, {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-      },
-    })
-    .then((response) => response.json())
-    .then((data) => {
-      setLiked(false)
-      toggleLike(numLikes - 1)
-    })
-  }
-
+  const unlikeMessage = () => {
+    fetch(
+      `http://localhost:9000/api/unlike?activeUser=${activeUserID}&threadID=${0}&postID=${post_id}`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setLiked(false);
+        toggleLike(numLikes - 1);
+      });
+  };
 
   // Hide copied link popup after 1.5 seconds
   useEffect(() => {
@@ -353,10 +358,9 @@ const Message: React.FC<Props> = ({
               return;
             }
             if (liked) {
-              unlikeMessage()
-            }
-            else {
-              likeMessage()
+              unlikeMessage();
+            } else {
+              likeMessage();
             }
           }}
         >
@@ -376,7 +380,7 @@ const Message: React.FC<Props> = ({
             ></path>
           </svg>
           <div className="ml-2" id="num-likes">
-            {numLikes} likes
+            {numLikes} <span className="hidden sm:inline"> likes</span>
           </div>
         </div>
         {/* Reply  */}

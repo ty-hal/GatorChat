@@ -67,6 +67,8 @@ export default function App() {
           console.log("User signed in");
           setUserID(data.user_id);
         }
+      })
+      .then(() => {
         setCheckedCookie(true);
       });
   }, []);
@@ -86,7 +88,9 @@ export default function App() {
 
         <Route
           path=":section_name/:section_id/:thread_name/:thread_id"
-          element={<Thread />}
+          element={
+            <Thread activeUserID={userID} checkedCookie={checkedCookie} />
+          }
         />
         <Route path="sign-in" element={<SignIn />} />
         <Route path="register" element={<Register />} />

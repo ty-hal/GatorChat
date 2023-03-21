@@ -37,7 +37,12 @@ type ThreadType = {
   user_liked: boolean;
 };
 
-const Thread = () => {
+interface Props {
+  activeUserID: number;
+  checkedCookie: boolean;
+}
+
+const Thread: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
   const { thread_name, thread_id, section_name, section_id } = useParams();
   const navigate = useNavigate();
 
@@ -45,16 +50,19 @@ const Thread = () => {
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [threadLoaded, setThreadLoaded] = useState(false);
   const [messageLoaded, setMessageLoaded] = useState(false);
-  const activeUserID = useAtomValue(userIDAtom)
+  // const activeUserID = useAtomValue(userIDAtom)
 
   // API call here to get thread and messages
   const getThread = () => {
-    fetch(`http://localhost:9000/api/thread/${thread_id}?activeUser=${activeUserID}`, {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-      },
-    })
+    fetch(
+      `http://localhost:9000/api/thread/${thread_id}?activeUser=${activeUserID}`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -65,12 +73,15 @@ const Thread = () => {
       });
   };
   const getMessages = () => {
-    fetch(`http://localhost:9000/api/thread/${thread_id}/posts?activeUser=${activeUserID}`, {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-      },
-    })
+    fetch(
+      `http://localhost:9000/api/thread/${thread_id}/posts?activeUser=${activeUserID}`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -86,9 +97,11 @@ const Thread = () => {
     if (!/^\d+$/.test(thread_id || "") || !/^\d+$/.test(section_id || "")) {
       navigate(-1);
     }
-    getThread();
-    getMessages();
-  }, [section_id, thread_id, navigate]);
+    if (checkedCookie) {
+      getThread();
+      getMessages();
+    }
+  }, [section_id, thread_id, navigate, checkedCookie]);
 
   //dummy ref is used to scroll down to message box after clicking reply button on any message/the thread
   const dummy = useRef<null | HTMLDivElement>(null);

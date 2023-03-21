@@ -5,8 +5,6 @@ import ThreadPreview from "../components/Thread/ThreadPreview";
 import CreateThread from "../components/Thread/CreateThread";
 import InfiniteScroll from "react-infinite-scroll-component";
 import SkeletonThreadPreview from "../components/Thread/SkeletonThreadPreview";
-import { useAtomValue } from "jotai";
-import { userIDAtom } from "../App";
 
 type ThreadType = {
   thread_id: number;
@@ -76,7 +74,7 @@ const Section: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
     }
     // If user authentication is checked
     if (checkedCookie) {
-      // console.log(activeUserID);
+      console.log(activeUserID);
       getThreads();
     }
   }, [section_id, navigate, checkedCookie]);
@@ -84,7 +82,14 @@ const Section: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
   return (
     <InfiniteScroll
       dataLength={threads.length}
-      next={getThreads}
+      next={
+        checkedCookie
+          ? getThreads
+          : () =>
+              console.log(
+                "InfiniteScroll next not loaded yet -- user auth first"
+              )
+      }
       hasMore={more}
       loader={null}
     >

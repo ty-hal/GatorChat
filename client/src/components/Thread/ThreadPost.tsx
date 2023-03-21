@@ -52,7 +52,7 @@ const Thread: React.FC<Props> = ({
 
   const [edit, toggleEdit] = useState<boolean>(false);
   const [activeUserID, setActiveUserID] = useAtom(userIDAtom);
-  const [liked, setLiked] = useState<boolean>(userLiked)
+  const [liked, setLiked] = useState<boolean>(userLiked);
   const [profilePicture, setProfilePicture] = useState<string>("");
 
   const [numLikes, toggleLike] = useState<number>(likesCount);
@@ -213,32 +213,38 @@ const Thread: React.FC<Props> = ({
   };
 
   const likeThread = () => {
-    fetch(`http://localhost:9000/api/like?activeUser=${activeUserID}&threadID=${thread_id}&postID=${0}`, {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-      },
-    })
+    fetch(
+      `http://localhost:9000/api/like?activeUser=${activeUserID}&threadID=${thread_id}&postID=${0}`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
-        setLiked(true)
-        toggleLike(numLikes + 1)
-      })
-  }
+        setLiked(true);
+        toggleLike(numLikes + 1);
+      });
+  };
 
   const unlikeThread = () => {
-    fetch(`http://localhost:9000/api/unlike?activeUser=${activeUserID}&threadID=${thread_id}&postID=${0}`, {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-      },
-    })
-    .then((response) => response.json())
-    .then((data) => {
-      setLiked(false)
-      toggleLike(numLikes - 1)
-    })
-  }
+    fetch(
+      `http://localhost:9000/api/unlike?activeUser=${activeUserID}&threadID=${thread_id}&postID=${0}`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setLiked(false);
+        toggleLike(numLikes - 1);
+      });
+  };
 
   // Hide copied link popup after 1.5 seconds
   useEffect(() => {
@@ -376,10 +382,9 @@ const Thread: React.FC<Props> = ({
               return;
             }
             if (liked) {
-              unlikeThread()
-            }
-            else {
-              likeThread()
+              unlikeThread();
+            } else {
+              likeThread();
             }
           }}
         >

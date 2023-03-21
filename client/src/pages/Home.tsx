@@ -40,6 +40,18 @@ const Home = () => {
           }) => ({ id: section_id, name: section_name })
         );
         setSearchBarItems(extractedData);
+        console.log(extractedData);
+      });
+
+    fetch(`http://localhost:9000/api/section/${2}/sections`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
       });
   }, []);
 

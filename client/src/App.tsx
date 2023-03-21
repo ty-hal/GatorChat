@@ -78,14 +78,14 @@ export default function App() {
       <Header />
       <Routes>
         <Route index element={<Home />} />
-        {/* Section and its threads */}
+        {/* Section */}
         <Route
           path=":section_name/:section_id"
           element={
             <Section activeUserID={userID} checkedCookie={checkedCookie} />
           }
         />
-
+        {/* Threads */}
         <Route
           path=":section_name/:section_id/:thread_name/:thread_id"
           element={

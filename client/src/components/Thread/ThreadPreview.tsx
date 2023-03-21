@@ -217,12 +217,7 @@ const Thread: React.FC<Props> = ({
           "content-type": "application/json",
         },
       }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        setLiked(true);
-        toggleLike(numLikes + 1);
-      });
+    ).then((response) => response.json());
   };
 
   const unlikeThread = () => {
@@ -234,12 +229,7 @@ const Thread: React.FC<Props> = ({
           "content-type": "application/json",
         },
       }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        setLiked(false);
-        toggleLike(numLikes - 1);
-      });
+    ).then((response) => response.json());
   };
 
   // Hide copied link popup after 1.5 seconds
@@ -386,6 +376,12 @@ const Thread: React.FC<Props> = ({
             if (!activeUserID || activeUserID <= 0) {
               setShowSignInPopup(true);
               return;
+            }
+            setLiked(!liked);
+            {
+              liked === true
+                ? toggleLike(numLikes - 1)
+                : toggleLike(numLikes + 1);
             }
             if (liked) {
               unlikeThread();

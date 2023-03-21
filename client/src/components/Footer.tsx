@@ -15,6 +15,7 @@ const Footer = () => {
       // Successfully logged out
       if (response.status === 200) {
         setUserID(0);
+        window.location.reload();
       } else {
         console.log("Uncaught error -- debug!");
         setUserID(0);
@@ -94,15 +95,27 @@ const Footer = () => {
             </div>
 
             <div className="col-span-2 sm:col-span-1">
-              <Link
-                to="/register"
-                className="cursor-pointer font-medium text-gray-900 dark:text-white md:text-lg"
-              >
-                {" "}
-                <span className="mr-4 font-medium" id="register">
-                  Register
-                </span>
-              </Link>
+              {userID === 0 ? (
+                <Link
+                  to="/register"
+                  className="cursor-pointer font-medium text-gray-900 dark:text-white md:text-lg"
+                >
+                  {" "}
+                  <span className="mr-4 font-medium" id="register">
+                    Register
+                  </span>
+                </Link>
+              ) : (
+                <Link
+                  to="/my-account"
+                  className="cursor-pointer font-medium text-gray-900 dark:text-white md:text-lg"
+                >
+                  {" "}
+                  <span className="mr-4 font-medium" id="my-account">
+                    My Account
+                  </span>
+                </Link>
+              )}
             </div>
 
             {/* Newsletter */}

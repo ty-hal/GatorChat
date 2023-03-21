@@ -5,12 +5,11 @@ type Props = {
       }
     | string;
   className?: string;
+  transform?: string;
 };
 
-const ProfilePicture: React.FC<Props> = ({ image, className }) => {
+const ProfilePicture: React.FC<Props> = ({ image, className, transform }) => {
   var profilePic = new Image();
-  // if (image === "") console.log("EMPTY");
-  // else console.log("NOT EMPTY");
 
   if (!image || image === "") {
     // If there is no image, return default image
@@ -28,8 +27,7 @@ const ProfilePicture: React.FC<Props> = ({ image, className }) => {
           fillRule="evenodd"
           d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
           clipRule="evenodd"
-          // transform="translate(-1.6, 0)"
-          transform={className ? "translate(0, 2)" : "translate(-1.6, 0)"}
+          transform={transform ? transform : "translate(-1.6, 0)"}
         ></path>
       </svg>
     );

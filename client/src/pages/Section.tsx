@@ -100,27 +100,33 @@ const Section: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
             loaded={loaded}
           />
           {loaded ? (
-            threads.map((thread, index) => {
-              return (
-                <ThreadPreview
-                  key={index} // For Javascript map purposes
-                  thread_id={thread.thread_id}
-                  section_id={thread.section_id}
-                  section_name={section_name ? section_name : ""}
-                  user_id={thread.user_id}
-                  username={thread.username}
-                  threadTitle={thread.thread_title}
-                  threadContent={thread.content}
-                  threadDate={thread.creation_date}
-                  updatedOn={thread.updated_at}
-                  likesCount={thread.likes ? thread.likes : 0}
-                  messagesCount={
-                    thread.message_count ? thread.message_count : 0
-                  }
-                  userLiked={thread.user_liked}
-                />
-              );
-            })
+            threads.length > 0 ? (
+              threads.map((thread, index) => {
+                return (
+                  <ThreadPreview
+                    key={index} // For TS map purposes
+                    thread_id={thread.thread_id}
+                    section_id={thread.section_id}
+                    section_name={section_name ? section_name : ""}
+                    user_id={thread.user_id}
+                    username={thread.username}
+                    threadTitle={thread.thread_title}
+                    threadContent={thread.content}
+                    threadDate={thread.creation_date}
+                    updatedOn={thread.updated_at}
+                    likesCount={thread.likes ? thread.likes : 0}
+                    messagesCount={
+                      thread.message_count ? thread.message_count : 0
+                    }
+                    userLiked={thread.user_liked}
+                  />
+                );
+              })
+            ) : (
+              <div className="mt-6 dark:text-white">
+                There are no threads in this section yet.
+              </div>
+            )
           ) : (
             <>
               <SkeletonThreadPreview />

@@ -61,13 +61,12 @@ func GetSectionThreads(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	//section_threads := models.GetSectionThreads(uint8(id))
 	section_threads := models.GetSectionThreads(uint8(id), pageNumber, pageSize, uint8(activeUser))
 
 	json.NewEncoder(w).Encode(section_threads)
 }
 
-func GetChildSections(w http.ResponseWriter, r *http.Request) {
+func GetChildGroup(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	params := mux.Vars(r)
@@ -80,7 +79,25 @@ func GetChildSections(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	child_sections := models.GetChildSections(uint8(id))
+	child_sections := models.GetChildGroup(uint8(id))
 
 	json.NewEncoder(w).Encode(child_sections)
+}
+
+func GetParentGroup(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	params := mux.Vars(r)
+
+	id, err := strconv.Atoi(params["id"])
+
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("Invalid Parameter: id"))
+		return
+	}
+
+	parent_sections := models.GetParentGroup(uint(id))
+
+	json.NewEncoder(w).Encode(parent_sections)
 }

@@ -1,37 +1,35 @@
 package models
 
 import (
+	"fmt"
+
 	"github.com/team/swe-project/middleware"
 )
 
 type EmbeddedSections struct {
 	SectionEmbedID  uint8 `json:"section_embed_id" gorm:"primary_key"`
 	SectionParentID uint8 `json:"section_parent_id,omitempty"`
-	SectionChildID  uint8 `json:"section_child_id,omitempty"`
+	GroupChildID    uint  `json:"group_child_id,omitempty"`
 }
 
-func GetAllEmbeddedSectionRows() []EmbeddedSections {
-	var embeddedSections []EmbeddedSections
+func GetChildGroup(sectionID uint8) []Section {
+	var embeddedSection EmbeddedSections
 
-	middleware.DB.Find(&embeddedSections)
+	middleware.DB.First(&embeddedSection, "section_parent_id = ?", sectionID)
 
-	return embeddedSections
+	return GetSectionsByGroup(embeddedSection.GroupChildID)
 }
 
-func GetChildSections(sectionID uint8) []Section {
-	var embeddedSectionsRows []EmbeddedSections
-	var childSections []Section
+func GetParentGroup(groupID uint) []Section {
+	var embeddedSection EmbeddedSections
 
-	middleware.DB.Find(&embeddedSectionsRows, "section_parent_id = ?", sectionID)
+	middleware.DB.First(&embeddedSection, "group_child_id = ?", groupID)
 
-	for _, embeddedSections := range embeddedSectionsRows {
-		if embeddedSections.SectionParentID == sectionID {
-			section, err := GetSectionByID(embeddedSections.SectionChildID)
-			if err == nil {
-				childSections = append(childSections, section)
-			}
-		}
+	section, err := GetSectionByID(embeddedSection.SectionParentID)
+
+	if err != nil {
+		fmt.Println(err.Error())
 	}
 
-	return childSections
+	return GetSectionsByGroup(section.GroupID)
 }

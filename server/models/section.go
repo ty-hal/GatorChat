@@ -7,6 +7,7 @@ import (
 type Section struct {
 	SectionID   uint8  `json:"section_id" gorm:"primary_key"`
 	SectionName string `json:"section_name"`
+	GroupID     uint   `json:"group_id"`
 }
 
 func GetAllSections() []Section {
@@ -49,4 +50,12 @@ func GetSectionThreads(section_id uint8, pageNumber int, pageSize int, activeUse
 	}
 
 	return threads
+}
+
+func GetSectionsByGroup(group_id uint) []Section {
+	var group []Section
+
+	middleware.DB.Find(&group, "group_id = ?", group_id)
+
+	return group
 }

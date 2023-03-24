@@ -32,6 +32,7 @@ const ForgotPassword = () =>
           <button
             type="submit"
             className=" w-full rounded-lg bg-blue-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300"
+            id = "send"
           >
             Send email
           </button>

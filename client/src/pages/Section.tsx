@@ -36,7 +36,7 @@ const Section: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
   // let activeUserID = useAtomValue(userIDAtom);
 
   const getThreads = () => {
-    console.log(activeUserID);
+   // console.log(activeUserID);
     fetch(
       `http://localhost:9000/api/section/${section_id}/threads?pageNumber=${page}&pageSize=${4}&activeUser=${activeUserID}`,
       {

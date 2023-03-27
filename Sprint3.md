@@ -67,7 +67,7 @@ ___
 
 **Settings**: renders, enters new name, tries to change email, enters new password, enters new major, submits.
 
-**createthread**:renders, logs in, clicks "create thread", types in title, types in body, submits thread.
+**createthread**:renders, logs in, clicks "create thread",does not type in title, does not type in body, does not submit.
 
 **forgotpassword**:renders,clicks "forgot password" enters email, submits email.
 ___

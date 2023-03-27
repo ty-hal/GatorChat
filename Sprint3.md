@@ -16,6 +16,9 @@ after log out, delete user auth cookie
 added search bar to home page to search for a specific section
 certain text/buttons header and footer adjusts if user is signed in or not
 edited profile picture in header to display user's profile picture if logged in
+email cannot be changed after signing up
+can send an email if i forgot my password
+can create a thread
 
 ### Backend:
 - ......
@@ -55,8 +58,11 @@ ___
 
 **ContactUs**: renders, enters name, enters email, does not submit.
 
-**Settings**: renders, enters new name, enters new email, enters new password, enters new major, submits.
+**Settings**: renders, enters new name, tries to change email, enters new password, enters new major, submits.
 
+**createthread**:renders, logs in, clicks "create thread", types in title, types in body, submits thread.
+
+**forgotpassword**:renders,clicks "forgot password" enters email, submits email.
 ___
 ## Unit tests for backend:
 ### Threads: 

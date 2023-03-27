@@ -184,7 +184,6 @@ const Settings = () =>
                   </option>
                   <option value="Accounting">Accounting</option>
                   <option value="Advertising">Advertising</option>
-                  <option value="Advertising">Advertising</option>
                   <option value="Aerospace Engineering">
                     Aerospace Engineering
                   </option>

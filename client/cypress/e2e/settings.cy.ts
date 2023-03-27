@@ -1,30 +1,68 @@
 describe('template spec', () => 
 {
-  //good enough
-  it("login first",()=>{
+  it("login and change password to invalid password",()=>{
     cy.visit("/sign-in")
     cy.get("#email").type("millersteven@ufl.edu")
     cy.get("#password").type("KfkGt2J2sAwA9tg")
     cy.get("#submit").click()
     cy.wait(500)
+    cy.get("#settings").click();
+    cy.get("#password").type("password");
+    cy.get("#confirm-password").type("password");
+    cy.get("#submit").click();
+    cy.wait(5000);
   })
-  //invalid password
-  it('try to change password to invalid password', () => {
-    cy.visit('/settings')
-    cy.get("#first-name").type("Steven")
-    cy.get("#last-name").type("Miller")
-    cy.get("#password").type("password")
-    cy.get("#confirm-password").type("password")
+  it("login and dont confirm password",()=>
+  {
+    cy.visit("/sign-in")
+    cy.get("#email").type("millersteven@ufl.edu")
+    cy.get("#password").type("KfkGt2J2sAwA9tg")
     cy.get("#submit").click()
+    cy.wait(500)
+    cy.get("#settings").click();
+    cy.get("#password").type("KfkGt2J2sAwA9tg");
+    cy.get("#submit").click();
+    cy.on("window:alert",(text)=>
+    {
+      expect(text).contain("passwords do not match!");
+    })
   })
-
-  //valid password
-  it('change password to valid password', ()=> {
-    cy.visit('/settings')
-    cy.get("#first-name").type("Steven")
-    cy.get("#last-name").type("Miller")
-    cy.get("#password").type("Password1!")
-    cy.get("#confirm-password").type("Password1!")
+  
+  it("login and try to change email",()=>
+  {
+    cy.visit("/sign-in")
+    cy.get("#email").type("millersteven@ufl.edu")
+    cy.get("#password").type("KfkGt2J2sAwA9tg")
     cy.get("#submit").click()
+    cy.wait(500)
+    cy.get("#settings").click();
+    cy.get("#email").click();
+    cy.on("window:alert",(text)=>
+    {
+      expect(text).contain("Contact support if you need to change your email");
+    })
+  })
+  it("login and change name",()=>
+  {
+    cy.visit("/sign-in")
+    cy.get("#email").type("millersteven@ufl.edu")
+    cy.get("#password").type("KfkGt2J2sAwA9tg")
+    cy.get("#submit").click()
+    cy.wait(500)
+    cy.get("#settings").click();
+    cy.get("#first-name").type("steven");
+    cy.get("#last-name").type("miller");
+    cy.get("#submit").click();
+  })
+  it("login and change major",()=>
+  {
+    cy.visit("/sign-in")
+    cy.get("#email").type("millersteven@ufl.edu")
+    cy.get("#password").type("KfkGt2J2sAwA9tg")
+    cy.get("#submit").click()
+    cy.wait(500)
+    cy.get("#settings").click();
+    cy.get("#major").select("Advertising")
+    cy.get("#submit").click();
   })
 })

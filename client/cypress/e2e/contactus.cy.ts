@@ -1,4 +1,4 @@
-describe('template spec', () => {
+describe('contact us spec', () => {
   it('passes', () => {
     cy.visit('/contact-us')
     cy.get("#email").type("nonyabiz@ufl.edu");

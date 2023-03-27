@@ -1,4 +1,4 @@
-describe('template spec', () => 
+describe('settings spec', () => 
 {
   it("login and change password to invalid password",()=>{
     cy.visit("/sign-in")

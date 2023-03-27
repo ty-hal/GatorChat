@@ -1,4 +1,4 @@
-describe('template spec', () => 
+describe('thread spec', () => 
 {
   it('create a thread', ()=> {
     cy.visit("/sign-in");

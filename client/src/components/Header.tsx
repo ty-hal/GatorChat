@@ -176,15 +176,13 @@ const Header = () => {
                 </Link>
               </>
             ) : (
-              // <Link to="">
               <span
-                className="mr-6 rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2"
+                className="mr-6 cursor-pointer rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2"
                 id="sign-out-header"
                 onClick={signOut}
               >
                 Sign out
               </span>
-              // </Link>
             )}
 
             {/* Dropdown Menu */}

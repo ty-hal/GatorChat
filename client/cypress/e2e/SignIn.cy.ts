@@ -13,6 +13,10 @@ describe('sign in spec', () => {
     cy.get("#password").type("Mypassword@123");
     cy.get("#submit").click();
     cy.url().should("eq", Cypress.config().baseUrl + "/");
+    cy.getCookies().should('have.length', 1).then((cookies) => {
+      expect(cookies[0]).to.have.property('name', 'jwt')
+    })
+
   })
 
   it('remember me feature', () => {

@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
-import ThreadPreview from "../../src/components/ThreadPreview";
+import ThreadPreview from "../../src/components/Thread/ThreadPreview";
 
 describe("<ThreadPreview />", () => {
   it("renders", () => {

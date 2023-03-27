@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
-import ThreadPost from "../../src/components/ThreadPost";
+import ThreadPost from "../../src/components/Thread/ThreadPost";
 
 describe("<ThreadPost />", () => {
   it("renders", () => {

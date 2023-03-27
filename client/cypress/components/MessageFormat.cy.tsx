@@ -1,5 +1,5 @@
 import React from "react";
-import Message from "../../src/components/MessageFormat";
+import Message from "../../src/components/Message/MessageFormat";
 import { BrowserRouter } from "react-router-dom";
 
 let props = {

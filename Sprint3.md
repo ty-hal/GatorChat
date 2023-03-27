@@ -3,25 +3,32 @@
 
 ## Work completed in Sprint 3
 ### Frontend:
-- Created 
-  - As a user,....
+- Edited section and thread pages to be templates for any section/thread instead of just one sample section page and one thread page.
+  - As a user, I want to be able to access any section and thread instead of just a sample, so I created the template pages for sections and threads.
+- Created popups and working functionality for liking, reporting, and deleting a thread/message.
+  - As a user, I want to be able to like, report, and delete a thread or message, so I created popups and functional buttons for doing so.
+- Created a popup that prompts the user to sign in if they try to modify a thread or message without being signed in.
+  - As a user, I want to be able to modify threads or messages only if I'm signed in, so I edited the features/buttons accordingly.
+- Created skeleton components for threads and messages that are disiplayed while the data is being fetched.
+  - As a user, I don't want to see partially loaded data, so I created skeleton components to be displayed until the data is fetched.
+- Retrieve user authentication cookie from browser upon window refresh.
+  - As a user, I want to be able stay logged in upon refresh, so I check the user auth cookie from the browser.
+- Edited signing in functionality to create a user auth cookie.
+  - As a user, I want to be able stay logged in upon refresh, so I call the backend handler to create and store the user auth cookie in the browser.
+- Edited logging out functionality to delete user auth cookie.
+  - As a user, I want to be able successfully logout, so I call the backend handler to delete the user auth cookie in the browser.
+- Added search bar to home page to search for a specific section.
+  - As a user, I want to be able to search for a specific section, so I created a search bar to do so.
+- Edited profile picture display in the right side of the header to display the user's profile picture if they are signed in.
+  - As a user, I want to be able to easily discern if I'm logged into my account, so I display the user's profile picture in the top right of the header.
+- Edited settings page to prevent user from changing email.
+  - As a user, I cannot change my account's email address in order to protect my account, so I prevented the user from changing their email address in the settings.
+- Edited forgot my password page to send an email upon request.
+  - As a user, I want to be able to change my password if I forget it, so I created the functionality to do so.
 
-section and thread pages work for any section/thread instead of being a sample section/thread
-like/report/delete thread/message functionality and popups
-user sign in popup if they try to modify a thread/post without being signed in
-skeleton components for thread preview/post and message post
-get user authentication cookie from browser
-after sign in, create user auth cookie
-after log out, delete user auth cookie
-added search bar to home page to search for a specific section
-certain text/buttons header and footer adjusts if user is signed in or not
-edited profile picture in header to display user's profile picture if logged in
-email cannot be changed after signing up
-can send an email if i forgot my password
-can create a thread
 
 ### Backend:
-- ......
+- Created ......
   - As a user, ....
 
 created handler for deleting auth cookie

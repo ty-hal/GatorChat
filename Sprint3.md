@@ -25,6 +25,8 @@
   - As a user, I cannot change my account's email address in order to protect my account, so I prevented the user from changing their email address in the settings.
 - Edited forgot my password page to send an email upon request.
   - As a user, I want to be able to change my password if I forget it, so I created the functionality to do so.
+- Added popup that displays information about user.
+  - As a user, I want to be able to see information about other users, so I created a popup that shows relevant information.
 
 
 ### Backend:
@@ -59,17 +61,20 @@ ___
 **ThreadPreview**: renders, default profile picture exists, thread time posted relative to current time, add a like to the thread
 
 ### Cypress (end-to-end) tests:
+
+**Section**: creates new thread, edits thread, deletes thread
+
+**Thread**: creates new thread, edits thread, creates reply, deletes reply, deletes thread
+
 **Register**: successfully register account, try to register an existing account, try to register before entering all information
 
-**Sign In**:, unsuccessful login, successful login, remember me feature, forgot password, toggle show password
+**Sign In**: unsuccessful login, successful login, remember me feature, forgot password, toggle show password
 
-**ContactUs**: renders, enters name, enters email, does not submit.
+**ContactUs**: enters name, enters email, does not submit
 
-**Settings**: renders, enters new name, tries to change email, enters new password, enters new major, submits.
+**Settings**: enters new name, tries to change email, enters new password, enters new major, submits.
 
-**createthread**:renders, logs in, clicks "create thread",does not type in title, does not type in body, does not submit.
-
-**forgotpassword**:renders,clicks "forgot password" enters email, submits email.
+**ForgotPassword**: renders,clicks "forgot password" enters email, submits email.
 ___
 ## Unit tests for backend:
 ### Threads: 

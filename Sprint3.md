@@ -7,7 +7,7 @@
 ### Frontend:
 
 - Edited section and thread pages to be templates for any section/thread instead of just one sample section page and one thread page.
-  - As a user, I want to be able to access any section and thread instead of just a sample, so I created the template pages for sections and threads .
+  - As a user, I want to be able to access any section and thread instead of just a sample, so I created the template pages for sections and threads.
 - Created popups and working functionality for liking, reporting, and deleting a thread/message.
   - As a user, I want to be able to like, report, and delete a thread or message, so I created popups and functional buttons for doing so.
 - Created a popup that prompts the user to sign in if they try to modify a thread or message without being signed in.

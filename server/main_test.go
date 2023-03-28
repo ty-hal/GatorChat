@@ -330,34 +330,34 @@ func TestGetPostByIdInvalid(t *testing.T) {
 	}
 }
 
-// func TestCreateUser(t *testing.T) {
-// 	body, _ := json.Marshal(models.User{
-// 		FirstName: "test",
-// 		LastName:  "test2",
-// 		Email:     "test123@ufl.edu",
-// 		Password:  "Randomtest123",
-// 	})
+func TestCreateUser(t *testing.T) {
+	body, _ := json.Marshal(models.User{
+		FirstName: "test",
+		LastName:  "test2",
+		Email:     "test123@ufl.edu",
+		Password:  "Randomtest123",
+	})
 
-// 	req, err := http.NewRequest("POST", "/api/user", bytes.NewBuffer(body))
+	req, err := http.NewRequest("POST", "/api/user", bytes.NewBuffer(body))
 
-// 	if err != nil {
-// 		t.Fatal(err)
-// 	}
+	if err != nil {
+		t.Fatal(err)
+	}
 
-// 	rr := httptest.NewRecorder()
+	rr := httptest.NewRecorder()
 
-// 	newRouter.ServeHTTP(rr, req)
+	newRouter.ServeHTTP(rr, req)
 
-// 	if status := rr.Code; status != http.StatusOK {
-// 		t.Errorf("STATUS CODE EXPECTED 200: got %v want %v",
-// 			status, http.StatusOK)
-// 	}
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("STATUS CODE EXPECTED 200: got %v want %v",
+			status, http.StatusOK)
+	}
 
-// 	var response models.User
-// 	if err := json.Unmarshal(rr.Body.Bytes(), &response); err != nil {
-// 		t.Errorf("RESPONSE EXPECTED USER: got %v", rr.Body.String())
-// 	}
-// }
+	var response models.User
+	if err := json.Unmarshal(rr.Body.Bytes(), &response); err != nil {
+		t.Errorf("RESPONSE EXPECTED USER: got %v", rr.Body.String())
+	}
+}
 
 func TestCreateUserEmailExists(t *testing.T) {
 	body, _ := json.Marshal(models.User{
@@ -383,58 +383,58 @@ func TestCreateUserEmailExists(t *testing.T) {
 	}
 }
 
-// func TestDeleteUser(t *testing.T) {
-// 	req, err := http.NewRequest("DELETE", "/api/user/6", nil)
+func TestDeleteUser(t *testing.T) {
+	req, err := http.NewRequest("DELETE", "/api/user/7", nil)
 
-// 	if err != nil {
-// 		t.Fatal(err)
-// 	}
+	if err != nil {
+		t.Fatal(err)
+	}
 
-// 	rr := httptest.NewRecorder()
+	rr := httptest.NewRecorder()
 
-// 	newRouter.ServeHTTP(rr, req)
+	newRouter.ServeHTTP(rr, req)
 
-// 	if status := rr.Code; status != http.StatusOK {
-// 		t.Errorf("STATUS CODE EXPECTED 200: got %v want %v",
-// 			status, http.StatusOK)
-// 	}
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("STATUS CODE EXPECTED 200: got %v want %v",
+			status, http.StatusOK)
+	}
 
-// 	var response models.User
-// 	if err := json.Unmarshal(rr.Body.Bytes(), &response); err != nil {
-// 		t.Errorf("RESPONSE EXPECTED USER: got %v", rr.Body.String())
-// 	}
-// }
+	var response models.User
+	if err := json.Unmarshal(rr.Body.Bytes(), &response); err != nil {
+		t.Errorf("RESPONSE EXPECTED USER: got %v", rr.Body.String())
+	}
+}
 
-// func TestDeleteThread(t *testing.T) {
-// 	req, err := http.NewRequest("DELETE", "/api/thread/9", nil)
+func TestDeleteThread(t *testing.T) {
+	req, err := http.NewRequest("DELETE", "/api/thread/9", nil)
 
-// 	if err != nil {
-// 		t.Fatal(err)
-// 	}
+	if err != nil {
+		t.Fatal(err)
+	}
 
-// 	rr := httptest.NewRecorder()
+	rr := httptest.NewRecorder()
 
-// 	newRouter.ServeHTTP(rr, req)
+	newRouter.ServeHTTP(rr, req)
 
-// 	if status := rr.Code; status != http.StatusOK {
-// 		t.Errorf("STATUS CODE EXPECTED 200: got %v want %v",
-// 			status, http.StatusOK)
-// 	}
-// }
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("STATUS CODE EXPECTED 200: got %v want %v",
+			status, http.StatusOK)
+	}
+}
 
-// func TestDeletePost(t *testing.T) {
-// 	req, err := http.NewRequest("DELETE", "/api/post/5", nil)
+func TestDeletePost(t *testing.T) {
+	req, err := http.NewRequest("DELETE", "/api/post/5", nil)
 
-// 	if err != nil {
-// 		t.Fatal(err)
-// 	}
+	if err != nil {
+		t.Fatal(err)
+	}
 
-// 	rr := httptest.NewRecorder()
+	rr := httptest.NewRecorder()
 
-// 	newRouter.ServeHTTP(rr, req)
+	newRouter.ServeHTTP(rr, req)
 
-// 	if status := rr.Code; status != http.StatusOK {
-// 		t.Errorf("STATUS CODE EXPECTED 200: got %v want %v",
-// 			status, http.StatusOK)
-// 	}
-// }
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("STATUS CODE EXPECTED 200: got %v want %v",
+			status, http.StatusOK)
+	}
+}

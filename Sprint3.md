@@ -333,7 +333,7 @@ Return Liked Thread/Post
   - 400 BAD REQUEST 
 
 ### Unlike
-Return Liked Thread/Post
+Return Unliked Thread/Post
 - URL: `/api/unlike?activeUser=:id&threadID=:id&postID=:id`
 - Method: `GET`
 - Status Response

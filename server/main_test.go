@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
@@ -40,7 +41,7 @@ func TestGetAllThreads(t *testing.T) {
 }
 
 func TestGetThreadByIdValid(t *testing.T) {
-	req, err := http.NewRequest("GET", "http://localhost:9000/api/thread/1", nil)
+	req, err := http.NewRequest("GET", "http://localhost:9000/api/thread/2", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -328,3 +329,112 @@ func TestGetPostByIdInvalid(t *testing.T) {
 			status, http.StatusBadRequest)
 	}
 }
+
+// func TestCreateUser(t *testing.T) {
+// 	body, _ := json.Marshal(models.User{
+// 		FirstName: "test",
+// 		LastName:  "test2",
+// 		Email:     "test123@ufl.edu",
+// 		Password:  "Randomtest123",
+// 	})
+
+// 	req, err := http.NewRequest("POST", "/api/user", bytes.NewBuffer(body))
+
+// 	if err != nil {
+// 		t.Fatal(err)
+// 	}
+
+// 	rr := httptest.NewRecorder()
+
+// 	newRouter.ServeHTTP(rr, req)
+
+// 	if status := rr.Code; status != http.StatusOK {
+// 		t.Errorf("STATUS CODE EXPECTED 200: got %v want %v",
+// 			status, http.StatusOK)
+// 	}
+
+// 	var response models.User
+// 	if err := json.Unmarshal(rr.Body.Bytes(), &response); err != nil {
+// 		t.Errorf("RESPONSE EXPECTED USER: got %v", rr.Body.String())
+// 	}
+// }
+
+func TestCreateUserEmailExists(t *testing.T) {
+	body, _ := json.Marshal(models.User{
+		FirstName: "test",
+		LastName:  "test2",
+		Email:     "random@ufl.edu",
+		Password:  "Randomtest123",
+	})
+
+	req, err := http.NewRequest("POST", "/api/user", bytes.NewBuffer(body))
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rr := httptest.NewRecorder()
+
+	newRouter.ServeHTTP(rr, req)
+
+	if status := rr.Code; status != http.StatusConflict {
+		t.Errorf("STATUS CODE EXPECTED 409: got %v want %v",
+			status, http.StatusOK)
+	}
+}
+
+// func TestDeleteUser(t *testing.T) {
+// 	req, err := http.NewRequest("DELETE", "/api/user/6", nil)
+
+// 	if err != nil {
+// 		t.Fatal(err)
+// 	}
+
+// 	rr := httptest.NewRecorder()
+
+// 	newRouter.ServeHTTP(rr, req)
+
+// 	if status := rr.Code; status != http.StatusOK {
+// 		t.Errorf("STATUS CODE EXPECTED 200: got %v want %v",
+// 			status, http.StatusOK)
+// 	}
+
+// 	var response models.User
+// 	if err := json.Unmarshal(rr.Body.Bytes(), &response); err != nil {
+// 		t.Errorf("RESPONSE EXPECTED USER: got %v", rr.Body.String())
+// 	}
+// }
+
+// func TestDeleteThread(t *testing.T) {
+// 	req, err := http.NewRequest("DELETE", "/api/thread/9", nil)
+
+// 	if err != nil {
+// 		t.Fatal(err)
+// 	}
+
+// 	rr := httptest.NewRecorder()
+
+// 	newRouter.ServeHTTP(rr, req)
+
+// 	if status := rr.Code; status != http.StatusOK {
+// 		t.Errorf("STATUS CODE EXPECTED 200: got %v want %v",
+// 			status, http.StatusOK)
+// 	}
+// }
+
+// func TestDeletePost(t *testing.T) {
+// 	req, err := http.NewRequest("DELETE", "/api/post/5", nil)
+
+// 	if err != nil {
+// 		t.Fatal(err)
+// 	}
+
+// 	rr := httptest.NewRecorder()
+
+// 	newRouter.ServeHTTP(rr, req)
+
+// 	if status := rr.Code; status != http.StatusOK {
+// 		t.Errorf("STATUS CODE EXPECTED 200: got %v want %v",
+// 			status, http.StatusOK)
+// 	}
+// }

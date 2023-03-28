@@ -25,17 +25,16 @@
   - As a user, I cannot change my account's email address in order to protect my account, so I prevented the user from changing their email address in the settings.
 - Edited forgot my password page to send an email upon request.
   - As a user, I want to be able to change my password if I forget it, so I created the functionality to do so.
-- Added popup that displays information about user.
-  - As a user, I want to be able to see information about other users, so I created a popup that shows relevant information.
 
 
 ### Backend:
-- Created ......
-  - As a user, ....
-
-created handler for deleting auth cookie
-edited user sign in handler to create auth cookie and store in browser
-created handler to check for user auth cookie
+- Created like and unlike system
+  - As a user, I want to be able to like and unlike certain threads/posts, so I will create a liking system to do so
+- Created handler to check for user auth cookie
+  - As a user, I want to stay signed in, so I will create a cookie that will contain my securely contain my login information for future use.
+- Created handler for deleting auth cookie
+  - As a developer I want the auth cookie to be deleted, so I will create a delete method for ceratin senarios
+- Edited user sign in handler to create auth cookie and store in browser
 
 ___
 ## Unit tests and Cypress test for frontend
@@ -61,20 +60,17 @@ ___
 **ThreadPreview**: renders, default profile picture exists, thread time posted relative to current time, add a like to the thread
 
 ### Cypress (end-to-end) tests:
-
-**Section**: creates new thread, edits thread, deletes thread
-
-**Thread**: creates new thread, edits thread, creates reply, deletes reply, deletes thread
-
 **Register**: successfully register account, try to register an existing account, try to register before entering all information
 
-**Sign In**: unsuccessful login, successful login, remember me feature, forgot password, toggle show password
+**Sign In**:, unsuccessful login, successful login, remember me feature, forgot password, toggle show password
 
-**ContactUs**: enters name, enters email, does not submit
+**ContactUs**: renders, enters name, enters email, does not submit.
 
-**Settings**: enters new name, tries to change email, enters new password, enters new major, submits.
+**Settings**: renders, enters new name, tries to change email, enters new password, enters new major, submits.
 
-**ForgotPassword**: renders,clicks "forgot password" enters email, submits email.
+**createthread**:renders, logs in, clicks "create thread",does not type in title, does not type in body, does not submit.
+
+**forgotpassword**:renders,clicks "forgot password" enters email, submits email.
 ___
 ## Unit tests for backend:
 ### Threads: 
@@ -83,11 +79,16 @@ ___
 **TestGetThreadByIdInvalidParameter**,
 **TestGetThreadByIdNotFound**,
 **TestGetThreadPosts**,
+**TestCreateThread**,
+**TestDeleteThread**,
 ### Users: 
 **TestGetAllUsers**,
 **TestGetUserByIdValid**,
 **TestGetUserByIdInvalid**,
 **TestGetUserByIdNotFound**,
+**TestCreateUser**,
+**TestCreateExistingUser**,
+**TestDeleteUser**,
 ### Sections:
 **TestGetAllSections**,
 **TestGetSectionByIdValid**,
@@ -323,3 +324,18 @@ Return post updated
   - 400 BAD REQUEST 
   - 404 NOT FOUND
 
+### Like
+Return Liked Thread/Post
+- URL: `/api/like?activeUser=:id&threadID=:id&postID=:id`
+- Method: `GET`
+- Status Response
+  - 200 OK
+  - 400 BAD REQUEST 
+
+### Unlike
+Return Liked Thread/Post
+- URL: `/api/unlike?activeUser=:id&threadID=:id&postID=:id`
+- Method: `GET`
+- Status Response
+  - 200 OK
+  - 400 BAD REQUEST 

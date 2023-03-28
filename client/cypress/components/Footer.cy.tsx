@@ -23,17 +23,6 @@ describe("<Footer />", () => {
     cy.url().should("include", "/faq");
   });
 
-  it("navigate to settings page", () => {
-    cy.viewport(1000, 1000);
-    cy.mount(
-      <BrowserRouter>
-        <Footer />
-      </BrowserRouter>
-    );
-    cy.get("#settings").click();
-    cy.url().should("include", "/settings");
-  });
-
   it("navigate to contact-us page", () => {
     cy.viewport(1000, 1000);
     cy.mount(

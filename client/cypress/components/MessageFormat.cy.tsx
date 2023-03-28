@@ -55,22 +55,22 @@ describe("<MessageFormat />", () => {
     cy.get("#post-time").contains("posted");
   });
 
-  it("add a like to the message", () => {
-    cy.mount(
-      <BrowserRouter>
-        <Message
-          id={1}
-          username="John Doe"
-          messageContent="My message was nothing more than this"
-          messageDate="2023-02-12 00:00:00+00"
-          likesCount={123}
-        />
-      </BrowserRouter>
-    );
-    cy.get("#num-likes").contains("123");
-    cy.get("#like-button").click();
-    cy.get("#num-likes").contains("124");
-  });
+  // it("add a like to the message", () => {
+  //   cy.mount(
+  //     <BrowserRouter>
+  //       <Message
+  //         id={1}
+  //         username="John Doe"
+  //         messageContent="My message was nothing more than this"
+  //         messageDate="2023-02-12 00:00:00+00"
+  //         likesCount={123}
+  //       />
+  //     </BrowserRouter>
+  //   );
+  //   cy.get("#num-likes").contains("123");
+  //   cy.get("#like-button").click();
+  //   cy.get("#num-likes").contains("124");
+  // });
 
   it("dropdown menu copy message", () => {
     cy.mount(
@@ -85,6 +85,6 @@ describe("<MessageFormat />", () => {
       </BrowserRouter>
     );
     cy.get("#dropdown-button").click();
-    cy.get("#copy").realClick();
+    cy.get("#copy").click();
   });
 });

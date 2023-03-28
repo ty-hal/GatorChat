@@ -1,10 +1,13 @@
 ## Demo Video:
+
 (add link)
 
 ## Work completed in Sprint 3
+
 ### Frontend:
+
 - Edited section and thread pages to be templates for any section/thread instead of just one sample section page and one thread page.
-  - As a user, I want to be able to access any section and thread instead of just a sample, so I created the template pages for sections and threads.
+  - As a user, I want to be able to access any section and thread instead of just a sample, so I created the template pages for sections and threads .
 - Created popups and working functionality for liking, reporting, and deleting a thread/message.
   - As a user, I want to be able to like, report, and delete a thread or message, so I created popups and functional buttons for doing so.
 - Created a popup that prompts the user to sign in if they try to modify a thread or message without being signed in.
@@ -26,8 +29,8 @@
 - Edited forgot my password page to send an email upon request.
   - As a user, I want to be able to change my password if I forget it, so I created the functionality to do so.
 
-
 ### Backend:
+
 - Created like and unlike system
   - As a user, I want to be able to like and unlike certain threads/posts, so I will create a liking system to do so
 - Created handler to check for user auth cookie
@@ -36,9 +39,12 @@
   - As a developer I want the auth cookie to be deleted, so I will create a delete method for ceratin senarios
 - Edited user sign in handler to create auth cookie and store in browser
 
-___
+---
+
 ## Unit tests and Cypress test for frontend
-### Unit (Cypress component) tests: 
+
+### Unit (Cypress component) tests:
+
 **Accordion**: renders, collapsed question, expanded question
 
 **CreateThread**: renders, open create thread, minimize create thread, create a thread, thread title over 300 chars
@@ -60,6 +66,7 @@ ___
 **ThreadPreview**: renders, default profile picture exists, thread time posted relative to current time, add a like to the thread
 
 ### Cypress (end-to-end) tests:
+
 **Register**: successfully register account, try to register an existing account, try to register before entering all information
 
 **Sign In**:, unsuccessful login, successful login, remember me feature, forgot password, toggle show password
@@ -71,9 +78,13 @@ ___
 **createthread**:renders, logs in, clicks "create thread",does not type in title, does not type in body, does not submit.
 
 **forgotpassword**:renders,clicks "forgot password" enters email, submits email.
-___
+
+---
+
 ## Unit tests for backend:
-### Threads: 
+
+### Threads:
+
 **TestGetAllThreads**,
 **TestGetThreadByIdValid**,
 **TestGetThreadByIdInvalidParameter**,
@@ -81,7 +92,9 @@ ___
 **TestGetThreadPosts**,
 **TestCreateThread**,
 **TestDeleteThread**,
-### Users: 
+
+### Users:
+
 **TestGetAllUsers**,
 **TestGetUserByIdValid**,
 **TestGetUserByIdInvalid**,
@@ -89,253 +102,308 @@ ___
 **TestCreateUser**,
 **TestCreateExistingUser**,
 **TestDeleteUser**,
+
 ### Sections:
+
 **TestGetAllSections**,
 **TestGetSectionByIdValid**,
 **TestGetSectionByIdInvalid**,
 **TestGetSectionByIdNotFound**,
+
 ### Posts:
+
 **TestGetAllPosts**,
 **TestGetPostByIdValid**,
 **TestGetPostByIdInvalid**,
 
-___
+---
+
 ## Documentation for backend API:
-## Users 
-___
+
+## Users
+
+---
 
 ### Get Users
+
 Return list of user objects
+
 - URL: `/api/users`
 - Method: `GET`
 - Status Responses
-  - 200 OK 
+  - 200 OK
 
 ### Get User By Id
+
 Return user
+
 - URL: `/api/user/:id`
 - Method: `GET`
 - Parameters: `id=[integer]`
 - Status Responses
-  - 200 OK 
-  - 400 BAD REQUEST 
+  - 200 OK
+  - 400 BAD REQUEST
   - 404 NOT FOUND
 
 ### Create User
+
 Return user created
+
 - URL: `/api/user`
 - Method: `POST`
 - Status Responses
-  - 200 OK 
-  - 400 BAD REQUEST 
+  - 200 OK
+  - 400 BAD REQUEST
   - 409 STATUS CONFLICT
 - Example Body
   ```json
-    {
-      "first_name": "First",
-      "last_name": "Last",
-      "email": "firstlast@ufl.edu",
-      "password": "Firstlast@1234",
-    }
+  {
+    "first_name": "First",
+    "last_name": "Last",
+    "email": "firstlast@ufl.edu",
+    "password": "Firstlast@1234"
+  }
   ```
 
 ### Delete User
+
 Return user deleted
+
 - URL: `/api/user/`
 - Method: `DELETE`
 - Parameters: `user=[User]`
 - Status Responses
-  - 200 OK 
-  - 400 BAD REQUEST 
+  - 200 OK
+  - 400 BAD REQUEST
   - 404 NOT FOUND
 
 ### Update User
+
 Return user updated
+
 - URL: `/api/user/`
 - Method: `PUT`
 - Parameters: `user=[User]`
 - Status Responses
-  - 200 OK 
-  - 400 BAD REQUEST 
+  - 200 OK
+  - 400 BAD REQUEST
   - 404 NOT FOUND
 
 ### Sign User In
+
 Return user
+
 - URL: `/api/user/signin`
 - Method: `PUT`
 - Status Responses
-  - 200 OK 
+  - 200 OK
   - 400 NOT FOUND
   - 401 UNAUTHORIZED
 
 ## Sections
-___
+
+---
 
 ### Get Sections
+
 Return list of section objects
+
 - URL: `/api/sections`
 - Method: `GET`
 - Status Responses
-  - 200 OK 
+  - 200 OK
 
 ### Get Section By Id
+
 Return section
+
 - URL: `/api/section/:id`
 - Method: `GET`
 - Parameters: `id=[integer]`
 - Status Responses
-  - 200 OK 
-  - 400 BAD REQUEST 
+  - 200 OK
+  - 400 BAD REQUEST
   - 404 NOT FOUND
 
 ### Get Section Threads
+
 Return list of thread objects
+
 - URL: `/api/section/:id/threads`
 - Method: `GET`
 - Parameters: `id=[integer]`
 - Status Responses
-  - 200 OK 
-  - 400 BAD REQUEST 
+  - 200 OK
+  - 400 BAD REQUEST
   - 404 NOT FOUND
 
 ## Threads
-___
+
+---
 
 ### Get Threads
+
 Return list of section threads
+
 - URL: `/api/threads`
 - Method: `GET`
 - Status Responses
-  - 200 OK 
+  - 200 OK
 
 ### Get Thread By Id
+
 Return thread
+
 - URL: `/api/thread/:id`
 - Method: `GET`
 - Parameters: `id=[integer]`
 - Status Responses
-  - 200 OK 
-  - 400 BAD REQUEST 
+  - 200 OK
+  - 400 BAD REQUEST
   - 404 NOT FOUND
 
 ### Create Thread
+
 Return thread created
+
 - URL: `/api/thread`
 - Method: `POST`
 - Status Responses
-  - 200 OK 
-  - 400 BAD REQUEST 
+
+  - 200 OK
+  - 400 BAD REQUEST
   - 409 STATUS CONFLICT
 
 - Example Body
   ```json
-    {
-      "user_id": 1,
-      "section_id": 1,
-      "thread_title": "Thread Title",
-      "content": "Thread Content",
-    }
+  {
+    "user_id": 1,
+    "section_id": 1,
+    "thread_title": "Thread Title",
+    "content": "Thread Content"
+  }
   ```
 
 ### Delete Thread
+
 Return thread deleted
+
 - URL: `/api/thread/`
 - Method: `DELETE`
 - Parameters: `thread=[Thread]`
 - Status Responses
-  - 200 OK 
-  - 400 BAD REQUEST 
+  - 200 OK
+  - 400 BAD REQUEST
   - 404 NOT FOUND
 
 ### Update Thread
+
 Return thread updated
+
 - URL: `/api/thread/`
 - Method: `PUT`
 - Parameters: `thread=[Thread]`
 - Status Responses
-  - 200 OK 
-  - 400 BAD REQUEST 
+  - 200 OK
+  - 400 BAD REQUEST
   - 404 NOT FOUND
 
 ### Get Thread Posts
+
 Return list of thread objects
+
 - URL: `/api/thread/:id/posts`
 - Method: `GET`
 - Parameters: `id=[integer]`
 - Status Responses
-  - 200 OK 
-  - 400 BAD REQUEST 
+  - 200 OK
+  - 400 BAD REQUEST
   - 404 NOT FOUND
 
 ## Posts
-___
+
+---
 
 ### Get Posts
+
 Return list of section posts
+
 - URL: `/api/posts`
 - Method: `GET`
 - Status Responses
-  - 200 OK 
+  - 200 OK
 
 ### Get Post By Id
+
 Return post
+
 - URL: `/api/post/:id`
 - Method: `GET`
 - Parameters: `id=[integer]`
 - Status Responses
-  - 200 OK 
-  - 400 BAD REQUEST 
+  - 200 OK
+  - 400 BAD REQUEST
   - 404 NOT FOUND
 
 ### Create Post
+
 Return thread created
+
 - URL: `/api/post`
 - Method: `POST`
 - Status Responses
-  - 200 OK 
-  - 400 BAD REQUEST 
+  - 200 OK
+  - 400 BAD REQUEST
   - 409 STATUS CONFLICT
 - Example Body
   ```json
-    {
-      "user_id": 1,
-      "thread_id": 1,
-      "content": "Post Content",
-    }
+  {
+    "user_id": 1,
+    "thread_id": 1,
+    "content": "Post Content"
+  }
   ```
 
 ### Delete Post
+
 Return post deleted
+
 - URL: `/api/post/`
 - Method: `DELETE`
 - Parameters: `post=[Post]`
 - Status Responses
-  - 200 OK 
-  - 400 BAD REQUEST 
+  - 200 OK
+  - 400 BAD REQUEST
   - 404 NOT FOUND
 
 ### Update Post
+
 Return post updated
+
 - URL: `/api/post/`
 - Method: `PUT`
 - Parameters: `post=[Post]`
 - Status Responses
-  - 200 OK 
-  - 400 BAD REQUEST 
+  - 200 OK
+  - 400 BAD REQUEST
   - 404 NOT FOUND
 
 ### Like
+
 Return Liked Thread/Post
+
 - URL: `/api/like?activeUser=:id&threadID=:id&postID=:id`
 - Method: `GET`
 - Status Response
   - 200 OK
-  - 400 BAD REQUEST 
+  - 400 BAD REQUEST
 
 ### Unlike
+
 Return Unliked Thread/Post
+
 - URL: `/api/unlike?activeUser=:id&threadID=:id&postID=:id`
 - Method: `GET`
 - Status Response
   - 200 OK
-  - 400 BAD REQUEST 
+  - 400 BAD REQUEST

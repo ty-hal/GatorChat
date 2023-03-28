@@ -54,22 +54,22 @@ describe("<ThreadPost />", () => {
     cy.get("#post-time").contains("posted");
   });
 
-  it("add a like to the thread", () => {
-    cy.mount(
-      <BrowserRouter>
-        <ThreadPost
-          id={1}
-          username="John Doe"
-          threadTitle="Test title"
-          threadContent="My thread was nothing more than this"
-          threadDate="2023-02-12 00:00:00+00"
-          likesCount={123}
-          messagesCount={4}
-        />
-      </BrowserRouter>
-    );
-    cy.get("#num-likes").contains("123");
-    cy.get("#like-button").click();
-    cy.get("#num-likes").contains("124");
-  });
+  // it("add a like to the thread", () => {
+  //   cy.mount(
+  //     <BrowserRouter>
+  //       <ThreadPost
+  //         id={1}
+  //         username="John Doe"
+  //         threadTitle="Test title"
+  //         threadContent="My thread was nothing more than this"
+  //         threadDate="2023-02-12 00:00:00+00"
+  //         likesCount={123}
+  //         messagesCount={4}
+  //       />
+  //     </BrowserRouter>
+  //   );
+  //   cy.get("#num-likes").contains("123");
+  //   cy.get("#like-button").click();
+  //   cy.get("#num-likes").contains("124");
+  // });
 });

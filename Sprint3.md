@@ -67,6 +67,10 @@
 
 ### Cypress (end-to-end) tests:
 
+**Thread**: create thread, edit thread, delete thread
+
+**Section**: create thread, create reply, edit reply, edit thread, delete reply, delete thread
+
 **Register**: successfully register account, try to register an existing account, try to register before entering all information
 
 **Sign In**:, unsuccessful login, successful login, remember me feature, forgot password, toggle show password
@@ -75,9 +79,7 @@
 
 **Settings**: renders, enters new name, tries to change email, enters new password, enters new major, submits.
 
-**createthread**:renders, logs in, clicks "create thread",does not type in title, does not type in body, does not submit.
-
-**forgotpassword**:renders,clicks "forgot password" enters email, submits email.
+**ForgotPassword**:renders,clicks "forgot password" enters email, submits email.
 
 ---
 

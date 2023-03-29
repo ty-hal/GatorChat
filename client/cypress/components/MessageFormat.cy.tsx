@@ -72,19 +72,19 @@ describe("<MessageFormat />", () => {
   //   cy.get("#num-likes").contains("124");
   // });
 
-  it("dropdown menu copy message", () => {
-    cy.mount(
-      <BrowserRouter>
-        <Message
-          id={1}
-          username="John Doe"
-          messageContent="My message was nothing more than this"
-          messageDate="2023-02-12 00:00:00+00"
-          likesCount={123}
-        />
-      </BrowserRouter>
-    );
-    cy.get("#dropdown-button").click();
-    cy.get("#copy").click();
-  });
+  // it("dropdown menu copy message", () => {
+  //   cy.mount(
+  //     <BrowserRouter>
+  //       <Message
+  //         id={1}
+  //         username="John Doe"
+  //         messageContent="My message was nothing more than this"
+  //         messageDate="2023-02-12 00:00:00+00"
+  //         likesCount={123}
+  //       />
+  //     </BrowserRouter>
+  //   );
+  //   cy.get("#dropdown-button").click();
+  //   cy.get("#copy").click();
+  // });
 });

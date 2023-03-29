@@ -66,7 +66,7 @@ const MessageBox: React.FC<Props> = ({ thread_id }) => {
       {/* Message */}
       <div className="flex w-full justify-between">
         {openEditor && activeUserID && activeUserID > 0 ? (
-          <div className="mx-2 -my-2 w-5/6 sm:w-full md:mx-4" id="text">
+          <div className="-my-2 ml-2 w-11/12 md:mx-4" id="text">
             <RichTextEditor
               setText={setMessage}
               textContent={message}

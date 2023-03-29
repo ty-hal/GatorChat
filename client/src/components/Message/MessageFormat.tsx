@@ -325,7 +325,7 @@ const Message: React.FC<Props> = ({
         <>
           <div
             id="message-content"
-            className="relative top-7 mx-6 mb-12 text-left text-base sm:mx-8 md:text-lg"
+            className="relative top-7 mx-6 mb-12 overflow-hidden break-words text-left text-base sm:mx-8 md:text-lg"
             dangerouslySetInnerHTML={{
               __html: content,
             }}

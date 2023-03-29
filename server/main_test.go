@@ -334,7 +334,7 @@ func TestCreateUser(t *testing.T) {
 	body, _ := json.Marshal(models.User{
 		FirstName: "test",
 		LastName:  "test2",
-		Email:     "test123@ufl.edu",
+		Email:     "test12345@ufl.edu",
 		Password:  "Randomtest123",
 	})
 
@@ -384,7 +384,7 @@ func TestCreateUserEmailExists(t *testing.T) {
 }
 
 func TestDeleteUser(t *testing.T) {
-	req, err := http.NewRequest("DELETE", "/api/user/7", nil)
+	req, err := http.NewRequest("DELETE", "/api/user/8", nil)
 
 	if err != nil {
 		t.Fatal(err)

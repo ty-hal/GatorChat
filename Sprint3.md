@@ -159,6 +159,22 @@ Return user updated
   - 400 BAD REQUEST 
   - 404 NOT FOUND
 
+### Get User Classes
+Return list of user classes
+- URL: `/api/users/:id/classes`
+- Method: `GET`
+- Parameters: `id=[integer]`
+- Status Responses
+  - 200 OK 
+
+### Get User Majors
+Return list of user majors
+- URL: `/api/users/:id/majors`
+- Method: `GET`
+- Parameters: `id=[integer]`
+- Status Responses
+  - 200 OK 
+
 ### Sign User In
 Return user
 - URL: `/api/user/signin`
@@ -191,6 +207,26 @@ Return section
 ### Get Section Threads
 Return list of thread objects
 - URL: `/api/section/:id/threads`
+- Method: `GET`
+- Parameters: `id=[integer]`
+- Status Responses
+  - 200 OK 
+  - 400 BAD REQUEST 
+  - 404 NOT FOUND
+
+### Get Group Parent
+Return parent group of section
+- URL: `/api/group/:id`
+- Method: `GET`
+- Parameters: `id=[integer]`
+- Status Responses
+  - 200 OK 
+  - 400 BAD REQUEST 
+  - 404 NOT FOUND
+
+### Get Group Children
+Return children of group
+- URL: `/api/group/:id`
 - Method: `GET`
 - Parameters: `id=[integer]`
 - Status Responses
@@ -323,6 +359,21 @@ Return post updated
   - 200 OK 
   - 400 BAD REQUEST 
   - 404 NOT FOUND
+
+### Get Classes
+Return list of classes
+- URL: `/api/classes`
+- Method: `GET`
+- Status Responses
+  - 200 OK
+
+### Get Majors
+Return list of majors
+- URL: `/api/majors`
+- Method: `GET`
+- Status Responses
+  - 200 OK
+
 
 ### Like
 Return Liked Thread/Post

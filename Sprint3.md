@@ -41,9 +41,9 @@ https://youtu.be/G6EoC8FDVwU
   - As a user, I want to see other user's classes and majors, so I will use handlers to connect to the frontend to display the user's data.
 - Created embedded structures that organize sections inside one another to create a more organized layout
   - As a user, I want to be able to easily navigate through sections, so I will create embedded sections that properly organize other sections/threads.
-- Edited user sign in handler to create auth cookie and store in browser
 - Changed handler parameters to integers instead of structs for deleting and updating threads/posts
   - As a developer, I want to easily delete and update threads by their ID instead of struct, so I will change the handler parameters to integer to allow for easy manipulation.
+- Edited user sign in handler to create auth cookie and store in browser
 
 ---
 

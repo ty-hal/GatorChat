@@ -1,6 +1,6 @@
 ## Demo Video:
 
-(add link)
+https://youtu.be/G6EoC8FDVwU
 
 ## Work completed in Sprint 3
 
@@ -37,7 +37,13 @@
   - As a user, I want to stay signed in, so I will create a cookie that will contain my securely contain my login information for future use.
 - Created handler for deleting auth cookie
   - As a developer I want the auth cookie to be deleted, so I will create a delete method for ceratin senarios
+- Created handlers to retrieve a user's classes and majors
+  - As a user, I want to see other user's classes and majors, so I will use handlers to connect to the frontend to display the user's data.
+- Created embedded structures that organize sections inside one another to create a more organized layout
+  - As a user, I want to be able to easily navigate through sections, so I will create embedded sections that properly organize other sections/threads.
 - Edited user sign in handler to create auth cookie and store in browser
+- Changed handler parameters to integers instead of structs for deleting and updating threads/posts
+  - As a developer, I want to easily delete and update threads by their ID instead of struct, so I will change the handler parameters to integer to allow for easy manipulation.
 
 ---
 

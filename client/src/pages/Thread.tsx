@@ -112,7 +112,7 @@ const Thread: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-900 ">
+    <div className="min-h-screen bg-white dark:bg-gray-900">
       <div className="flex flex-col items-center px-4 pt-4">
         {/* Load thread or skeleton thread */}
         {threadLoaded && messageLoaded ? (

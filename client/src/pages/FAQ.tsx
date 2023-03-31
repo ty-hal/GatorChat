@@ -68,7 +68,7 @@ const FAQ = () => {
   ];
 
   return (
-    <div className="bg-gray-50 pb-16 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50 pb-16 dark:bg-gray-900">
       <h1 className="pt-4 text-center text-4xl font-semibold leading-tight tracking-tight text-gray-900 dark:text-white">
         Frequently Asked Questions
       </h1>

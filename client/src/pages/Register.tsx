@@ -300,17 +300,20 @@ const Register = () => {
       majors: [],
       password: "",
       confirm_password: "",
-    })
+    });
 
-    sessionStorage.setItem("registration-information", JSON.stringify({
-      first_name: "",
-      last_name: "",
-      email: "",
-      majors: [],
-      password: "",
-      confirm_password: "",
-    }))
-  }
+    sessionStorage.setItem(
+      "registration-information",
+      JSON.stringify({
+        first_name: "",
+        last_name: "",
+        email: "",
+        majors: [],
+        password: "",
+        confirm_password: "",
+      })
+    );
+  };
 
   useEffect(() => {
     const elem_confirmPassword = document.getElementById("confirm-password");
@@ -407,12 +410,11 @@ const Register = () => {
           console.log("Error Occurred. Please try again");
         }
       })
-      .then((data) => (data ? clearRegistration() : null
-      ));
+      .then((data) => (data ? clearRegistration() : null));
   };
 
   return (
-    <section className="bg-gray-50 py-8 pb-32  dark:bg-gray-900">
+    <section className="min-h-screen bg-gray-50 py-8  pb-32 dark:bg-gray-900">
       <div className="mx-auto flex flex-col items-center justify-center px-6 py-8 lg:py-0">
         <div className="w-full rounded-lg bg-white shadow dark:border dark:border-gray-700 dark:bg-gray-800 sm:max-w-md md:mt-0 xl:p-0">
           <div className="space-y-4 p-6 sm:p-8 md:space-y-6">

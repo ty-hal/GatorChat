@@ -21,6 +21,12 @@ type User struct {
 	CreationDate time.Time `gorm:"-"`
 }
 
+type UserDetailed struct {
+	User
+	Classes []string `json:"classes,omitempty"`
+	Majors  []string `json:"majors,omitempty"`
+}
+
 func GetAllUsers() []User {
 	var users []User
 

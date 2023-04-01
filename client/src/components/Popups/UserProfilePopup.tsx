@@ -9,11 +9,11 @@ type Props = {
 };
 
 type UserData = {
-  username: string;
-  profilePicture: string;
+  username?: string;
+  profilePicture?: string;
   majors?: string[];
   classes?: string[];
-  CreationDate: string;
+  CreationDate?: string;
 };
 
 const UserProfilePopup: React.FC<Props> = ({
@@ -24,6 +24,7 @@ const UserProfilePopup: React.FC<Props> = ({
   const [userInfo, setUserInfo] = useState<UserData>();
   const [loaded, setLoaded] = useState<boolean>(false);
 
+  // Load user data
   useEffect(() => {
     if (userID !== undefined && userID > 0) {
       fetch(`http://localhost:9000/api/user/${userID}`, {
@@ -38,21 +39,23 @@ const UserProfilePopup: React.FC<Props> = ({
           }
         })
         .then((data) => {
+          let username = data.first_name + " " + data.last_name;
           console.log(data);
-          const tempUserData: UserData = {
-            username: data.first_name + " " + data.last_name,
+          setUserInfo({
+            username: username,
             profilePicture: data.profile_pic,
-            // majors: data.majors,
-            // classes: data.classes,
-            majors: ["Computer Science", "Mathematics"],
-            classes: ["CEN3031", "COP4020", "MAS4105", "MAS4301"],
             CreationDate: data.CreationDate,
-          };
-          setUserInfo(tempUserData);
-          setLoaded(true);
-        });
+            classes: data.classes,
+            majors: data.majors,
+          });
+        })
+        .then(() => setLoaded(true));
     }
   }, []);
+
+  useEffect(() => {
+    console.log(userInfo);
+  }, [loaded]);
 
   const arrayToString = (array: string[]) => {
     if (array.length === 1) {
@@ -69,6 +72,7 @@ const UserProfilePopup: React.FC<Props> = ({
       return final + "and " + array[array.length - 1];
     }
   };
+
   if (!showUserProfilePopup) return <></>;
   return (
     <div
@@ -103,6 +107,7 @@ const UserProfilePopup: React.FC<Props> = ({
                           : ""
                       }
                       className="h-32 w-32 text-gray-400 sm:h-32 sm:w-32"
+                      transform="translate(0, 2)"
                     />
                   </div>
                   {/* Majors */}

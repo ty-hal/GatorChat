@@ -19,14 +19,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
-// Added stuff below
-
-//	if err != nil {
-//		log.Fatal("Error loading .env file")
-//	}
 var SecretKey = os.Getenv("secretkey")
-
-//above
 
 func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
@@ -58,7 +51,27 @@ func GetUserById(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	json.NewEncoder(w).Encode(user)
+	// Add user classes
+	userClasses := models.GetAllClassesFromUser(uint8(id))
+	var classNames []string
+	for _, class := range userClasses {
+		classNames = append(classNames, class.ClassName)
+	}
+	// Add user majors
+	userMajors := models.GetAllMajorsFromUser(uint8(id))
+	var majorNames []string
+	for _, major := range userMajors {
+		majorNames = append(majorNames, major.MajorName)
+	}
+
+	// Add majors and classes to user
+	userDetailed := models.UserDetailed{
+		User:    user,
+		Classes: classNames,
+		Majors:  majorNames,
+	}
+
+	json.NewEncoder(w).Encode(userDetailed)
 }
 
 func GetClasses(w http.ResponseWriter, r *http.Request) {

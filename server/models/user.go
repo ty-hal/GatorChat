@@ -18,7 +18,7 @@ type User struct {
 	ProfilePic   string    `json:"profile_pic,omitempty"`
 	Dark         bool      `json:"dark,omitempty"`
 	Likes        uint8     `json:"likes,omitempty"`
-	CreationDate time.Time `gorm:"-"`
+	CreationDate time.Time `json:"creation_date" gorm:"autoCreateTime"`
 }
 
 type UserDetailed struct {

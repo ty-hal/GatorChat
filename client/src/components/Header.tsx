@@ -127,7 +127,7 @@ const Header = () => {
   );
 
   return (
-    <div className="sticky top-0 z-50 mx-auto flex w-full flex-wrap border-b-4 border-b-blue-600 dark:bg-gray-900">
+    <div className="sticky top-0 z-50 mx-auto flex w-full flex-wrap border-b-4 border-b-blue-600 bg-white dark:bg-gray-900">
       <div className="flex h-14 justify-between text-gray-700  dark:text-white">
         <div className="flex items-center px-5 py-6 xl:px-12">
           {/* Logo  */}

@@ -1,6 +1,8 @@
 package models
 
 import (
+	"fmt"
+
 	"github.com/team/swe-project/middleware"
 )
 
@@ -36,9 +38,9 @@ func GetSectionThreads(section_id uint8, pageNumber int, pageSize int, activeUse
 	for _, thread := range GetAllThreadsWithOffset(pageNumber, pageSize) {
 		if thread.SectionID == section_id {
 			creator, err := GetUserByID(thread.UserID)
-
+			fmt.Print(thread.UserID)
 			if err != nil {
-				thread.User = "Anonymous"
+				thread.User = "[DELETED]"
 			} else {
 				thread.User = creator.FirstName + " " + creator.LastName
 			}

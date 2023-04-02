@@ -50,7 +50,7 @@ func GetThreadById(threadID uint8, activeUser uint8) (Thread, error) {
 	creator, err := GetUserByID(thread.UserID)
 
 	if err != nil {
-		thread.User = "Anonymous"
+		thread.User = "[DELETED]"
 	} else {
 		thread.User = creator.FirstName + " " + creator.LastName
 	}
@@ -132,7 +132,7 @@ func GetThreadPosts(threadID uint8, activeUser uint8) []Post {
 			creator, err := GetUserByID(post.UserID)
 
 			if err != nil {
-				post.User = "Anonymous"
+				post.User = "[DELETED]"
 			} else {
 				post.User = creator.FirstName + " " + creator.LastName
 			}

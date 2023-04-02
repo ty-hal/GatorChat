@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import React from 'react'
 import { Dropdown } from "flowbite";
@@ -15,28 +15,50 @@ const Settings = () =>
   const[lastname,setlastname] = useState("");
   const[major,setmajor] = useState("");
   const [Id,setUserID] = useAtom(userIDAtom);
+  const navigate = useNavigate();
   const submit = (e: any) =>
    {
     e.preventDefault();
-    if(conpassword!= password)
+    if(conpassword !== password)
     {
       alert("passwords do not match!")
+      return
     }
-    else
-    {    
-      console.log("First Name:" + firstname);
+ 
+    console.log("First Name:" + firstname);
     console.log("Last Name:" + lastname);
     console.log("Username:" + username);
     console.log("Password:" + password);
     console.log("Major:" + major);
     console.log("Userid:" + Id);
-    }
-    
-    const login = {
-      email: username,
-      password: password
-    }
   }
+
+  const signOut = () => {
+    fetch("http://localhost:9000/api/user/logout", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      credentials: "include",
+    }).then((response) => {
+      // Successfully logged out
+      if (response.status === 200) {
+        setUserID(0);
+        navigate("/")
+      } else {
+        console.log("Uncaught error -- debug!");
+        setUserID(0);
+      }
+    });
+  };
+
+  const deleteUser = () => {
+    const link:string = "http://localhost:9000/api/user/" + Id
+    fetch(link, {method: "DELETE"})
+    .then((response)=>{return response.json()})
+    .then(data => {signOut()})
+  }
+
   const link:string = "http://localhost:9000/api/user/" + Id;
   fetch(link, {method: "GET"})
   .then((response)=>{return response.json()})
@@ -468,11 +490,23 @@ const Settings = () =>
                 id = "submit"
               >
                 Submit
-              </button>
+          </button>
           </div>
           </div>
         </div>
         </form>
+        <button
+                onClick={deleteUser}
+                className="w-20 text-white 
+                bg-red-600 hover:bg-red-700 
+                focus:ring-4 focus:outline-none 
+                focus:ring-red-300 font-medium 
+                rounded-lg text-sm px-10 py-2.5
+                text-center dark:bg-red-600 
+                dark:hover:bg-red-700 dark:focus:ring-red-800 flex justify-center" 
+              >
+                Delete
+          </button>
       </div>
 
  

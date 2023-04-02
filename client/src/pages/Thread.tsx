@@ -45,14 +45,14 @@ interface Props {
 const Thread: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
   const { thread_name, thread_id, section_name, section_id } = useParams();
   const navigate = useNavigate();
-
+  const [sectionName, setSectionName] = useState<string>("");
   const [thread, setThread] = useState<ThreadType>(Object);
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [threadLoaded, setThreadLoaded] = useState(false);
   const [messageLoaded, setMessageLoaded] = useState(false);
   // const activeUserID = useAtomValue(userIDAtom)
 
-  // API call here to get thread and messages
+  // Get thread
   const getThread = () => {
     fetch(
       `http://localhost:9000/api/thread/${thread_id}?activeUser=${activeUserID}`,
@@ -72,6 +72,7 @@ const Thread: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
         setThreadLoaded(true);
       });
   };
+  // Get messages
   const getMessages = () => {
     fetch(
       `http://localhost:9000/api/thread/${thread_id}/posts?activeUser=${activeUserID}`,
@@ -91,6 +92,19 @@ const Thread: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
         setMessageLoaded(true);
       });
   };
+  // Get section
+  const getSection = () => {
+    fetch(`http://localhost:9000/api/section/${section_id}`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setSectionName(data.section_name);
+      });
+  };
 
   useEffect(() => {
     // If thread_id (URL param) is not a number, go back to the previous page
@@ -98,6 +112,7 @@ const Thread: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
       navigate(-1);
     }
     if (checkedCookie) {
+      getSection();
       getThread();
       getMessages();
     }
@@ -114,6 +129,13 @@ const Thread: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
       <div className="flex flex-col items-center px-4 pt-4">
+        <div
+          className="mb-4 h-8 cursor-pointer text-2xl font-semibold hover:underline dark:text-white"
+          onClick={() => navigate(-1)}
+        >
+          {threadLoaded && messageLoaded && sectionName}
+        </div>
+
         {/* Load thread or skeleton thread */}
         {threadLoaded && messageLoaded ? (
           <ThreadPost

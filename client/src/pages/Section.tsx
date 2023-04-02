@@ -30,13 +30,13 @@ const Section: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
   const navigate = useNavigate();
 
   const [threads, setThreads] = useState<ThreadType[]>([]);
+  const [sectionName, setSectionName] = useState<string>("");
   const [page, setPage] = useState(1);
   const [more, setMore] = useState(true);
   const [loaded, setLoaded] = useState(false);
   // let activeUserID = useAtomValue(userIDAtom);
 
   const getThreads = () => {
-   // console.log(activeUserID);
     fetch(
       `http://localhost:9000/api/section/${section_id}/threads?pageNumber=${page}&pageSize=${4}&activeUser=${activeUserID}`,
       {
@@ -48,6 +48,7 @@ const Section: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
     )
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         if (data && more) {
           setThreads((threads) => [
             ...threads,
@@ -62,8 +63,19 @@ const Section: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
         }
       })
       .then(() => {
-        console.log(threads);
         setLoaded(true);
+      });
+  };
+  const getSection = () => {
+    fetch(`http://localhost:9000/api/section/${section_id}`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setSectionName(data.section_name);
       });
   };
 
@@ -74,8 +86,8 @@ const Section: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
     }
     // If user authentication is checked
     if (checkedCookie) {
-      console.log(activeUserID);
       getThreads();
+      getSection();
     }
   }, [section_id, navigate, checkedCookie]);
 
@@ -94,7 +106,14 @@ const Section: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
       loader={null}
     >
       <div className="min-h-screen bg-white dark:bg-gray-900">
-        <div className="flex flex-col items-center rounded-xl p-10">
+        <div className="flex flex-col items-center rounded-xl px-10 pt-6">
+          <div
+            className="mb-4 h-8 cursor-pointer text-2xl font-semibold hover:underline dark:text-white"
+            onClick={() => navigate(-1)}
+          >
+            {loaded && sectionName}
+          </div>
+
           <CreateThread
             section_id={parseInt(section_id || "")}
             loaded={loaded}

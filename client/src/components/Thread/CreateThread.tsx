@@ -37,7 +37,7 @@ const CreateThread: React.FC<Props> = ({ section_id, loaded }) => {
     setTitle("");
 
     const threadRequest: threadBody = {
-      user_id: activeUserID,
+      user_id: activeUserID || 0,
       section_id: section_id,
       thread_title: thread?.title,
       content: thread?.text,

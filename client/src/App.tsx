@@ -20,7 +20,7 @@ import Thread from "./pages/Thread";
 // Uses local storage to detect user dark mode preference
 export const darkModeAtom = atomWithStorage("dark-mode", true);
 // Save user_id in state
-export const userIDAtom = atom<number>(0);
+export const userIDAtom = atom<number | null>(null);
 
 export default function App() {
   const [darkMode] = useAtom(darkModeAtom);
@@ -82,14 +82,14 @@ export default function App() {
         <Route
           path=":section_name/:section_id"
           element={
-            <Section activeUserID={userID} checkedCookie={checkedCookie} />
+            <Section activeUserID={userID || 0} checkedCookie={checkedCookie} />
           }
         />
         {/* Threads */}
         <Route
           path=":section_name/:section_id/:thread_name/:thread_id"
           element={
-            <Thread activeUserID={userID} checkedCookie={checkedCookie} />
+            <Thread activeUserID={userID || 0} checkedCookie={checkedCookie} />
           }
         />
         <Route path="sign-in" element={<SignIn />} />

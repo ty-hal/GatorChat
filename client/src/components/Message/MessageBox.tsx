@@ -37,7 +37,7 @@ const MessageBox: React.FC<Props> = ({ thread_id }) => {
     setMessage("");
 
     const messageRequest: messageBody = {
-      user_id: activeUserID,
+      user_id: activeUserID || 0,
       thread_id: thread_id,
       content: message,
     };

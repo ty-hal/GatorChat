@@ -13,7 +13,7 @@ type UserData = {
   profilePicture?: string;
   majors?: string[];
   classes?: string[];
-  CreationDate?: string;
+  creation_date?: string;
 };
 
 const UserProfilePopup: React.FC<Props> = ({
@@ -44,7 +44,7 @@ const UserProfilePopup: React.FC<Props> = ({
           setUserInfo({
             username: username,
             profilePicture: data.profile_pic,
-            CreationDate: data.CreationDate,
+            creation_date: data.creation_date,
             classes: data.classes,
             majors: data.majors,
           });
@@ -148,12 +148,12 @@ const UserProfilePopup: React.FC<Props> = ({
                     id="majors"
                   >
                     <span className="font-semibold">
-                      {userInfo && userInfo.CreationDate
+                      {userInfo && userInfo.creation_date
                         ? "Created account on "
                         : ""}
                     </span>
-                    {userInfo && userInfo.CreationDate
-                      ? new Date(userInfo.CreationDate)
+                    {userInfo && userInfo.creation_date
+                      ? new Date(userInfo.creation_date)
                           .toLocaleString()
                           .split(",")[0]
                       : ""}

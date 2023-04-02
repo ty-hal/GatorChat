@@ -41,11 +41,12 @@ const Header = () => {
 
   const [darkMode, setDarkMode] = useAtom(darkModeAtom);
   const [userID, setUserID] = useAtom(userIDAtom);
-  const [profilePicture, setProfilePicture] = useState<string>("");
+  const [profilePicture, setProfilePicture] = useState<string | null>(null);
 
   useEffect(() => {
+    console.log(userID);
     // GET and SET the user who posted the thread's profile picture
-    if (userID !== undefined && userID > 0) {
+    if (userID !== null && userID > 0) {
       fetch(`http://localhost:9000/api/user/${userID}`, {
         method: "GET",
         headers: {
@@ -60,7 +61,7 @@ const Header = () => {
             setProfilePicture("");
           }
         });
-    }
+    } else if (userID !== null) setProfilePicture("");
   }, [userID]);
 
   const signOut = () => {
@@ -142,138 +143,140 @@ const Header = () => {
             </Link>
           </div>
           {/* Nav */}
-          <div className="absolute right-0 flex items-center space-x-8 px-4 ">
-            {/* Navigation Bar */}
-            <Link to="/">
-              {" "}
-              <span
-                className="rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2"
-                id="home"
-              >
-                Home
-              </span>
-            </Link>
-            {userID === 0 ? (
-              <>
-                <Link to="/sign-in">
-                  {" "}
-                  <span
-                    className="rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2"
-                    id="sign-in"
-                  >
-                    Sign in
-                  </span>
-                </Link>
-                <Link to="/register">
-                  {" "}
-                  <span
-                    className="mr-6 rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2"
-                    id="register"
-                  >
-                    Register
-                  </span>
-                </Link>
-              </>
-            ) : (
-              <span
-                className="mr-6 cursor-pointer rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2"
-                id="sign-out-header"
-                onClick={signOut}
-              >
-                Sign out
-              </span>
-            )}
+          {userID !== null && profilePicture !== null && (
+            <div className="absolute right-0 flex items-center space-x-8 px-4 ">
+              {/* Navigation Bar */}
+              <Link to="/">
+                {" "}
+                <span
+                  className="rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2"
+                  id="home"
+                >
+                  Home
+                </span>
+              </Link>
+              {userID === 0 ? (
+                <>
+                  <Link to="/sign-in">
+                    {" "}
+                    <span
+                      className="rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2"
+                      id="sign-in"
+                    >
+                      Sign in
+                    </span>
+                  </Link>
+                  <Link to="/register">
+                    {" "}
+                    <span
+                      className="mr-6 rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2"
+                      id="register"
+                    >
+                      Register
+                    </span>
+                  </Link>
+                </>
+              ) : (
+                <span
+                  className="mr-6 cursor-pointer rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2"
+                  id="sign-out-header"
+                  onClick={signOut}
+                >
+                  Sign out
+                </span>
+              )}
 
-            {/* Dropdown Menu */}
-            <div className="flex items-center">
-              <div
-                className="relative inline-block text-left"
-                ref={dropdownRef}
-              >
+              {/* Dropdown Menu */}
+              <div className="flex items-center">
                 <div
-                  className="mt-1 inline-flex w-full cursor-pointer justify-center rounded-md text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-200"
-                  id="menu-button"
-                  onClick={() => toggleDropdown()}
+                  className="relative inline-block text-left"
+                  ref={dropdownRef}
                 >
                   <div
-                    className="ml-3 h-10 w-10 overflow-hidden rounded-full border-2 border-gray-900 dark:border-gray-300"
-                    id="profile-picture"
-                  >
-                    <ProfilePicture
-                      image={profilePicture}
-                      transform={"translate(-2.1, -0.5)"}
-                    />
-                  </div>
-                </div>
-                {showDropdown && (
-                  <div
-                    className="absolute right-0 z-10 -mt-2 w-32 origin-top-right cursor-pointer divide-y divide-gray-300 rounded-md bg-white  shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                    role="menu"
-                    id="dropdown-content"
+                    className="mt-1 inline-flex w-full cursor-pointer justify-center rounded-md text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-200"
+                    id="menu-button"
                     onClick={() => toggleDropdown()}
                   >
-                    {/* Settings and My Account*/}
-                    {userID === 0 ? null : (
-                      <div>
-                        <Link to="/settings">
+                    <div
+                      className="ml-3 h-10 w-10 overflow-hidden rounded-full border-2 border-gray-900 dark:border-gray-300"
+                      id="profile-picture"
+                    >
+                      <ProfilePicture
+                        image={profilePicture || ""}
+                        transform={"translate(-2.1, -0.5)"}
+                      />
+                    </div>
+                  </div>
+                  {showDropdown && (
+                    <div
+                      className="absolute right-0 z-10 -mt-2 w-32 origin-top-right cursor-pointer divide-y divide-gray-300 rounded-md bg-white  shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                      role="menu"
+                      id="dropdown-content"
+                      onClick={() => toggleDropdown()}
+                    >
+                      {/* Settings and My Account*/}
+                      {userID === 0 ? null : (
+                        <div>
+                          <Link to="/settings">
+                            <span
+                              className="block px-4 py-2 text-sm text-gray-700 hover:rounded-t-md hover:bg-blue-300 hover:text-black"
+                              role="menuitem"
+                              id="settings"
+                            >
+                              Settings
+                            </span>
+                          </Link>
                           <span
-                            className="block px-4 py-2 text-sm text-gray-700 hover:rounded-t-md hover:bg-blue-300 hover:text-black"
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300 hover:text-black"
                             role="menuitem"
-                            id="settings"
+                            id="my-account"
                           >
-                            Settings
+                            My Account
                           </span>
-                        </Link>
+                        </div>
+                      )}
+                      {/* Dark Mode and Sign Out */}
+                      <div>
                         <span
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300 hover:text-black"
+                          className={
+                            userID === 0
+                              ? "block py-2 pl-4 text-sm text-gray-700 hover:rounded-t-md hover:bg-blue-300 hover:text-black"
+                              : "block py-2 pl-4 text-sm text-gray-700 hover:bg-blue-300 hover:text-black"
+                          }
                           role="menuitem"
-                          id="my-account"
+                          id="theme"
+                          onClick={() => setDarkMode(!darkMode)}
                         >
-                          My Account
+                          {darkMode ? lightModeText : darkModeText}
                         </span>
-                      </div>
-                    )}
-                    {/* Dark Mode and Sign Out */}
-                    <div>
-                      <span
-                        className={
-                          userID === 0
-                            ? "block py-2 pl-4 text-sm text-gray-700 hover:rounded-t-md hover:bg-blue-300 hover:text-black"
-                            : "block py-2 pl-4 text-sm text-gray-700 hover:bg-blue-300 hover:text-black"
-                        }
-                        role="menuitem"
-                        id="theme"
-                        onClick={() => setDarkMode(!darkMode)}
-                      >
-                        {darkMode ? lightModeText : darkModeText}
-                      </span>
 
-                      {userID === 0 ? (
-                        <Link to="/sign-in">
+                        {userID === 0 ? (
+                          <Link to="/sign-in">
+                            <span
+                              className="block px-4 py-2 text-sm text-gray-700 hover:rounded-b-md hover:bg-blue-300 hover:text-black"
+                              role="menuitem"
+                              id="sign-in-head"
+                            >
+                              Sign in
+                            </span>
+                          </Link>
+                        ) : (
                           <span
                             className="block px-4 py-2 text-sm text-gray-700 hover:rounded-b-md hover:bg-blue-300 hover:text-black"
                             role="menuitem"
-                            id="sign-in-head"
+                            id="sign-out"
+                            onClick={signOut}
                           >
-                            Sign in
+                            Sign out
                           </span>
-                        </Link>
-                      ) : (
-                        <span
-                          className="block px-4 py-2 text-sm text-gray-700 hover:rounded-b-md hover:bg-blue-300 hover:text-black"
-                          role="menuitem"
-                          id="sign-out"
-                          onClick={signOut}
-                        >
-                          Sign out
-                        </span>
-                      )}
+                        )}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

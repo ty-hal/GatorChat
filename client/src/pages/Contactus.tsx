@@ -1,14 +1,39 @@
 import { useState } from "react";
 
+interface contactus {
+  email: string;
+  name: string;
+  message: string;
+}
+
 const ContactUs = () => {
   const [name, setname] = useState("");
   const [email, setemail] = useState("");
   const [comment, setcomment] = useState("");
   const submit = (e: any) => {
     e.preventDefault();
-    console.log("First Name:" + name);
-    console.log("Email:" + email);
-    console.log("comment:" + comment);
+    const contact: contactus = {
+      email: email,
+      name: name,
+      message: comment
+    }
+
+    fetch("http://localhost:9000/api/contact", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(contact),
+    })
+    .then((response) => {
+      if (response.status == 200) {
+        return response.json()
+      }
+
+      alert("Message Could Not Be Delivered")
+    })
+    .then((data) => alert("Message Delivered"))
+  
   };
   return (
     <div className="h-screen bg-gray-50 py-8 dark:bg-gray-900 ">
@@ -18,7 +43,7 @@ const ContactUs = () => {
           <div className="flex justify-center">
             {/* account settings header*/}
             <div className="font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
-              Contact us
+              Contact Us
             </div>
           </div>
           {/*input email*/}
@@ -41,7 +66,7 @@ const ContactUs = () => {
           {/*input name*/}
           <div className="w-center">
             <div className="my-10">
-              <label className="flex justify-center">name</label>
+              <label className="flex justify-center">Name</label>
               <div className="ml-20 flex justify-center ">
                 <input
                   type="text"
@@ -59,7 +84,7 @@ const ContactUs = () => {
           {/*reason for contact*/}
           <div className="w-center">
             <div className="my-10">
-              <label className="flex justify-center">message</label>
+              <label className="flex justify-center">Message</label>
               <div className="ml-20 flex justify-center ">
                 <textarea
                   id="comment"

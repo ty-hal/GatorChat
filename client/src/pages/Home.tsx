@@ -1,5 +1,5 @@
 import Footer from "../components/Footer";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
 import { darkModeAtom } from "../App";
@@ -19,9 +19,11 @@ const Home = () => {
   const [sections, setSections] = useState<Section[]>([]);
   const [searchBarItems, setSearchBarItems] = useState<SearchBarItem[]>([]);
   const darkMode = useAtomValue(darkModeAtom);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:9000/api/sections", {
+    // Get base level sections
+    fetch("http://localhost:9000/api/section/1/children", {
       method: "GET",
       headers: {
         "content-type": "application/json",
@@ -30,6 +32,19 @@ const Home = () => {
       .then((response) => response.json())
       .then((data) => {
         setSections(data);
+        console.log(data);
+      });
+
+    // Get all sections and add them to the search bar
+    fetch("http://localhost:9000/api/sections", {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
         const extractedData: SearchBarItem[] = data.map(
           ({
             section_id,
@@ -40,28 +55,37 @@ const Home = () => {
           }) => ({ id: section_id, name: section_name })
         );
         setSearchBarItems(extractedData);
-        console.log(extractedData);
-      });
-
-    fetch(`http://localhost:9000/api/section/${2}/sections`, {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
       });
   }, []);
 
   const searchBarHandleOnSelect = (item: SearchBarItem) => {
     // the item selected
     console.log(item);
+    let edited_section_name = item.name
+      .replace(/[\W_]+/g, " ")
+      .replace(/\s+/g, "-")
+      .toLowerCase();
+    navigate(`/${edited_section_name}/${item.id}`);
   };
 
   const searchBarFormatResult = (item: SearchBarItem) => {
-    return <span className="block cursor-pointer text-left">{item.name}</span>;
+    console.log(item);
+
+    let edited_section_name = item.name
+      .replace(/[\W_]+/g, " ")
+      .replace(/\s+/g, "-")
+      .toLowerCase();
+    return (
+      <Link to={`/${edited_section_name}/${item.id}`} key={item.id}>
+        <div className="cursor-pointer font-medium text-gray-900 dark:text-white md:text-lg">
+          {item.name}
+        </div>
+      </Link>
+    );
+
+    {
+      /* return <span className="block cursor-pointer text-left">{item.name}</span>; */
+    }
   };
 
   return (
@@ -87,8 +111,9 @@ const Home = () => {
           }}
         />
       </div>
+
+      {/* Display the sections */}
       <div className="mx-auto w-full">
-        {/* Display the sections */}
         {sections.map((section, index) => {
           let edited_section_name = section.section_name
             .replace(/[\W_]+/g, " ")

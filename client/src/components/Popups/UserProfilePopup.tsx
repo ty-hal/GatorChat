@@ -149,7 +149,7 @@ const UserProfilePopup: React.FC<Props> = ({
                   >
                     <span className="font-semibold">
                       {userInfo && userInfo.creation_date
-                        ? "Created account on "
+                        ? "Account created: "
                         : ""}
                     </span>
                     {userInfo && userInfo.creation_date

@@ -115,6 +115,7 @@ const UserProfilePopup: React.FC<Props> = ({
                     className="text-left text-base leading-6 text-gray-900"
                     id="majors"
                   >
+                    {/* Test */}
                     <span className="font-semibold">
                       {userInfo && userInfo.majors
                         ? userInfo.majors.length > 1

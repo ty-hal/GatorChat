@@ -98,7 +98,7 @@ func DeleteUser(user_id uint8) (User, error) {
 	}
 
 	for _, thread := range user.GetThreads() {
-		err := middleware.DB.Model(&thread).Clauses(clause.Returning{}).Where("thread_id = ?", thread.ThreadID).Updates(Thread{UserID: 0})
+		err := middleware.DB.Model(&thread).Clauses(clause.Returning{}).Where("thread_id = ? AND user_id = ?", thread.ThreadID, user_id).Update("user_id", 0)
 
 		if err.Error != nil {
 			return user, err.Error
@@ -106,7 +106,7 @@ func DeleteUser(user_id uint8) (User, error) {
 	}
 
 	for _, post := range user.GetPosts() {
-		err := middleware.DB.Model(&post).Clauses(clause.Returning{}).Where("post_id = ?", post.PostID).Updates(Post{UserID: 0})
+		err := middleware.DB.Model(&post).Clauses(clause.Returning{}).Where("post_id = ? AND user_id = ?", post.PostID, user_id).Update("user_id", 0)
 
 		if err.Error != nil {
 			return user, err.Error

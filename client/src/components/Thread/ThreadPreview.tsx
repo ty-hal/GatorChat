@@ -753,7 +753,7 @@ const Thread: React.FC<Props> = ({
             />
           )}
           {/* User Profile Popup  */}
-          {showUserProfilePopup && (
+          {showUserProfilePopup && user_id !== undefined && user_id > 0 &&(
             <UserProfilePopup
               userID={user_id}
               showUserProfilePopup={showUserProfilePopup}

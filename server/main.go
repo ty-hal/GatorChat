@@ -23,7 +23,7 @@ func main() {
 
 	fmt.Println("starting the server on port 9000...")
 
-	log.Fatal(http.ListenAndServe(":9000", corsHandler.Handler(r)))
+	log.Fatal(http.ListenAndServe("localhost:9000", corsHandler.Handler(r)))
 
 	// Close database connection
 	sqlDB, _ := middleware.DB.DB()

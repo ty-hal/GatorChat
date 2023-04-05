@@ -21,6 +21,21 @@ const Home = () => {
   const darkMode = useAtomValue(darkModeAtom);
   const navigate = useNavigate();
 
+  const isSectionEmbedded = async (section_id: number) => {
+    fetch(`http://localhost:9000/api/section/${section_id}/children`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        if (data.length === 0) return false;
+        else return true;
+      });
+  };
+
   useEffect(() => {
     // Get base level sections
     fetch("http://localhost:9000/api/section/1/children", {
@@ -58,9 +73,11 @@ const Home = () => {
       });
   }, []);
 
-  const searchBarHandleOnSelect = (item: SearchBarItem) => {
+  const searchBarHandleOnSelect = async (item: SearchBarItem) => {
     // the item selected
     console.log(item);
+    let embedded = await isSectionEmbedded(item.id);
+    console.log("Embedded: " + embedded);
     let edited_section_name = item.name
       .replace(/[\W_]+/g, " ")
       .replace(/\s+/g, "-")

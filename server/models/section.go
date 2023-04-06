@@ -7,9 +7,10 @@ import (
 )
 
 type Section struct {
-	SectionID   uint8  `json:"section_id" gorm:"primary_key"`
-	SectionName string `json:"section_name"`
-	GroupID     uint   `json:"group_id"`
+	SectionID     uint8  `json:"section_id" gorm:"primary_key"`
+	SectionName   string `json:"section_name"`
+	GroupID       uint   `json:"group_id"`
+	ParentSection bool   `json:"parent_section"`
 }
 
 func GetAllSections() []Section {

@@ -1,11 +1,39 @@
 import { useState, useEffect } from "react";
+interface resetpassword {
+  email: string;
+  message: string;
+}
 const ForgotPassword = () => 
 {
-
-  const submitForm = (e: React.FormEvent) => {
+  //const [code, setname] = useState("");
+  const [email, setemail] = useState("");
+  const [link, setcomment] = useState("");
+  const submitForm = (e: React.FormEvent) => 
+  {
     e.preventDefault();
     console.log("Submit form");
-  };
+    console.log(email);
+      const reset: resetpassword =
+       {
+        email: email,
+        message:link
+      }
+      fetch("http://localhost:9000/api/user/email/verify",
+       {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(reset),
+      }).then((response) => {
+        if (response.status == 200) {
+          return response.json()
+        }
+  
+        alert("Message Could Not Be Delivered")
+      }).then((data) => alert("Message Delivered"))
+    
+    };
 
   return (
     <div className="h-screen bg-gray-50 py-16 dark:bg-gray-900 md:py-8">
@@ -28,14 +56,22 @@ const ForgotPassword = () =>
             placeholder="email@ufl.edu"
             required
             pattern="[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@ufl\.edu"
+            onChange={(event)=>{setemail(event.target.value)}}
           />
           <button
             type="submit"
             className=" w-full rounded-lg bg-blue-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300"
             id = "send"
+            onClick={(event)=>setcomment("your code to reset your password is: xxxtyz")}
+            //onSubmit={}
           >
             Send email
           </button>
+          {/* get email
+            get user id
+            make sure user exists in database by checking email
+            user exists and now we can create a one time link
+            */}
         </form>
       </div>
     </div>

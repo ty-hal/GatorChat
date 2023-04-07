@@ -12,6 +12,8 @@ https://youtu.be/G6EoC8FDVwU
   - As a user, I don't want the header to indicate that I am signed out even momentarily if I am actually logged in, so I will prevent the header text from displaying until after it is fetched.
 - Edited white space that appears in dark mode above and below some of the web pages.
   - As a user, if I enable dark mode then I don't want to see any white space instead of the dark mode colored background, so I changed the web pages' minimum height to fit the screen.
+- Restructured routes ...
+
 
 ### Backend:
 

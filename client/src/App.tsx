@@ -14,8 +14,7 @@ import TermsAndConditions from "./pages/TermsAndConditions";
 import Settings from "./pages/Settings";
 import FAQ from "./pages/FAQ";
 import ContactUs from "./pages/Contactus";
-import Section from "./pages/Section";
-import Thread from "./pages/Thread";
+import DefaultSection from "./pages/DefaultSection";
 
 // Uses local storage to detect user dark mode preference
 export const darkModeAtom = atomWithStorage("dark-mode", true);
@@ -78,29 +77,16 @@ export default function App() {
       <Header />
       <Routes>
         <Route index element={<Home />} />
-        {/* Section */}
-
-        <Route path="/s/">
-          <Route
-            path="t/:thread_id/:thread_name"
-            element={
-              <Thread
-                activeUserID={userID || 0}
-                checkedCookie={checkedCookie}
-              />
-            }
-          />
-          <Route
-            path="*"
-            element={
-              <Section
-                activeUserID={userID || 0}
-                checkedCookie={checkedCookie}
-              />
-            }
-          />
-        </Route>
-
+        {/* Section AND Threads*/}
+        <Route
+          path="/s/*"
+          element={
+            <DefaultSection
+              activeUserID={userID || 0}
+              checkedCookie={checkedCookie}
+            />
+          }
+        />
         <Route path="sign-in" element={<SignIn />} />
         <Route path="register" element={<Register />} />
         <Route path="forgot-password" element={<ForgotPassword />} />

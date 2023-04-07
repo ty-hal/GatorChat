@@ -1,6 +1,6 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import { atom, useAtomValue } from "jotai";
+import { atom } from "jotai";
 import Footer from "../components/Footer";
 import ThreadPost from "../components/Thread/ThreadPost";
 import Message from "../components/Message/MessageFormat";
@@ -8,7 +8,6 @@ import MessageBox from "../components/Message/MessageBox";
 import SkeletonThreadPost from "../components/Thread/SkeletonThreadPost";
 import SkeletonMessage from "../components/Message/SkeletonMessage";
 import SkeletonMessageBox from "../components/Message/SkeletonMessageBox";
-import { userIDAtom } from "../App";
 export const messageBoxAtom = atom("");
 
 type MessageType = {
@@ -40,17 +39,26 @@ type ThreadType = {
 interface Props {
   activeUserID: number;
   checkedCookie: boolean;
+  thread_name: string;
+  thread_id: string;
+  section_name: string;
+  section_id: string;
 }
 
-const Thread: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
-  const { thread_name, thread_id, section_name, section_id } = useParams();
+const Thread: React.FC<Props> = ({
+  activeUserID,
+  checkedCookie,
+  thread_name,
+  thread_id,
+  section_name,
+  section_id,
+}) => {
   const navigate = useNavigate();
   const [sectionName, setSectionName] = useState<string>("");
   const [thread, setThread] = useState<ThreadType>(Object);
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [threadLoaded, setThreadLoaded] = useState(false);
   const [messageLoaded, setMessageLoaded] = useState(false);
-  // const activeUserID = useAtomValue(userIDAtom)
 
   // Get thread
   const getThread = () => {
@@ -65,7 +73,7 @@ const Thread: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         if (data !== null) {
           setThread(data);
         }
@@ -85,7 +93,7 @@ const Thread: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         if (data !== null) {
           setMessages(data);
         }
@@ -102,15 +110,20 @@ const Thread: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
     })
       .then((response) => response.json())
       .then((data) => {
+        if (
+          data.section_name
+            .replace(/[\W_]+/g, " ")
+            .replace(/\s+/g, "-")
+            .toLowerCase() !== section_name
+        ) {
+          navigate(-1);
+        }
+
         setSectionName(data.section_name);
       });
   };
 
   useEffect(() => {
-    // If thread_id (URL param) is not a number, go back to the previous page
-    if (!/^\d+$/.test(thread_id || "") || !/^\d+$/.test(section_id || "")) {
-      // navigate(-1);
-    }
     // Check if thread belongs to the section
     fetch(`http://localhost:9000/api/thread/${thread_id}`, {
       method: "GET",
@@ -118,10 +131,26 @@ const Thread: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
         "content-type": "application/json",
       },
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
       .then((data) => {
         // If section_id's don't match, go back
-        if (data.section_id !== section_id) navigate(-1);
+        if (data.section_id.toString() !== section_id) {
+          console.log(data.section_id + "  " + section_id);
+          navigate(-1);
+        }
+      })
+      .catch((error) => {
+        if (error.response && error.response.status === 404) {
+          console.log("404 Error: Thread not found");
+        } else {
+          console.error("Error fetching API: ", error);
+        }
+        navigate(-1);
       });
 
     if (checkedCookie) {

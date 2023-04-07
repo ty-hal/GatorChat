@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useAtomValue } from "jotai";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { userIDAtom } from "../../App";
 import ProfilePicture from "../ProfilePicture";
 import { RichTextEditor } from "../RichTextEditor";
@@ -66,6 +66,7 @@ const Thread: React.FC<Props> = ({
   const [tempContent, setTempContent] = useState<string>("");
 
   let navigate = useNavigate();
+  const location = useLocation();
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [listening, setListening] = useState(false);
@@ -203,7 +204,7 @@ const Thread: React.FC<Props> = ({
         }
       })
       .then((data) => {
-        console.log(data);
+        // console.log(data);
       });
   };
 
@@ -247,7 +248,8 @@ const Thread: React.FC<Props> = ({
         setShowDropdown(false);
         console.log(`Open thread ${thread_id}`);
         // Navigate to the thread
-        navigate(`/${section_name}/${section_id}/${thread_name}/${thread_id}`);
+        let test = location.pathname;
+        navigate(`${test}/t/${thread_id}/${thread_name}`);
       }}
     >
       {/* Profile Picture, Username, Date, and Dropdown */}
@@ -753,7 +755,7 @@ const Thread: React.FC<Props> = ({
             />
           )}
           {/* User Profile Popup  */}
-          {showUserProfilePopup && user_id !== undefined && user_id > 0 &&(
+          {showUserProfilePopup && user_id !== undefined && user_id > 0 && (
             <UserProfilePopup
               userID={user_id}
               showUserProfilePopup={showUserProfilePopup}

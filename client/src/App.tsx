@@ -79,19 +79,28 @@ export default function App() {
       <Routes>
         <Route index element={<Home />} />
         {/* Section */}
-        <Route
-          path=":section_name/:section_id"
-          element={
-            <Section activeUserID={userID || 0} checkedCookie={checkedCookie} />
-          }
-        />
-        {/* Threads */}
-        <Route
-          path=":section_name/:section_id/:thread_name/:thread_id"
-          element={
-            <Thread activeUserID={userID || 0} checkedCookie={checkedCookie} />
-          }
-        />
+
+        <Route path="/s/">
+          <Route
+            path="t/:thread_id/:thread_name"
+            element={
+              <Thread
+                activeUserID={userID || 0}
+                checkedCookie={checkedCookie}
+              />
+            }
+          />
+          <Route
+            path="*"
+            element={
+              <Section
+                activeUserID={userID || 0}
+                checkedCookie={checkedCookie}
+              />
+            }
+          />
+        </Route>
+
         <Route path="sign-in" element={<SignIn />} />
         <Route path="register" element={<Register />} />
         <Route path="forgot-password" element={<ForgotPassword />} />

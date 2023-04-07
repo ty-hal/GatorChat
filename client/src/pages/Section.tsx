@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Footer from "../components/Footer";
 import ThreadPreview from "../components/Thread/ThreadPreview";
 import CreateThread from "../components/Thread/CreateThread";
@@ -26,8 +26,14 @@ interface Props {
 }
 
 const Section: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
-  const { section_name, section_id } = useParams();
+  // const { section_name, section_id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+  const children = location.state;
+  const pathname = location.pathname;
+
+  let section_id = "1";
+  let section_name = "gi";
 
   const [threads, setThreads] = useState<ThreadType[]>([]);
   const [sectionName, setSectionName] = useState<string>("");
@@ -78,12 +84,34 @@ const Section: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
         setSectionName(data.section_name);
       });
   };
+  const checkPathname = () => {
+    // Get outer section ID
+    let regex = /\/(\d+)\/*([^\/]*)\/*$/;
+    let match = pathname.match(regex);
+    // If no match or its not a number
+    if (!match || !/^\d+$/.test(match[1] || "a")) {
+      navigate(-1);
+    } else {
+      section_id = String(match[1]);
+    }
+
+    // Get outer section name
+    regex = /\/([^\/]+)\/*$/;
+    match = pathname.match(regex);
+    if (!match || /^[0-9]+$/.test(match[1])) {
+      navigate(-1);
+    } else {
+      section_name = match[1];
+    }
+
+    console.log(
+      "Section ID: " + section_id + "  Section Name: " + section_name
+    );
+  };
 
   useEffect(() => {
-    // If section_id (URL param) is not a number, go back to the previous page
-    if (!/^\d+$/.test(section_id || "a")) {
-      navigate(-1);
-    }
+    // console.log(pathname);
+    checkPathname();
     // If user authentication is checked
     if (checkedCookie) {
       getThreads();

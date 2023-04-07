@@ -109,8 +109,21 @@ const Thread: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
   useEffect(() => {
     // If thread_id (URL param) is not a number, go back to the previous page
     if (!/^\d+$/.test(thread_id || "") || !/^\d+$/.test(section_id || "")) {
-      navigate(-1);
+      // navigate(-1);
     }
+    // Check if thread belongs to the section
+    fetch(`http://localhost:9000/api/thread/${thread_id}`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // If section_id's don't match, go back
+        if (data.section_id !== section_id) navigate(-1);
+      });
+
     if (checkedCookie) {
       getSection();
       getThread();

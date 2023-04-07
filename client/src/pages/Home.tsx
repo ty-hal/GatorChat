@@ -8,11 +8,13 @@ import { useAtomValue } from "jotai";
 type Section = {
   section_id: number;
   section_name: string;
+  group_id: number;
 };
 
 type SearchBarItem = {
   id: number;
   name: string;
+  children: boolean;
 };
 
 const Home = () => {
@@ -20,21 +22,6 @@ const Home = () => {
   const [searchBarItems, setSearchBarItems] = useState<SearchBarItem[]>([]);
   const darkMode = useAtomValue(darkModeAtom);
   const navigate = useNavigate();
-
-  const isSectionEmbedded = async (section_id: number) => {
-    fetch(`http://localhost:9000/api/section/${section_id}/children`, {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        if (data.length === 0) return false;
-        else return true;
-      });
-  };
 
   useEffect(() => {
     // Get base level sections
@@ -64,45 +51,36 @@ const Home = () => {
           ({
             section_id,
             section_name,
+            group_id,
           }: {
             section_id: number;
             section_name: string;
-          }) => ({ id: section_id, name: section_name })
+            group_id: number;
+          }) => ({
+            id: section_id,
+            name: section_name,
+            children: group_id === 0 ? true : false, // EDIT THIS TO CHECK IF IT ACTUALLY HAS CHILDREN
+          })
         );
         setSearchBarItems(extractedData);
       });
   }, []);
 
-  const searchBarHandleOnSelect = async (item: SearchBarItem) => {
+  const searchBarHandleOnSelect = (item: SearchBarItem) => {
     // the item selected
     console.log(item);
-    let embedded = await isSectionEmbedded(item.id);
-    console.log("Embedded: " + embedded);
     let edited_section_name = item.name
       .replace(/[\W_]+/g, " ")
       .replace(/\s+/g, "-")
       .toLowerCase();
-    navigate(`/${edited_section_name}/${item.id}`);
+    navigate(`s/${item.id}/${edited_section_name}`, {
+      state: { children: item.children },
+    });
   };
 
   const searchBarFormatResult = (item: SearchBarItem) => {
     console.log(item);
-
-    let edited_section_name = item.name
-      .replace(/[\W_]+/g, " ")
-      .replace(/\s+/g, "-")
-      .toLowerCase();
-    return (
-      <Link to={`/${edited_section_name}/${item.id}`} key={item.id}>
-        <div className="cursor-pointer font-medium text-gray-900 dark:text-white md:text-lg">
-          {item.name}
-        </div>
-      </Link>
-    );
-
-    {
-      /* return <span className="block cursor-pointer text-left">{item.name}</span>; */
-    }
+    return <span className="block cursor-pointer text-left">{item.name}</span>;
   };
 
   return (
@@ -139,8 +117,9 @@ const Home = () => {
           return (
             <div className="ml-8 w-fit py-1" key={index}>
               <Link
-                to={`/${edited_section_name}/${section.section_id}`}
+                to={`s/${section.section_id}/${edited_section_name}`}
                 key={section.section_id}
+                state={{ children: true }}
               >
                 <div className="cursor-pointer font-medium text-gray-900 dark:text-white md:text-lg">
                   {section.section_name}

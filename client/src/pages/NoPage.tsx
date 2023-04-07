@@ -1,8 +1,8 @@
 const NoPage = () => {
   return (
-    <h1 className="mt-12 text-center text-3xl font-semibold">
+    <div className="min-h-screen bg-white pt-12 text-center text-3xl font-semibold dark:bg-gray-900 dark:text-white">
       Page not found!
-    </h1>
+    </div>
   );
 };
 

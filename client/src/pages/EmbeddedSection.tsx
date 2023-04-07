@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Footer from "../components/Footer";
 // import InfiniteScroll from "react-infinite-scroll-component";
 import SkeletonThreadPreview from "../components/Thread/SkeletonThreadPreview";
@@ -18,7 +18,8 @@ interface Props {
 const Section: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
   const { section_name, section_id } = useParams();
   const navigate = useNavigate();
-
+  const { state } = useLocation();
+  const { children } = state;
   const [childSections, setChildSections] = useState<ChildSectionType[]>([]);
   const [sectionName, setSectionName] = useState<string>("");
   //   const [page, setPage] = useState(1);
@@ -54,6 +55,7 @@ const Section: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
   };
 
   useEffect(() => {
+    console.log("Children: " + children);
     // If section_id (URL param) is not a number, go back to the previous page
     if (!/^\d+$/.test(section_id || "a")) {
       navigate(-1);

@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
 import ThreadPreview from "../components/Thread/ThreadPreview";
 import CreateThread from "../components/Thread/CreateThread";
 import InfiniteScroll from "react-infinite-scroll-component";
 import SkeletonThreadPreview from "../components/Thread/SkeletonThreadPreview";
+import EmbeddedSection from "./EmbeddedSection";
 
 type ThreadType = {
   thread_id: number;
@@ -40,6 +41,7 @@ const Section: React.FC<Props> = ({
   const [more, setMore] = useState(true);
   const [loaded, setLoaded] = useState(false);
   // let activeUserID = useAtomValue(userIDAtom);
+  const [embeddedSection, setEmbeddedSection] = useState<any>(null);
 
   const getThreads = () => {
     fetch(
@@ -80,17 +82,33 @@ const Section: React.FC<Props> = ({
     })
       .then((response) => response.json())
       .then((data) => {
+        if (data.parent_section === true) {
+          setEmbeddedSection(
+            <EmbeddedSection
+              activeUserID={activeUserID}
+              checkedCookie={checkedCookie}
+              section_name={section_name}
+              section_id={section_id}
+            />
+          );
+        }
         setSectionName(data.section_name);
       });
   };
 
   useEffect(() => {
-    // If user authentication is checked
+    if (embeddedSection !== null) {
+      return embeddedSection;
+    }
     if (checkedCookie) {
-      getThreads();
       getSection();
+      getThreads();
     }
   }, [section_id, navigate, checkedCookie]);
+
+  if (embeddedSection !== null) {
+    return embeddedSection;
+  }
 
   return (
     <InfiniteScroll

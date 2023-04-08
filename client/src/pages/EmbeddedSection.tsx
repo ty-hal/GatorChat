@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
-// import InfiniteScroll from "react-infinite-scroll-component";
 import SkeletonThreadPreview from "../components/Thread/SkeletonThreadPreview";
 
 type ChildSectionType = {
@@ -13,17 +12,19 @@ type ChildSectionType = {
 interface Props {
   activeUserID: number;
   checkedCookie: boolean;
+  section_name: string;
+  section_id: string;
 }
 
-const Section: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
-  const { section_name, section_id } = useParams();
+const EmbeddedSection: React.FC<Props> = ({
+  activeUserID,
+  checkedCookie,
+  section_name,
+  section_id,
+}) => {
   const navigate = useNavigate();
-  const { state } = useLocation();
-  const { children } = state;
   const [childSections, setChildSections] = useState<ChildSectionType[]>([]);
   const [sectionName, setSectionName] = useState<string>("");
-  //   const [page, setPage] = useState(1);
-  //   const [more, setMore] = useState(true);
   const [loaded, setLoaded] = useState(false);
 
   const getChildSections = () => {
@@ -36,7 +37,6 @@ const Section: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        // if (data && more) {
         setChildSections((childSections) => [
           ...childSections,
           ...data.filter(
@@ -44,42 +44,33 @@ const Section: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
               !childSections.some((t) => t.section_id === section.section_id)
           ),
         ]);
-        //   setPage((page) => page + 1);
-        // } else {
-        //   setMore(false);
-        // }
       })
       .then(() => {
         setLoaded(true);
       });
   };
+  const getSection = () => {
+    fetch(`http://localhost:9000/api/section/${section_id}`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setSectionName(data.section_name);
+      });
+  };
 
   useEffect(() => {
-    console.log("Children: " + children);
-    // If section_id (URL param) is not a number, go back to the previous page
-    if (!/^\d+$/.test(section_id || "a")) {
-      navigate(-1);
-    }
     // If user authentication is checked
     if (checkedCookie) {
       getChildSections();
+      getSection();
     }
   }, [section_id, navigate, checkedCookie]);
 
   return (
-    // <InfiniteScroll
-    //   dataLength={threads.length}
-    //   next={
-    //     checkedCookie
-    //       ? getThreads
-    //       : () =>
-    //           console.log(
-    //             "InfiniteScroll next not loaded yet -- user auth first"
-    //           )
-    //   }
-    //   hasMore={more}
-    //   loader={null}
-    // >
     <div className="min-h-screen bg-white dark:bg-gray-900">
       <div className="flex flex-col items-center rounded-xl px-10 pt-6">
         <div
@@ -91,22 +82,25 @@ const Section: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
 
         {loaded ? (
           childSections.length > 0 ? (
-            childSections.map((section, index) => {
-              return (
-                <div className="bg-blue-300 text-red-500">
-                  {section.section_name}
-                </div>
-                //   <ChildSectionPreview
-                //     key={index} // For TS map purposes
-                //     section_id={section.section_id}
-                //     section_name={section_name ? section_name : ""}
-                //     updatedOn={section.updated_at}
-                //   />
-              );
-            })
+            <div className="grid w-full grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4">
+              {childSections.map((section, index) => {
+                return (
+                  <div className="bg-blue-300 text-red-500" key={index}>
+                    {section.section_name}
+                  </div>
+
+                  //   <ChildSectionPreview
+                  //     key={index} // For TS map purposes
+                  //     section_id={section.section_id}
+                  //     section_name={section_name ? section_name : ""}
+                  //     updatedOn={section.updated_at}
+                  //   />
+                );
+              })}
+            </div>
           ) : (
             <div className="mt-6 dark:text-white">
-              There are no sections in this section yet.
+              There are no child sections in this section yet.
             </div>
           )
         ) : (
@@ -123,4 +117,4 @@ const Section: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
   );
 };
 
-export default Section;
+export default EmbeddedSection;

@@ -1,5 +1,5 @@
 import Footer from "../components/Footer";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
 import { darkModeAtom } from "../App";
@@ -9,7 +9,6 @@ import SectionPreview from "../components/SectionPreview";
 type Section = {
   section_id: number;
   section_name: string;
-  group_id: number;
 };
 
 type SearchBarItem = {
@@ -35,7 +34,7 @@ const Home = () => {
       .then((response) => response.json())
       .then((data) => {
         setSections(data);
-        console.log(data);
+        // console.log(data);
       });
 
     // Get all sections and add them to the search bar
@@ -52,15 +51,12 @@ const Home = () => {
           ({
             section_id,
             section_name,
-            group_id,
           }: {
             section_id: number;
             section_name: string;
-            group_id: number;
           }) => ({
             id: section_id,
             name: section_name,
-            children: group_id === 0 ? true : false, // EDIT THIS TO CHECK IF IT ACTUALLY HAS CHILDREN
           })
         );
         setSearchBarItems(extractedData);
@@ -74,13 +70,12 @@ const Home = () => {
       .replace(/[\W_]+/g, " ")
       .replace(/\s+/g, "-")
       .toLowerCase();
-    navigate(`s/${item.id}/${edited_section_name}`, {
-      state: { children: item.children },
-    });
+
+    // FIX THIS TO NAVIGATE TO EMBEDDED SECTIONS
+    navigate(`s/${item.id}/${edited_section_name}`);
   };
 
   const searchBarFormatResult = (item: SearchBarItem) => {
-    console.log(item);
     return <span className="block cursor-pointer text-left">{item.name}</span>;
   };
 
@@ -111,10 +106,6 @@ const Home = () => {
       {/* Display the sections */}
       <div className="mx-auto mt-2 w-11/12 sm:grid sm:grid-cols-2 md:grid-cols-3 md:gap-2 lg:grid-cols-4">
         {sections.map((section, index) => {
-          let edited_section_name = section.section_name
-            .replace(/[\W_]+/g, " ")
-            .replace(/\s+/g, "-")
-            .toLowerCase();
           return (
             <SectionPreview
               key={index}

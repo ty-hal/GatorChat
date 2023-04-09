@@ -41,7 +41,7 @@ const ProfilePicture: React.FC<Props> = ({ image, className, transform }) => {
       id="profilePicture"
       src={profilePic.src}
       alt=""
-      className={className}
+      // className={className}
     />
   );
 };

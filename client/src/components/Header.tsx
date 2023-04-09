@@ -44,7 +44,6 @@ const Header = () => {
   const [profilePicture, setProfilePicture] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log(userID);
     // GET and SET the user who posted the thread's profile picture
     if (userID !== null && userID > 0) {
       fetch(`http://localhost:9000/api/user/${userID}`, {

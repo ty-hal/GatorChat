@@ -89,11 +89,31 @@ const UserProfilePopup: React.FC<Props> = ({
               <div className="sm:flex sm:items-start">
                 <div className="flex flex-col space-y-3 text-center sm:ml-4 sm:w-11/12">
                   {/* Username */}
-                  <div
-                    className="text-2xl font-bold leading-6 text-gray-900"
-                    id="username"
-                  >
-                    {userInfo && userInfo.username ? userInfo.username : ""}
+                  <div className="ml-3 flex w-full sm:ml-0">
+                    <div
+                      className="mx-auto text-2xl font-bold leading-6 text-gray-900"
+                      id="username"
+                    >
+                      {userInfo && userInfo.username ? userInfo.username : ""}
+                    </div>
+                    <div
+                      className="block cursor-pointer sm:hidden"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowUserProfilePopup(false);
+                      }}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 28 28"
+                        width="30"
+                        height="30"
+                        className="fill-gray-600"
+                      >
+                        <path fill="none" d="M0 0h24v24H0z" />
+                        <path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z" />
+                      </svg>
+                    </div>
                   </div>
                   {/* Profile Picture */}
                   <div

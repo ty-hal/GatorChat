@@ -26,6 +26,7 @@ interface Props {
   checkedCookie: boolean;
   section_name: string;
   section_id: string;
+  embedded: boolean;
 }
 
 const Section: React.FC<Props> = ({
@@ -33,6 +34,7 @@ const Section: React.FC<Props> = ({
   checkedCookie,
   section_name,
   section_id,
+  embedded,
 }) => {
   const navigate = useNavigate();
   const [threads, setThreads] = useState<ThreadType[]>([]);
@@ -55,7 +57,6 @@ const Section: React.FC<Props> = ({
     )
       .then((response) => response.json())
       .then((data) => {
-        // console.log(data);
         if (data && more) {
           setThreads((threads) => [
             ...threads,
@@ -91,11 +92,27 @@ const Section: React.FC<Props> = ({
               section_id={section_id}
             />
           );
+        } else {
+          setEmbeddedSection(false);
         }
         setSectionName(data.section_name);
       });
   };
+  function hyphenToTitleCase(input: string): string {
+    const excludedWords = ["and", "of", "a"];
 
+    const words = input.split("-");
+
+    const titleCaseWords = words.map((word, index) => {
+      if (index === 0 || !excludedWords.includes(word)) {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      } else {
+        return word;
+      }
+    });
+
+    return titleCaseWords.join(" ");
+  }
   useEffect(() => {
     if (checkedCookie) {
       getSection();
@@ -103,7 +120,7 @@ const Section: React.FC<Props> = ({
     }
   }, [section_id, navigate, checkedCookie]);
 
-  if (embeddedSection !== null) {
+  if (embeddedSection !== false && embeddedSection !== null) {
     return embeddedSection;
   }
 
@@ -123,18 +140,26 @@ const Section: React.FC<Props> = ({
     >
       <div className="min-h-screen bg-white dark:bg-gray-900">
         <div className="flex flex-col items-center rounded-xl px-10 pt-6">
-          <div
-            className="mb-4 h-8 cursor-pointer text-2xl font-semibold hover:underline dark:text-white"
-            onClick={() => navigate(-1)}
-          >
-            {loaded && sectionName}
-          </div>
+          {loaded ? (
+            <div
+              className="mb-4 h-8 cursor-pointer text-2xl font-semibold hover:underline dark:text-white"
+              onClick={() => navigate(-1)}
+            >
+              {sectionName}
+            </div>
+          ) : (
+            <div className="mb-4 h-8 animate-pulse cursor-pointer text-2xl font-semibold filter dark:text-white">
+              {hyphenToTitleCase(section_name)}
+            </div>
+          )}
 
           <CreateThread
             section_id={parseInt(section_id || "")}
             loaded={loaded}
+            invisible={embeddedSection === true || embeddedSection === null}
           />
-          {loaded ? (
+
+          {loaded && embeddedSection === false ? (
             threads.length > 0 ? (
               threads.map((thread, index) => {
                 return (

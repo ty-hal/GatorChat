@@ -256,7 +256,7 @@ const Thread: React.FC<Props> = ({
       <div className="absolute top-3 flex w-full items-center">
         {/* Profile Picture */}
         <div
-          className="ml-3 h-8 w-8   overflow-hidden rounded-full bg-white dark:bg-gray-600 sm:h-10 sm:w-10"
+          className="ml-3 h-8 w-8 overflow-hidden rounded-full bg-white dark:bg-gray-600 sm:h-10 sm:w-10"
           id="profile-picture"
           onClick={(e) => {
             e.stopPropagation();
@@ -265,7 +265,7 @@ const Thread: React.FC<Props> = ({
         >
           <ProfilePicture
             image={profilePicture}
-            className="h-8 w-8 sm:h-10 sm:w-10"
+            className="h-10 w-10 text-gray-400 sm:h-12 sm:w-12"
             transform="translate(-2, 0)"
           />
         </div>

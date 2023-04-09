@@ -7,6 +7,7 @@ import SignInPopup from "../Popups/SignInPopup";
 type Props = {
   section_id: number;
   loaded: boolean;
+  invisible?: boolean;
 };
 
 type thread = {
@@ -21,7 +22,7 @@ interface threadBody {
   content: string | undefined;
 }
 
-const CreateThread: React.FC<Props> = ({ section_id, loaded }) => {
+const CreateThread: React.FC<Props> = ({ section_id, loaded, invisible }) => {
   const [openEditor, toggleOpenEditor] = useState(false);
   const [title, setTitle] = useState<string>("");
   const [text, setText] = useState<string>("");
@@ -67,84 +68,90 @@ const CreateThread: React.FC<Props> = ({ section_id, loaded }) => {
   }, [title, text]);
 
   return (
-    <div
-      className={
-        loaded
-          ? "mx-auto w-11/12 cursor-pointer rounded-2xl border-2 border-gray-500 bg-gray-200 shadow-md  dark:border-gray-600 dark:bg-gray-800 lg:w-4/5"
-          : "mx-auto w-11/12 animate-pulse rounded-2xl border-2 border-gray-500 bg-gray-200 shadow-md  dark:border-gray-600 dark:bg-gray-800 lg:w-4/5"
-      }
-      id="container"
-      onClick={(e) => {
-        if (loaded) {
-          e.stopPropagation();
-          console.log(activeUserID);
-          setPopupReason("create thread");
-          if (!activeUserID || activeUserID <= 0) {
-            setShowSignInPopup(true);
-            return;
-          }
-          toggleOpenEditor(!openEditor);
-        }
-      }}
-    >
-      <div
-        className="rounded-2xl py-2 text-center text-lg font-semibold text-gray-900 hover:bg-gray-400 dark:text-white dark:hover:bg-gray-700"
-        id="create-a-thread"
-      >
-        Create a thread
-      </div>
-      {openEditor && (
+    <>
+      {invisible ? (
+        <></>
+      ) : (
         <div
-          className="mt-4 cursor-default text-gray-900 dark:text-white"
+          className={
+            loaded
+              ? "mx-auto w-11/12 cursor-pointer rounded-2xl border-2 border-gray-500 bg-gray-200 shadow-md  dark:border-gray-600 dark:bg-gray-800 lg:w-4/5"
+              : "mx-auto w-11/12 animate-pulse rounded-2xl border-2 border-gray-500 bg-gray-200 shadow-md  dark:border-gray-600 dark:bg-gray-800 lg:w-4/5"
+          }
+          id="container"
           onClick={(e) => {
-            e.stopPropagation();
+            if (loaded) {
+              e.stopPropagation();
+              console.log(activeUserID);
+              setPopupReason("create thread");
+              if (!activeUserID || activeUserID <= 0) {
+                setShowSignInPopup(true);
+                return;
+              }
+              toggleOpenEditor(!openEditor);
+            }
           }}
         >
-          <div className="mx-auto w-11/12">
-            <input
-              type="text"
-              id="title"
-              className="w-full break-normal rounded-lg border border-gray-600 bg-gray-50 p-2 text-gray-900 focus:border-gray-600 focus:outline-none focus:outline-0 focus:ring-0 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-gray-200"
-              placeholder="Title"
-              maxLength={300}
-              onChange={(e) => setTitle(e.currentTarget.value)}
-            />
+          <div
+            className="rounded-2xl py-2 text-center text-lg font-semibold text-gray-900 hover:bg-gray-400 dark:text-white dark:hover:bg-gray-700"
+            id="create-a-thread"
+          >
+            Create a thread
+          </div>
+          {openEditor && (
             <div
-              className="mx-auto mt-2 w-full text-right text-base text-black dark:text-gray-400"
-              id="title-length"
+              className="mt-4 cursor-default text-gray-900 dark:text-white"
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
             >
-              {title.length}/300 characters
-            </div>
-          </div>
-          <div className="mx-auto w-11/12" id="text">
-            <RichTextEditor setText={setText} />
-          </div>
-
-          {thread!.title.length > 2 &&
-            thread!.text !== "" &&
-            thread!.text !== "<p></p>" && (
-              <div className="mx-auto w-11/12 pb-2">
-                <button
-                  className="rounded-lg border border-black bg-blue-600 py-1 px-2 text-white hover:bg-blue-700 dark:border-gray-200 dark:hover:bg-blue-800"
-                  onClick={submitThread}
-                  id="submit"
+              <div className="mx-auto w-11/12">
+                <input
+                  type="text"
+                  id="title"
+                  className="w-full break-normal rounded-lg border border-gray-600 bg-gray-50 p-2 text-gray-900 focus:border-gray-600 focus:outline-none focus:outline-0 focus:ring-0 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-gray-200"
+                  placeholder="Title"
+                  maxLength={300}
+                  onChange={(e) => setTitle(e.currentTarget.value)}
+                />
+                <div
+                  className="mx-auto mt-2 w-full text-right text-base text-black dark:text-gray-400"
+                  id="title-length"
                 >
-                  Create thread
-                </button>
+                  {title.length}/300 characters
+                </div>
               </div>
-            )}
+              <div className="mx-auto w-11/12" id="text">
+                <RichTextEditor setText={setText} />
+              </div>
+
+              {thread!.title.length > 2 &&
+                thread!.text !== "" &&
+                thread!.text !== "<p></p>" && (
+                  <div className="mx-auto w-11/12 pb-2">
+                    <button
+                      className="rounded-lg border border-black bg-blue-600 py-1 px-2 text-white hover:bg-blue-700 dark:border-gray-200 dark:hover:bg-blue-800"
+                      onClick={submitThread}
+                      id="submit"
+                    >
+                      Create thread
+                    </button>
+                  </div>
+                )}
+            </div>
+          )}
+
+          {/* Sign In Popup  */}
+          {showSignInPopup && (
+            <SignInPopup
+              popupReason={popupReason}
+              showSignInPopup={showSignInPopup}
+              setShowSignInPopup={setShowSignInPopup}
+            />
+          )}
         </div>
       )}
-
-      {/* Sign In Popup  */}
-      {showSignInPopup && (
-        <SignInPopup
-          popupReason={popupReason}
-          showSignInPopup={showSignInPopup}
-          setShowSignInPopup={setShowSignInPopup}
-        />
-      )}
-    </div>
+    </>
   );
 };
 

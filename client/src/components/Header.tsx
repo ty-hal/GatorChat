@@ -149,7 +149,7 @@ const Header = () => {
               <Link to="/">
                 {" "}
                 <span
-                  className="rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2"
+                  className="invisible rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2 sm:visible"
                   id="home"
                 >
                   Home
@@ -160,7 +160,7 @@ const Header = () => {
                   <Link to="/sign-in">
                     {" "}
                     <span
-                      className="rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2"
+                      className="invisible rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2 sm:visible"
                       id="sign-in"
                     >
                       Sign in
@@ -169,7 +169,7 @@ const Header = () => {
                   <Link to="/register">
                     {" "}
                     <span
-                      className="mr-6 rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2"
+                      className="invisible mr-6 rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2 sm:visible"
                       id="register"
                     >
                       Register
@@ -251,15 +251,26 @@ const Header = () => {
                         </span>
 
                         {userID === 0 ? (
-                          <Link to="/sign-in">
-                            <span
-                              className="block px-4 py-2 text-sm text-gray-700 hover:rounded-b-md hover:bg-blue-300 hover:text-black"
-                              role="menuitem"
-                              id="sign-in-head"
-                            >
-                              Sign in
-                            </span>
-                          </Link>
+                          <>
+                            <Link to="/register">
+                              <span
+                                className="block px-4 py-2 text-sm text-gray-700 hover:rounded-b-md hover:bg-blue-300 hover:text-black"
+                                role="menuitem"
+                                id="register-head"
+                              >
+                                Register
+                              </span>
+                            </Link>
+                            <Link to="/sign-in">
+                              <span
+                                className="block px-4 py-2 text-sm text-gray-700 hover:rounded-b-md hover:bg-blue-300 hover:text-black"
+                                role="menuitem"
+                                id="sign-in-head"
+                              >
+                                Sign in
+                              </span>
+                            </Link>
+                          </>
                         ) : (
                           <span
                             className="block px-4 py-2 text-sm text-gray-700 hover:rounded-b-md hover:bg-blue-300 hover:text-black"

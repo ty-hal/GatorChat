@@ -97,9 +97,6 @@ const Section: React.FC<Props> = ({
   };
 
   useEffect(() => {
-    if (embeddedSection !== null) {
-      return embeddedSection;
-    }
     if (checkedCookie) {
       getSection();
       getThreads();

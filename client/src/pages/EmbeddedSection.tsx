@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
 import SkeletonThreadPreview from "../components/Thread/SkeletonThreadPreview";
+import SectionPreview from "../components/SectionPreview";
 
 type ChildSectionType = {
   section_id: number;
@@ -72,9 +73,9 @@ const EmbeddedSection: React.FC<Props> = ({
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
-      <div className="flex flex-col items-center rounded-xl px-10 pt-6">
+      <div className="flex flex-col items-center rounded-xl px-10 pt-3">
         <div
-          className="mb-4 h-8 cursor-pointer text-2xl font-semibold hover:underline dark:text-white"
+          className="mb-2 h-8 cursor-pointer text-2xl font-semibold hover:underline dark:text-white"
           onClick={() => navigate(-1)}
         >
           {loaded && sectionName}
@@ -82,19 +83,16 @@ const EmbeddedSection: React.FC<Props> = ({
 
         {loaded ? (
           childSections.length > 0 ? (
-            <div className="grid w-full grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4">
+            <div className="w-full sm:grid sm:grid-cols-2 sm:gap-2  lg:grid-cols-3">
               {childSections.map((section, index) => {
                 return (
-                  <div className="bg-blue-300 text-red-500" key={index}>
-                    {section.section_name}
-                  </div>
-
-                  //   <ChildSectionPreview
-                  //     key={index} // For TS map purposes
-                  //     section_id={section.section_id}
-                  //     section_name={section_name ? section_name : ""}
-                  //     updatedOn={section.updated_at}
-                  //   />
+                  <SectionPreview
+                    key={index}
+                    section_id={section.section_id}
+                    section_name={section.section_name}
+                    section_description={undefined}
+                    parent={false}
+                  />
                 );
               })}
             </div>
@@ -113,7 +111,6 @@ const EmbeddedSection: React.FC<Props> = ({
       </div>
       <Footer />
     </div>
-    // </InfiniteScroll>
   );
 };
 

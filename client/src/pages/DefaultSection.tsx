@@ -39,10 +39,10 @@ const DefaultSection: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
       section_id = match[1];
       section_name = match[2];
     }
-    // console.log(
-    //   "Section ID: " + section_id + "  Section Name: " + section_name
-    // );
-    // console.log("Thread ID: " + thread_id + "  Thread Name: " + thread_name);
+    console.log(
+      "Section ID: " + section_id + "  Section Name: " + section_name
+    );
+    console.log("Thread ID: " + thread_id + "  Thread Name: " + thread_name);
 
     // Return (render) the Thread
     return (
@@ -83,7 +83,7 @@ const DefaultSection: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
     }
   }
 
-  //   console.log("Section ID: " + section_id + "  Section Name: " + section_name);
+  console.log("Section ID: " + section_id + "  Section Name: " + section_name);
 
   return (
     <Section

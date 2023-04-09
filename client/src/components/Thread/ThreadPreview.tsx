@@ -248,22 +248,26 @@ const Thread: React.FC<Props> = ({
         setShowDropdown(false);
         console.log(`Open thread ${thread_id}`);
         // Navigate to the thread
-        let test = location.pathname;
-        navigate(`${test}/t/${thread_id}/${thread_name}`);
+        let path = location.pathname;
+        navigate(`${path}/t/${thread_id}/${thread_name}`);
       }}
     >
       {/* Profile Picture, Username, Date, and Dropdown */}
       <div className="absolute top-3 flex w-full items-center">
         {/* Profile Picture */}
         <div
-          className="ml-3 h-8 w-8 overflow-hidden rounded-full bg-white dark:bg-gray-600 sm:h-10 sm:w-10"
+          className="ml-3 h-8 w-8   overflow-hidden rounded-full bg-white dark:bg-gray-600 sm:h-10 sm:w-10"
           id="profile-picture"
           onClick={(e) => {
             e.stopPropagation();
             setShowUserProfilePopup(true);
           }}
         >
-          <ProfilePicture image={profilePicture} />
+          <ProfilePicture
+            image={profilePicture}
+            className="h-8 w-8 sm:h-10 sm:w-10"
+            transform="translate(-2, 0)"
+          />
         </div>
         {/* Username and Time  */}
         <div className="ml-4 break-words text-left text-base sm:text-lg">

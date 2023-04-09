@@ -14,7 +14,7 @@ const SkeletonThreadPost = () => {
         {/* Username and Time  */}
         <div className="ml-4 flex space-x-2">
           <div className="h-4 w-20 rounded bg-gray-400 dark:bg-gray-600"></div>
-          <div className="h-4 w-36 rounded bg-gray-400 dark:bg-gray-600"></div>
+          <div className="h-4 w-12 rounded bg-gray-400 dark:bg-gray-600 sm:w-36"></div>
           <div className="h-4 w-12 rounded bg-gray-400 dark:bg-gray-600"></div>
         </div>
       </div>

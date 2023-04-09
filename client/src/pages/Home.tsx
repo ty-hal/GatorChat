@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
 import { darkModeAtom } from "../App";
 import { useAtomValue } from "jotai";
+import SectionPreview from "../components/SectionPreview";
 
 type Section = {
   section_id: number;
@@ -108,24 +109,20 @@ const Home = () => {
       </div>
 
       {/* Display the sections */}
-      <div className="mx-auto w-full">
+      <div className="mx-auto mt-2 w-11/12 sm:grid sm:grid-cols-2 md:grid-cols-3 md:gap-2 lg:grid-cols-4">
         {sections.map((section, index) => {
           let edited_section_name = section.section_name
             .replace(/[\W_]+/g, " ")
             .replace(/\s+/g, "-")
             .toLowerCase();
           return (
-            <div className="ml-8 w-fit py-1" key={index}>
-              <Link
-                to={`s/${section.section_id}/${edited_section_name}`}
-                key={section.section_id}
-                state={{ children: true }}
-              >
-                <div className="cursor-pointer font-medium text-gray-900 dark:text-white md:text-lg">
-                  {section.section_name}
-                </div>
-              </Link>
-            </div>
+            <SectionPreview
+              key={index}
+              section_id={section.section_id}
+              section_name={section.section_name}
+              section_description={undefined}
+              parent={true}
+            />
           );
         })}
       </div>

@@ -11,6 +11,8 @@ type Section struct {
 	SectionName   string `json:"section_name"`
 	GroupID       uint   `json:"group_id"`
 	ParentSection bool   `json:"parent_section"`
+	ThreadCount   uint   `json:"thread_count"`
+	Description   string `json:"description"`
 }
 
 func GetAllSections() []Section {

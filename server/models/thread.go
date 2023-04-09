@@ -29,10 +29,10 @@ func GetAllThreads() []Thread {
 	return threads
 }
 
-func GetAllThreadsWithOffset(pageNumber int, pageSize int) []Thread {
+func GetAllThreadsWithOffset(pageNumber int, pageSize int, section_id int) []Thread {
 	var threads []Thread
 
-	middleware.DB.Order("updated_at DESC").Offset((pageNumber - 1) * pageSize).Limit(pageSize).Find(&threads)
+	middleware.DB.Order("updated_at DESC").Where("section_id = ?", section_id).Offset((pageNumber - 1) * pageSize).Limit(pageSize).Find(&threads)
 
 	return threads
 }

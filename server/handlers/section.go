@@ -3,6 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -46,7 +47,7 @@ func GetSectionById(w http.ResponseWriter, r *http.Request) {
 
 func GetSectionThreads(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-
+	fmt.Print("Here")
 	params := mux.Vars(r)
 	queryParams := r.URL.Query()
 	id, err := strconv.Atoi(params["id"])

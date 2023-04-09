@@ -38,20 +38,18 @@ func GetSectionByID(section_id uint8) (Section, error) {
 func GetSectionThreads(section_id uint8, pageNumber int, pageSize int, activeUser uint8) []Thread {
 	var threads []Thread
 
-	for _, thread := range GetAllThreadsWithOffset(pageNumber, pageSize) {
-		if thread.SectionID == section_id {
-			creator, err := GetUserByID(thread.UserID)
-			fmt.Print(thread.UserID)
-			if err != nil {
-				thread.User = "[DELETED]"
-			} else {
-				thread.User = creator.FirstName + " " + creator.LastName
-			}
-
-			thread.UserLiked = CheckThreadLike(activeUser, thread.ThreadID)
-
-			threads = append(threads, thread)
+	for _, thread := range GetAllThreadsWithOffset(pageNumber, pageSize, int(section_id)) {
+		creator, err := GetUserByID(thread.UserID)
+		fmt.Print(thread.UserID)
+		if err != nil {
+			thread.User = "[DELETED]"
+		} else {
+			thread.User = creator.FirstName + " " + creator.LastName
 		}
+
+		thread.UserLiked = CheckThreadLike(activeUser, thread.ThreadID)
+
+		threads = append(threads, thread)
 	}
 
 	return threads

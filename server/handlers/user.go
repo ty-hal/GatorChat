@@ -74,6 +74,24 @@ func GetUserById(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(userDetailed)
 }
 
+func GetUserByEmail(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	queryParams := r.URL.Query()
+	email := queryParams.Get("email")
+
+	user, db_err := models.GetUserByEmail(email)
+
+	// User not found
+	if errors.Is(db_err, gorm.ErrRecordNotFound) {
+		w.WriteHeader(http.StatusNotFound)
+		w.Write([]byte("User Not Found"))
+		return
+	}
+
+	json.NewEncoder(w).Encode(user)
+}
+
 func GetClasses(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 

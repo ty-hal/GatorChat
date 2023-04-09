@@ -11,27 +11,23 @@ const ForgotPassword = () =>
   const submitForm = (e: React.FormEvent) => 
   {
     e.preventDefault();
-    console.log("Submit form");
-    console.log(email);
-      const reset: resetpassword =
-       {
-        email: email,
-        message:link
+    fetch(`http://localhost:9000/api/user/verify?email=${email}`,
+      {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+    }).then((response) => {
+      if (response.status == 200) {
+        return response.json()
       }
-      fetch("http://localhost:9000/api/user/email/verify",
-       {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify(reset),
-      }).then((response) => {
-        if (response.status == 200) {
-          return response.json()
-        }
-  
-        alert("Message Could Not Be Delivered")
-      }).then((data) => alert("Message Delivered"))
+
+      alert("User Not Found")
+    }).then((data) => {
+      if (data) {
+        console.log("User Found")
+      }
+    })
     
     };
 

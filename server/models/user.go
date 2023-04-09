@@ -47,6 +47,18 @@ func GetUserByID(id uint8) (User, error) {
 	return user, nil
 }
 
+func GetUserByEmail(email string) (User, error) {
+	var user User
+
+	err := middleware.DB.Where("email = ?", email).First(&user).Error
+
+	if err != nil {
+		return User{}, err
+	}
+
+	return user, nil
+}
+
 func CreateUser(user User) (User, error) {
 	// Hash Password
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)

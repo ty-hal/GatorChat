@@ -49,6 +49,8 @@ const SignInPopup: React.FC<Props> = ({
                         ? "like a thread"
                         : popupReason === "save thread"
                         ? "save a thread"
+                        : popupReason === "create section"
+                        ? "create a section"
                         : ""}
                     </h3>
                     <div className="mt-2">
@@ -64,6 +66,8 @@ const SignInPopup: React.FC<Props> = ({
                           ? "like a thread, "
                           : popupReason === "save thread"
                           ? "save a thread, "
+                          : popupReason === "create section"
+                          ? "create a section, "
                           : ""}{" "}
                         you must first sign in to your account.
                       </p>

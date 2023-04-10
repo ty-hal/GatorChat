@@ -104,7 +104,7 @@ const Section: React.FC<Props> = ({
       });
   };
   const getUserPermission = () => {
-    fetch(`http://localhost:9000/api/user/roles/${activeUserID}`, {
+    fetch(`http://localhost:9000/api/user/${activeUserID}/roles`, {
       method: "GET",
       headers: {
         "content-type": "application/json",
@@ -113,7 +113,12 @@ const Section: React.FC<Props> = ({
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        // if data has "Admin", setUserAdmin(true); else setUserAdmin(false);
+        setUserAdmin(
+          data.some(
+            (role: { role_id: number; role_name: string }) =>
+              role.role_name === "Admin"
+          )
+        );
       });
   };
   function hyphenToTitleCase(input: string): string {
@@ -135,7 +140,9 @@ const Section: React.FC<Props> = ({
     if (checkedCookie) {
       getSection();
       getThreads();
-      getUserPermission();
+      if (activeUserID !== null && activeUserID !== 0) {
+        getUserPermission();
+      }
     }
   }, [section_id, navigate, checkedCookie]);
 

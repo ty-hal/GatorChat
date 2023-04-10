@@ -6,9 +6,15 @@ type Props = {
     | string;
   className?: string;
   transform?: string;
+  from?: string;
 };
 
-const ProfilePicture: React.FC<Props> = ({ image, className, transform }) => {
+const ProfilePicture: React.FC<Props> = ({
+  image,
+  className,
+  transform,
+  from,
+}) => {
   var profilePic = new Image();
 
   if (!image || image === "") {
@@ -41,7 +47,7 @@ const ProfilePicture: React.FC<Props> = ({ image, className, transform }) => {
       id="profilePicture"
       src={profilePic.src}
       alt=""
-      // className={className}
+      className={from === "register" ? className : ""}
     />
   );
 };

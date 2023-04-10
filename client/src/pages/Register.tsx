@@ -628,6 +628,7 @@ const Register = () => {
                   <ProfilePicture
                     image={profilePicture}
                     className="mt-4 h-40 w-40 rounded-full"
+                    from="register"
                   />
                 )}
               </div>

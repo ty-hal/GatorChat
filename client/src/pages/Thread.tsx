@@ -59,6 +59,7 @@ const Thread: React.FC<Props> = ({
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [threadLoaded, setThreadLoaded] = useState(false);
   const [messageLoaded, setMessageLoaded] = useState(false);
+  const [userAdmin, setUserAdmin] = useState<boolean>(false);
 
   // Get thread
   const getThread = () => {
@@ -122,7 +123,20 @@ const Thread: React.FC<Props> = ({
         setSectionName(data.section_name);
       });
   };
-
+  // Get user permissions
+  const getUserPermission = () => {
+    fetch(`http://localhost:9000/api/user/roles/${activeUserID}`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        // if data has "Admin", setUserAdmin(true); else setUserAdmin(false);
+      });
+  };
   useEffect(() => {
     // Check if thread belongs to the section
     fetch(`http://localhost:9000/api/thread/${thread_id}`, {
@@ -157,6 +171,7 @@ const Thread: React.FC<Props> = ({
       getSection();
       getThread();
       getMessages();
+      getUserPermission();
     }
   }, [section_id, thread_id, navigate, checkedCookie]);
 
@@ -192,6 +207,7 @@ const Thread: React.FC<Props> = ({
             likesCount={thread.likes ? thread.likes : 0}
             messagesCount={messages.length}
             userLiked={thread.user_liked}
+            userAdmin={userAdmin}
             replyFunc={replyFunc}
           />
         ) : (
@@ -211,6 +227,7 @@ const Thread: React.FC<Props> = ({
                 updatedOn={messages.updated_at}
                 likesCount={messages.likes ? messages.likes : 0}
                 userLiked={messages.user_liked}
+                userAdmin={userAdmin}
                 replyFunc={replyFunc}
               />
             );

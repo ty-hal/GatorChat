@@ -53,10 +53,6 @@ const UserProfilePopup: React.FC<Props> = ({
     }
   }, []);
 
-  useEffect(() => {
-    console.log(userInfo);
-  }, [loaded]);
-
   const arrayToString = (array: string[]) => {
     if (array.length === 1) {
       return array[0];

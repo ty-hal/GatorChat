@@ -45,9 +45,7 @@ const SectionPreview: React.FC<Props> = ({
       </div>
       {/* Section Description */}
       <div className="my-2 text-base">
-        {section_description
-          ? section_description
-          : "I am a test description. Please add a description to the section."}
+        {section_description ? section_description : ""}
       </div>
     </div>
   );

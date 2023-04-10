@@ -9,6 +9,7 @@ import SectionPreview from "../components/SectionPreview";
 type Section = {
   section_id: number;
   section_name: string;
+  description: string;
 };
 
 type SearchBarItem = {
@@ -33,8 +34,8 @@ const Home = () => {
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         setSections(data);
-        // console.log(data);
       });
 
     // Get all sections and add them to the search bar
@@ -106,12 +107,13 @@ const Home = () => {
       {/* Display the sections */}
       <div className="mx-auto mt-2 w-11/12 sm:grid sm:grid-cols-2 md:grid-cols-3 md:gap-2 lg:grid-cols-4">
         {sections.map((section, index) => {
+          console.log(section);
           return (
             <SectionPreview
               key={index}
               section_id={section.section_id}
               section_name={section.section_name}
-              section_description={undefined}
+              section_description={section.description}
               parent={true}
             />
           );

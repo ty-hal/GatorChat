@@ -39,6 +39,7 @@ const Section: React.FC<Props> = ({
   const navigate = useNavigate();
   const [threads, setThreads] = useState<ThreadType[]>([]);
   const [sectionName, setSectionName] = useState<string>("");
+  const [sectionDescription, setSectionDescription] = useState<string>("");
   const [page, setPage] = useState(1);
   const [more, setMore] = useState(true);
   const [loaded, setLoaded] = useState(false);
@@ -83,6 +84,7 @@ const Section: React.FC<Props> = ({
     })
       .then((response) => response.json())
       .then((data) => {
+        // console.log(data);
         if (data.parent_section === true) {
           setEmbeddedSection(
             <EmbeddedSection
@@ -90,12 +92,14 @@ const Section: React.FC<Props> = ({
               checkedCookie={checkedCookie}
               section_name={section_name}
               section_id={section_id}
+              description={data.description}
             />
           );
         } else {
           setEmbeddedSection(false);
         }
         setSectionName(data.section_name);
+        setSectionDescription(data.description);
       });
   };
   function hyphenToTitleCase(input: string): string {
@@ -142,17 +146,22 @@ const Section: React.FC<Props> = ({
         <div className="flex flex-col items-center rounded-xl px-10 pt-6">
           {loaded ? (
             <div
-              className="mb-4 h-8 cursor-pointer text-2xl font-semibold hover:underline dark:text-white"
+              className="h-8 cursor-pointer text-2xl font-semibold hover:underline dark:text-white"
               onClick={() => navigate(-1)}
             >
               {sectionName}
             </div>
           ) : (
-            <div className="mb-4 h-8 animate-pulse cursor-pointer text-2xl font-semibold filter dark:text-white">
+            <div className="h-8 animate-pulse cursor-pointer text-2xl font-semibold filter dark:text-white">
               {hyphenToTitleCase(section_name)}
             </div>
           )}
 
+          {loaded && embeddedSection === false && (
+            <div className="mb-2 text-lg font-normal dark:text-white">
+              {sectionDescription}
+            </div>
+          )}
           <CreateThread
             section_id={parseInt(section_id || "")}
             loaded={loaded}

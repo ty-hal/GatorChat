@@ -16,6 +16,7 @@ type ChildSectionType = {
   section_id: number;
   section_name: string;
   group_id: number;
+  description: string;
 };
 
 interface Props {
@@ -23,6 +24,7 @@ interface Props {
   checkedCookie: boolean;
   section_name: string;
   section_id: string;
+  description: string;
 }
 
 const EmbeddedSection: React.FC<Props> = ({
@@ -30,6 +32,7 @@ const EmbeddedSection: React.FC<Props> = ({
   checkedCookie,
   section_name,
   section_id,
+  description,
 }) => {
   const navigate = useNavigate();
   const [childSections, setChildSections] = useState<ChildSectionType[]>([]);
@@ -132,12 +135,17 @@ const EmbeddedSection: React.FC<Props> = ({
       <div className="flex flex-col items-center rounded-xl px-10 pt-6">
         {/* Section Name */}
         {loaded ? (
-          <div
-            className="mb-4 h-8 cursor-pointer text-2xl font-semibold hover:underline dark:text-white"
-            onClick={() => navigate(-1)}
-          >
-            {sectionName}
-          </div>
+          <>
+            <div
+              className="h-8 cursor-pointer text-2xl font-semibold hover:underline dark:text-white"
+              onClick={() => navigate(-1)}
+            >
+              {sectionName}
+            </div>
+            <div className="mb-2 text-lg font-normal dark:text-white">
+              {description}
+            </div>
+          </>
         ) : (
           <div className="mb-4 h-8 animate-pulse cursor-pointer text-2xl font-semibold filter dark:text-white">
             {hyphenToTitleCase(section_name)}
@@ -179,7 +187,7 @@ const EmbeddedSection: React.FC<Props> = ({
                     key={index}
                     section_id={section.section_id}
                     section_name={section.section_name}
-                    section_description={undefined}
+                    section_description={section.description}
                     parent={false}
                   />
                 );

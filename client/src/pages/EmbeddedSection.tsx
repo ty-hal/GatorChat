@@ -6,6 +6,8 @@ import Footer from "../components/Footer";
 import SkeletonThreadPreview from "../components/Thread/SkeletonThreadPreview";
 import SectionPreview from "../components/SectionPreview";
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
+import CreateSectionPopup from "../components/Popups/CreateSectionPopup";
+import SignInPopup from "../components/Popups/SignInPopup";
 
 type SearchBarItem = {
   id: number;
@@ -41,6 +43,9 @@ const EmbeddedSection: React.FC<Props> = ({
   const [loaded, setLoaded] = useState(false);
   const [searchBarItems, setSearchBarItems] = useState<SearchBarItem[]>([]);
   const darkMode = useAtomValue(darkModeAtom);
+  const [showCreateSectionPopup, setShowCreateSectionPopup] =
+    useState<boolean>(false);
+  const [showSignInPopup, setShowSignInPopup] = useState<boolean>(false);
 
   const getChildSections = () => {
     fetch(`http://localhost:9000/api/section/${section_id}/children`, {
@@ -154,26 +159,44 @@ const EmbeddedSection: React.FC<Props> = ({
 
         {/* Search Bar */}
         {loaded && (
-          <div className="mx-auto my-1 w-full outline-none lg:w-5/6">
-            <ReactSearchAutocomplete
-              items={searchBarItems}
-              fuseOptions={{ threshold: 0.3 }}
-              onSelect={searchBarHandleOnSelect}
-              formatResult={searchBarFormatResult}
-              placeholder={searchMessage}
-              styling={{
-                backgroundColor: `${
-                  darkMode ? "rgb(17 24 39)" : "rgb(255,255,255)"
-                }`,
-                iconColor: `${darkMode ? "rgb(255,255,255)" : "rgb(0,0,0)"}`,
-                color: `${darkMode ? "rgb(255,255,255)" : "rgb(0,0,0)"}`,
-                hoverBackgroundColor: `${
-                  darkMode ? "rgb(28 100 242)" : "rgba(28, 99, 242, 0.7)"
-                }`,
-                border: `${darkMode ? "1px solid #dfe1e5" : "1px solid #000"}`,
-                clearIconMargin: "3px 8px 0 0",
+          <div className="flex w-full items-center justify-center space-x-2 lg:w-2/3">
+            <div className="mx-auto my-1 w-full outline-none ">
+              <ReactSearchAutocomplete
+                items={searchBarItems}
+                fuseOptions={{ threshold: 0.3 }}
+                onSelect={searchBarHandleOnSelect}
+                formatResult={searchBarFormatResult}
+                placeholder={searchMessage}
+                styling={{
+                  backgroundColor: `${
+                    darkMode ? "rgb(17 24 39)" : "rgb(255,255,255)"
+                  }`,
+                  iconColor: `${darkMode ? "rgb(255,255,255)" : "rgb(0,0,0)"}`,
+                  color: `${darkMode ? "rgb(255,255,255)" : "rgb(0,0,0)"}`,
+                  hoverBackgroundColor: `${
+                    darkMode ? "rgb(28 100 242)" : "rgba(28, 99, 242, 0.7)"
+                  }`,
+                  border: `${
+                    darkMode ? "1px solid #dfe1e5" : "1px solid #000"
+                  }`,
+                  clearIconMargin: "3px 8px 0 0",
+                }}
+              />
+            </div>
+            <div
+              className="m-auto flex h-12 cursor-pointer items-center justify-center rounded-full border border-black p-2 hover:bg-blue-400 dark:border-white dark:hover:bg-blue-600 md:w-1/4"
+              onClick={(e) => {
+                if (!activeUserID || activeUserID <= 0) {
+                  setShowSignInPopup(true);
+                  return;
+                }
+                setShowCreateSectionPopup(true);
               }}
-            />
+            >
+              <div className="w-full text-center text-sm dark:text-white lg:text-base">
+                Create section
+              </div>
+            </div>
           </div>
         )}
 
@@ -204,6 +227,24 @@ const EmbeddedSection: React.FC<Props> = ({
             <SkeletonThreadPreview />
             <SkeletonThreadPreview />
           </>
+        )}
+
+        {/* Delete Popup  */}
+        {showCreateSectionPopup && (
+          <CreateSectionPopup
+            showCreateSectionPopup={showCreateSectionPopup}
+            setShowCreateSectionPopup={setShowCreateSectionPopup}
+            activeUserID={activeUserID}
+            parentSectionName={sectionName}
+          />
+        )}
+        {/* Sign In Popup  */}
+        {showSignInPopup && (
+          <SignInPopup
+            popupReason="create section"
+            showSignInPopup={showSignInPopup}
+            setShowSignInPopup={setShowSignInPopup}
+          />
         )}
       </div>
       <Footer />

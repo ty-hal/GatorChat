@@ -20,6 +20,7 @@ type Props = {
   likesCount: number;
   messagesCount: number;
   userLiked: boolean;
+  userAdmin: boolean;
   replyFunc: () => void;
 };
 
@@ -39,6 +40,7 @@ const Thread: React.FC<Props> = ({
   likesCount,
   messagesCount,
   userLiked,
+  userAdmin,
   replyFunc,
 }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
@@ -676,7 +678,7 @@ const Thread: React.FC<Props> = ({
               </div>
 
               {/* IF USER HAS ACCESS TO MODIFY THIS THREAD */}
-              {user_id === activeUserID ? (
+              {user_id === activeUserID || userAdmin ? (
                 <div className="cursor-pointer" role="none">
                   {/* Edit */}
                   <div

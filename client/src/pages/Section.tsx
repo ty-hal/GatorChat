@@ -45,6 +45,7 @@ const Section: React.FC<Props> = ({
   const [loaded, setLoaded] = useState(false);
   // let activeUserID = useAtomValue(userIDAtom);
   const [embeddedSection, setEmbeddedSection] = useState<any>(null);
+  const [userAdmin, setUserAdmin] = useState<boolean>(false);
 
   const getThreads = () => {
     fetch(
@@ -102,6 +103,19 @@ const Section: React.FC<Props> = ({
         setSectionDescription(data.description);
       });
   };
+  const getUserPermission = () => {
+    fetch(`http://localhost:9000/api/user/roles/${activeUserID}`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        // if data has "Admin", setUserAdmin(true); else setUserAdmin(false);
+      });
+  };
   function hyphenToTitleCase(input: string): string {
     const excludedWords = ["and", "of", "a"];
 
@@ -121,6 +135,7 @@ const Section: React.FC<Props> = ({
     if (checkedCookie) {
       getSection();
       getThreads();
+      getUserPermission();
     }
   }, [section_id, navigate, checkedCookie]);
 
@@ -188,6 +203,7 @@ const Section: React.FC<Props> = ({
                       thread.message_count ? thread.message_count : 0
                     }
                     userLiked={thread.user_liked}
+                    userAdmin={userAdmin}
                   />
                 );
               })

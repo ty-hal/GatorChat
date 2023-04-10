@@ -11,6 +11,11 @@ const ForgotPassword = () =>
   const submitForm = (e: React.FormEvent) => 
   {
     e.preventDefault();
+    const reset:resetpassword = 
+    {
+      email: email,
+      message: link
+    }
     fetch(`http://localhost:9000/api/user/verify?email=${email}`,
       {
       method: "POST",
@@ -18,7 +23,16 @@ const ForgotPassword = () =>
         "content-type": "application/json",
       },
     }).then((response) => {
-      if (response.status == 200) {
+      if (response.status == 200) 
+      {
+        fetch("http://localhost:9000/api/contact", 
+        {
+          method: "POST",
+          headers: {
+          "content-type": "application/json",
+        },
+          body: JSON.stringify(reset),
+          })
         return response.json()
       }
 

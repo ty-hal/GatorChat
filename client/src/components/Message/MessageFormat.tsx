@@ -20,6 +20,7 @@ type Props = {
   updatedOn: string;
   likesCount: number;
   userLiked: boolean;
+  userAdmin: boolean;
   replyFunc: () => void;
 };
 
@@ -36,6 +37,7 @@ const Message: React.FC<Props> = ({
   updatedOn,
   likesCount,
   userLiked,
+  userAdmin,
   replyFunc,
 }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
@@ -537,7 +539,7 @@ const Message: React.FC<Props> = ({
               </div>
 
               {/* IF USER HAS ACCESS TO MODIFY THIS MESSAGE */}
-              {user_id === activeUserID ? (
+              {user_id === activeUserID || userAdmin ? (
                 <div className="cursor-pointer" role="none">
                   {/* Edit */}
                   <div
@@ -665,7 +667,7 @@ const Message: React.FC<Props> = ({
         />
       )}
       {/* User Profile Popup  */}
-      {showUserProfilePopup && user_id !== undefined && user_id > 0 &&(
+      {showUserProfilePopup && user_id !== undefined && user_id > 0 && (
         <UserProfilePopup
           userID={user_id}
           showUserProfilePopup={showUserProfilePopup}

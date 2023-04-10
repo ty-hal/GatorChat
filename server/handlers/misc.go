@@ -34,7 +34,7 @@ func ContactUs(w http.ResponseWriter, r *http.Request) {
 	pass := os.Getenv("app_password")
 
 	from := user
-	to := user
+	to := contact.Email
 	subject := "New Contact from " + contact.Email
 	body := "From: " + contact.Email + "\n" + "Name: " + contact.Name + "\n" + "Message: " + contact.Message
 

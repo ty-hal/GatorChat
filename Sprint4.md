@@ -12,8 +12,16 @@ https://youtu.be/G6EoC8FDVwU
   - As a user, I don't want the header to indicate that I am signed out even momentarily if I am actually logged in, so I will prevent the header text from displaying until after it is fetched.
 - Edited white space that appears in dark mode above and below some of the web pages.
   - As a user, if I enable dark mode then I don't want to see any white space instead of the dark mode colored background, so I changed the web pages' minimum height to fit the screen.
-- Restructured routes ...
-
+- Restructured section and thread routes to accomodate for embedded sections
+  - As a user, I want to access embedded sections (e.g. "Sports" -> "Football"), so I restructured our front end routing to allow for embedded sections.
+- Added embedded section page
+  - As a user, I want to see an embedded section and all of its child sections, so I created a template page that displays the parent and child sections.
+- Added a button to request to create a section for embedded sections
+  - As a user, I want to be able to create a section if it is currently not on Gator Chat, so I created a button to request for an admin to create the section.
+- Edited section preview component
+  - As a user, I want to see the section's name and description, so I created a component to display the section's description below the section's name.
+- Added description to sections
+  - As a user, I want to be able to see a section's description, so I edited the section page to display the section's description below the section's name.
 
 ### Backend:
 

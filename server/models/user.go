@@ -134,8 +134,25 @@ func DeleteUser(user_id uint8) (User, error) {
 	return user, nil
 }
 
-func Update() {
-	// figure out criteria for that later, gonna be multiple update functions
+type UpdatedUser struct {
+	Password string
+}
+
+func UpdatePassword(user_id uint8, updatedUser UpdatedUser) (User, error) {
+	var user User
+
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(updatedUser.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return User{}, errors.New("could not hash password")
+	}
+
+	dbErr := middleware.DB.Model(&user).Clauses(clause.Returning{}).Where("user_id = ?", user_id).Updates(User{Password: string(hashedPassword)})
+
+	if dbErr.Error != nil {
+		return user, dbErr.Error
+	}
+
+	return user, nil
 }
 
 func CheckSignIn(email string, password string) (User, error) {

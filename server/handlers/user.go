@@ -279,6 +279,29 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(userDeleted)
 }
 
-func UpdateUser(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("UPDATE USER")
+func UpdatePassword(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	params := mux.Vars(r)
+	id, err := strconv.Atoi(params["id"])
+
+	// Invalid parameter
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("Invalid Parameter: id"))
+		return
+	}
+
+	var updatedUser models.UpdatedUser
+	json.NewDecoder(r.Body).Decode(&updatedUser)
+
+	userUpdated, userErr := models.UpdatePassword(uint8(id), updatedUser)
+
+	if userErr != nil {
+		w.WriteHeader(http.StatusNotFound)
+		w.Write([]byte(userErr.Error()))
+		return
+	}
+
+	json.NewEncoder(w).Encode(userUpdated)
 }

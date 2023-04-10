@@ -22,6 +22,7 @@ func Router() *mux.Router {
 	router.HandleFunc("/api/user/{id}", handlers.UpdatePassword).Methods("PUT")
 	router.HandleFunc("/api/user/{id}/classes", handlers.GetClasses).Methods("GET")
 	router.HandleFunc("/api/user/{id}/majors", handlers.GetMajors).Methods("GET")
+	router.HandleFunc("/api/user/{id}/roles", handlers.GetRoles).Methods("GET")
 	router.HandleFunc("/api/user/verify", handlers.GetUserByEmail).Methods("POST")
 
 	// Section Routes

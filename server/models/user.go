@@ -101,7 +101,7 @@ func DeleteUser(user_id uint8) (User, error) {
 		}
 	}
 
-	for _, userRole := range GetAllUserRoleRowsFromUser(user) {
+	for _, userRole := range GetUserRoleRowsFromUser(user_id) {
 		deletedUserRole := middleware.DB.Unscoped().Where("user_role_id = ?", userRole.UserRoleID).Delete(&UserRoles{})
 
 		if deletedUserRole.Error != nil {

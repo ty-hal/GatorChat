@@ -18,14 +18,25 @@ func GetAllUserRoleRows() []UserRoles {
 	return userRoles
 }
 
-func GetAllUserRoleRowsFromUser(user User) []UserRoles {
+func GetUserRoleRowsFromUser(userID uint8) []UserRoles {
 	var userRoleRows []UserRoles
 
-	for _, userRoleRow := range GetAllUserRoleRows() {
-		if userRoleRow.UserID == user.UserID {
-			userRoleRows = append(userRoleRows, userRoleRow)
+	middleware.DB.Find(&userRoleRows, "user_id = ?", userID)
+
+	return userRoleRows
+}
+
+func GetAllRolesFromUser(userID uint8) []Role {
+	var userRoles []Role
+
+	for _, userRoleRow := range GetUserRoleRowsFromUser(userID) {
+		if userRoleRow.UserID == userID {
+			role, err := GetRoleByID(userRoleRow.RoleID)
+			if err == nil {
+				userRoles = append(userRoles, role)
+			}
 		}
 	}
 
-	return userRoleRows
+	return userRoles
 }

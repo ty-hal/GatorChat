@@ -44,8 +44,6 @@ const Section: React.FC<Props> = ({
   const [more, setMore] = useState<boolean>(true);
   const [loaded, setLoaded] = useState<boolean>(false);
   const [bookmarked, setBookmarked] = useState<boolean>(false);
-  // let activeUserID = useAtomValue(userIDAtom);
-  const [embeddedSection, setEmbeddedSection] = useState<any>(null);
   const [userAdmin, setUserAdmin] = useState<boolean>(false);
 
   const getThreads = () => {
@@ -86,20 +84,6 @@ const Section: React.FC<Props> = ({
     })
       .then((response) => response.json())
       .then((data) => {
-        // console.log(data);
-        if (data.parent_section === true) {
-          setEmbeddedSection(
-            <EmbeddedSection
-              activeUserID={activeUserID}
-              checkedCookie={checkedCookie}
-              section_name={section_name}
-              section_id={section_id}
-              description={data.description}
-            />
-          );
-        } else {
-          setEmbeddedSection(false);
-        }
         setSectionName(data.section_name);
         setSectionDescription(data.description);
       });
@@ -153,8 +137,16 @@ const Section: React.FC<Props> = ({
     }
   }, [section_id, navigate, checkedCookie]);
 
-  if (embeddedSection !== false && embeddedSection !== null) {
-    return embeddedSection;
+  if (embedded) {
+    return (
+      <EmbeddedSection
+        activeUserID={activeUserID}
+        checkedCookie={checkedCookie}
+        section_name={section_name}
+        section_id={section_id}
+        description={sectionDescription}
+      />
+    );
   }
 
   return (
@@ -173,7 +165,8 @@ const Section: React.FC<Props> = ({
     >
       <div className="min-h-screen bg-white dark:bg-gray-900">
         <div className="flex flex-col items-center rounded-xl px-10 pt-6">
-          {loaded ? (
+          {/* Section Name */}
+          {sectionName ? (
             <div className="relative">
               <div
                 className="cursor-pointer text-2xl font-semibold hover:underline dark:text-white"
@@ -231,23 +224,46 @@ const Section: React.FC<Props> = ({
               </div>
             </div>
           ) : (
-            <div className="h-8 animate-pulse cursor-pointer text-2xl font-semibold filter dark:text-white">
-              {hyphenToTitleCase(section_name)}
+            <div className="relative">
+              <div className="h-8 animate-pulse text-2xl font-semibold filter dark:text-white">
+                {hyphenToTitleCase(section_name)}
+              </div>
+              <div
+                className="absolute top-0 -right-6 animate-pulse sm:-right-12"
+                title="Bookmark this section"
+                id="loading-bookmark-section"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  height="24"
+                  className="h-8 w-8  rounded-md stroke-blue-600 p-1"
+                >
+                  <path
+                    d="M5 2H19C19.5523 2 20 2.44772 20 3V22.1433C20 22.4194 19.7761 22.6434 19.5 22.6434C19.4061 22.6434 19.314 22.6168 19.2344 22.5669L12 18.0313L4.76559 22.5669C4.53163 22.7136 4.22306 22.6429 4.07637 22.4089C4.02647 22.3293 4 22.2373 4 22.1433V3C4 2.44772 4.44772 2 5 2ZM18 4H6V19.4324L12 15.6707L18 19.4324V4Z"
+                    fill="rgb(28 100 242 / var(--tw-bg-opacity))"
+                  ></path>
+                </svg>
+              </div>
             </div>
           )}
 
-          {loaded && embeddedSection === false && (
+          {/* Section Description */}
+          {sectionDescription ? (
             <div className="mb-2 text-lg font-normal dark:text-white">
               {sectionDescription}
             </div>
+          ) : (
+            <div className="mx-auto my-2 mb-3 h-4 w-1/2 animate-pulse rounded bg-gray-500 dark:bg-gray-300 md:w-1/3 lg:w-1/4"></div>
           )}
+
           <CreateThread
             section_id={parseInt(section_id || "")}
             loaded={loaded}
-            invisible={embeddedSection === true || embeddedSection === null}
           />
 
-          {loaded && embeddedSection === false ? (
+          {loaded ? (
             threads.length > 0 ? (
               threads.map((thread, index) => {
                 return (

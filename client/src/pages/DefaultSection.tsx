@@ -14,7 +14,10 @@ const DefaultSection: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { parent_section } = location.state;
-  // setEmbeddedSection(parent_section || false);
+
+  useEffect(() => {
+    setEmbeddedSection(parent_section);
+  }, [parent_section]);
 
   const pathname = location.pathname;
 
@@ -23,7 +26,6 @@ const DefaultSection: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
   let thread_id = "0";
   let thread_name = "";
 
-  // useEffect(() => {
   // Check if the pathname is a Thread
   let regex = /^\/s(?:\/\d+\/[A-Za-z-]+)+\/t(?:\/\d+\/[A-Za-z-]+)$/;
   let match = pathname.match(regex);
@@ -78,19 +80,6 @@ const DefaultSection: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
     } else {
       section_id = String(match[1]);
     }
-
-    // fetch(`http://localhost:9000/api/section/${section_id}`, {
-    //   method: "GET",
-    //   headers: {
-    //     "content-type": "application/json",
-    //   },
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     if (data.parent_section === true) {
-    //       setEmbeddedSection(true);
-    //     }
-    //   });
   }
 
   // If it's a section, get outer section name
@@ -101,9 +90,7 @@ const DefaultSection: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
   } else {
     section_name = match[1];
   }
-  // }, []);
 
-  // console.log("CHILD: " + parent_section);
   // console.log("Section ID: " + section_id + "  Section Name: " + section_name);
 
   return (

@@ -146,6 +146,42 @@ func GetRoles(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(userRoles)
 }
 
+func GetSavedSections(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	params := mux.Vars(r)
+	id, err := strconv.Atoi(params["id"])
+
+	// Invalid parameter
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("Invalid Parameter: id"))
+		return
+	}
+
+	userSections := models.GetSavedSectionsFromUser(uint8(id))
+
+	json.NewEncoder(w).Encode(userSections)
+}
+
+func GetSavedThreads(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	params := mux.Vars(r)
+	id, err := strconv.Atoi(params["id"])
+
+	// Invalid parameter
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("Invalid Parameter: id"))
+		return
+	}
+
+	userThreads := models.GetSavedThreadsFromUser(uint8(id))
+
+	json.NewEncoder(w).Encode(userThreads)
+}
+
 func CreateUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 

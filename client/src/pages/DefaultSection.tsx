@@ -20,6 +20,7 @@ const DefaultSection: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
   let thread_id = "0";
   let thread_name = "";
 
+  console.log(pathname);
   // Check if the pathname is a Thread
   let regex = /^\/s(?:\/\d+\/[A-Za-z-]+)+\/t(?:\/\d+\/[A-Za-z-]+)$/;
   let match = pathname.match(regex);
@@ -60,7 +61,7 @@ const DefaultSection: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
   }
 
   // Check if the pathname is a Section
-  regex = /^\/s(?:\/\d+\/[A-Za-z-]+)+$/;
+  regex = /^\/s(?:\/\d+\/[A-Za-z][\w-]*)+$/;
   match = pathname.match(regex);
   if (!match) {
     navigate(-1);

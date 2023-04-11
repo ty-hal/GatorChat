@@ -13,6 +13,7 @@ type Section struct {
 	ParentSection bool   `json:"parent_section"`
 	ThreadCount   uint   `json:"thread_count"`
 	Description   string `json:"description"`
+	UserSaved     bool   `json:"user_saved" gorm:"-"`
 }
 
 func GetAllSections() []Section {
@@ -23,7 +24,7 @@ func GetAllSections() []Section {
 	return sections
 }
 
-func GetSectionByID(section_id uint8) (Section, error) {
+func GetSectionByID(section_id uint8, activeUser uint8) (Section, error) {
 	var section Section
 
 	err := middleware.DB.First(&section, section_id).Error
@@ -31,6 +32,8 @@ func GetSectionByID(section_id uint8) (Section, error) {
 	if err != nil {
 		return Section{}, err
 	}
+
+	section.UserSaved = CheckSectionSaved(activeUser, section_id)
 
 	return section, nil
 }
@@ -55,10 +58,14 @@ func GetSectionThreads(section_id uint8, pageNumber int, pageSize int, activeUse
 	return threads
 }
 
-func GetSectionsByGroup(group_id uint) []Section {
+func GetSectionsByGroup(group_id uint, activeUser uint8) []Section {
 	var group []Section
 
 	middleware.DB.Find(&group, "group_id = ?", group_id)
+
+	for _, section := range group {
+		section.UserSaved = CheckSectionSaved(activeUser, section.SectionID)
+	}
 
 	return group
 }

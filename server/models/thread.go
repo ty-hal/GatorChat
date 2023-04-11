@@ -19,6 +19,7 @@ type Thread struct {
 	Likes        uint8     `json:"likes"`
 	MessageCount uint8     `json:"message_count"`
 	UserLiked    bool      `json:"user_liked" gorm:"-"`
+	UserSaved    bool      `json:"user_saved" gorm:"-"`
 }
 
 func GetAllThreads() []Thread {

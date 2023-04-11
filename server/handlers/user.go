@@ -182,6 +182,41 @@ func GetSavedThreads(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(userThreads)
 }
 
+func ToggleSectionSaved(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	queryParams := r.URL.Query()
+	activeUser, _ := strconv.Atoi(queryParams.Get("activeUser"))
+	sectionID, _ := strconv.Atoi(queryParams.Get("sectionID"))
+
+	savedSection := models.ToggleSavedSection(uint8(activeUser), uint8(sectionID))
+	json.NewEncoder(w).Encode(savedSection)
+}
+
+/*
+func SaveSection(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	queryParams := r.URL.Query()
+	activeUser, _ := strconv.Atoi(queryParams.Get("activeUser"))
+	sectionID, _ := strconv.Atoi(queryParams.Get("sectionID"))
+
+	savedSection := models.SaveSection(uint8(activeUser), uint8(sectionID))
+	json.NewEncoder(w).Encode(savedSection)
+}
+
+func UnsaveSection(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	queryParams := r.URL.Query()
+	activeUser, _ := strconv.Atoi(queryParams.Get("activeUser"))
+	sectionID, _ := strconv.Atoi(queryParams.Get("sectionID"))
+
+	unsavedSection := models.UnsaveSection(uint8(activeUser), uint8(sectionID))
+	json.NewEncoder(w).Encode(unsavedSection)
+}
+*/
+
 func CreateUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 

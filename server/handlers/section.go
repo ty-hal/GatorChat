@@ -24,7 +24,10 @@ func GetSectionById(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	params := mux.Vars(r)
+	queryParams := r.URL.Query()
+
 	id, err := strconv.Atoi(params["id"])
+	activeUser, _ := strconv.Atoi(queryParams.Get("activeUser"))
 
 	// Invalid parameter
 	if err != nil {
@@ -33,7 +36,7 @@ func GetSectionById(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	section, db_err := models.GetSectionByID(uint8(id))
+	section, db_err := models.GetSectionByID(uint8(id), uint8(activeUser))
 
 	// Thread not found
 	if errors.Is(db_err, gorm.ErrRecordNotFound) {
@@ -71,8 +74,10 @@ func GetChildGroup(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	params := mux.Vars(r)
+	queryParams := r.URL.Query()
 
 	id, err := strconv.Atoi(params["id"])
+	activeUser, _ := strconv.Atoi(queryParams.Get("activeUser"))
 
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
@@ -80,7 +85,7 @@ func GetChildGroup(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	child_sections := models.GetChildGroup(uint8(id))
+	child_sections := models.GetChildGroup(uint8(id), uint8(activeUser))
 
 	json.NewEncoder(w).Encode(child_sections)
 }
@@ -89,8 +94,10 @@ func GetParentGroup(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	params := mux.Vars(r)
+	queryParams := r.URL.Query()
 
 	id, err := strconv.Atoi(params["id"])
+	activeUser, _ := strconv.Atoi(queryParams.Get("activeUser"))
 
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
@@ -98,7 +105,7 @@ func GetParentGroup(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	parent_sections := models.GetParentGroup(uint(id))
+	parent_sections := models.GetParentGroup(uint(id), uint8(activeUser))
 
 	json.NewEncoder(w).Encode(parent_sections)
 }

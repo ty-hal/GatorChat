@@ -5,7 +5,7 @@ type Props = {
   section_name: string;
   section_id: number;
   section_description?: string;
-  parent: boolean;
+  parent?: boolean;
 };
 
 const SectionPreview: React.FC<Props> = ({
@@ -34,7 +34,17 @@ const SectionPreview: React.FC<Props> = ({
         if (path === "/") {
           path = "s";
         }
-        navigate(`${path}/${section_id}/${sectionName}`);
+        const regex = /([A-Za-z]{3})-(\d{4})-$/;
+        const match = sectionName.match(regex);
+        let combined = "";
+        if (match) {
+          const courseLetters = match[1];
+          const courseNumbers = match[2];
+          combined = courseLetters + courseNumbers;
+          navigate(`${path}/${section_id}/${combined}`);
+        } else {
+          navigate(`${path}/${section_id}/${sectionName}`);
+        }
         if (path !== "s") window.location.reload();
       }}
     >

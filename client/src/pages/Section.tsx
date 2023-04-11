@@ -40,9 +40,10 @@ const Section: React.FC<Props> = ({
   const [threads, setThreads] = useState<ThreadType[]>([]);
   const [sectionName, setSectionName] = useState<string>("");
   const [sectionDescription, setSectionDescription] = useState<string>("");
-  const [page, setPage] = useState(1);
-  const [more, setMore] = useState(true);
-  const [loaded, setLoaded] = useState(false);
+  const [page, setPage] = useState<number>(1);
+  const [more, setMore] = useState<boolean>(true);
+  const [loaded, setLoaded] = useState<boolean>(false);
+  const [bookmarked, setBookmarked] = useState<boolean>(false);
   // let activeUserID = useAtomValue(userIDAtom);
   const [embeddedSection, setEmbeddedSection] = useState<any>(null);
   const [userAdmin, setUserAdmin] = useState<boolean>(false);
@@ -104,7 +105,7 @@ const Section: React.FC<Props> = ({
       });
   };
   const getUserPermission = () => {
-    fetch(`http://localhost:9000/api/user/roles/${activeUserID}`, {
+    fetch(`http://localhost:9000/api/user/${activeUserID}/roles`, {
       method: "GET",
       headers: {
         "content-type": "application/json",
@@ -112,15 +113,29 @@ const Section: React.FC<Props> = ({
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-        // if data has "Admin", setUserAdmin(true); else setUserAdmin(false);
+        setUserAdmin(
+          data.some(
+            (role: { role_id: number; role_name: string }) =>
+              role.role_name === "Admin"
+          )
+        );
       });
   };
+  const bookmarkSection = () => {};
+  const unbookmarkSection = () => {};
+
   function hyphenToTitleCase(input: string): string {
     const excludedWords = ["and", "of", "a"];
 
+    // Check if class section
+    const regex = /^[A-Za-z]{3}\d{4}$/;
+    const match = input.match(regex);
+    if (match) {
+      console.log("MATHC");
+      return input.substr(0, 3).toUpperCase() + " " + input.substr(3);
+    }
     const words = input.split("-");
-
+    console.log(input);
     const titleCaseWords = words.map((word, index) => {
       if (index === 0 || !excludedWords.includes(word)) {
         return word.charAt(0).toUpperCase() + word.slice(1);
@@ -135,7 +150,9 @@ const Section: React.FC<Props> = ({
     if (checkedCookie) {
       getSection();
       getThreads();
-      getUserPermission();
+      if (activeUserID !== null && activeUserID !== 0) {
+        getUserPermission();
+      }
     }
   }, [section_id, navigate, checkedCookie]);
 
@@ -160,11 +177,61 @@ const Section: React.FC<Props> = ({
       <div className="min-h-screen bg-white dark:bg-gray-900">
         <div className="flex flex-col items-center rounded-xl px-10 pt-6">
           {loaded ? (
-            <div
-              className="h-8 cursor-pointer text-2xl font-semibold hover:underline dark:text-white"
-              onClick={() => navigate(-1)}
-            >
-              {sectionName}
+            <div className="relative">
+              <div
+                className="cursor-pointer text-2xl font-semibold hover:underline dark:text-white"
+                onClick={() => navigate(-1)}
+              >
+                {sectionName}
+              </div>
+              <div
+                className="absolute top-0 -right-6 sm:-right-12"
+                title={
+                  bookmarked
+                    ? "Unbookmark this section"
+                    : "Bookmark this section"
+                }
+                id="bookmark-section"
+                onClick={() => {
+                  if (!activeUserID || activeUserID <= 0) {
+                    return;
+                  }
+                  setBookmarked(!bookmarked);
+                  if (bookmarked) {
+                    unbookmarkSection();
+                  } else {
+                    bookmarkSection();
+                  }
+                }}
+              >
+                {bookmarked ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                    className="h-8 w-8 cursor-pointer rounded-md p-1 hover:bg-gray-200 dark:stroke-blue-600 dark:hover:bg-gray-700"
+                  >
+                    <path
+                      d="M5 2H19C19.5523 2 20 2.44772 20 3V22.1433C20 22.4194 19.7761 22.6434 19.5 22.6434C19.4061 22.6434 19.314 22.6168 19.2344 22.5669L12 18.0313L4.76559 22.5669C4.53163 22.7136 4.22306 22.6429 4.07637 22.4089C4.02647 22.3293 4 22.2373 4 22.1433V3C4 2.44772 4.44772 2 5 2Z"
+                      fill="rgb(28 100 242 / var(--tw-bg-opacity))"
+                    ></path>
+                  </svg>
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                    className="h-8 w-8 cursor-pointer rounded-md stroke-blue-600 p-1 hover:bg-gray-200 dark:hover:bg-gray-700"
+                  >
+                    <path
+                      d="M5 2H19C19.5523 2 20 2.44772 20 3V22.1433C20 22.4194 19.7761 22.6434 19.5 22.6434C19.4061 22.6434 19.314 22.6168 19.2344 22.5669L12 18.0313L4.76559 22.5669C4.53163 22.7136 4.22306 22.6429 4.07637 22.4089C4.02647 22.3293 4 22.2373 4 22.1433V3C4 2.44772 4.44772 2 5 2ZM18 4H6V19.4324L12 15.6707L18 19.4324V4Z"
+                      fill="rgb(28 100 242 / var(--tw-bg-opacity))"
+                    ></path>
+                  </svg>
+                )}
+              </div>
             </div>
           ) : (
             <div className="h-8 animate-pulse cursor-pointer text-2xl font-semibold filter dark:text-white">

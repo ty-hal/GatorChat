@@ -19,7 +19,11 @@ type SearchBarItem = {
 };
 
 const Home = () => {
-  const [sections, setSections] = useState<Section[]>([]);
+  const [parentSections, setParentSections] = useState<Section[]>([]);
+  const [userBookmarkedSections, setUserBookmarkedSections] = useState<
+    Section[]
+  >([]);
+
   const [searchBarItems, setSearchBarItems] = useState<SearchBarItem[]>([]);
   const darkMode = useAtomValue(darkModeAtom);
   const navigate = useNavigate();
@@ -34,9 +38,22 @@ const Home = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-        setSections(data);
+        // console.log(data);
+        setParentSections(data);
       });
+
+    // Get user saved sections
+    // fetch("http://localhost:9000/api/section/", {
+    //   method: "GET",
+    //   headers: {
+    //     "content-type": "application/json",
+    //   },
+    // })
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     // console.log(data);
+    //     setUserBookmarkedSections(data);
+    //   });
 
     // Get all sections and add them to the search bar
     fetch("http://localhost:9000/api/sections", {
@@ -47,7 +64,7 @@ const Home = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         const extractedData: SearchBarItem[] = data.map(
           ({
             section_id,
@@ -104,20 +121,50 @@ const Home = () => {
         />
       </div>
 
-      {/* Display the sections */}
-      <div className="mx-auto mt-2 w-11/12 sm:grid sm:grid-cols-2 md:grid-cols-3 md:gap-2 lg:grid-cols-4">
-        {sections.map((section, index) => {
-          console.log(section);
-          return (
-            <SectionPreview
-              key={index}
-              section_id={section.section_id}
-              section_name={section.section_name}
-              section_description={section.description}
-              parent={true}
-            />
-          );
-        })}
+      {/* User saved sections */}
+      <div className="mx-auto mt-4 w-11/12 text-black dark:text-white">
+        <div className="text-center text-2xl font-bold">My Saved Sections</div>
+        {/* If user saved sections show them, else default message */}
+        {userBookmarkedSections.length > 0 ? (
+          <div className="mt-2 sm:grid sm:grid-cols-2 md:grid-cols-3 md:gap-2 lg:grid-cols-4">
+            {userBookmarkedSections.map((section, index) => {
+              console.log(section);
+              return (
+                <SectionPreview
+                  key={index}
+                  section_id={section.section_id}
+                  section_name={section.section_name}
+                  section_description={section.description}
+                />
+              );
+            })}
+          </div>
+        ) : (
+          <div className="mt-2 text-center">
+            You do not have any sections bookmarked.
+          </div>
+        )}
+      </div>
+
+      {/* Horizontal rule */}
+      <hr className="mx-auto mt-12 h-1 w-11/12 rounded border-0 bg-gray-100 dark:bg-gray-700" />
+
+      {/* Display the parent sections */}
+      <div className="mx-auto mt-10 w-11/12 text-black dark:text-white">
+        <div className="text-center text-2xl font-bold">All Sections</div>
+        <div className="mt-2 sm:grid sm:grid-cols-2 md:grid-cols-3 md:gap-2 lg:grid-cols-4">
+          {parentSections.map((section, index) => {
+            return (
+              <SectionPreview
+                key={index}
+                section_id={section.section_id}
+                section_name={section.section_name}
+                section_description={section.description}
+                parent={true}
+              />
+            );
+          })}
+        </div>
       </div>
 
       <Footer />

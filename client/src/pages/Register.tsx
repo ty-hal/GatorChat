@@ -24,7 +24,6 @@ type majorObj = {
   label: string;
   value: string;
 };
-
 let majorOptions = [
   { value: "Accounting", label: "Accounting" },
   { value: "Advertising", label: "Advertising" },

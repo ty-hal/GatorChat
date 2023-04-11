@@ -5,14 +5,14 @@ type Props = {
   section_name: string;
   section_id: number;
   section_description?: string;
-  parent?: boolean;
+  parent_section: boolean;
 };
 
 const SectionPreview: React.FC<Props> = ({
   section_name,
   section_id,
   section_description,
-  parent,
+  parent_section,
 }) => {
   let navigate = useNavigate();
   const location = useLocation();
@@ -41,9 +41,13 @@ const SectionPreview: React.FC<Props> = ({
           const courseLetters = match[1];
           const courseNumbers = match[2];
           combined = courseLetters + courseNumbers;
-          navigate(`${path}/${section_id}/${combined}`);
+          navigate(`${path}/${section_id}/${combined}`, {
+            state: { parent_section },
+          });
         } else {
-          navigate(`${path}/${section_id}/${sectionName}`);
+          navigate(`${path}/${section_id}/${sectionName}`, {
+            state: { parent_section },
+          });
         }
         if (path !== "s") window.location.reload();
       }}

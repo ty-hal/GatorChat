@@ -11,6 +11,7 @@ type Section = {
   section_id: number;
   section_name: string;
   description: string;
+  parent_section: boolean;
 };
 
 type SearchBarItem = {
@@ -137,6 +138,7 @@ const Home = () => {
                   section_id={section.section_id}
                   section_name={section.section_name}
                   section_description={section.description}
+                  parent_section={section.parent_section}
                 />
               );
             })}
@@ -157,13 +159,14 @@ const Home = () => {
         <div className="mt-2 w-full sm:grid sm:grid-cols-2 md:grid-cols-3 md:gap-2 lg:grid-cols-4">
           {loaded ? (
             parentSections.map((section, index) => {
+              // console.log(section);
               return (
                 <SectionPreview
                   key={index}
                   section_id={section.section_id}
                   section_name={section.section_name}
                   section_description={section.description}
-                  parent={true}
+                  parent_section={section.parent_section}
                 />
               );
             })

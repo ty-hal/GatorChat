@@ -19,6 +19,7 @@ type ChildSectionType = {
   section_name: string;
   group_id: number;
   description: string;
+  parent_section: boolean;
 };
 
 interface Props {
@@ -217,7 +218,7 @@ const EmbeddedSection: React.FC<Props> = ({
                     section_id={section.section_id}
                     section_name={section.section_name}
                     section_description={section.description}
-                    parent={false}
+                    parent_section={section.parent_section}
                   />
                 );
               })}

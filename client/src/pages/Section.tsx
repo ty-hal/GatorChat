@@ -123,7 +123,6 @@ const Section: React.FC<Props> = ({
   };
   const bookmarkSection = () => {};
   const unbookmarkSection = () => {};
-
   function hyphenToTitleCase(input: string): string {
     const excludedWords = ["and", "of", "a"];
 
@@ -131,11 +130,9 @@ const Section: React.FC<Props> = ({
     const regex = /^[A-Za-z]{3}\d{4}$/;
     const match = input.match(regex);
     if (match) {
-      console.log("MATHC");
       return input.substr(0, 3).toUpperCase() + " " + input.substr(3);
     }
     const words = input.split("-");
-    console.log(input);
     const titleCaseWords = words.map((word, index) => {
       if (index === 0 || !excludedWords.includes(word)) {
         return word.charAt(0).toUpperCase() + word.slice(1);

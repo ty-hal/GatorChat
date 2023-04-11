@@ -177,7 +177,7 @@ const Header = () => {
                 </>
               ) : (
                 <span
-                  className="mr-6 cursor-pointer rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2"
+                  className="invisible mr-6 cursor-pointer rounded-lg p-1 text-lg font-semibold ring-gray-300 hover:bg-blue-600 hover:text-white hover:ring-2 sm:visible"
                   id="sign-out-header"
                   onClick={signOut}
                 >

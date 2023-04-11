@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
 import { darkModeAtom } from "../App";
 import { useAtomValue } from "jotai";
-import SectionPreview from "../components/SectionPreview";
+import SectionPreview from "../components/Section/SectionPreview";
+import SkeletonSectionPreview from "../components/Section/SkeletonSectionPreview";
 
 type Section = {
   section_id: number;
@@ -23,8 +24,8 @@ const Home = () => {
   const [userBookmarkedSections, setUserBookmarkedSections] = useState<
     Section[]
   >([]);
-
   const [searchBarItems, setSearchBarItems] = useState<SearchBarItem[]>([]);
+  const [loaded, setLoaded] = useState<boolean>(false);
   const darkMode = useAtomValue(darkModeAtom);
   const navigate = useNavigate();
 
@@ -40,6 +41,7 @@ const Home = () => {
       .then((data) => {
         // console.log(data);
         setParentSections(data);
+        setLoaded(true);
       });
 
     // Get user saved sections
@@ -141,32 +143,44 @@ const Home = () => {
           </div>
         ) : (
           <div className="mt-2 text-center">
-            You do not have any sections bookmarked.
+            You do not have any sections saved.
           </div>
         )}
       </div>
 
       {/* Horizontal rule */}
-      <hr className="mx-auto mt-12 h-1 w-11/12 rounded border-0 bg-gray-100 dark:bg-gray-700" />
+      <hr className="mx-auto mt-12 h-1 w-11/12 rounded border-0 bg-gray-400 dark:bg-gray-700" />
 
       {/* Display the parent sections */}
       <div className="mx-auto mt-10 w-11/12 text-black dark:text-white">
         <div className="text-center text-2xl font-bold">All Sections</div>
-        <div className="mt-2 sm:grid sm:grid-cols-2 md:grid-cols-3 md:gap-2 lg:grid-cols-4">
-          {parentSections.map((section, index) => {
-            return (
-              <SectionPreview
-                key={index}
-                section_id={section.section_id}
-                section_name={section.section_name}
-                section_description={section.description}
-                parent={true}
-              />
-            );
-          })}
+        <div className="mt-2 w-full sm:grid sm:grid-cols-2 md:grid-cols-3 md:gap-2 lg:grid-cols-4">
+          {loaded ? (
+            parentSections.map((section, index) => {
+              return (
+                <SectionPreview
+                  key={index}
+                  section_id={section.section_id}
+                  section_name={section.section_name}
+                  section_description={section.description}
+                  parent={true}
+                />
+              );
+            })
+          ) : (
+            <>
+              <SkeletonSectionPreview />
+              <SkeletonSectionPreview />
+              <SkeletonSectionPreview />
+              <SkeletonSectionPreview />
+              <SkeletonSectionPreview />
+              <SkeletonSectionPreview />
+              <SkeletonSectionPreview />
+              <SkeletonSectionPreview />
+            </>
+          )}
         </div>
       </div>
-
       <Footer />
     </div>
   );

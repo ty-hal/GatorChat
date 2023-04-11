@@ -4,7 +4,7 @@ import { darkModeAtom } from "../App";
 import { useAtomValue } from "jotai";
 import Footer from "../components/Footer";
 import SkeletonThreadPreview from "../components/Thread/SkeletonThreadPreview";
-import SectionPreview from "../components/SectionPreview";
+import SectionPreview from "../components/Section/SectionPreview";
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
 import CreateSectionPopup from "../components/Popups/CreateSectionPopup";
 import SignInPopup from "../components/Popups/SignInPopup";
@@ -93,7 +93,13 @@ const EmbeddedSection: React.FC<Props> = ({
       .then((response) => response.json())
       .then((data) => {
         setSectionName(data.section_name);
-        setSearchMessage('Search sections in "' + data.section_name + '"...');
+        if (window.innerWidth < 640) {
+          setSearchMessage("Search for a section...");
+        } else {
+          setSearchMessage(
+            'Search for a section in "' + data.section_name + '"...'
+          );
+        }
       });
   };
   function hyphenToTitleCase(input: string): string {

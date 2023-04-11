@@ -40,6 +40,14 @@ const CreateSectionPopup: React.FC<Props> = ({
   }, []);
 
   const submitRequest = () => {
+    if (
+      contact.message.length === 0 ||
+      contact.message ===
+        `Request to create new child section "" in parent section "${parentSectionName}"`
+    ) {
+      return;
+    }
+
     fetch("http://localhost:9000/api/contact", {
       method: "POST",
       headers: {
@@ -82,7 +90,7 @@ const CreateSectionPopup: React.FC<Props> = ({
                       id="other-input"
                       className="block w-full rounded-lg border border-gray-900 p-2 text-left text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
                       placeholder="Text"
-                      title="Enter a description"
+                      title="Enter the section name"
                       onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
                         setContact({
                           ...contact,

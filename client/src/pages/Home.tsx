@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
 import { darkModeAtom } from "../App";
 import { useAtomValue } from "jotai";
+import { userIDAtom } from "../App";
 import SectionPreview from "../components/Section/SectionPreview";
 import SkeletonSectionPreview from "../components/Section/SkeletonSectionPreview";
 
@@ -22,15 +23,35 @@ type SearchBarItem = {
 
 const Home = () => {
   const [parentSections, setParentSections] = useState<Section[]>([]);
-  const [userBookmarkedSections, setUserBookmarkedSections] = useState<
-    Section[]
-  >([]);
+  const [userSavedSections, setUserSavedSections] = useState<Section[]>([]);
   const [searchBarItems, setSearchBarItems] = useState<SearchBarItem[]>([]);
   const [loaded, setLoaded] = useState<boolean>(false);
+  const [loadedSavedSections, setLoadedSavedSections] =
+    useState<boolean>(false);
   const darkMode = useAtomValue(darkModeAtom);
+  const activeUserID = useAtomValue(userIDAtom);
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Get user saved sections
+    if (activeUserID != null && activeUserID > 0) {
+      console.log(activeUserID);
+      fetch(`http://localhost:9000/api/user/${activeUserID}/savedsections`, {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          setUserSavedSections(data);
+          setLoadedSavedSections(true);
+        });
+    } else if (activeUserID != null && activeUserID === 0) {
+      setLoadedSavedSections(true);
+    }
+
     // Get base level sections
     fetch("http://localhost:9000/api/section/1/children", {
       method: "GET",
@@ -44,19 +65,6 @@ const Home = () => {
         setParentSections(data);
         setLoaded(true);
       });
-
-    // Get user saved sections
-    // fetch("http://localhost:9000/api/section/", {
-    //   method: "GET",
-    //   headers: {
-    //     "content-type": "application/json",
-    //   },
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     // console.log(data);
-    //     setUserBookmarkedSections(data);
-    //   });
 
     // Get all sections and add them to the search bar
     fetch("http://localhost:9000/api/sections", {
@@ -82,7 +90,7 @@ const Home = () => {
         );
         setSearchBarItems(extractedData);
       });
-  }, []);
+  }, [activeUserID]);
 
   const searchBarHandleOnSelect = (item: SearchBarItem) => {
     // the item selected
@@ -127,25 +135,34 @@ const Home = () => {
       {/* User saved sections */}
       <div className="mx-auto mt-4 w-11/12 text-black dark:text-white">
         <div className="text-center text-2xl font-bold">My Saved Sections</div>
-        {/* If user saved sections show them, else default message */}
-        {userBookmarkedSections.length > 0 ? (
-          <div className="mt-2 sm:grid sm:grid-cols-2 md:grid-cols-3 md:gap-2 lg:grid-cols-4">
-            {userBookmarkedSections.map((section, index) => {
-              console.log(section);
-              return (
-                <SectionPreview
-                  key={index}
-                  section_id={section.section_id}
-                  section_name={section.section_name}
-                  section_description={section.description}
-                  parent_section={section.parent_section}
-                />
-              );
-            })}
-          </div>
+        {loadedSavedSections ? (
+          userSavedSections && userSavedSections.length > 0 ? (
+            <div className="mt-2 sm:grid sm:grid-cols-2 md:grid-cols-3 md:gap-2 lg:grid-cols-4">
+              {userSavedSections.map((section, index) => {
+                return (
+                  <SectionPreview
+                    key={index}
+                    section_id={section.section_id}
+                    section_name={section.section_name}
+                    section_description={section.description}
+                    parent_section={section.parent_section}
+                  />
+                );
+              })}
+            </div>
+          ) : (
+            <div className="mt-2 text-center">
+              {activeUserID === 0
+                ? "Sign in to your account to save sections and access them here."
+                : "You do not have any sections saved on your account."}
+            </div>
+          )
         ) : (
-          <div className="mt-2 text-center">
-            You do not have any sections saved.
+          <div className="mt-2 sm:grid sm:grid-cols-2 md:grid-cols-3 md:gap-2 lg:grid-cols-4">
+            <SkeletonSectionPreview />
+            <SkeletonSectionPreview />
+            <SkeletonSectionPreview />
+            <SkeletonSectionPreview />
           </div>
         )}
       </div>

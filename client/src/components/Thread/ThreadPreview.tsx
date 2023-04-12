@@ -72,6 +72,7 @@ const Thread: React.FC<Props> = ({
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [listening, setListening] = useState(false);
+  let parent_section = false;
 
   // Creates event listener to toggle dropdown menu
   useEffect(() => {
@@ -166,20 +167,23 @@ const Thread: React.FC<Props> = ({
     }
 
     // GET and SET the user who posted the thread's profile picture
-    fetch(`http://localhost:9000/api/user/${user_id}`, {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.profile_pic) {
-          setProfilePicture(data.profile_pic);
-        } else {
-          setProfilePicture("");
-        }
-      });
+
+    if (user_id !== null && user_id > 0) {
+      fetch(`http://localhost:9000/api/user/${user_id}`, {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.profile_pic) {
+            setProfilePicture(data.profile_pic);
+          } else {
+            setProfilePicture("");
+          }
+        });
+    }
   }, []);
 
   // Edit thread
@@ -251,7 +255,9 @@ const Thread: React.FC<Props> = ({
         console.log(`Open thread ${thread_id}`);
         // Navigate to the thread
         let path = location.pathname;
-        navigate(`${path}/t/${thread_id}/${thread_name}`);
+        navigate(`${path}/t/${thread_id}/${thread_name}`, {
+          state: { parent_section },
+        });
       }}
     >
       {/* Profile Picture, Username, Date, and Dropdown */}

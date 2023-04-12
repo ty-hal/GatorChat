@@ -225,13 +225,15 @@ const Header = () => {
                               Settings
                             </span>
                           </Link>
-                          <span
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300 hover:text-black"
-                            role="menuitem"
-                            id="my-account"
-                          >
-                            My Account
-                          </span>
+                          <Link to="/my-account">
+                            <span
+                              className="block px-4 py-2 text-sm text-gray-700 hover:rounded-t-md hover:bg-blue-300 hover:text-black"
+                              role="menuitem"
+                              id="my-account"
+                            >
+                              My Account
+                            </span>
+                          </Link>
                         </div>
                       )}
                       {/* Dark Mode and Sign Out */}

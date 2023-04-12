@@ -22,7 +22,11 @@ https://youtu.be/G6EoC8FDVwU
   - As a user, I want to see the section's name and description, so I created a component to display the section's description below the section's name.
 - Added description to sections
   - As a user, I want to be able to see a section's description, so I edited the section page to display the section's description below the section's name.
-
+- Implemented a toggle to save (bookmark) a section to the user's home page on the section preview and section pages.
+  - As a user, I want to be able to quickly access any section that I regularly visit, so I created the option to save individual sections (embedded or not).
+- Created display of user's saved sections in the home page.
+  - As a user, I want to be able to quickly access the sections that I have saved to my account, so I created a user saved sectiosn display on the home page.
+  - 
 ### Backend:
 
 - Created

@@ -111,7 +111,9 @@ const Thread: React.FC<Props> = ({
     })
       .then((response) => response.json())
       .then((data) => {
+        const regex = /^[a-zA-Z]{3}\d{4}$/;
         if (
+          !regex.test(section_name) &&
           data.section_name
             .replace(/[\W_]+/g, " ")
             .replace(/\s+/g, "-")

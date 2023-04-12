@@ -26,8 +26,10 @@ const DefaultSection: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
   let thread_id = "0";
   let thread_name = "";
 
+  console.log("Path: " + pathname);
+
   // Check if the pathname is a Thread
-  let regex = /^\/s(?:\/\d+\/[A-Za-z-]+)+\/t(?:\/\d+\/[A-Za-z-]+)$/;
+  let regex = /^\/s(?:\/\d+\/[A-Za-z-\d]+)+\/t(?:\/\d+\/[A-Za-z\d.,!?;:'"-]+)$/;
   let match = pathname.match(regex);
   // If pathname is a Thread
   if (match) {
@@ -41,16 +43,16 @@ const DefaultSection: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
     if (match) thread_name = match[1];
     // Get section ID
     regex =
-      /\/[A-Za-z-]+(?:\/(\d+)\/([A-Za-z-]+))+(?=\/t\/\d+\/[A-Za-z-]+\/?$)/;
+      /\/[A-Za-z-\d]+(?:\/(\d+)\/([A-Za-z-\d]+))+(?=\/t\/\d+\/[A-Za-z\d.,!?;:'"-]+\/?$)/;
     match = pathname.match(regex);
     if (match) {
       section_id = match[1];
       section_name = match[2];
     }
-    // console.log(
-    //   "Section ID: " + section_id + "  Section Name: " + section_name
-    // );
-    // console.log("Thread ID: " + thread_id + "  Thread Name: " + thread_name);
+    console.log(
+      "Section ID: " + section_id + "  Section Name: " + section_name
+    );
+    console.log("Thread ID: " + thread_id + "  Thread Name: " + thread_name);
 
     // Return (render) the Thread
     return (

@@ -72,6 +72,7 @@ const Thread: React.FC<Props> = ({
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [listening, setListening] = useState(false);
+  let parent_section = false;
 
   // Creates event listener to toggle dropdown menu
   useEffect(() => {
@@ -254,7 +255,9 @@ const Thread: React.FC<Props> = ({
         console.log(`Open thread ${thread_id}`);
         // Navigate to the thread
         let path = location.pathname;
-        navigate(`${path}/t/${thread_id}/${thread_name}`);
+        navigate(`${path}/t/${thread_id}/${thread_name}`, {
+          state: { parent_section },
+        });
       }}
     >
       {/* Profile Picture, Username, Date, and Dropdown */}

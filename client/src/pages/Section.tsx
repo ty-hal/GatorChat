@@ -76,21 +76,23 @@ const Section: React.FC<Props> = ({
       });
   };
   const getSection = () => {
-    fetch(
-      `http://localhost:9000/api/section/${section_id}?activeUser=${activeUserID}`,
-      {
-        method: "GET",
-        headers: {
-          "content-type": "application/json",
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        setSavedSection(data.user_saved);
-        setSectionName(data.section_name);
-        setSectionDescription(data.description);
-      });
+    if (parseInt(section_id) > 0) {
+      fetch(
+        `http://localhost:9000/api/section/${section_id}?activeUser=${activeUserID}`,
+        {
+          method: "GET",
+          headers: {
+            "content-type": "application/json",
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          setSavedSection(data.user_saved);
+          setSectionName(data.section_name);
+          setSectionDescription(data.description);
+        });
+    }
   };
   const getUserPermission = () => {
     fetch(`http://localhost:9000/api/user/${activeUserID}/roles`, {

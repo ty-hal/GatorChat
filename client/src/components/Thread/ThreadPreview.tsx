@@ -166,20 +166,23 @@ const Thread: React.FC<Props> = ({
     }
 
     // GET and SET the user who posted the thread's profile picture
-    fetch(`http://localhost:9000/api/user/${user_id}`, {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.profile_pic) {
-          setProfilePicture(data.profile_pic);
-        } else {
-          setProfilePicture("");
-        }
-      });
+
+    if (user_id !== null && user_id > 0) {
+      fetch(`http://localhost:9000/api/user/${user_id}`, {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.profile_pic) {
+            setProfilePicture(data.profile_pic);
+          } else {
+            setProfilePicture("");
+          }
+        });
+    }
   }, []);
 
   // Edit thread

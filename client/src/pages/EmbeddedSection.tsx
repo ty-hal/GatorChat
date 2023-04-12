@@ -43,7 +43,7 @@ const EmbeddedSection: React.FC<Props> = ({
   const [searchMessage, setSearchMessage] = useState<string>(
     "Search for a section..."
   );
-  const [bookmarked, setBookmarked] = useState<boolean>(false);
+  const [savedSection, setSavedSection] = useState<boolean>(false);
   const [loaded, setLoaded] = useState(false);
   const [searchBarItems, setSearchBarItems] = useState<SearchBarItem[]>([]);
   const darkMode = useAtomValue(darkModeAtom);
@@ -88,14 +88,18 @@ const EmbeddedSection: React.FC<Props> = ({
       });
   };
   const getSection = () => {
-    fetch(`http://localhost:9000/api/section/${section_id}`, {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-      },
-    })
+    fetch(
+      `http://localhost:9000/api/section/${section_id}?activeUser=${activeUserID}`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
+        setSavedSection(data.user_saved);
         setSectionName(data.section_name);
         if (window.innerWidth < 640) {
           setSearchMessage("Search for a section...");
@@ -134,8 +138,17 @@ const EmbeddedSection: React.FC<Props> = ({
   const searchBarFormatResult = (item: SearchBarItem) => {
     return <span className="block cursor-pointer text-left">{item.name}</span>;
   };
-  const bookmarkSection = () => {};
-  const unbookmarkSection = () => {};
+  const toggleSaveSection = () => {
+    fetch(
+      `http://localhost:9000/api/togglesavedsection?sectionID=${section_id}&activeUser=${activeUserID}`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    ).then((response) => response.json());
+  };
 
   useEffect(() => {
     // If user authentication is checked
@@ -160,22 +173,20 @@ const EmbeddedSection: React.FC<Props> = ({
             <div
               className="absolute top-0 -right-6 sm:-right-12"
               title={
-                bookmarked ? "Unbookmark this section" : "Bookmark this section"
+                savedSection
+                  ? "Unbookmark this section"
+                  : "Bookmark this section"
               }
               id="bookmark-section"
               onClick={() => {
                 if (!activeUserID || activeUserID <= 0) {
                   return;
                 }
-                setBookmarked(!bookmarked);
-                if (bookmarked) {
-                  unbookmarkSection();
-                } else {
-                  bookmarkSection();
-                }
+                setSavedSection(!savedSection);
+                toggleSaveSection();
               }}
             >
-              {bookmarked ? (
+              {savedSection ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"

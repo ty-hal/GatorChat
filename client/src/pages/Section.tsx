@@ -43,7 +43,7 @@ const Section: React.FC<Props> = ({
   const [page, setPage] = useState<number>(1);
   const [more, setMore] = useState<boolean>(true);
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [bookmarked, setBookmarked] = useState<boolean>(false);
+  const [savedSection, setSavedSection] = useState<boolean>(false);
   const [userAdmin, setUserAdmin] = useState<boolean>(false);
 
   const getThreads = () => {
@@ -76,14 +76,18 @@ const Section: React.FC<Props> = ({
       });
   };
   const getSection = () => {
-    fetch(`http://localhost:9000/api/section/${section_id}`, {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-      },
-    })
+    fetch(
+      `http://localhost:9000/api/section/${section_id}?activeUser=${activeUserID}`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
+        setSavedSection(data.user_saved);
         setSectionName(data.section_name);
         setSectionDescription(data.description);
       });
@@ -105,8 +109,17 @@ const Section: React.FC<Props> = ({
         );
       });
   };
-  const bookmarkSection = () => {};
-  const unbookmarkSection = () => {};
+  const toggleSaveSection = () => {
+    fetch(
+      `http://localhost:9000/api/togglesavedsection?sectionID=${section_id}&activeUser=${activeUserID}`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    ).then((response) => response.json());
+  };
   function hyphenToTitleCase(input: string): string {
     const excludedWords = ["and", "of", "a"];
 
@@ -177,7 +190,7 @@ const Section: React.FC<Props> = ({
               <div
                 className="absolute top-0 -right-6 sm:-right-12"
                 title={
-                  bookmarked
+                  savedSection
                     ? "Unbookmark this section"
                     : "Bookmark this section"
                 }
@@ -186,15 +199,11 @@ const Section: React.FC<Props> = ({
                   if (!activeUserID || activeUserID <= 0) {
                     return;
                   }
-                  setBookmarked(!bookmarked);
-                  if (bookmarked) {
-                    unbookmarkSection();
-                  } else {
-                    bookmarkSection();
-                  }
+                  setSavedSection(!savedSection);
+                  toggleSaveSection();
                 }}
               >
-                {bookmarked ? (
+                {savedSection ? (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"

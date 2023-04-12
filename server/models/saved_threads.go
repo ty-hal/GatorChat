@@ -40,3 +40,26 @@ func GetSavedThreadsFromUser(userID uint8) []Thread {
 
 	return userSavedThreads
 }
+
+func ToggleSavedThread(user_id uint8, thread_id uint8) SavedThreads {
+	var savedThread SavedThreads
+
+	r := middleware.DB.Where("user_id = ? AND thread_id = ?", user_id, thread_id).Find(&savedThread)
+
+	if r.RowsAffected > 0 {
+		middleware.DB.Delete(&savedThread)
+	} else {
+		savedThread = SavedThreads{UserID: user_id, ThreadID: thread_id}
+		middleware.DB.Create(&savedThread)
+	}
+
+	return savedThread
+}
+
+func CheckThreadSaved(user_id uint8, thread_id uint8) bool {
+	var savedThread SavedThreads
+
+	r := middleware.DB.Where("user_id = ? AND thread_id = ?", user_id, thread_id).Find(&savedThread)
+
+	return r.RowsAffected > 0
+}

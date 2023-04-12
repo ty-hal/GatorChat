@@ -51,6 +51,7 @@ func GetSectionThreads(section_id uint8, pageNumber int, pageSize int, activeUse
 		}
 
 		thread.UserLiked = CheckThreadLike(activeUser, thread.ThreadID)
+		thread.UserSaved = CheckThreadSaved(activeUser, thread.ThreadID)
 
 		threads = append(threads, thread)
 	}

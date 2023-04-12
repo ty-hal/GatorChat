@@ -61,9 +61,8 @@ func Router() *mux.Router {
 	// Misc Routes
 	router.HandleFunc("/api/like", handlers.Like).Methods("GET")
 	router.HandleFunc("/api/unlike", handlers.UnLike).Methods("GET")
-	//router.HandleFunc("/api/savesection", handlers.SaveSection).Methods("GET")
-	//router.HandleFunc("/api/unsavesection", handlers.UnsaveSection).Methods("GET")
 	router.HandleFunc("/api/togglesavedsection", handlers.ToggleSectionSaved).Methods("GET")
+	router.HandleFunc("/api/togglesavedthread", handlers.ToggleThreadSaved).Methods("GET")
 	router.HandleFunc("/api/contact", handlers.ContactUs).Methods("POST")
 
 	return router

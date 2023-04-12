@@ -193,6 +193,17 @@ func ToggleSectionSaved(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(savedSection)
 }
 
+func ToggleThreadSaved(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	queryParams := r.URL.Query()
+	activeUser, _ := strconv.Atoi(queryParams.Get("activeUser"))
+	threadID, _ := strconv.Atoi(queryParams.Get("threadID"))
+
+	savedThread := models.ToggleSavedThread(uint8(activeUser), uint8(threadID))
+	json.NewEncoder(w).Encode(savedThread)
+}
+
 /*
 func SaveSection(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")

@@ -57,6 +57,7 @@ func GetThreadById(threadID uint8, activeUser uint8) (Thread, error) {
 	}
 
 	thread.UserLiked = CheckThreadLike(activeUser, thread.ThreadID)
+	thread.UserSaved = CheckThreadSaved(activeUser, thread.ThreadID)
 
 	return thread, nil
 }

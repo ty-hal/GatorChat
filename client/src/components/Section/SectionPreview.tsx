@@ -6,6 +6,7 @@ type Props = {
   section_id: number;
   section_description?: string;
   parent_section: boolean;
+  thread_count: number;
 };
 
 const SectionPreview: React.FC<Props> = ({
@@ -13,6 +14,7 @@ const SectionPreview: React.FC<Props> = ({
   section_id,
   section_description,
   parent_section,
+  thread_count,
 }) => {
   let navigate = useNavigate();
   const location = useLocation();
@@ -60,6 +62,9 @@ const SectionPreview: React.FC<Props> = ({
       {/* Section Description */}
       <div className="my-2 text-base">
         {section_description ? section_description : ""}
+      </div>
+      <div className="my-2 text-base">
+        {thread_count != -1 ? thread_count == 1  ? `${thread_count} Thread` : `${thread_count} Threads` : ""}
       </div>
     </div>
   );

@@ -20,6 +20,7 @@ type ChildSectionType = {
   group_id: number;
   description: string;
   parent_section: boolean;
+  thread_count: number;
 };
 
 interface Props {
@@ -301,6 +302,7 @@ const EmbeddedSection: React.FC<Props> = ({
                     section_name={section.section_name}
                     section_description={section.description}
                     parent_section={section.parent_section}
+                    thread_count={ !section.parent_section ? section.thread_count : -1}
                   />
                 );
               })

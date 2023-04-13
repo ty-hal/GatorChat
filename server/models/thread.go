@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/team/swe-project/middleware"
+	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
 
@@ -65,6 +66,9 @@ func GetThreadById(threadID uint8, activeUser uint8) (Thread, error) {
 func CreateThread(thread Thread) Thread {
 	middleware.DB.Create(&thread)
 
+	middleware.DB.Table("sections").Where("section_id = ?", thread.SectionID).Omit("updated_at").Update("thread_count", gorm.Expr("thread_count + ?", 1))
+	middleware.DB.Table("embedded_sections").Where("section_id = ?", thread.SectionID).Omit("updated_at").Update("thread_count", gorm.Expr("thread_count + ?", 1))
+
 	return thread
 }
 
@@ -100,6 +104,9 @@ func DeleteThread(threadID uint8) (Thread, error) {
 	if result.Error != nil {
 		return thread, result.Error
 	}
+
+	middleware.DB.Table("sections").Where("section_id = ?", thread.SectionID).Omit("updated_at").Update("thread_count", gorm.Expr("thread_count + ?", -1))
+	middleware.DB.Table("embedded_sections").Where("section_id = ?", thread.SectionID).Omit("updated_at").Update("thread_count", gorm.Expr("thread_count + ?", -1))
 
 	return thread, nil
 }

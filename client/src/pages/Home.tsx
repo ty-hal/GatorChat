@@ -13,6 +13,7 @@ type Section = {
   section_name: string;
   description: string;
   parent_section: boolean;
+  thread_count: number;
 };
 
 type SearchBarItem = {
@@ -61,7 +62,7 @@ const Home = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        // console.log(data);
+        //console.log(data);
         setParentSections(data);
         setLoaded(true);
       });
@@ -146,6 +147,7 @@ const Home = () => {
                     section_name={section.section_name}
                     section_description={section.description}
                     parent_section={section.parent_section}
+                    thread_count={ !section.parent_section ? section.thread_count : -1}
                   />
                 );
               })}
@@ -184,6 +186,7 @@ const Home = () => {
                   section_name={section.section_name}
                   section_description={section.description}
                   parent_section={section.parent_section}
+                  thread_count={ !section.parent_section ? section.thread_count : -1}
                 />
               );
             })

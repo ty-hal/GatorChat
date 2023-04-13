@@ -19,7 +19,7 @@ type Section struct {
 func GetAllSections() []Section {
 	var sections []Section
 
-	middleware.DB.Find(&sections)
+	middleware.DB.Order("thread_count DESC").Find(&sections)
 
 	return sections
 }
@@ -62,7 +62,7 @@ func GetSectionThreads(section_id uint8, pageNumber int, pageSize int, activeUse
 func GetSectionsByGroup(group_id uint, activeUser uint8) []Section {
 	var group []Section
 
-	middleware.DB.Find(&group, "group_id = ?", group_id)
+	middleware.DB.Order("thread_count DESC").Find(&group, "group_id = ?", group_id)
 
 	for _, section := range group {
 		section.UserSaved = CheckSectionSaved(activeUser, section.SectionID)

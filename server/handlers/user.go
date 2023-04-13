@@ -433,10 +433,37 @@ func UpdatePassword(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var updatedUser models.UpdatedUser
+	var updatedUser models.UpdatedUserPassword
 	json.NewDecoder(r.Body).Decode(&updatedUser)
 
 	userUpdated, userErr := models.UpdatePassword(uint8(id), updatedUser)
+
+	if userErr != nil {
+		w.WriteHeader(http.StatusNotFound)
+		w.Write([]byte(userErr.Error()))
+		return
+	}
+
+	json.NewEncoder(w).Encode(userUpdated)
+}
+
+func UpdateProfilePic(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	params := mux.Vars(r)
+	id, err := strconv.Atoi(params["id"])
+
+	// Invalid parameter
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("Invalid Parameter: id"))
+		return
+	}
+
+	var updatedUser models.UpdatedUserProfilePic
+	json.NewDecoder(r.Body).Decode(&updatedUser)
+
+	userUpdated, userErr := models.UpdateProfilePic(uint8(id), updatedUser)
 
 	if userErr != nil {
 		w.WriteHeader(http.StatusNotFound)

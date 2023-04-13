@@ -134,11 +134,11 @@ func DeleteUser(user_id uint8) (User, error) {
 	return user, nil
 }
 
-type UpdatedUser struct {
+type UpdatedUserPassword struct {
 	Password string
 }
 
-func UpdatePassword(user_id uint8, updatedUser UpdatedUser) (User, error) {
+func UpdatePassword(user_id uint8, updatedUser UpdatedUserPassword) (User, error) {
 	var user User
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(updatedUser.Password), bcrypt.DefaultCost)
@@ -147,6 +147,22 @@ func UpdatePassword(user_id uint8, updatedUser UpdatedUser) (User, error) {
 	}
 
 	dbErr := middleware.DB.Model(&user).Clauses(clause.Returning{}).Where("user_id = ?", user_id).Updates(User{Password: string(hashedPassword)})
+
+	if dbErr.Error != nil {
+		return user, dbErr.Error
+	}
+
+	return user, nil
+}
+
+type UpdatedUserProfilePic struct {
+	ProfilePic string
+}
+
+func UpdateProfilePic(user_id uint8, updatedUser UpdatedUserProfilePic) (User, error) {
+	var user User
+
+	dbErr := middleware.DB.Model(&user).Clauses(clause.Returning{}).Where("user_id = ?", user_id).Updates(User{ProfilePic: updatedUser.ProfilePic})
 
 	if dbErr.Error != nil {
 		return user, dbErr.Error

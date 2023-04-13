@@ -46,7 +46,9 @@ const ReportPopup: React.FC<Props> = ({
   useEffect(() => {
     setContact({
       ...contact,
-      message: `User ID ${activeUserID} is reporting Thread ID ${id} because of "${reportOption}"`,
+      message: `User ID ${activeUserID} is reporting ${
+        title ? "thread" : "message"
+      } ID ${id} because of "${reportOption}"`,
     });
   }, [reportOption, otherOption]);
 

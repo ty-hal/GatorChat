@@ -109,7 +109,7 @@ func DeleteUser(user_id uint8) (User, error) {
 		}
 	}
 
-	for _, thread := range user.GetThreads() {
+	for _, thread := range GetUserThreads(user_id) {
 		err := middleware.DB.Model(&thread).Clauses(clause.Returning{}).Where("thread_id = ? AND user_id = ?", thread.ThreadID, user_id).Update("user_id", 0)
 
 		if err.Error != nil {
@@ -117,7 +117,7 @@ func DeleteUser(user_id uint8) (User, error) {
 		}
 	}
 
-	for _, post := range user.GetPosts() {
+	for _, post := range GetUserPosts(user_id) {
 		err := middleware.DB.Model(&post).Clauses(clause.Returning{}).Where("post_id = ? AND user_id = ?", post.PostID, user_id).Update("user_id", 0)
 
 		if err.Error != nil {
@@ -192,26 +192,18 @@ func CheckSignIn(email string, password string) (User, error) {
 	return user, nil
 }
 
-func (u *User) GetThreads() []Thread {
+func GetUserThreads(userID uint8) []Thread {
 	var threads []Thread
 
-	for _, thread := range GetAllThreads() {
-		if thread.UserID == u.UserID {
-			threads = append(threads, thread)
-		}
-	}
+	middleware.DB.Find(&threads, "user_id = ?", userID)
 
 	return threads
 }
 
-func (u *User) GetPosts() []Post {
+func GetUserPosts(userID uint8) []Post {
 	var posts []Post
 
-	for _, post := range GetAllPosts() {
-		if post.UserID == u.UserID {
-			posts = append(posts, post)
-		}
-	}
+	middleware.DB.Find(&posts, "user_id = ?", userID)
 
 	return posts
 }

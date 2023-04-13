@@ -40,3 +40,19 @@ func GetAllClassesFromUser(userID uint8) []Class {
 
 	return userClasses
 }
+
+func UpdateClassesForUser(userID uint8, newClasses []string) []Class {
+	var newClassObjects []Class
+
+	middleware.DB.Where("user_id = ?", userID).Delete(&UserClasses{})
+
+	for _, class := range newClasses {
+		newClass, err := GetClassByID(class)
+		if err == nil {
+			newClassObjects = append(newClassObjects, newClass)
+			middleware.DB.Create(&UserClasses{UserID: userID, ClassID: newClass.ClassID})
+		}
+	}
+
+	return newClassObjects
+}

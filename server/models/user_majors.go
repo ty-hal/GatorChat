@@ -40,3 +40,19 @@ func GetAllMajorsFromUser(userID uint8) []Major {
 
 	return userMajors
 }
+
+func UpdateMajorsForUser(userID uint8, newMajors []string) []Major {
+	var newMajorObjects []Major
+
+	middleware.DB.Where("user_id = ?", userID).Delete(&UserMajors{})
+
+	for _, major := range newMajors {
+		newMajor, err := GetMajorByName(major)
+		if err == nil {
+			newMajorObjects = append(newMajorObjects, newMajor)
+			middleware.DB.Create(&UserMajors{UserID: userID, MajorID: newMajor.MajorID})
+		}
+	}
+
+	return newMajorObjects
+}

@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 
 	"github.com/gorilla/mux"
 	"github.com/team/swe-project/middleware"
@@ -202,6 +203,46 @@ func ToggleThreadSaved(w http.ResponseWriter, r *http.Request) {
 
 	savedThread := models.ToggleSavedThread(uint8(activeUser), uint8(threadID))
 	json.NewEncoder(w).Encode(savedThread)
+}
+
+func UpdateMajors(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	params := mux.Vars(r)
+	id, err := strconv.Atoi(params["id"])
+
+	// Invalid parameter
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("Invalid Parameter: id"))
+		return
+	}
+
+	queryParams := r.URL.Query()
+	majorNames := queryParams.Get("majorNames")
+
+	newMajors := models.UpdateMajorsForUser(uint8(id), strings.Split(majorNames, ","))
+	json.NewEncoder(w).Encode(newMajors)
+}
+
+func UpdateClasses(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	params := mux.Vars(r)
+	id, err := strconv.Atoi(params["id"])
+
+	// Invalid parameter
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("Invalid Parameter: id"))
+		return
+	}
+
+	queryParams := r.URL.Query()
+	classCodes := queryParams.Get("classCodes")
+
+	newClasses := models.UpdateClassesForUser(uint8(id), strings.Split(classCodes, ","))
+	json.NewEncoder(w).Encode(newClasses)
 }
 
 /*

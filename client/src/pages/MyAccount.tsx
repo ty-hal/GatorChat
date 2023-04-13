@@ -12,39 +12,65 @@ type Thread = {
   section_name: string;
   user_id: number;
   username: string;
-  threadTitle: string;
-  threadContent: string;
-  threadDate: string;
-  updatedOn: string;
-  likesCount: number;
-  messagesCount: number;
-  userLiked: boolean;
-  userAdmin: boolean;
+  thread_title: string;
+  content: string;
+  creation_date: string;
+  updated_at: string;
+  likes: number;
+  message_count: number;
+  user_liked: boolean;
+  user_admin: boolean;
+  user_saved: boolean;
 };
 
 const MyAccount = () => {
   const [loadedSavedThreads, setLoadedSavedThreads] = useState<boolean>(false);
   const [userSavedThreads, setUserSavedThreads] = useState<Thread[]>([]);
+  const [userAdmin, setUserAdmin] = useState<boolean>(false);
 
   const activeUserID = useAtomValue(userIDAtom);
   const navigate = useNavigate();
 
+  // Get user permissions
+  const getUserPermission = () => {
+    fetch(`http://localhost:9000/api/user/${activeUserID}/roles`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setUserAdmin(
+          data.some(
+            (role: { role_id: number; role_name: string }) =>
+              role.role_name === "Admin"
+          )
+        );
+      });
+  };
+
+  // Get saved threads
+  const getSavedThreads = () => {
+    fetch(`http://localhost:9000/api/user/${activeUserID}/savedthreads`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setUserSavedThreads(data);
+        setLoadedSavedThreads(true);
+      });
+  };
+
   useEffect(() => {
     // Get user saved threads
     if (activeUserID != null && activeUserID > 0) {
-      console.log(activeUserID);
-      fetch(`http://localhost:9000/api/user/${activeUserID}/savedthreads`, {
-        method: "GET",
-        headers: {
-          "content-type": "application/json",
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-          setUserSavedThreads(data);
-          setLoadedSavedThreads(true);
-        });
+      getUserPermission();
+      getSavedThreads();
     } else if (activeUserID != null && activeUserID === 0) {
       setLoadedSavedThreads(true);
     }
@@ -58,26 +84,28 @@ const MyAccount = () => {
         {loadedSavedThreads ? (
           userSavedThreads && userSavedThreads.length > 0 ? (
             userSavedThreads.map((thread, index) => {
+              console.log(thread);
               return (
-                <></>
-                //   <ThreadPreview
-                //   key={index} // For TS map purposes
-                //   thread_id={thread.thread_id}
-                //   section_id={thread.section_id}
-                //   section_name={section_name ? section_name : ""}
-                //   user_id={thread.user_id}
-                //   username={thread.username}
-                //   threadTitle={thread.thread_title}
-                //   threadContent={thread.content}
-                //   threadDate={thread.creation_date}
-                //   updatedOn={thread.updated_at}
-                //   likesCount={thread.likes ? thread.likes : 0}
-                //   messagesCount={
-                //     thread.message_count ? thread.message_count : 0
-                //   }
-                //   userLiked={thread.user_liked}
-                //   userAdmin={userAdmin}
-                //   />
+                <ThreadPreview
+                  key={index} // For TS map purposes
+                  thread_id={thread.thread_id}
+                  section_id={thread.section_id}
+                  section_name="" // Delete
+                  // section_name={section_name ? section_name : ""}
+                  user_id={thread.user_id}
+                  username={thread.username}
+                  threadTitle={thread.thread_title}
+                  threadContent={thread.content}
+                  threadDate={thread.creation_date}
+                  updatedOn={thread.updated_at}
+                  likesCount={thread.likes ? thread.likes : 0}
+                  messagesCount={
+                    thread.message_count ? thread.message_count : 0
+                  }
+                  userLiked={thread.user_liked}
+                  userAdmin={userAdmin}
+                  user_saved={thread.user_saved}
+                />
               );
             })
           ) : (
@@ -96,6 +124,7 @@ const MyAccount = () => {
           </>
         )}
       </div>
+      <Footer />
     </div>
   );
 };

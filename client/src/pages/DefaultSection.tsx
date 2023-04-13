@@ -26,8 +26,6 @@ const DefaultSection: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
   let thread_id = "0";
   let thread_name = "";
 
-  console.log("Path: " + pathname);
-
   // Check if the pathname is a Thread
   let regex = /^\/s(?:\/\d+\/[A-Za-z-\d]+)+\/t(?:\/\d+\/[A-Za-z\d.,!?;:'"-]+)$/;
   let match = pathname.match(regex);
@@ -49,10 +47,10 @@ const DefaultSection: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
       section_id = match[1];
       section_name = match[2];
     }
-    console.log(
-      "Section ID: " + section_id + "  Section Name: " + section_name
-    );
-    console.log("Thread ID: " + thread_id + "  Thread Name: " + thread_name);
+    // console.log(
+    //   "Section ID: " + section_id + "  Section Name: " + section_name
+    // );
+    // console.log("Thread ID: " + thread_id + "  Thread Name: " + thread_name);
 
     // Return (render) the Thread
     return (

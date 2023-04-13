@@ -19,6 +19,7 @@ type ThreadType = {
   likes: number;
   message_count: number;
   user_liked: boolean;
+  user_saved: boolean;
 };
 
 interface Props {
@@ -295,6 +296,7 @@ const Section: React.FC<Props> = ({
                     }
                     userLiked={thread.user_liked}
                     userAdmin={userAdmin}
+                    user_saved={thread.user_saved}
                   />
                 );
               })

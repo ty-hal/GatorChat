@@ -656,6 +656,7 @@ const Message: React.FC<Props> = ({
           id={post_id}
           showReportPopup={showReportPopup}
           setShowReportPopup={setShowReportPopup}
+          activeUserID={activeUserID || 0}
         />
       )}
       {/* Sign In Popup  */}

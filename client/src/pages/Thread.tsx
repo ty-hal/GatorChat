@@ -34,6 +34,7 @@ type ThreadType = {
   likes: number;
   message_count: number;
   user_liked: boolean;
+  user_saved: boolean;
 };
 
 interface Props {
@@ -74,7 +75,6 @@ const Thread: React.FC<Props> = ({
     )
       .then((response) => response.json())
       .then((data) => {
-        // console.log(data);
         if (data !== null) {
           setThread(data);
         }
@@ -103,12 +103,15 @@ const Thread: React.FC<Props> = ({
   };
   // Get section
   const getSection = () => {
-    fetch(`http://localhost:9000/api/section/${section_id}`, {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-      },
-    })
+    fetch(
+      `http://localhost:9000/api/section/${section_id}?activeUser=${activeUserID}`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         const regex = /^[a-zA-Z]{3}\d{4}$/;
@@ -144,6 +147,7 @@ const Thread: React.FC<Props> = ({
         );
       });
   };
+
   useEffect(() => {
     // Check if thread belongs to the section
     fetch(`http://localhost:9000/api/thread/${thread_id}`, {
@@ -161,7 +165,6 @@ const Thread: React.FC<Props> = ({
       .then((data) => {
         // If section_id's don't match, go back
         if (data.section_id.toString() !== section_id) {
-          console.log(data.section_id + "  " + section_id);
           navigate(-1);
         }
       })
@@ -216,6 +219,7 @@ const Thread: React.FC<Props> = ({
             userLiked={thread.user_liked}
             userAdmin={userAdmin}
             replyFunc={replyFunc}
+            user_saved={thread.user_saved}
           />
         ) : (
           <SkeletonThreadPost />

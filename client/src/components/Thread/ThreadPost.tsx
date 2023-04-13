@@ -22,6 +22,7 @@ type Props = {
   userLiked: boolean;
   userAdmin: boolean;
   replyFunc: () => void;
+  user_saved: boolean;
 };
 
 interface threadBody {
@@ -42,6 +43,7 @@ const Thread: React.FC<Props> = ({
   userLiked,
   userAdmin,
   replyFunc,
+  user_saved,
 }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [showDeletePopup, setShowDeletePopup] = useState<boolean>(false);
@@ -51,6 +53,7 @@ const Thread: React.FC<Props> = ({
   const [showUserProfilePopup, setShowUserProfilePopup] =
     useState<boolean>(false);
   const [showCopiedLink, setShowCopiedLink] = useState<boolean>(false);
+  const [savedThread, setSavedThread] = useState<boolean>(false);
 
   const [edit, toggleEdit] = useState<boolean>(false);
   const [activeUserID, setActiveUserID] = useAtom(userIDAtom);
@@ -93,7 +96,7 @@ const Thread: React.FC<Props> = ({
   useEffect(() => {
     setTitle(threadTitle);
     setContent(threadContent);
-
+    setSavedThread(user_saved);
     listenForOutsideClick(
       listening,
       setListening,
@@ -237,7 +240,17 @@ const Thread: React.FC<Props> = ({
       }
     ).then((response) => response.json());
   };
-
+  const toggleSaveThread = () => {
+    fetch(
+      `http://localhost:9000/api/togglesavedthread?threadID=${thread_id}&activeUser=${activeUserID}`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    ).then((response) => response.json());
+  };
   // Hide copied link popup after 1.5 seconds
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -607,36 +620,43 @@ const Thread: React.FC<Props> = ({
                   onClick={(e) => {
                     e.stopPropagation();
                     setShowDropdown(false);
-                    setPopupReason("save thread");
                     if (!activeUserID || activeUserID <= 0) {
                       setShowSignInPopup(true);
                       return;
                     }
+                    setSavedThread(!savedThread);
+                    toggleSaveThread();
                   }}
                 >
                   <div className="flex-1">
-                    <svg
-                      fill="#000000"
-                      viewBox="0 0 1920 1920"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="ml-1 h-5 w-5 md:ml-2"
-                    >
-                      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                      <g
-                        id="SVGRepo_tracerCarrier"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      ></g>
-                      <g id="SVGRepo_iconCarrier">
-                        {" "}
+                    {savedThread ? (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        strokeWidth="2"
+                        className="ml-1 h-5 w-5 md:ml-2"
+                      >
                         <path
-                          d="m960.481 1412.11 511.758 307.054V170.586c0-31.274-25.588-56.862-56.862-56.862H505.586c-31.274 0-56.862 25.588-56.862 56.862v1548.578l511.757-307.055ZM1585.963 1920 960.48 1544.711 335 1920V170.586C335 76.536 411.536 0 505.586 0h909.79c94.05 0 170.587 76.536 170.587 170.586V1920Z"
-                          fillRule="evenodd"
-                        ></path>{" "}
-                      </g>
-                    </svg>
+                          d="M5 2H19C19.5523 2 20 2.44772 20 3V22.1433C20 22.4194 19.7761 22.6434 19.5 22.6434C19.4061 22.6434 19.314 22.6168 19.2344 22.5669L12 18.0313L4.76559 22.5669C4.53163 22.7136 4.22306 22.6429 4.07637 22.4089C4.02647 22.3293 4 22.2373 4 22.1433V3C4 2.44772 4.44772 2 5 2Z"
+                          fill="#000"
+                        ></path>
+                      </svg>
+                    ) : (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        className="ml-1 h-5 w-5 md:ml-2"
+                      >
+                        <path
+                          d="M5 2H19C19.5523 2 20 2.44772 20 3V22.1433C20 22.4194 19.7761 22.6434 19.5 22.6434C19.4061 22.6434 19.314 22.6168 19.2344 22.5669L12 18.0313L4.76559 22.5669C4.53163 22.7136 4.22306 22.6429 4.07637 22.4089C4.02647 22.3293 4 22.2373 4 22.1433V3C4 2.44772 4.44772 2 5 2ZM18 4H6V19.4324L12 15.6707L18 19.4324V4Z"
+                          fill="#000"
+                        ></path>
+                      </svg>
+                    )}
                   </div>
-                  <div className="ml-1  text-sm md:ml-0">Save</div>
+                  <div className="ml-1  text-sm md:ml-0">
+                    {savedThread ? "Unsave" : "Save"}
+                  </div>
                   <div className="flex-1"></div>
                 </div>
                 {/* Report */}
@@ -771,6 +791,7 @@ const Thread: React.FC<Props> = ({
             title={title}
             showReportPopup={showReportPopup}
             setShowReportPopup={setShowReportPopup}
+            activeUserID={activeUserID || 0}
           />
         )}
         {/* Sign In Popup  */}

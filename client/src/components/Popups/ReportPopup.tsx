@@ -1,25 +1,70 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Props = {
   id: number;
   title?: string;
   showReportPopup: boolean;
   setShowReportPopup: React.Dispatch<React.SetStateAction<boolean>>;
+  activeUserID: number;
 };
+interface emailFormat {
+  email: string;
+  name: string;
+  message: string;
+}
 
 const ReportPopup: React.FC<Props> = ({
   id,
   title,
   showReportPopup,
   setShowReportPopup,
+  activeUserID,
 }) => {
   const [reportOption, setReportOption] = useState<string[]>([]);
   const [otherOption, toggleOtherOption] = useState<boolean>(false);
+  const [contact, setContact] = useState<emailFormat>({
+    email: "",
+    name: "",
+    message: "",
+  });
 
-  const reportPost = () => {
-    console.log(title, "ID:", id, "Report:", reportOption);
-    setShowReportPopup(false);
-    // Figure out what to do for reporting posts (send us an email?)
+  // Get user info
+  useEffect(() => {
+    fetch(`http://localhost:9000/api/user/${activeUserID}`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        let name = data.first_name + " " + data.last_name;
+        setContact({ name: name, email: data.email, message: "" });
+      });
+  }, []);
+
+  useEffect(() => {
+    setContact({
+      ...contact,
+      message: `User ID ${activeUserID} is reporting Thread ID ${id} because of "${reportOption}"`,
+    });
+  }, [reportOption, otherOption]);
+
+  const sendReport = () => {
+    if (contact.message.length === 0) {
+      return;
+    }
+    fetch("http://localhost:9000/api/contact", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(contact),
+    }).then((response) => {
+      if (response.status == 200) {
+        return response.json();
+      }
+    });
   };
 
   return (
@@ -302,7 +347,8 @@ const ReportPopup: React.FC<Props> = ({
                   className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
                   onClick={(e) => {
                     e.stopPropagation();
-                    reportPost();
+                    sendReport();
+                    setShowReportPopup(false);
                   }}
                 >
                   Report

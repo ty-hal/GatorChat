@@ -204,7 +204,7 @@ Mypassword@123
                       setShowPassword(!showPassword);
                     }}
                     viewBox="0 0 576 512"
-                    className={`h-6 text-gray-900 dark:text-gray-50 ${
+                    className={`h-6 text-blue-600 ${
                       showPassword ? "hidden" : "block"
                     }`}
                     xmlns="http://www.w3.org/2000/svg"
@@ -221,7 +221,7 @@ Mypassword@123
                       setShowPassword(!showPassword);
                     }}
                     viewBox="0 0 576 512"
-                    className={`h-6 text-gray-900 dark:text-gray-50 ${
+                    className={`h-6 text-blue-600 ${
                       showPassword ? "block" : "hidden"
                     }`}
                     xmlns="http://www.w3.org/2000/svg"

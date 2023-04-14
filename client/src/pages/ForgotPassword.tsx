@@ -1,4 +1,9 @@
+import { event } from "cypress/types/jquery";
+import { toInteger } from "cypress/types/lodash";
 import { useState, useEffect } from "react";
+import { userIDAtom } from "../App";
+import { useAtom } from "jotai";
+import { useAtomValue } from "jotai";
 interface resetpassword {
   email: string;
   message: string;
@@ -8,13 +13,19 @@ const ForgotPassword = () =>
   //const [code, setname] = useState("");
   const [email, setemail] = useState("");
   const [link, setcomment] = useState("");
+  const [code,setcode] = useState(Math.floor((Math.random()*1000000)).toString());
+  //const [gencode, generatecode] = useState("");
+  const [usercode, setusercode] = useState("");
+  const [password, setpassword] = useState("");
+  const [userid, setuserid] = useAtom(userIDAtom);
+  const activeUserID = useAtomValue(userIDAtom);
   const submitForm = (e: React.FormEvent) => 
   {
     e.preventDefault();
     const reset:resetpassword = 
     {
       email: email,
-      message: link
+      message: "your code is: "+ code
     }
     fetch(`http://localhost:9000/api/user/verify?email=${email}`,
       {
@@ -42,8 +53,19 @@ const ForgotPassword = () =>
         console.log("User Found")
       }
     })
+  };
+  const checkcode = ()=>
+  {
+    console.log(usercode);
+    console.log(code);
+    if(usercode != code)
+    {
+      alert("Incorrect code entered!");
+    }
     
-    };
+  }
+
+ 
 
   return (
     <div className="h-screen bg-gray-50 py-16 dark:bg-gray-900 md:py-8">
@@ -72,17 +94,48 @@ const ForgotPassword = () =>
             type="submit"
             className=" w-full rounded-lg bg-blue-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300"
             id = "send"
-            onClick={(event)=>setcomment("your code to reset your password is: xxxtyz")}
-            //onSubmit={}
-          >
+            onClick={ (event)=>{}}
+            >
             Send email
           </button>
-          {/* get email
-            get user id
-            make sure user exists in database by checking email
-            user exists and now we can create a one time link
-            */}
-        </form>
+          </form>
+          {/*code checker*/}
+          <input
+            name="code"
+            id="codeinput"
+            className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600  dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
+            placeholder="enter code here"
+            onChange={(event)=>{setusercode(event.target.value)}}
+          />
+            <input
+                type="password"
+                name="password"
+                className="
+                block w-11/12 rounded-lg border 
+                border-gray-300 bg-gray-50 p-2 
+                text-gray-900 focus:border-blue-600 focus:outline-none 
+                focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white 
+                dark:placeholder-gray-400 dark:focus:border-blue-500 
+                dark:focus:ring-blue-500 sm:w-full  
+                sm:text-sm"
+                id="password"
+                placeholder="••••••••"
+                title="Must be at least 8 characters long and contain a number and uppercase letter"
+                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                required
+                onChange={(event) => {
+                  setpassword(event.target.value);
+                }}
+              ></input>
+           <button
+          type = "button"
+            className=" w-full rounded-lg bg-blue-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300"
+            id = "check"
+            onClick={(event)=>checkcode()}
+          >
+            submit code
+            </button>
+
       </div>
     </div>
   );

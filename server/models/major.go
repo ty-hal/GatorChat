@@ -29,14 +29,10 @@ func GetMajorByID(majorID uint8) (Major, error) {
 	return major, nil
 }
 
-func GetMajorByName(majorName string) (Major, error) {
-	var major Major
+func GetMajorByName(majorName string) Major {
+	major := Major{MajorName: majorName}
 
-	err := middleware.DB.Where("major_name = ?", majorName).Find(&major).Error
+	middleware.DB.Where("major_name = ?", majorName).FirstOrCreate(&major)
 
-	if err != nil {
-		return Major{}, err
-	}
-
-	return major, nil
+	return major
 }

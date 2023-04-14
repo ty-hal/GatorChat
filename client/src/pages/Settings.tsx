@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useAtom } from "jotai";
+import { useAtomValue } from "jotai";
 import { userIDAtom } from "../App";
 
 import Select from "react-tailwindcss-select";
@@ -195,7 +195,7 @@ const Settings = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [userID, setUserID] = useAtom(userIDAtom);
+  const activeUserID = useAtomValue(userIDAtom);
   const [showDeleteAccountPopup, setShowDeleteAccountPopup] = useState(false);
   const [majorsValue, setMajorsValue] = useState<majorObj[]>([]);
   const [majors, setMajors] = useState<string[]>([]);
@@ -203,25 +203,66 @@ const Settings = () => {
   const [profilePicture, setProfilePicture] = useState<any>({
     file: "",
   });
+  const [changedProfilePic, setChangedProfilePic] = useState(false);
+  const [changedMajors, setChangedMajors] = useState(false);
+
   const navigate = useNavigate();
 
   const submitChanges = (e: any) => {
     e.preventDefault();
-    if (confirmPassword !== password) {
+    if (
+      (password.length > 0 || confirmPassword.length > 0) &&
+      confirmPassword !== password
+    ) {
       return;
     }
 
-    console.log("First Name:" + firstName);
-    console.log("Last Name:" + lastName);
-    console.log("Username:" + email);
-    console.log("Password:" + password);
-    console.log("Major(s):" + majors);
-    console.log("Userid:" + userID);
-    console.log("ProfilePicture:" + profilePicture.file);
+    // If user updated their password
+    if (password.length > 0 && confirmPassword.length > 0) changePassword();
+
+    // If user updated their profile picture
+    if (changedProfilePic) changeProfilePicture();
+
+    // If use updated their majors
+    if (changedMajors) changeMajors();
+
+    window.location.reload();
+  };
+
+  const changePassword = () => {
+    fetch(`http://localhost:9000/api/user/${activeUserID}/updatepassword`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({ Password: password }),
+    });
+  };
+  const changeProfilePicture = () => {
+    fetch(`http://localhost:9000/api/user/${activeUserID}/updateprofilepic`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({ ProfilePic: profilePicture.file }),
+    });
+  };
+  const changeMajors = () => {
+    console.log(majors);
+    fetch(
+      `http://localhost:9000/api/user/${activeUserID}/updatemajors?majorNames=${majors}`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    );
   };
 
   const handleMajorChange = (value: any) => {
     setMajorsValue(value);
+    setChangedMajors(true);
     if (value) {
       let tempMajors = value.map((item: majorObj) => {
         return item["value"];
@@ -251,7 +292,7 @@ const Settings = () => {
     }
   };
   const fetchUserMajors = () => {
-    fetch(`http://localhost:9000/api/user/${userID}/majors`, {
+    fetch(`http://localhost:9000/api/user/${activeUserID}/majors`, {
       method: "GET",
       headers: {
         "content-type": "application/json",
@@ -259,6 +300,7 @@ const Settings = () => {
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         const transformedData = data.map(
           (major: { major_id: number; major_name: string }) => ({
             disabled: false,
@@ -275,10 +317,10 @@ const Settings = () => {
       });
   };
   useEffect(() => {
-    if (userID === 0) navigate(-1);
+    if (activeUserID === 0) navigate(-1);
     // GET and SET the user who posted the thread's profile picture and email
-    if (userID !== null && userID > 0) {
-      fetch(`http://localhost:9000/api/user/${userID}`, {
+    if (activeUserID !== null && activeUserID > 0) {
+      fetch(`http://localhost:9000/api/user/${activeUserID}`, {
         method: "GET",
         headers: {
           "content-type": "application/json",
@@ -286,8 +328,10 @@ const Settings = () => {
       })
         .then((response) => response.json())
         .then((data) => {
-          // console.log(data);
+          console.log(data);
           setEmail(data.email);
+          setFirstName(data.first_name);
+          setLastName(data.last_name);
           if (data.profile_pic) {
             setProfilePicture(data.profile_pic);
           } else {
@@ -296,12 +340,12 @@ const Settings = () => {
           setSelectedImage(true);
         });
       fetchUserMajors();
-    } else if (userID !== null) {
+    } else if (activeUserID !== null) {
       setProfilePicture("");
       setSelectedImage(true);
       fetchUserMajors();
     }
-  }, [userID]);
+  }, [activeUserID]);
   useEffect(() => {
     const elem_confirmPassword = document.getElementById("confirm-password");
     if (elem_confirmPassword !== null) {
@@ -335,12 +379,14 @@ const Settings = () => {
           </div>
           {/* Personal Info */}
           <div className="space-y-3 text-sm font-medium text-gray-900 dark:text-white sm:text-base">
-            {/* First Name */}
-            <div>
-              <label className="mb-2 block"> First Name</label>
-              <input
-                type="text"
-                className="
+            {/* Name */}
+            <div className="flex-box flex justify-between">
+              {/* First Name */}
+              <div className="sm:w-2/5">
+                <label className="mb-2 block"> First Name</label>
+                <input
+                  type="text"
+                  className="
                 block w-11/12 rounded-lg border 
                 border-gray-300 bg-gray-50 p-2 
                 text-gray-900 focus:border-blue-600 focus:outline-none 
@@ -348,20 +394,17 @@ const Settings = () => {
                 dark:placeholder-gray-400 dark:focus:border-blue-500 
                 dark:focus:ring-blue-500 sm:w-full  
                 sm:text-sm"
-                id="first-name"
-                placeholder="John"
-                pattern="[a-zA-Z .'*_`~-]+"
-                onChange={(event) => {
-                  setFirstName(event.target.value);
-                }}
-              ></input>
-            </div>
-            {/* Last Name*/}
-            <div>
-              <label className="mb-2 block">Last Name</label>
-              <input
-                type="text"
-                className="
+                  id="first-name"
+                  value={firstName}
+                  disabled
+                ></input>
+              </div>
+              {/* Last Name*/}
+              <div>
+                <label className="mb-2 block">Last Name</label>
+                <input
+                  type="text"
+                  className="
                 block w-11/12 rounded-lg border 
                 border-gray-300 bg-gray-50 p-2 
                 text-gray-900 focus:border-blue-600 focus:outline-none 
@@ -369,13 +412,12 @@ const Settings = () => {
                 dark:placeholder-gray-400 dark:focus:border-blue-500 
                 dark:focus:ring-blue-500 sm:w-full 
                 sm:text-sm"
-                id="last-name"
-                placeholder="Doe"
-                pattern="[a-zA-Z .'*_`~-]+"
-                onChange={(event) => {
-                  setLastName(event.target.value);
-                }}
-              ></input>
+                  id="last-name"
+                  value={lastName}
+                  pattern="[a-zA-Z .'*_`~-]+"
+                  disabled
+                ></input>
+              </div>
             </div>
             {/* Email */}
             <div>
@@ -396,10 +438,6 @@ const Settings = () => {
                 value={email}
                 pattern="[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@ufl\.edu"
                 title="Email cannot be changed"
-                // onClick={() =>
-                //   alert("Contact support if you need to change your email")
-                // }
-                // readOnly
                 disabled
               ></input>
             </div>
@@ -501,6 +539,7 @@ const Settings = () => {
                     if (event.target.files !== null) {
                       handleImageUpload(event);
                       setSelectedImage(true);
+                      setChangedProfilePic(true);
                     }
                   }}
                 />
@@ -510,6 +549,7 @@ const Settings = () => {
                     onClick={() => {
                       setSelectedImage(false);
                       setProfilePicture({ ...profilePicture, file: "" });
+                      setChangedProfilePic(true);
                     }}
                   >
                     Remove
@@ -553,7 +593,10 @@ const Settings = () => {
                 text-sm font-medium text-white hover:bg-red-700 focus:outline-none
                 focus:ring-4 focus:ring-red-300 
                 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 sm:text-base"
-              onClick={() => setShowDeleteAccountPopup(true)}
+              onClick={(e) => {
+                e.preventDefault();
+                setShowDeleteAccountPopup(true);
+              }}
             >
               Delete account
             </button>

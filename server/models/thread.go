@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/team/swe-project/middleware"
@@ -67,7 +68,19 @@ func CreateThread(thread Thread) Thread {
 	middleware.DB.Create(&thread)
 
 	middleware.DB.Table("sections").Where("section_id = ?", thread.SectionID).Omit("updated_at").Update("thread_count", gorm.Expr("thread_count + ?", 1))
-	middleware.DB.Table("embedded_sections").Where("section_id = ?", thread.SectionID).Omit("updated_at").Update("thread_count", gorm.Expr("thread_count + ?", 1))
+
+	var section_id int64
+	middleware.DB.Table("threads").Select("section_id").Where("thread_id = ?", thread.ThreadID).Scan(&section_id)
+
+	var group_id int64
+	middleware.DB.Table("sections").Select("group_id").Where("section_id = ?", section_id).Scan(&group_id)
+
+	var parent_id uint64
+	middleware.DB.Table("embedded_sections").Select("section_parent_id").Where("group_child_id = ?", group_id).Scan(&parent_id)
+
+	fmt.Print(section_id, " ", group_id, " ", parent_id, " ")
+
+	middleware.DB.Table("sections").Where("section_id = ?", parent_id).Omit("updated_at").Update("thread_count", gorm.Expr("thread_count + ?", 1))
 
 	return thread
 }
@@ -106,7 +119,17 @@ func DeleteThread(threadID uint8) (Thread, error) {
 	}
 
 	middleware.DB.Table("sections").Where("section_id = ?", thread.SectionID).Omit("updated_at").Update("thread_count", gorm.Expr("thread_count + ?", -1))
-	middleware.DB.Table("embedded_sections").Where("section_id = ?", thread.SectionID).Omit("updated_at").Update("thread_count", gorm.Expr("thread_count + ?", -1))
+
+	var section_id int64
+	middleware.DB.Table("threads").Select("section_id").Where("thread_id = ?", thread.ThreadID).Scan(&section_id)
+
+	var group_id int64
+	middleware.DB.Table("sections").Select("group_id").Where("section_id = ?", section_id).Scan(&group_id)
+
+	var parent_id uint64
+	middleware.DB.Table("embedded_sections").Select("section_parent_id").Where("group_child_id = ?", group_id).Scan(&parent_id)
+
+	middleware.DB.Table("sections").Where("section_id = ?", parent_id).Omit("updated_at").Update("thread_count", gorm.Expr("thread_count + ?", -1))
 
 	return thread, nil
 }

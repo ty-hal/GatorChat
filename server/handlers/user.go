@@ -3,7 +3,6 @@ package handlers
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"net/http"
 	"os"
 	"strconv"
@@ -342,8 +341,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 
 func SignIn(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	fmt.Printf("%s", SecretKey)
-	fmt.Println(SecretKey)
+
 	type login struct {
 		Email    string `json:"email,omitempty"`
 		Password string `json:"password,omitempty"`

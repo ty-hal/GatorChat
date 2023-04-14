@@ -302,7 +302,7 @@ const EmbeddedSection: React.FC<Props> = ({
                     section_name={section.section_name}
                     section_description={section.description}
                     parent_section={section.parent_section}
-                    thread_count={ !section.parent_section ? section.thread_count : -1}
+                    thread_count={ section.thread_count ? section.thread_count : 0}
                   />
                 );
               })

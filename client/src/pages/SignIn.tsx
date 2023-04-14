@@ -86,10 +86,6 @@ const SignIn = () => {
       password: password,
     };
 
-    /*  
-random@ufl.edu
-Mypassword@123
-*/
     // Backend API call here to see if user a) has a valid email address, and b) has a valid login
     fetch("http://localhost:9000/api/user/signin", {
       method: "POST",

@@ -64,7 +64,7 @@ const SectionPreview: React.FC<Props> = ({
         {section_description ? section_description : ""}
       </div>
       <div className="my-2 text-base">
-        {thread_count != -1 ? thread_count == 1  ? `${thread_count} Thread` : `${thread_count} Threads` : ""}
+        {thread_count == 1  ? `${thread_count} Thread` : `${thread_count} Threads`}
       </div>
     </div>
   );

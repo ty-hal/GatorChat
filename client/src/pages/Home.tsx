@@ -110,8 +110,8 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900">
-      <div className="mx-auto w-3/4 pt-2 outline-none">
+    <div className="flex min-h-screen flex-col bg-white dark:bg-gray-900">
+      <div className="z-50 mx-auto w-3/4 pt-2 outline-none">
         <ReactSearchAutocomplete
           items={searchBarItems}
           fuseOptions={{ threshold: 0.3 }}
@@ -136,6 +136,7 @@ const Home = () => {
       {/* User saved sections */}
       <div className="mx-auto mt-4 w-11/12 text-black dark:text-white">
         <div className="text-center text-2xl font-bold">My Saved Sections</div>
+
         {loadedSavedSections ? (
           userSavedSections && userSavedSections.length > 0 ? (
             <div className="mt-2 sm:grid sm:grid-cols-2 md:grid-cols-3 md:gap-2 lg:grid-cols-4">
@@ -147,7 +148,9 @@ const Home = () => {
                     section_name={section.section_name}
                     section_description={section.description}
                     parent_section={section.parent_section}
-                    thread_count={ section.thread_count ? section.thread_count : 0}
+                    thread_count={
+                      section.thread_count ? section.thread_count : 0
+                    }
                   />
                 );
               })}
@@ -186,7 +189,7 @@ const Home = () => {
                   section_name={section.section_name}
                   section_description={section.description}
                   parent_section={section.parent_section}
-                  thread_count={ section.thread_count ? section.thread_count : 0}
+                  thread_count={section.thread_count ? section.thread_count : 0}
                 />
               );
             })

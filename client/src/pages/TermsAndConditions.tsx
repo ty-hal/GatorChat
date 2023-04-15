@@ -1,10 +1,10 @@
-import React from "react";
+import Footer from "../components/Footer";
 
 const TermsAndConditions = () => {
   return (
     <div className="min-h-screen bg-gray-50 pb-16 text-gray-900 dark:bg-gray-900 dark:text-white">
-      <div className="mx-auto w-11/12 space-y-4 pt-4">
-        <h1 className="pb-4 text-center text-4xl font-semibold">
+      <div className="mx-auto w-3/4 space-y-4 pt-4 sm:w-11/12">
+        <h1 className="text-center text-2xl font-semibold sm:text-3xl md:text-4xl">
           Terms and Conditions
         </h1>
         <p>
@@ -83,6 +83,7 @@ const TermsAndConditions = () => {
           </li>
         </ol>
       </div>
+      <Footer />
     </div>
   );
 };

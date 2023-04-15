@@ -51,6 +51,7 @@ const EmbeddedSection: React.FC<Props> = ({
   const [showCreateSectionPopup, setShowCreateSectionPopup] =
     useState<boolean>(false);
   const [showSignInPopup, setShowSignInPopup] = useState<boolean>(false);
+  const [popupReason, setPopupReason] = useState<string>("");
 
   const getChildSections = () => {
     fetch(`http://localhost:9000/api/section/${section_id}/children`, {
@@ -181,6 +182,8 @@ const EmbeddedSection: React.FC<Props> = ({
               id="bookmark-section"
               onClick={() => {
                 if (!activeUserID || activeUserID <= 0) {
+                  setPopupReason("save section");
+                  setShowSignInPopup(true);
                   return;
                 }
                 setSavedSection(!savedSection);
@@ -281,6 +284,7 @@ const EmbeddedSection: React.FC<Props> = ({
             className="m-auto flex h-12 cursor-pointer items-center justify-center rounded-full border border-black p-2 hover:bg-blue-400 dark:border-white dark:hover:bg-blue-600 md:w-1/4"
             onClick={(e) => {
               if (!activeUserID || activeUserID <= 0) {
+                setPopupReason("create section");
                 setShowSignInPopup(true);
                 return;
               }
@@ -342,7 +346,7 @@ const EmbeddedSection: React.FC<Props> = ({
         {/* Sign In Popup  */}
         {showSignInPopup && (
           <SignInPopup
-            popupReason="create section"
+            popupReason={popupReason}
             showSignInPopup={showSignInPopup}
             setShowSignInPopup={setShowSignInPopup}
           />

@@ -623,6 +623,7 @@ const Thread: React.FC<Props> = ({
                     e.stopPropagation();
                     setShowDropdown(false);
                     if (!activeUserID || activeUserID <= 0) {
+                      setPopupReason("save thread");
                       setShowSignInPopup(true);
                       return;
                     }

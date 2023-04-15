@@ -587,8 +587,8 @@ const Settings = () => {
                 ((password.length === 0 && confirmPassword.length === 0) ||
                   (password.length !== 0 && password === confirmPassword)) &&
                 (changedMajors || changedProfilePic)
-                  ? "rounded-lg bg-blue-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                  : "cursor-auto rounded-lg bg-gray-500 px-5 py-2.5 text-center text-sm font-medium text-white"
+                  ? "rounded-lg bg-blue-600 px-2 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 sm:px-5"
+                  : "cursor-auto rounded-lg bg-gray-500 px-3 py-2.5 text-center text-sm font-medium text-white sm:px-5"
               }
             >
               Submit
@@ -597,11 +597,11 @@ const Settings = () => {
             <button
               className=" 
                 justify-center rounded-lg 
-                bg-red-600 px-4 
-                py-2.5 text-center 
-                text-sm font-medium text-white hover:bg-red-700 focus:outline-none
-                focus:ring-4 focus:ring-red-300 
-                dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 sm:text-base"
+                bg-red-600 px-2 py-2.5 
+                text-center text-sm 
+                font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-4
+                focus:ring-red-300 dark:bg-red-600 
+                dark:hover:bg-red-700 dark:focus:ring-red-800 sm:px-4 sm:text-base"
               onClick={(e) => {
                 e.preventDefault();
                 setShowDeleteAccountPopup(true);

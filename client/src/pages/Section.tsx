@@ -6,6 +6,7 @@ import CreateThread from "../components/Thread/CreateThread";
 import InfiniteScroll from "react-infinite-scroll-component";
 import SkeletonThreadPreview from "../components/Thread/SkeletonThreadPreview";
 import EmbeddedSection from "./EmbeddedSection";
+import SignInPopup from "../components/Popups/SignInPopup";
 
 type ThreadType = {
   thread_id: number;
@@ -46,6 +47,7 @@ const Section: React.FC<Props> = ({
   const [loaded, setLoaded] = useState<boolean>(false);
   const [savedSection, setSavedSection] = useState<boolean>(false);
   const [userAdmin, setUserAdmin] = useState<boolean>(false);
+  const [showSignInPopup, setShowSignInPopup] = useState<boolean>(false);
 
   const getThreads = () => {
     fetch(
@@ -200,6 +202,8 @@ const Section: React.FC<Props> = ({
                 id="bookmark-section"
                 onClick={() => {
                   if (!activeUserID || activeUserID <= 0) {
+                    setShowSignInPopup(true);
+
                     return;
                   }
                   setSavedSection(!savedSection);
@@ -259,6 +263,15 @@ const Section: React.FC<Props> = ({
                 </svg>
               </div>
             </div>
+          )}
+
+          {/* Sign In Popup  */}
+          {showSignInPopup && (
+            <SignInPopup
+              popupReason="save section"
+              showSignInPopup={showSignInPopup}
+              setShowSignInPopup={setShowSignInPopup}
+            />
           )}
 
           {/* Section Description */}

@@ -111,6 +111,9 @@ func DeleteThread(threadID uint8) (Thread, error) {
 		}
 	}
 
+	var section_id int64
+	middleware.DB.Table("threads").Select("section_id").Where("thread_id = ?", threadID).Scan(&section_id)
+
 	var thread Thread
 	result := middleware.DB.Clauses(clause.Returning{}).Unscoped().Where("thread_id = ?", threadID).Delete(&thread)
 
@@ -119,9 +122,6 @@ func DeleteThread(threadID uint8) (Thread, error) {
 	}
 
 	middleware.DB.Table("sections").Where("section_id = ?", thread.SectionID).Omit("updated_at").Update("thread_count", gorm.Expr("thread_count + ?", -1))
-
-	var section_id int64
-	middleware.DB.Table("threads").Select("section_id").Where("thread_id = ?", thread.ThreadID).Scan(&section_id)
 
 	var group_id int64
 	middleware.DB.Table("sections").Select("group_id").Where("section_id = ?", section_id).Scan(&group_id)

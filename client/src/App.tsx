@@ -16,6 +16,8 @@ import FAQ from "./pages/FAQ";
 import ContactUs from "./pages/Contactus";
 import DefaultSection from "./pages/DefaultSection";
 import MyAccount from "./pages/MyAccount";
+import MyThreads from "./components/Account/MyThreads";
+import MyMessages from "./components/Account/MyMessages";
 
 // Uses local storage to detect user dark mode preference
 export const darkModeAtom = atomWithStorage("dark-mode", true);
@@ -96,6 +98,8 @@ export default function App() {
         <Route path="faq" element={<FAQ />} />
         <Route path="contact-us" element={<ContactUs />} />
         <Route path="my-account" element={<MyAccount />} />
+        <Route path="my-account/my-threads" element={<MyThreads />} />
+        <Route path="my-account/my-messages" element={<MyMessages />} />
         <Route path="*" element={<NoPage />} />
       </Routes>
     </div>

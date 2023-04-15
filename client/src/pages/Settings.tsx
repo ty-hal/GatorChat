@@ -376,7 +376,7 @@ const Settings = () => {
             className="mb-4 text-2xl font-bold  
                text-gray-900 dark:text-white"
           >
-            Account settings
+            Account Settings
           </div>
           {/* Personal Info */}
           <div className="space-y-3 text-sm font-medium text-gray-900 dark:text-white sm:text-base">
@@ -551,7 +551,7 @@ const Settings = () => {
                 />
                 {selectedImage && (
                   <div
-                    className="-ml-2 flex cursor-pointer items-center  justify-center rounded-lg rounded-l-sm border border-gray-300 bg-red-600 px-1  pt-0.5 text-center align-baseline text-sm text-gray-200 dark:border-gray-600 dark:placeholder-gray-400"
+                    className="-ml-2 flex cursor-pointer items-center justify-center rounded-lg rounded-l-sm border border-gray-300 bg-red-600 px-1  pt-0.5 text-center align-baseline text-sm text-gray-200 dark:border-gray-600 dark:placeholder-gray-400"
                     onClick={() => {
                       setSelectedImage(false);
                       setProfilePicture({ ...profilePicture, file: "" });

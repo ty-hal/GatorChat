@@ -5,6 +5,7 @@ import ThreadPreview from "../components/Thread/ThreadPreview";
 import SkeletonThreadPreview from "../components/Thread/SkeletonThreadPreview";
 import { useEffect, useState } from "react";
 import Message from "../components/Message/MessageFormat";
+import { Link } from "react-router-dom";
 
 type Thread = {
   thread_id: number;
@@ -136,6 +137,22 @@ const MyAccount = () => {
     <div className="min-h-screen bg-white dark:bg-gray-900">
       {/* User saved threads */}
       <div className="mx-auto w-11/12 pt-4 text-black dark:text-white">
+        <Link to="/my-account/my-threads">
+          <button
+            type="submit"
+            id="submit"
+          >
+            My Threads
+          </button>
+        </Link>
+        <Link to="/my-account/my-messages">
+          <button
+            type="submit"
+            id="submit"
+          >
+            My Messages
+          </button>
+        </Link>
         <div className="text-center text-2xl font-bold">My Saved Threads</div>
         {loadedSavedThreads ? (
           userSavedThreads && userSavedThreads.length > 0 ? (
@@ -180,7 +197,7 @@ const MyAccount = () => {
       </div>
       {/* User created threads */}
       <div className="mx-auto w-11/12 pt-4 text-black dark:text-white">
-        <div className="text-center text-2xl font-bold">My Own Threads</div>
+        <div className="text-center text-2xl font-bold">My Threads</div>
         {loadedCreatedThreads ? (
           userCreatedThreads && userCreatedThreads.length > 0 ? (
             userCreatedThreads.map((thread, index) => {
@@ -224,7 +241,7 @@ const MyAccount = () => {
       </div>
       {/* User created messages */}
       <div className="mx-auto w-11/12 pt-4 text-black dark:text-white">
-        <div className="text-center text-2xl font-bold">My Own Messages</div>
+        <div className="text-center text-2xl font-bold">My Messages</div>
         {loadedCreatedMessages ? (
           userCreatedMessages && userCreatedMessages.length > 0 ? (
             userCreatedMessages.map((messages, index) => {

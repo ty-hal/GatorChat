@@ -113,5 +113,3 @@ func DeletePost(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(postDeleted)
 
 }
-
-// Delete / Update Post

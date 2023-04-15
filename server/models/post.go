@@ -40,6 +40,14 @@ func GetPostByID(postID uint8) (Post, error) {
 	return post, nil
 }
 
+func GetAllPostsWithOffset(pageNumber int, pageSize int, thread_id int) []Post {
+	var posts []Post
+
+	middleware.DB.Order("updated_at DESC").Where("thread_id = ?", thread_id).Offset((pageNumber - 1) * pageSize).Limit(pageSize).Find(&posts)
+
+	return posts
+}
+
 func CreatePost(post Post) Post {
 	middleware.DB.Create(&post)
 

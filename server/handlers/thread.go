@@ -120,8 +120,10 @@ func GetThreadPosts(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	params := mux.Vars(r)
-	id, err := strconv.Atoi(params["id"])
 	queryParams := r.URL.Query()
+	id, err := strconv.Atoi(params["id"])
+	pageNumber, _ := strconv.Atoi(queryParams.Get("pageNumber"))
+	pageSize, _ := strconv.Atoi(queryParams.Get("pageSize"))
 	activeUser, _ := strconv.Atoi(queryParams.Get("activeUser"))
 
 	// Invalid parameter
@@ -131,7 +133,7 @@ func GetThreadPosts(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	thread_posts := models.GetThreadPosts(uint8(id), uint8(activeUser))
+	thread_posts := models.GetThreadPostsWithOffset(uint8(id), pageNumber, pageSize, uint8(activeUser))
 
 	json.NewEncoder(w).Encode(thread_posts)
 }

@@ -8,6 +8,7 @@ import MessageBox from "../components/Message/MessageBox";
 import SkeletonThreadPost from "../components/Thread/SkeletonThreadPost";
 import SkeletonMessage from "../components/Message/SkeletonMessage";
 import SkeletonMessageBox from "../components/Message/SkeletonMessageBox";
+import InfiniteScroll from "react-infinite-scroll-component";
 export const messageBoxAtom = atom("");
 
 type MessageType = {
@@ -62,6 +63,9 @@ const Thread: React.FC<Props> = ({
   const [messageLoaded, setMessageLoaded] = useState(false);
   const [userAdmin, setUserAdmin] = useState<boolean>(false);
 
+  const [page, setPage] = useState<number>(1);
+  const [more, setMore] = useState<boolean>(true);
+
   // Get thread
   const getThread = () => {
     fetch(
@@ -84,7 +88,7 @@ const Thread: React.FC<Props> = ({
   // Get messages
   const getMessages = () => {
     fetch(
-      `http://localhost:9000/api/thread/${thread_id}/posts?activeUser=${activeUserID}`,
+      `http://localhost:9000/api/thread/${thread_id}/posts?pageNumber=${page}&pageSize=${4}&activeUser=${activeUserID}`,
       {
         method: "GET",
         headers: {
@@ -94,10 +98,20 @@ const Thread: React.FC<Props> = ({
     )
       .then((response) => response.json())
       .then((data) => {
-        // console.log(data);
-        if (data !== null) {
-          setMessages(data);
+        if (data && more) {
+          setMessages((messages) => [
+            ...messages,
+            ...data.filter(
+              (message: MessageType) =>
+                !messages.some((t) => t.post_id === message.post_id)
+            ),
+          ]);
+          setPage((page) => page + 1);
+        } else {
+          setMore(false);
         }
+      })
+      .then(() => {
         setMessageLoaded(true);
       });
   };
@@ -194,6 +208,19 @@ const Thread: React.FC<Props> = ({
   };
 
   return (
+    <InfiniteScroll
+    dataLength={messages.length}
+    next={
+      checkedCookie
+        ? getMessages
+        : () =>
+            console.log(
+              "InfiniteScroll next not loaded yet -- user auth first"
+            )
+    }
+    hasMore={more}
+    loader={null}
+    >
     <div className="min-h-screen bg-white dark:bg-gray-900">
       <div className="flex flex-col items-center px-4 pt-4">
         <div
@@ -259,6 +286,7 @@ const Thread: React.FC<Props> = ({
       </div>
       <Footer />
     </div>
+    </InfiniteScroll>
   );
 };
 

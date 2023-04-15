@@ -178,6 +178,28 @@ func GetThreadPosts(threadID uint8, activeUser uint8) []Post {
 	return posts
 }
 
+func GetThreadPostsWithOffset(thread_id uint8, pageNumber int, pageSize int, activeUser uint8) []Post {
+	var posts []Post
+
+	for _, post := range GetAllPostsWithOffset(pageNumber, pageSize, int(thread_id)) {
+		if post.ThreadID == thread_id {
+			creator, err := GetUserByID(post.UserID)
+
+			if err != nil {
+				post.User = "[DELETED]"
+			} else {
+				post.User = creator.FirstName + " " + creator.LastName
+			}
+
+			post.UserLiked = CheckMessageLike(activeUser, post.PostID)
+
+			posts = append(posts, post)
+		}
+	}
+
+	return posts
+}
+
 func GetThreadLikes(threadID uint8) int64 {
 	var count int64
 

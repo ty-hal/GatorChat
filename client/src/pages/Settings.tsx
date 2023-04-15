@@ -395,8 +395,10 @@ const Settings = () => {
                 dark:focus:ring-blue-500 sm:w-full  
                 sm:text-sm"
                   id="first-name"
+                  placeholder="John"
                   value={firstName}
                   disabled
+                  title="Last name cannot be changed. Contact support for assistance."
                 ></input>
               </div>
               {/* Last Name*/}
@@ -414,8 +416,9 @@ const Settings = () => {
                 sm:text-sm"
                   id="last-name"
                   value={lastName}
-                  pattern="[a-zA-Z .'*_`~-]+"
+                  placeholder="Doe"
                   disabled
+                  title="Last name cannot be changed. Contact support for assistance."
                 ></input>
               </div>
             </div>
@@ -437,7 +440,7 @@ const Settings = () => {
                 placeholder="email@ufl.edu"
                 value={email}
                 pattern="[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@ufl\.edu"
-                title="Email cannot be changed"
+                title="Email cannot be changed. Contact support for assistance."
                 disabled
               ></input>
             </div>
@@ -462,6 +465,7 @@ const Settings = () => {
                 onChange={(event) => {
                   setPassword(event.target.value);
                 }}
+                autoComplete="new-password"
               ></input>
             </div>
             {/* Confirm New Password */}

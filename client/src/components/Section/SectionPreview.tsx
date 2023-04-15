@@ -27,7 +27,7 @@ const SectionPreview: React.FC<Props> = ({
 
   return (
     <div
-      className="m-2 cursor-pointer rounded-2xl border-2 border-gray-500 bg-gray-200 p-2 text-center text-lg font-normal text-gray-900 shadow-md hover:border-blue-600  dark:bg-gray-800 dark:text-white"
+      className="relative m-2 cursor-pointer rounded-2xl border-2 border-gray-500 bg-gray-200 p-2 text-center text-lg font-normal text-gray-900 shadow-md hover:border-blue-600  dark:bg-gray-800 dark:text-white"
       id="section-preview"
       onClick={(e) => {
         console.log(`Open section ${section_id}`);
@@ -60,11 +60,13 @@ const SectionPreview: React.FC<Props> = ({
         {section_name}
       </div>
       {/* Section Description */}
-      <div className="my-2 text-base">
+      <div className="mb-6 text-base">
         {section_description ? section_description : ""}
       </div>
-      <div className="my-2 text-base">
-        {thread_count == 1  ? `${thread_count} Thread` : `${thread_count} Threads`}
+      <div className="absolute left-0 right-0 bottom-1 m-auto text-base">
+        {thread_count == 1
+          ? `${thread_count} Thread`
+          : `${thread_count} Threads`}
       </div>
     </div>
   );

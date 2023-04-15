@@ -21,7 +21,8 @@ type Props = {
   likesCount: number;
   userLiked: boolean;
   userAdmin: boolean;
-  replyFunc: () => void;
+  replyFunc?: () => void;
+  classname?: string;
 };
 
 interface messageBody {
@@ -39,6 +40,7 @@ const Message: React.FC<Props> = ({
   userLiked,
   userAdmin,
   replyFunc,
+  classname,
 }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -196,10 +198,12 @@ const Message: React.FC<Props> = ({
 
   // Reply to the message
   const replyToMessage = () => {
-    replyFunc();
-    setUserMessageBox(
-      `<p></p><blockquote><p><strong>${username}</strong> posted ${postTimeDifference}:</p><p>${content}</p></blockquote><p></p>`
-    );
+    if (replyFunc) {
+      replyFunc();
+      setUserMessageBox(
+        `<p></p><blockquote><p><strong>${username}</strong> posted ${postTimeDifference}:</p><p>${content}</p></blockquote><p></p>`
+      );
+    }
   };
 
   const likeMessage = () => {
@@ -247,7 +251,11 @@ const Message: React.FC<Props> = ({
 
   return (
     <div
-      className="relative mx-auto w-11/12 border-x-2 border-y border-gray-500 bg-gray-200 py-8 text-center text-lg font-normal text-gray-900 dark:border-gray-300 dark:bg-gray-800 dark:text-white lg:w-4/5"
+      className={
+        classname
+          ? classname
+          : "relative mx-auto w-11/12 border-x-2 border-y border-gray-500 bg-gray-200 py-8 text-center text-lg font-normal text-gray-900 dark:border-gray-300 dark:bg-gray-800 dark:text-white lg:w-4/5"
+      }
       onClick={(e) => {
         setShowDropdown(false);
         console.log(`Message ${post_id}`);
@@ -393,7 +401,7 @@ const Message: React.FC<Props> = ({
               return;
             }
             console.log(`Reply to message ${post_id}`);
-            replyToMessage();
+            if (replyFunc) replyToMessage();
           }}
         >
           <svg

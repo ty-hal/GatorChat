@@ -197,11 +197,11 @@ func GetUserThreads(userID uint8) []Thread {
 
 	middleware.DB.Find(&threads, "user_id = ?", userID)
 
-	for _, thread := range threads {
-		creator, err := GetUserByID(thread.UserID)
+	for i := range threads {
+		creator, err := GetUserByID(threads[i].UserID)
 
 		if err == nil {
-			thread.User = creator.FirstName + " " + creator.LastName
+			threads[i].User = creator.FirstName + " " + creator.LastName
 		}
 	}
 
@@ -213,11 +213,11 @@ func GetUserPosts(userID uint8) []Post {
 
 	middleware.DB.Find(&posts, "user_id = ?", userID)
 
-	for _, post := range posts {
-		creator, err := GetUserByID(post.UserID)
+	for i := range posts {
+		creator, err := GetUserByID(posts[i].UserID)
 
 		if err == nil {
-			post.User = creator.FirstName + " " + creator.LastName
+			posts[i].User = creator.FirstName + " " + creator.LastName
 		}
 	}
 

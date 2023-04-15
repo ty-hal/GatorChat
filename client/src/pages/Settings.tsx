@@ -402,6 +402,7 @@ const Settings = () => {
                   title="Last name cannot be changed. Contact support for assistance."
                 ></input>
               </div>
+
               {/* Last Name*/}
               <div>
                 <label className="mb-2 block">Last Name</label>
@@ -550,7 +551,7 @@ const Settings = () => {
                 />
                 {selectedImage && (
                   <div
-                    className="-ml-2 flex cursor-pointer items-center  justify-center rounded-lg rounded-l-sm border border-gray-300 bg-red-600 px-1  pt-0.5 text-center align-baseline text-sm text-sm text-gray-200 dark:border-gray-600 dark:placeholder-gray-400"
+                    className="-ml-2 flex cursor-pointer items-center  justify-center rounded-lg rounded-l-sm border border-gray-300 bg-red-600 px-1  pt-0.5 text-center align-baseline text-sm text-gray-200 dark:border-gray-600 dark:placeholder-gray-400"
                     onClick={() => {
                       setSelectedImage(false);
                       setProfilePicture({ ...profilePicture, file: "" });
@@ -601,7 +602,7 @@ const Settings = () => {
                 text-center text-sm 
                 font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-4
                 focus:ring-red-300 dark:bg-red-600 
-                dark:hover:bg-red-700 dark:focus:ring-red-800 sm:px-4 sm:text-base"
+                dark:hover:bg-red-700 dark:focus:ring-red-800 sm:px-4"
               onClick={(e) => {
                 e.preventDefault();
                 setShowDeleteAccountPopup(true);

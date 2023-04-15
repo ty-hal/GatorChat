@@ -1,113 +1,139 @@
 import { useState } from "react";
-
-interface contactus {
+import Footer from "../components/Footer";
+interface emailInfo {
   email: string;
   name: string;
   message: string;
 }
 
 const ContactUs = () => {
-  const [name, setname] = useState("");
-  const [email, setemail] = useState("");
-  const [comment, setcomment] = useState("");
-  const submit = (e: any) => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+
+  const sendEmail = (e: any) => {
     e.preventDefault();
-    const contact: contactus = {
+    const mail: emailInfo = {
       email: email,
       name: name,
-      message: comment
-    }
+      message: `Contact Us form: ${message}`,
+    };
 
     fetch("http://localhost:9000/api/contact", {
       method: "POST",
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify(contact),
-    })
-    .then((response) => {
-      if (response.status == 200) {
-        return response.json()
-      }
-
-      alert("Message Could Not Be Delivered")
-    })
-    .then((data) => alert("Message Delivered"))
-  
+      body: JSON.stringify(mail),
+    }).then((response) => window.location.reload());
   };
-  return (
-    <div className="h-screen bg-gray-50 py-8 dark:bg-gray-900 ">
-      <form onSubmit={submit}>
-        {/*body*/}
-        <div className="font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
-          <div className="flex justify-center">
-            {/* account settings header*/}
-            <div className="font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
-              Contact Us
-            </div>
-          </div>
-          {/*input email*/}
-          <div className="w-center">
-            <div className="my-10">
-              <label className="flex justify-center">Email</label>
-              <div className="ml-20 flex justify-center ">
-                <input
-                  type="email"
-                  id="email"
-                  className="mr-20 block w-6 rounded-lg border border-gray-300 bg-gray-50 p-2  text-gray-900 focus:border-blue-600 focus:outline-none  focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white  dark:placeholder-gray-400 dark:focus:border-blue-500  dark:focus:ring-blue-500 sm:w-96 sm:text-sm"
-                  placeholder="enter email here"
-                  onChange={(event) => {
-                    setemail(event.target.value);
-                  }}
-                ></input>
-              </div>
-            </div>
-          </div>
-          {/*input name*/}
-          <div className="w-center">
-            <div className="my-10">
-              <label className="flex justify-center">Name</label>
-              <div className="ml-20 flex justify-center ">
-                <input
-                  type="text"
-                  id="name"
-                  className="mr-20 block w-6 rounded-lg border border-gray-300 bg-gray-50 p-2  text-gray-900 focus:border-blue-600 focus:outline-none  focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white  dark:placeholder-gray-400 dark:focus:border-blue-500  dark:focus:ring-blue-500 sm:w-96 sm:text-sm"
-                  placeholder="enter full name here"
-                  onChange={(event) => {
-                    setname(event.target.value);
-                  }}
-                ></input>
-              </div>
-            </div>
-          </div>
 
-          {/*reason for contact*/}
-          <div className="w-center">
-            <div className="my-10">
-              <label className="flex justify-center">Message</label>
-              <div className="ml-20 flex justify-center ">
-                <textarea
-                  id="comment"
-                  className="mr-20 block h-72 rounded-lg border border-gray-300 bg-gray-50 p-2  text-gray-900 focus:border-blue-600 focus:outline-none  focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white  dark:placeholder-gray-400 dark:focus:border-blue-500  dark:focus:ring-blue-500 sm:w-96 sm:text-sm"
-                  onChange={(event) => {
-                    setcomment(event.target.value);
-                  }}
-                  placeholder="I love this website so much! Thanks for making it!"
-                ></textarea>
-              </div>
+  return (
+    <div className="min-h-screen w-full bg-gray-50 py-8 dark:bg-gray-900 ">
+      <form
+        onSubmit={sendEmail}
+        className="mx-auto w-full rounded-lg bg-white p-6 pb-0 text-gray-900 shadow dark:border dark:border-gray-700 dark:bg-gray-800 dark:text-white sm:w-3/4 sm:p-8 sm:pb-0 md:w-2/3 lg:w-1/2 xl:w-2/5 2xl:w-1/3"
+      >
+        {/* Form Information */}
+        <div className="mx-auto w-full space-y-3 pb-10 text-sm font-medium sm:max-w-md sm:text-base">
+          {/* Contact Us*/}
+          <div className="text-left text-2xl font-bold">Contact Us</div>
+          {/* Name*/}
+          <div>
+            <label className="mb-2 block text-sm">Name</label>
+            <input
+              type="text"
+              className="
+                block w-11/12 rounded-lg border 
+                border-gray-300 bg-gray-50 p-2 
+                text-sm text-gray-900 focus:border-blue-600 
+                focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 
+                dark:text-white dark:placeholder-gray-400 
+                dark:focus:border-blue-500 dark:focus:ring-blue-500 
+                sm:w-full"
+              id="name"
+              name="name"
+              placeholder="John Doe"
+              required
+              onChange={(event) => {
+                setName(event.target.value);
+              }}
+              pattern="[a-zA-Z.'`~-]+"
+              title="Enter your full name."
+            ></input>
+          </div>
+          {/* Email */}
+          <div>
+            <label className="mb-2 block text-sm">Email</label>
+            <input
+              type="email"
+              className="
+                block w-11/12 rounded-lg border 
+                border-gray-300 bg-gray-50 p-2 
+                text-sm text-gray-900 focus:border-blue-600 
+                focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 
+                dark:text-white dark:placeholder-gray-400 
+                dark:focus:border-blue-500 dark:focus:ring-blue-500 
+                sm:w-full"
+              id="email"
+              name="email"
+              placeholder="email@ufl.edu"
+              onChange={(event) => {
+                setEmail(event.target.value);
+              }}
+              pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+              required
+              title="Enter your email."
+            ></input>
+          </div>
+          {/* Message*/}
+          <div>
+            <label className="mb-2 block text-sm">Message</label>
+            <textarea
+              className="
+                block h-48 w-11/12 rounded-lg border border-gray-300 
+                bg-gray-50 p-2 text-sm 
+                text-gray-900 focus:border-blue-600 focus:outline-none 
+                focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white 
+                dark:placeholder-gray-400 dark:focus:border-blue-500 
+                dark:focus:ring-blue-500 sm:h-64 
+                sm:w-full"
+              id="message"
+              name="message"
+              placeholder="Enter your message"
+              maxLength={1500}
+              onChange={(event) => {
+                setMessage(event.target.value);
+              }}
+              required
+            ></textarea>
+            <div
+              className="mx-auto mt-2 w-full text-right text-sm text-black dark:text-gray-400 sm:text-base"
+              id="title-length"
+            >
+              {message.length}/1500 characters
             </div>
           </div>
-        </div>
-        <div className="my-5 flex justify-center">
+          {/* Submit */}
           <button
             type="submit"
-            id="submit-button"
-            className="py-2.5text-center flex w-20 justify-center rounded-lg bg-blue-600 px-10 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4  focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            id="submit"
+            disabled={
+              email.length === 0 || name.length === 0 || message.length === 0
+                ? true
+                : false
+            }
+            className={
+              email.length === 0 || name.length === 0 || message.length === 0
+                ? "cursor-auto rounded-lg bg-gray-500 px-3 py-2.5 text-center text-sm font-medium text-white sm:px-5"
+                : "rounded-lg bg-blue-600 px-2 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 sm:px-5"
+            }
           >
             Submit
           </button>
         </div>
       </form>
+      <Footer />
     </div>
   );
 };

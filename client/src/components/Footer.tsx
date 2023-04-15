@@ -163,7 +163,7 @@ const Footer = () => {
             </p>
 
             <div aria-label="Footer Navigation - Support">
-              <ul className="flex flex-wrap justify-start gap-4 text-xs lg:justify-end">
+              <ul className="flex flex-wrap justify-start justify-between text-xs lg:justify-end">
                 <li>
                   <Link
                     to="/terms-and-conditions"
@@ -189,12 +189,15 @@ const Footer = () => {
                 </li>
 
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="/contact-us"
                     className="text-gray-500 transition hover:opacity-75 dark:text-gray-400"
                   >
-                    Cookies
-                  </a>
+                    {" "}
+                    <span className="mr-4 font-medium" id="contact-us">
+                      Contact Us
+                    </span>
+                  </Link>
                 </li>
               </ul>
             </div>

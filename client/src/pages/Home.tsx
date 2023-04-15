@@ -111,7 +111,7 @@ const Home = () => {
 
   return (
     <div className="flex min-h-screen flex-col bg-white dark:bg-gray-900">
-      <div className="z-50 mx-auto w-3/4 pt-2 outline-none">
+      <div className="z-40 mx-auto w-3/4 pt-2 outline-none">
         <ReactSearchAutocomplete
           items={searchBarItems}
           fuseOptions={{ threshold: 0.3 }}

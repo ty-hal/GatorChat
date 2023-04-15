@@ -257,7 +257,7 @@ const EmbeddedSection: React.FC<Props> = ({
         {/* Bar */}
         <div className="flex w-full items-center justify-center space-x-2 lg:w-2/3">
           {/* Search Bar */}
-          <div className="z-50 mx-auto my-1 w-full outline-none">
+          <div className="z-40 mx-auto my-1 w-full outline-none">
             <ReactSearchAutocomplete
               items={searchBarItems}
               fuseOptions={{ threshold: 0.3 }}

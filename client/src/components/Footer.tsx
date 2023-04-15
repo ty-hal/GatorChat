@@ -24,10 +24,13 @@ const Footer = () => {
   };
 
   return (
-    <div aria-label="Site Footer" className="w-full bg-white dark:bg-gray-900">
-      <div className="mx-auto  px-4 pt-16 pb-4 sm:px-6 lg:px-8">
-        <div className="hidden sm:flex lg:items-start lg:gap-8">
-          <div className="mt-8 grid grid-cols-3 gap-4 lg:mt-0 lg:grid-cols-6 lg:gap-y-10">
+    <div
+      aria-label="Site Footer"
+      className="min-w-full bg-white dark:bg-gray-900"
+    >
+      <div className="mx-auto w-full px-4 pt-16 pb-4 sm:px-6 lg:px-8 ">
+        <div className="hidden w-full justify-between sm:flex lg:items-start lg:gap-8">
+          <div className="mt-8 grid w-full grid-cols-3 justify-between lg:mt-0 lg:grid-cols-6 lg:gap-y-10">
             <div className="col-span-2 sm:col-span-1">
               <p className="cursor-pointer font-medium text-gray-900 dark:text-white md:text-lg">
                 About
@@ -77,7 +80,7 @@ const Footer = () => {
                   className="cursor-pointer font-medium text-gray-900 dark:text-white md:text-lg"
                 >
                   {" "}
-                  <span className="mr-4 font-medium" id="sign-in">
+                  <span className="font-medium" id="sign-in">
                     Sign in
                   </span>
                 </Link>
@@ -101,7 +104,7 @@ const Footer = () => {
                   className="cursor-pointer font-medium text-gray-900 dark:text-white md:text-lg"
                 >
                   {" "}
-                  <span className="mr-4 font-medium" id="register">
+                  <span className="font-medium" id="register">
                     Register
                   </span>
                 </Link>
@@ -111,7 +114,7 @@ const Footer = () => {
                   className="cursor-pointer font-medium text-gray-900 dark:text-white md:text-lg"
                 >
                   {" "}
-                  <span className="mr-4 font-medium" id="my-account">
+                  <span className="font-medium" id="my-account">
                     My Account
                   </span>
                 </Link>
@@ -119,7 +122,7 @@ const Footer = () => {
             </div>
 
             {/* Newsletter */}
-            <div className="col-span-2">
+            <div className="col-span-2 mt-4 lg:mt-0">
               <div>
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
                   Get the latest news!
@@ -163,17 +166,14 @@ const Footer = () => {
             </p>
 
             <div aria-label="Footer Navigation - Support">
-              <ul className="flex flex-wrap justify-start justify-between text-xs lg:justify-end">
+              <ul className="flex flex-wrap justify-evenly text-xs lg:justify-end lg:space-x-4">
                 <li>
                   <Link
                     to="/terms-and-conditions"
                     className="text-gray-500 transition hover:opacity-75 dark:text-gray-400"
                   >
                     {" "}
-                    <span
-                      className="mr-4 font-medium"
-                      id="terms-and-conditions"
-                    >
+                    <span className="font-medium" id="terms-and-conditions">
                       Terms & Conditions
                     </span>
                   </Link>

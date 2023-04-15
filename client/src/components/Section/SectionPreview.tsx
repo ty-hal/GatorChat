@@ -55,15 +55,15 @@ const SectionPreview: React.FC<Props> = ({
       }}
     >
       {/* Section Name */}
-      <div className="text-2xl font-semibold hover:underline">
+      <div className="text-lg font-semibold hover:underline sm:text-2xl">
         {" "}
         {section_name}
       </div>
       {/* Section Description */}
-      <div className="mb-6 text-base">
+      <div className="mb-6 text-sm sm:text-base">
         {section_description ? section_description : ""}
       </div>
-      <div className="absolute left-0 right-0 bottom-1 m-auto text-base">
+      <div className="absolute left-0 right-0 bottom-1 m-auto text-sm sm:text-base">
         {thread_count == 1
           ? `${thread_count} Thread`
           : `${thread_count} Threads`}

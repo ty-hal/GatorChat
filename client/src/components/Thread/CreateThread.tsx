@@ -93,7 +93,7 @@ const CreateThread: React.FC<Props> = ({ section_id, loaded, invisible }) => {
           }}
         >
           <div
-            className="rounded-2xl py-2 text-center text-lg font-semibold text-gray-900 hover:bg-gray-400 dark:text-white dark:hover:bg-gray-700"
+            className="rounded-2xl py-2 text-center text-base font-semibold text-gray-900 hover:bg-gray-400 dark:text-white dark:hover:bg-gray-700 sm:text-lg"
             id="create-a-thread"
           >
             Create a thread
@@ -115,7 +115,7 @@ const CreateThread: React.FC<Props> = ({ section_id, loaded, invisible }) => {
                   onChange={(e) => setTitle(e.currentTarget.value)}
                 />
                 <div
-                  className="mx-auto mt-2 w-full text-right text-base text-black dark:text-gray-400"
+                  className="mx-auto mt-2 w-full text-right text-sm text-black dark:text-gray-400 sm:text-base"
                   id="title-length"
                 >
                   {title.length}/300 characters

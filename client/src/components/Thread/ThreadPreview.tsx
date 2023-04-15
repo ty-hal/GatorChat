@@ -438,7 +438,7 @@ const Thread: React.FC<Props> = ({
         >
           <svg
             id="like-image"
-            className="h-8 w-8 cursor-pointer stroke-red-600"
+            className="h-6 w-6 cursor-pointer stroke-red-600 sm:h-8 sm:w-8"
             fill={liked ? "#dc2626" : "none"}
             strokeWidth="1.5"
             viewBox="0 0 24 24"
@@ -464,7 +464,7 @@ const Thread: React.FC<Props> = ({
           <svg
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
-            className="h-7 w-7"
+            className="h-5 w-5 sm:h-7 sm:w-7"
           >
             <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
             <g
@@ -506,7 +506,7 @@ const Thread: React.FC<Props> = ({
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             stroke="#000000"
-            className="h-7 w-7"
+            className="h-5 w-5 sm:h-7 sm:w-7"
           >
             <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
             <g
@@ -544,15 +544,15 @@ const Thread: React.FC<Props> = ({
               </defs>{" "}
             </g>
           </svg>
-          <div className="ml-2">Share</div>
+          <div className="ml-2 text-sm sm:text-lg">Share</div>
         </div>
         {showCopiedLink && (
-          <div className="absolute right-0 top-8 z-10 flex w-2/5 items-center rounded-lg border-2 border-blue-600 bg-gray-50 p-2 text-center font-normal text-gray-900 shadow-xl transition-all">
+          <div className="absolute right-0 top-8 z-10 flex w-3/5 items-center rounded-lg border-2 border-blue-600 bg-gray-50 p-2 text-center font-normal text-gray-900 shadow-xl transition-all sm:w-2/5">
             <svg
               viewBox="0 0 1024 1024"
               xmlns="http://www.w3.org/2000/svg"
               fill="#000000"
-              className="h-6 w-6"
+              className="mr-2 h-6 w-6 sm:mr-0"
             >
               <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
               <g
@@ -571,7 +571,7 @@ const Thread: React.FC<Props> = ({
                 ></path>
               </g>
             </svg>
-            <div className="mx-auto">Copied link!</div>
+            <div className="mx-auto text-sm sm:text-base">Copied link!</div>
           </div>
         )}
         {/* Thread Menu  */}
@@ -582,7 +582,7 @@ const Thread: React.FC<Props> = ({
               setShowDropdown(!showDropdown);
             }}
             fill="white"
-            className="h-8 w-8 cursor-pointer rounded-md fill-gray-700 px-1 hover:bg-gray-300 dark:fill-white dark:hover:bg-slate-700"
+            className="h-7 w-7 cursor-pointer rounded-md fill-gray-700 px-1 hover:bg-gray-300 dark:fill-white dark:hover:bg-slate-700 sm:h-8 sm:w-8"
             version="1.1"
             id="thread-menu"
             xmlns="http://www.w3.org/2000/svg"

@@ -172,7 +172,7 @@ const EmbeddedSection: React.FC<Props> = ({
               {sectionName ? sectionName : hyphenToTitleCase(section_name)}
             </div>
             <div
-              className="absolute top-0 -right-6 sm:-right-12"
+              className="absolute top-0 -right-12"
               title={
                 savedSection
                   ? "Unbookmark this section"
@@ -222,7 +222,7 @@ const EmbeddedSection: React.FC<Props> = ({
               {hyphenToTitleCase(section_name)}
             </div>
             <div
-              className="absolute top-0 -right-6 animate-pulse sm:-right-12"
+              className="absolute top-0 -right-12 animate-pulse"
               title="Bookmark this section"
               id="loading-bookmark-section"
             >
@@ -244,16 +244,17 @@ const EmbeddedSection: React.FC<Props> = ({
 
         {/* Section Description */}
         {description ? (
-          <div className="mb-2 text-lg font-normal dark:text-white">
+          <div className="mb-2 text-center text-base font-normal dark:text-white sm:text-lg">
             {description}
           </div>
         ) : (
           <div className="mx-auto my-2 h-4 w-3/4 animate-pulse rounded bg-gray-500 dark:bg-gray-300 md:w-1/2 lg:w-1/3"></div>
         )}
 
-        {/* Search Bar */}
+        {/* Bar */}
         <div className="flex w-full items-center justify-center space-x-2 lg:w-2/3">
-          <div className="mx-auto my-1 w-full outline-none ">
+          {/* Search Bar */}
+          <div className="z-50 mx-auto my-1 w-full outline-none">
             <ReactSearchAutocomplete
               items={searchBarItems}
               fuseOptions={{ threshold: 0.3 }}
@@ -271,9 +272,11 @@ const EmbeddedSection: React.FC<Props> = ({
                 }`,
                 border: `${darkMode ? "1px solid #dfe1e5" : "1px solid #000"}`,
                 clearIconMargin: "3px 8px 0 0",
+                fontSize: `${window.innerWidth < 640 ? "13px" : "16px"}`,
               }}
             />
           </div>
+          {/* Create Section */}
           <div
             className="m-auto flex h-12 cursor-pointer items-center justify-center rounded-full border border-black p-2 hover:bg-blue-400 dark:border-white dark:hover:bg-blue-600 md:w-1/4"
             onClick={(e) => {
@@ -302,7 +305,9 @@ const EmbeddedSection: React.FC<Props> = ({
                     section_name={section.section_name}
                     section_description={section.description}
                     parent_section={section.parent_section}
-                    thread_count={ section.thread_count ? section.thread_count : 0}
+                    thread_count={
+                      section.thread_count ? section.thread_count : 0
+                    }
                   />
                 );
               })

@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAtomValue } from "jotai";
 import { userIDAtom } from "../App";
-
+import Footer from "../components/Footer";
 import Select from "react-tailwindcss-select";
 import ProfilePicture from "../components/ProfilePicture";
 import DeleteAccountPopup from "../components/Popups/DeleteAccountPopup";
@@ -210,6 +210,7 @@ const Settings = () => {
 
   const submitChanges = (e: any) => {
     e.preventDefault();
+    console.log(changedMajors, changedProfilePic);
     if (
       (password.length > 0 || confirmPassword.length > 0) &&
       confirmPassword !== password
@@ -383,17 +384,17 @@ const Settings = () => {
             <div className="flex-box flex justify-between">
               {/* First Name */}
               <div className="sm:w-2/5">
-                <label className="mb-2 block"> First Name</label>
+                <label className="mb-2 block text-sm"> First Name</label>
                 <input
                   type="text"
                   className="
                 block w-11/12 rounded-lg border 
                 border-gray-300 bg-gray-50 p-2 
-                text-gray-900 focus:border-blue-600 focus:outline-none 
-                focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white 
-                dark:placeholder-gray-400 dark:focus:border-blue-500 
-                dark:focus:ring-blue-500 sm:w-full  
-                sm:text-sm"
+                text-sm text-gray-900 focus:border-blue-600 
+                focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 
+                dark:text-white dark:placeholder-gray-400 
+                dark:focus:border-blue-500 dark:focus:ring-blue-500  
+                sm:w-full"
                   id="first-name"
                   placeholder="John"
                   value={firstName}
@@ -409,11 +410,11 @@ const Settings = () => {
                   className="
                 block w-11/12 rounded-lg border 
                 border-gray-300 bg-gray-50 p-2 
-                text-gray-900 focus:border-blue-600 focus:outline-none 
-                focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white 
-                dark:placeholder-gray-400 dark:focus:border-blue-500 
-                dark:focus:ring-blue-500 sm:w-full 
-                sm:text-sm"
+                text-sm text-gray-900 focus:border-blue-600 
+                focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 
+                dark:text-white dark:placeholder-gray-400 
+                dark:focus:border-blue-500 dark:focus:ring-blue-500 
+                sm:w-full"
                   id="last-name"
                   value={lastName}
                   placeholder="Doe"
@@ -453,11 +454,11 @@ const Settings = () => {
                 className="
                 block w-11/12 rounded-lg border 
                 border-gray-300 bg-gray-50 p-2 
-                text-gray-900 focus:border-blue-600 focus:outline-none 
-                focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white 
-                dark:placeholder-gray-400 dark:focus:border-blue-500 
-                dark:focus:ring-blue-500 sm:w-full  
-                sm:text-sm"
+                text-sm text-gray-900 focus:border-blue-600 
+                focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 
+                dark:text-white dark:placeholder-gray-400 
+                dark:focus:border-blue-500 dark:focus:ring-blue-500  
+                sm:w-full"
                 id="password"
                 placeholder="••••••••"
                 title="Must be at least 8 characters long and contain a number and uppercase letter"
@@ -477,11 +478,11 @@ const Settings = () => {
                 className="
                 block w-11/12 rounded-lg border 
                 border-gray-300 bg-gray-50 p-2 
-                text-gray-900 focus:border-blue-600 focus:outline-none 
-                focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white 
-                dark:placeholder-gray-400 dark:focus:border-blue-500 
-                dark:focus:ring-blue-500 sm:w-full 
-                sm:text-sm
+                text-sm text-gray-900 focus:border-blue-600 
+                focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 
+                dark:text-white dark:placeholder-gray-400 
+                dark:focus:border-blue-500 dark:focus:ring-blue-500 
+                sm:w-full
                 "
                 id="confirm-password"
                 placeholder="••••••••"
@@ -535,7 +536,7 @@ const Settings = () => {
               </label>
               <div className="flex-box flex">
                 <input
-                  className="block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-gray-900 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400"
+                  className="block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400"
                   id="profile_picture"
                   type="file"
                   accept="image/*"
@@ -549,7 +550,7 @@ const Settings = () => {
                 />
                 {selectedImage && (
                   <div
-                    className="-ml-2 flex cursor-pointer  items-center justify-center rounded-lg rounded-l-sm border border-gray-300 bg-red-600  px-1 pt-0.5 text-center align-baseline text-sm text-gray-200 dark:border-gray-600 dark:placeholder-gray-400"
+                    className="-ml-2 flex cursor-pointer items-center  justify-center rounded-lg rounded-l-sm border border-gray-300 bg-red-600 px-1  pt-0.5 text-center align-baseline text-sm text-sm text-gray-200 dark:border-gray-600 dark:placeholder-gray-400"
                     onClick={() => {
                       setSelectedImage(false);
                       setProfilePicture({ ...profilePicture, file: "" });
@@ -576,12 +577,16 @@ const Settings = () => {
               type="submit"
               id="submit"
               disabled={
-                password.length === 0 || password === confirmPassword
+                ((password.length === 0 && confirmPassword.length === 0) ||
+                  (password.length !== 0 && password === confirmPassword)) &&
+                (changedMajors || changedProfilePic)
                   ? false
                   : true
               }
               className={
-                password.length === 0 || password === confirmPassword
+                ((password.length === 0 && confirmPassword.length === 0) ||
+                  (password.length !== 0 && password === confirmPassword)) &&
+                (changedMajors || changedProfilePic)
                   ? "rounded-lg bg-blue-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                   : "cursor-auto rounded-lg bg-gray-500 px-5 py-2.5 text-center text-sm font-medium text-white"
               }
@@ -614,6 +619,7 @@ const Settings = () => {
           />
         )}
       </form>
+      <Footer />
     </div>
   );
 };

@@ -191,7 +191,7 @@ const Section: React.FC<Props> = ({
                 {sectionName}
               </div>
               <div
-                className="absolute top-0 -right-6 sm:-right-12"
+                className="absolute top-0 -right-12"
                 title={
                   savedSection
                     ? "Unbookmark this section"
@@ -241,7 +241,7 @@ const Section: React.FC<Props> = ({
                 {hyphenToTitleCase(section_name)}
               </div>
               <div
-                className="absolute top-0 -right-6 animate-pulse sm:-right-12"
+                className="absolute top-0 -right-12 animate-pulse"
                 title="Bookmark this section"
                 id="loading-bookmark-section"
               >
@@ -263,7 +263,7 @@ const Section: React.FC<Props> = ({
 
           {/* Section Description */}
           {sectionDescription ? (
-            <div className="mb-2 text-lg font-normal dark:text-white">
+            <div className="mb-2 text-center text-base font-normal dark:text-white sm:text-lg">
               {sectionDescription}
             </div>
           ) : (

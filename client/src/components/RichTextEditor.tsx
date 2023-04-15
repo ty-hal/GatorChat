@@ -1124,7 +1124,7 @@ const MenuBar = ({ editor }: any) => {
             </svg>
           </button>
           {emojiPicker && (
-            <div className="absolute right-0 top-10 z-10" id="emoji-selector">
+            <div className="absolute -left-32 top-10 z-10" id="emoji-selector">
               <Picker
                 data={data}
                 previewPosition="none"
@@ -1225,11 +1225,11 @@ export const RichTextEditor: React.FC<Props> = ({
         <EditorContent
           editor={editor}
           id="editor-content"
-          className="mx-auto w-full cursor-text rounded-b-lg border border-gray-600 bg-gray-50 p-2  text-base text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 focus:dark:border-blue-600"
+          className="mx-auto w-full cursor-text rounded-b-lg border border-gray-600 bg-gray-50 p-2 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 focus:dark:border-blue-600 sm:text-base"
         />
       </div>
       <div
-        className="mx-auto my-2 w-full text-right text-base text-black dark:text-gray-400"
+        className="mx-auto my-2 w-full text-right text-sm text-black dark:text-gray-400 sm:text-base"
         id="char-count"
       >
         {editor?.storage?.characterCount.characters()}/{characterLimit}{" "}

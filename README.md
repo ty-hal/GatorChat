@@ -11,7 +11,7 @@ We plan to deploy GatorChat soon. Meanwhile, to run GatorChat on your computer, 
 
 **Step 1: Clone the Repository**
 - Open your terminal or command prompt and navigate to the directory where you want to clone the repository.
-- Run the following command: `git clone https://github.com/ty-hal/SWE-Project`
+- Run the following command: `git clone https://github.com/ty-hal/SWE-Project.git`
 
 **Step 2: Install Dependencies**
 - Navigate to the `client` directory inside the project using the terminal or command prompt.

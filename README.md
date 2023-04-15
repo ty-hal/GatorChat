@@ -18,15 +18,15 @@ We plan to deploy GatorChat soon. Meanwhile, to run GatorChat on your computer, 
 - Run the following command: `npm install`
 - This will install all the necessary dependencies required by the React app.
 
-**Step 3: Start the React App**
-- In the same terminal or command prompt, run the following command: `npm start`
-- This will start the React app in development mode.
-- Open your web browser and go to `http://localhost:3000/` to view the app.
-
-**Step 4: Start the Go Server**
+**Step 3: Start the Go Server**
 - Open **another** terminal or command prompt and navigate to the `server` directory inside the project.
 - Run the following command: `go run main.go`
 - This will start the Go server.
+
+**Step 4: Start the React App**
+- In the same terminal or command prompt, run the following command: `npm start`
+- This will start the React app in development mode.
+- Open your web browser and go to `http://localhost:3000/` to view the app.
 
 **Step 5: Use GatorChat**
 - With both the React app and Go server running, you can now use GatorChat in your web browser.

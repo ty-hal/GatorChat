@@ -4,6 +4,7 @@ import { userIDAtom } from "../../App";
 import ThreadPreview from "../../components/Thread/ThreadPreview";
 import SkeletonThreadPreview from "../../components/Thread/SkeletonThreadPreview";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 type Thread = {
   thread_id: number;
@@ -23,6 +24,7 @@ type Thread = {
 };
 
 const MyThreads = () => {
+  const navigate = useNavigate();
   const [loadedCreatedThreads, setLoadedCreatedThreads] =
     useState<boolean>(false);
   const [userCreatedThreads, setUserCreatedThreads] = useState<Thread[]>([]);
@@ -80,7 +82,12 @@ const MyThreads = () => {
       <div className="mx-auto w-11/12 pt-4 text-black dark:text-white">
         {/* User created threads */}
         <div className="mx-auto w-11/12 pt-4 text-black dark:text-white">
-          <div className="text-center text-2xl font-bold">My Threads</div>
+          <div
+            className="cursor-pointer text-center text-2xl font-bold hover:underline"
+            onClick={() => navigate(-1)}
+          >
+            My Threads
+          </div>
           {loadedCreatedThreads ? (
             userCreatedThreads && userCreatedThreads.length > 0 ? (
               userCreatedThreads.map((thread, index) => {

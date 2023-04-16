@@ -4,6 +4,7 @@ import { userIDAtom } from "../../App";
 import SkeletonThreadPreview from "../../components/Thread/SkeletonThreadPreview";
 import { useEffect, useState } from "react";
 import Message from "../../components/Message/MessageFormat";
+import { useNavigate } from "react-router-dom";
 
 type Message = {
   thread_id: number;
@@ -18,6 +19,7 @@ type Message = {
 };
 
 const SavedMessages = () => {
+  const navigate = useNavigate();
   const [loadedSavedMessages, setLoadedSavedMessages] =
     useState<boolean>(false);
   const [userSavedMessages, setUserSavedMessages] = useState<Message[]>([]);
@@ -74,7 +76,10 @@ const SavedMessages = () => {
       <div className="mx-auto w-11/12 pt-4 text-black dark:text-white">
         {/* User saved messages */}
         <div className="mx-auto w-11/12 pt-4 text-black dark:text-white">
-          <div className="text-center text-2xl font-bold">
+          <div
+            className="cursor-pointer text-center text-2xl font-bold hover:underline"
+            onClick={() => navigate(-1)}
+          >
             My Saved Messages
           </div>
           {loadedSavedMessages ? (

@@ -218,6 +218,24 @@ func GetSavedThreads(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(userThreads)
 }
 
+func GetSavedPosts(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	params := mux.Vars(r)
+	id, err := strconv.Atoi(params["id"])
+
+	// Invalid parameter
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("Invalid Parameter: id"))
+		return
+	}
+
+	userPosts := models.GetSavedPostsFromUser(uint8(id))
+
+	json.NewEncoder(w).Encode(userPosts)
+}
+
 func ToggleSectionSaved(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
@@ -238,6 +256,17 @@ func ToggleThreadSaved(w http.ResponseWriter, r *http.Request) {
 
 	savedThread := models.ToggleSavedThread(uint8(activeUser), uint8(threadID))
 	json.NewEncoder(w).Encode(savedThread)
+}
+
+func TogglePostSaved(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	queryParams := r.URL.Query()
+	activeUser, _ := strconv.Atoi(queryParams.Get("activeUser"))
+	postID, _ := strconv.Atoi(queryParams.Get("postID"))
+
+	savedPost := models.ToggleSavedPost(uint8(activeUser), uint8(postID))
+	json.NewEncoder(w).Encode(savedPost)
 }
 
 func UpdateMajors(w http.ResponseWriter, r *http.Request) {

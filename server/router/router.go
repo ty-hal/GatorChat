@@ -30,6 +30,7 @@ func Router() *mux.Router {
 	router.HandleFunc("/api/user/{id}/roles", handlers.GetRoles).Methods("GET")
 	router.HandleFunc("/api/user/{id}/savedsections", handlers.GetSavedSections).Methods("GET")
 	router.HandleFunc("/api/user/{id}/savedthreads", handlers.GetSavedThreads).Methods("GET")
+	router.HandleFunc("/api/user/{id}/savedposts", handlers.GetSavedPosts).Methods("GET")
 	router.HandleFunc("/api/user/verify", handlers.GetUserByEmail).Methods("POST")
 
 	// Section Routes
@@ -68,6 +69,7 @@ func Router() *mux.Router {
 	router.HandleFunc("/api/unlike", handlers.UnLike).Methods("GET")
 	router.HandleFunc("/api/togglesavedsection", handlers.ToggleSectionSaved).Methods("GET")
 	router.HandleFunc("/api/togglesavedthread", handlers.ToggleThreadSaved).Methods("GET")
+	router.HandleFunc("/api/togglesavedpost", handlers.TogglePostSaved).Methods("GET")
 	router.HandleFunc("/api/contact", handlers.ContactUs).Methods("POST")
 
 	return router

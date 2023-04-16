@@ -249,7 +249,13 @@ const Thread: React.FC<Props> = ({
           "content-type": "application/json",
         },
       }
-    ).then((response) => response.json());
+    ).then((response) => response.json())
+     .then((data) => {
+        // Reload page when saving in account page
+        if (window.location.pathname === "/my-account/my-saved-threads" || window.location.pathname === "/my-account/my-saved-messages") {
+          window.location.reload()
+        }
+     });
   };
   // Hide copied link popup after 1.5 seconds
   useEffect(() => {

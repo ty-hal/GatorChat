@@ -76,17 +76,20 @@ const Home = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        // console.log(data);
+        console.log(data);
         const extractedData: SearchBarItem[] = data.map(
           ({
             section_id,
             section_name,
+            parent_section,
           }: {
             section_id: number;
             section_name: string;
+            parent_section: boolean;
           }) => ({
             id: section_id,
             name: section_name,
+            children: parent_section,
           })
         );
         setSearchBarItems(extractedData);
@@ -102,7 +105,9 @@ const Home = () => {
       .toLowerCase();
 
     // FIX THIS TO NAVIGATE TO EMBEDDED SECTIONS
-    navigate(`s/${item.id}/${edited_section_name}`);
+    navigate(`s/${item.id}/${edited_section_name}`, {
+      state: { parent_section: item.children },
+    });
   };
 
   const searchBarFormatResult = (item: SearchBarItem) => {
@@ -181,7 +186,6 @@ const Home = () => {
         <div className="mt-2 w-full sm:grid sm:grid-cols-2 md:grid-cols-3 md:gap-2 lg:grid-cols-4">
           {loaded ? (
             parentSections.map((section, index) => {
-              // console.log(section);
               return (
                 <SectionPreview
                   key={index}

@@ -264,7 +264,13 @@ const Thread: React.FC<Props> = ({
           "content-type": "application/json",
         },
       }
-    ).then((response) => response.json());
+    ).then((response) => response.json())
+     .then((data) => {
+        // Reload page when saving in account page
+        if (window.location.pathname === "/my-account/my-saved-threads" || window.location.pathname === "/my-account/my-saved-messages") {
+          window.location.reload()
+        }
+     });
   };
   // Hide copied link popup after 1.5 seconds
   useEffect(() => {
@@ -283,7 +289,7 @@ const Thread: React.FC<Props> = ({
         console.log(`Open thread ${thread_id}`);
         // Navigate to the thread
         let path = location.pathname;
-        if (path === "/my-account") {
+        if (path.includes("my-account")) {
           path = `/s/${section_id}/${sectioName}`;
         }
         console.log(path);

@@ -51,6 +51,8 @@ const SignInPopup: React.FC<Props> = ({
                         ? "save a thread"
                         : popupReason === "save section"
                         ? "save a section"
+                        : popupReason === "save message"
+                        ? "save a message"
                         : popupReason === "create section"
                         ? "create a section"
                         : ""}
@@ -70,6 +72,8 @@ const SignInPopup: React.FC<Props> = ({
                           ? "save a thread, "
                           : popupReason === "save section"
                           ? "save a section, "
+                          : popupReason === "save message"
+                          ? "save a message, "
                           : popupReason === "create section"
                           ? "create a section, "
                           : ""}{" "}

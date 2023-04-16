@@ -45,6 +45,7 @@ const Message: React.FC<Props> = ({
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [listening, setListening] = useState(false);
+  const [savedMessage, setSavedMessage] = useState<boolean>(false);
 
   // Toggles user dropdown menu if user clicks outside of the menu
   const listenForOutsideClick = (
@@ -204,6 +205,35 @@ const Message: React.FC<Props> = ({
         `<p></p><blockquote><p><strong>${username}</strong> posted ${postTimeDifference}:</p><p>${content}</p></blockquote><p></p>`
       );
     }
+  };
+
+  // Toggle save message
+  const toggleSaveMessage = () => {
+    console.log("Post ID: " + post_id);
+    fetch(
+      `http://localhost:9000/api/togglesavedpost?postID=${post_id}&activeUser=${activeUserID}`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    )
+      .then((response) => {
+        if (response.status == 200) {
+          console.log("Successfully saved");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        // Reload page when saving in account page
+        if (
+          window.location.pathname === "/my-account/my-saved-threads" ||
+          window.location.pathname === "/my-account/my-saved-messages"
+        ) {
+          window.location.reload();
+        }
+      });
   };
 
   const likeMessage = () => {
@@ -506,6 +536,52 @@ const Message: React.FC<Props> = ({
                     </svg>
                   </div>
                   <div className="">Copy</div>
+                  <div className="flex-1"></div>
+                </div>
+                {/* Save */}
+                <div
+                  className="flex items-center py-2 text-sm text-gray-700 hover:rounded-t-md hover:bg-blue-200 hover:text-black "
+                  role="menuitem"
+                  id="save"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowDropdown(false);
+                    if (!activeUserID || activeUserID <= 0) {
+                      setPopupReason("save message");
+                      setShowSignInPopup(true);
+                      return;
+                    }
+                    setSavedMessage(!savedMessage);
+                    toggleSaveMessage();
+                  }}
+                >
+                  <div className="flex-1">
+                    {savedMessage ? (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        strokeWidth="2"
+                        className="ml-2 h-5 w-5"
+                      >
+                        <path
+                          d="M5 2H19C19.5523 2 20 2.44772 20 3V22.1433C20 22.4194 19.7761 22.6434 19.5 22.6434C19.4061 22.6434 19.314 22.6168 19.2344 22.5669L12 18.0313L4.76559 22.5669C4.53163 22.7136 4.22306 22.6429 4.07637 22.4089C4.02647 22.3293 4 22.2373 4 22.1433V3C4 2.44772 4.44772 2 5 2Z"
+                          fill="#000"
+                        ></path>
+                      </svg>
+                    ) : (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        className="ml-2 h-5 w-5"
+                      >
+                        <path
+                          d="M5 2H19C19.5523 2 20 2.44772 20 3V22.1433C20 22.4194 19.7761 22.6434 19.5 22.6434C19.4061 22.6434 19.314 22.6168 19.2344 22.5669L12 18.0313L4.76559 22.5669C4.53163 22.7136 4.22306 22.6429 4.07637 22.4089C4.02647 22.3293 4 22.2373 4 22.1433V3C4 2.44772 4.44772 2 5 2ZM18 4H6V19.4324L12 15.6707L18 19.4324V4Z"
+                          fill="#000"
+                        ></path>
+                      </svg>
+                    )}
+                  </div>
+                  <div className="">{savedMessage ? "Unsave" : "Save"}</div>
                   <div className="flex-1"></div>
                 </div>
                 {/* Report */}

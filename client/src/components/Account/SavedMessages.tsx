@@ -46,26 +46,26 @@ const SavedMessages = () => {
   };
 
   // Get saved messages
-  // const getSavedMessages = () => {
-  //   fetch(`http://localhost:9000/api/user/${activeUserID}/savedmessages`, {
-  //     method: "GET",
-  //     headers: {
-  //       "content-type": "application/json",
-  //     },
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log(data);
-  //       setUserSavedMessages(data);
-  //       setLoadedSavedMessages(true);
-  //     });
-  // };
+  const getSavedMessages = () => {
+    fetch(`http://localhost:9000/api/user/${activeUserID}/savedposts`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setUserSavedMessages(data);
+        setLoadedSavedMessages(true);
+      });
+  };
 
   useEffect(() => {
     // Get user saved threads
     if (activeUserID != null && activeUserID > 0) {
       getUserPermission();
-      // getSavedMessages();
+      getSavedMessages();
     } else if (activeUserID != null && activeUserID === 0) {
       setLoadedSavedMessages(true);
     }

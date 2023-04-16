@@ -81,6 +81,7 @@ const Thread: React.FC<Props> = ({
       .then((data) => {
         if (data !== null) {
           setThread(data);
+          console.log(data);
         }
         setThreadLoaded(true);
       });
@@ -98,6 +99,7 @@ const Thread: React.FC<Props> = ({
     )
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         if (data && more) {
           setMessages((messages) => [
             ...messages,
@@ -209,83 +211,83 @@ const Thread: React.FC<Props> = ({
 
   return (
     <InfiniteScroll
-    dataLength={messages.length}
-    next={
-      checkedCookie
-        ? getMessages
-        : () =>
-            console.log(
-              "InfiniteScroll next not loaded yet -- user auth first"
-            )
-    }
-    hasMore={more}
-    loader={null}
+      dataLength={messages.length}
+      next={
+        checkedCookie
+          ? getMessages
+          : () =>
+              console.log(
+                "InfiniteScroll next not loaded yet -- user auth first"
+              )
+      }
+      hasMore={more}
+      loader={null}
     >
-    <div className="min-h-screen bg-white dark:bg-gray-900">
-      <div className="flex flex-col items-center px-4 pt-4">
-        <div
-          className="mb-4 h-8 cursor-pointer text-2xl font-semibold hover:underline dark:text-white"
-          onClick={() => navigate(-1)}
-        >
-          {threadLoaded && messageLoaded && sectionName}
-        </div>
+      <div className="min-h-screen bg-white dark:bg-gray-900">
+        <div className="flex flex-col items-center px-4 pt-4">
+          <div
+            className="mb-4 h-8 cursor-pointer text-2xl font-semibold hover:underline dark:text-white"
+            onClick={() => navigate(-1)}
+          >
+            {threadLoaded && messageLoaded && sectionName}
+          </div>
 
-        {/* Load thread or skeleton thread */}
-        {threadLoaded && messageLoaded ? (
-          <ThreadPost
-            key={thread.thread_id}
-            thread_id={thread.thread_id}
-            user_id={thread.user_id}
-            username={thread.username}
-            threadTitle={thread.thread_title}
-            threadContent={thread.content}
-            threadDate={thread.creation_date}
-            updatedOn={thread.updated_at}
-            likesCount={thread.likes ? thread.likes : 0}
-            messagesCount={messages.length}
-            userLiked={thread.user_liked}
-            userAdmin={userAdmin}
-            replyFunc={replyFunc}
-            user_saved={thread.user_saved}
-          />
-        ) : (
-          <SkeletonThreadPost />
-        )}
-        {/* Load messages or three skeleton messages */}
-        {threadLoaded && messageLoaded ? (
-          messages.map((messages) => {
-            return (
-              <Message
-                key={messages.post_id}
-                post_id={messages.post_id}
-                user_id={messages.user_id}
-                username={messages.username}
-                messageContent={messages.content}
-                messageDate={messages.creation_date}
-                updatedOn={messages.updated_at}
-                likesCount={messages.likes ? messages.likes : 0}
-                userLiked={messages.user_liked}
-                userAdmin={userAdmin}
-                replyFunc={replyFunc}
-              />
-            );
-          })
-        ) : (
-          <>
-            <SkeletonMessage />
-            <SkeletonMessage />
-            <SkeletonMessage />
-          </>
-        )}
-        <div ref={dummy}></div>
-        {threadLoaded && messageLoaded ? (
-          <MessageBox thread_id={thread.thread_id} />
-        ) : (
-          <SkeletonMessageBox />
-        )}
+          {/* Load thread or skeleton thread */}
+          {threadLoaded && messageLoaded ? (
+            <ThreadPost
+              key={thread.thread_id}
+              thread_id={thread.thread_id}
+              user_id={thread.user_id}
+              username={thread.username}
+              threadTitle={thread.thread_title}
+              threadContent={thread.content}
+              threadDate={thread.creation_date}
+              updatedOn={thread.updated_at}
+              likesCount={thread.likes ? thread.likes : 0}
+              messagesCount={messages.length}
+              userLiked={thread.user_liked}
+              userAdmin={userAdmin}
+              replyFunc={replyFunc}
+              user_saved={thread.user_saved}
+            />
+          ) : (
+            <SkeletonThreadPost />
+          )}
+          {/* Load messages or three skeleton messages */}
+          {threadLoaded && messageLoaded ? (
+            messages.map((messages) => {
+              return (
+                <Message
+                  key={messages.post_id}
+                  post_id={messages.post_id}
+                  user_id={messages.user_id}
+                  username={messages.username}
+                  messageContent={messages.content}
+                  messageDate={messages.creation_date}
+                  updatedOn={messages.updated_at}
+                  likesCount={messages.likes ? messages.likes : 0}
+                  userLiked={messages.user_liked}
+                  userAdmin={userAdmin}
+                  replyFunc={replyFunc}
+                />
+              );
+            })
+          ) : (
+            <>
+              <SkeletonMessage />
+              <SkeletonMessage />
+              <SkeletonMessage />
+            </>
+          )}
+          <div ref={dummy}></div>
+          {threadLoaded && messageLoaded ? (
+            <MessageBox thread_id={thread.thread_id} />
+          ) : (
+            <SkeletonMessageBox />
+          )}
+        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
     </InfiniteScroll>
   );
 };

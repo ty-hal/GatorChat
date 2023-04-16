@@ -13,12 +13,12 @@ const ForgotPassword = () =>
   //const [code, setname] = useState("");
   const [email, setemail] = useState("");
   const [link, setcomment] = useState("");
-  const [code,setcode] = useState(Math.floor((Math.random()*1000000)).toString());
+  const [code,setcode] = useState("");
   //const [gencode, generatecode] = useState("");
   const [usercode, setusercode] = useState("");
   const [password, setpassword] = useState("");
   const [userid, setuserid] = useAtom(userIDAtom);
-  const activeUserID = useAtomValue(userIDAtom);
+ // const activeUserID = useAtomValue(userIDAtom);
   const submitForm = (e: React.FormEvent) => 
   {
     e.preventDefault();
@@ -27,6 +27,7 @@ const ForgotPassword = () =>
       email: email,
       message: "your code is: "+ code
     }
+    /*checks email */
     fetch(`http://localhost:9000/api/user/verify?email=${email}`,
       {
       method: "POST",
@@ -46,24 +47,49 @@ const ForgotPassword = () =>
           })
         return response.json()
       }
-
       alert("User Not Found")
     }).then((data) => {
       if (data) {
+        //console.log(data.user_id);
+        setuserid(data.user_id);
         console.log("User Found")
       }
     })
   };
+  /*checks code */
   const checkcode = ()=>
   {
-    console.log(usercode);
-    console.log(code);
     if(usercode != code)
     {
       alert("Incorrect code entered!");
     }
+    else
+    {
+      fetch(`http://localhost:9000/api/user/${userid}/updatepassword`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+      }, body: JSON.stringify({ Password: password })}
+      )
+      .then((response)=>
+      {
+        if(response.status == 200)
+        {
+          alert("password successfully changed!")
+        }
+        else
+        {
+          alert("password change was unsuccessful. Please contact support.")
+
+        }
+      }
+      )
+    };
+      
     
   }
+    
+  
 
  
 
@@ -94,7 +120,7 @@ const ForgotPassword = () =>
             type="submit"
             className=" w-full rounded-lg bg-blue-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300"
             id = "send"
-            onClick={ (event)=>{}}
+            onClick={ (event)=>{setcode(Math.floor((Math.random()*1000000)).toString())}}
             >
             Send email
           </button>
@@ -133,7 +159,7 @@ const ForgotPassword = () =>
             id = "check"
             onClick={(event)=>checkcode()}
           >
-            submit code
+            Reset Password
             </button>
 
       </div>

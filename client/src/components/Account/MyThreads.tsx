@@ -5,6 +5,7 @@ import ThreadPreview from "../../components/Thread/ThreadPreview";
 import SkeletonThreadPreview from "../../components/Thread/SkeletonThreadPreview";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 type Thread = {
   thread_id: number;
@@ -32,6 +33,9 @@ const MyThreads = () => {
 
   const activeUserID = useAtomValue(userIDAtom);
 
+  const [page, setPage] = useState<number>(1);
+  const [more, setMore] = useState<boolean>(true);
+
   // Get user permissions
   const getUserPermission = () => {
     fetch(`http://localhost:9000/api/user/${activeUserID}/roles`, {
@@ -53,7 +57,7 @@ const MyThreads = () => {
 
   // Get created threads
   const getCreatedThreads = () => {
-    fetch(`http://localhost:9000/api/user/${activeUserID}/createdthreads`, {
+    fetch(`http://localhost:9000/api/user/${activeUserID}/createdthreads?pageNumber=${page}&pageSize=${4}`, {
       method: "GET",
       headers: {
         "content-type": "application/json",
@@ -61,10 +65,24 @@ const MyThreads = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-        setUserCreatedThreads(data);
-        setLoadedCreatedThreads(true);
-      });
+        if (data && more) {
+          setUserCreatedThreads((threads) => [
+            ...threads,
+            ...data.filter(
+              (thread: Thread) =>
+                !threads.some((t) => t.thread_id === thread.thread_id)
+            ),
+          ]);
+          setPage((page) => page + 1);
+          console.log(data)
+        } else {
+          setMore(false);
+        }
+      })
+      .then(() => {
+        setLoadedCreatedThreads(true)
+      }
+      );
   };
 
   useEffect(() => {
@@ -78,6 +96,12 @@ const MyThreads = () => {
   }, [activeUserID]);
 
   return (
+    <InfiniteScroll
+      dataLength={userCreatedThreads.length}
+      next={getCreatedThreads}
+      hasMore={more}
+      loader={null}
+    >
     <div className="min-h-screen bg-white dark:bg-gray-900">
       <div className="mx-auto w-11/12 pt-4 text-black dark:text-white">
         {/* User created threads */}
@@ -133,6 +157,7 @@ const MyThreads = () => {
 
       <Footer />
     </div>
+    </InfiniteScroll>
   );
 };
 

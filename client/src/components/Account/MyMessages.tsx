@@ -5,6 +5,7 @@ import SkeletonThreadPreview from "../../components/Thread/SkeletonThreadPreview
 import { useEffect, useState } from "react";
 import Message from "../../components/Message/MessageFormat";
 import { useNavigate } from "react-router-dom";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 type Message = {
   thread_id: number;
@@ -25,6 +26,9 @@ const MyMessages = () => {
   const [userCreatedMessages, setUserCreatedMessages] = useState<Message[]>([]);
   const [userAdmin, setUserAdmin] = useState<boolean>(false);
   const activeUserID = useAtomValue(userIDAtom);
+
+  const [page, setPage] = useState<number>(1);
+  const [more, setMore] = useState<boolean>(true);
 
   // Get user permissions
   const getUserPermission = () => {
@@ -47,7 +51,7 @@ const MyMessages = () => {
 
   // Get created messages
   const getCreatedMessages = () => {
-    fetch(`http://localhost:9000/api/user/${activeUserID}/createdposts`, {
+    fetch(`http://localhost:9000/api/user/${activeUserID}/createdposts?pageNumber=${page}&pageSize=${4}`, {
       method: "GET",
       headers: {
         "content-type": "application/json",
@@ -55,10 +59,24 @@ const MyMessages = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-        setUserCreatedMessages(data);
-        setLoadedCreatedMessages(true);
-      });
+        if (data && more) {
+          setUserCreatedMessages((messages) => [
+            ...messages,
+            ...data.filter(
+              (message: Message) =>
+                !messages.some((t) => t.post_id === message.post_id)
+            ),
+          ]);
+          setPage((page) => page + 1);
+          console.log(data)
+        } else {
+          setMore(false);
+        }
+      })
+      .then(() => {
+        setLoadedCreatedMessages(true)
+      }
+      );
   };
 
   useEffect(() => {
@@ -72,6 +90,12 @@ const MyMessages = () => {
   }, [activeUserID]);
 
   return (
+    <InfiniteScroll
+    dataLength={userCreatedMessages.length}
+    next={getCreatedMessages}
+    hasMore={more}
+    loader={null}
+    >
     <div className="min-h-screen bg-white dark:bg-gray-900">
       <div className="mx-auto w-11/12 pt-4 text-black dark:text-white">
         {/* User created messages */}
@@ -120,6 +144,7 @@ const MyMessages = () => {
       </div>
       <Footer />
     </div>
+    </InfiniteScroll>
   );
 };
 

@@ -11,6 +11,11 @@ type userRegistration = {
   password: String;
   profile_pic?: String;
 };
+interface verifycode 
+{
+  email: string;
+  message: string;
+}
 type storeageUserRegistration = {
   first_name: String;
   last_name: String;
@@ -201,7 +206,8 @@ let majorOptions = [
   { value: "Zoology", label: "Zoology" },
 ];
 
-const Register = () => {
+const Register = () => 
+{
   const [first_name, setFirstName] = useState("");
   const [last_name, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -213,6 +219,9 @@ const Register = () => {
   const [profilePicture, setProfilePicture] = useState({
     file: "",
   });
+  const[code,generatecode] = useState(Math.floor((Math.random()*1000000)).toString());
+  const [usercode, setusercode] = useState("");
+
 
   const [registrationInfo, setRegistrationInfo] =
     useState<storeageUserRegistration>({
@@ -227,7 +236,25 @@ const Register = () => {
   const [userExists, setUserExists] = useState(false);
   const [invalidForm, setInvalidForm] = useState(false);
   const [errorOccurred, setErrorOccured] = useState(false);
-
+  const verify:verifycode = 
+    {
+      email: email,
+      message: "your code is: "+ code
+    }
+    /*send email to user */
+  const sendemail=()=>
+  {
+    fetch("http://localhost:9000/api/contact", 
+        {
+          method: "POST",
+          headers: {
+          "content-type": "application/json",
+        },
+          body: JSON.stringify(verify),
+        }
+          
+        )
+  }
   useEffect(() => {
     setRegistrationInfo({
       ...registrationInfo,
@@ -362,7 +389,9 @@ const Register = () => {
       setMajors([]);
     }
   };
-  const submitForm = (e: React.FormEvent) => {
+
+  const submitForm = (e: React.FormEvent) =>
+   {
     e.preventDefault();
 
     const registration: userRegistration = {
@@ -373,8 +402,16 @@ const Register = () => {
       password: password,
       profile_pic: profilePicture.file,
     };
-
-    fetch("http://localhost:9000/api/user", {
+    //const checkcode=()=>
+  //{
+    if(usercode != code)
+    {
+      alert("verification code incorrect")
+      console.log(code);
+    }
+    else
+    {
+      fetch("http://localhost:9000/api/user", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -410,6 +447,8 @@ const Register = () => {
         }
       })
       .then((data) => (data ? clearRegistration() : null));
+  }
+  
   };
 
   return (
@@ -676,6 +715,36 @@ const Register = () => {
                   Error Occurred. Please Try Again.
                 </span>
               )}
+              {/* Confirm code */}
+              <div>
+                <label
+                  htmlFor="confirm-password"
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Confirm Verification Code
+                </label>
+                <input
+                  type="code"
+                  name="code"
+                  id="confirm-code"
+                  placeholder="••••••••"
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                  //pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                 // title="Must be at least 8 characters long and contain a number and uppercase letter"
+                  required
+                  value = {usercode}
+                  onChange={(event)=>setusercode(event.target.value)}
+                />
+
+                <button
+                type = "button"
+                 className=" w-full rounded-lg bg-blue-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300"
+                  id = "send code button"
+                   onClick={(event)=>sendemail()}
+                  >
+                  Send code
+                </button>
+              </div>
               {/* Submit Button  */}
               <button
                 type="submit"

@@ -58,7 +58,7 @@ const ContactUs = () => {
               onChange={(event) => {
                 setName(event.target.value);
               }}
-              pattern="[a-zA-Z.'`~-]+"
+              //pattern="[a-zA-Z.'`~-]+"
               title="Enter your full name."
             ></input>
           </div>

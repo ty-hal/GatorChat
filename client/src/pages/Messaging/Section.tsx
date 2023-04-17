@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Footer from "../../components/Footer";
 import ThreadPreview from "../../components/Thread/ThreadPreview";
 import CreateThread from "../../components/Thread/CreateThread";
@@ -48,6 +48,9 @@ const Section: React.FC<Props> = ({
   const [savedSection, setSavedSection] = useState<boolean>(false);
   const [userAdmin, setUserAdmin] = useState<boolean>(false);
   const [showSignInPopup, setShowSignInPopup] = useState<boolean>(false);
+  const [userClass, setUserClass] = useState<boolean>(false);
+  const [isClassSection, setIsClassSection] = useState<boolean>(false);
+  const location = useLocation();
 
   const getThreads = () => {
     fetch(
@@ -127,6 +130,31 @@ const Section: React.FC<Props> = ({
       }
     ).then((response) => response.json());
   };
+
+  const toggleUserClass = () => {
+    setUserClass(!userClass);
+    // fetch(
+    //   `http://localhost:9000/api/togglesavedsection?sectionID=${section_id}&activeUser=${activeUserID}`,
+    //   {
+    //     method: "GET",
+    //     headers: {
+    //       "content-type": "application/json",
+    //     },
+    //   }
+    // ).then((response) => response.json());
+  };
+  const getClassSaved = () => {
+    // setUserClass(!userClass);
+    // fetch(
+    //   `http://localhost:9000/api/togglesavedsection?sectionID=${section_id}&activeUser=${activeUserID}`,
+    //   {
+    //     method: "GET",
+    //     headers: {
+    //       "content-type": "application/json",
+    //     },
+    //   }
+    // ).then((response) => response.json());
+  };
   function hyphenToTitleCase(input: string): string {
     const excludedWords = ["and", "of", "a"];
 
@@ -148,8 +176,17 @@ const Section: React.FC<Props> = ({
     return titleCaseWords.join(" ");
   }
   useEffect(() => {
+    const pathname = location.pathname;
+    if (pathname.includes("/classes/") && !pathname.includes("/t/")) {
+      setIsClassSection(true);
+    } else {
+      setIsClassSection(false);
+    }
     if (checkedCookie) {
       getSection();
+      if (isClassSection) {
+        getClassSaved();
+      }
       getThreads();
       if (activeUserID !== null && activeUserID !== 0) {
         getUserPermission();
@@ -278,8 +315,30 @@ const Section: React.FC<Props> = ({
 
           {/* Section Description */}
           {sectionDescription ? (
-            <div className="mb-2 text-center text-base font-normal dark:text-white sm:text-lg">
-              {sectionDescription}
+            <div className="mb-2 mt-1 flex w-11/12  items-center justify-center lg:w-4/5 ">
+              {isClassSection && <div className="flex-1"></div>}
+              <div className="text-center text-base font-normal dark:text-white sm:text-lg">
+                {sectionDescription}
+              </div>
+              {isClassSection && (
+                <div className="flex-1" onClick={() => toggleUserClass()}>
+                  {userClass ? (
+                    <div
+                      className="ml-auto w-32 cursor-pointer rounded-xl border border-red-500 bg-red-600 py-1 text-center font-medium hover:bg-red-500 dark:text-white"
+                      title="Remove this class to your account"
+                    >
+                      Remove class
+                    </div>
+                  ) : (
+                    <div
+                      className="ml-auto w-32 cursor-pointer rounded-xl border border-blue-500 bg-blue-600 py-1 text-center font-medium hover:bg-blue-500 dark:text-white"
+                      title="Add this class to your account"
+                    >
+                      Add class
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           ) : (
             <div className="mx-auto my-2 mb-3 h-4 w-1/2 animate-pulse rounded bg-gray-500 dark:bg-gray-300 md:w-1/3 lg:w-1/4"></div>

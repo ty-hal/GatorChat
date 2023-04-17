@@ -78,7 +78,7 @@
 
 **Section**: visits section, creates thread, edits thread, deletes thread, does not embed youtube video into thread.
 
-**Thread**: likes thread, replies to thread, deletes reply to thread.
+**Thread**: likes thread, replies to thread, deletes reply to thread ,saves thread and unsaves thread, views thread replies.
 
 **Register**: successfully register account,try to register an existing account, try to register before entering all information
 

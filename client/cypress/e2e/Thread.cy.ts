@@ -3,7 +3,8 @@ import "../support/commands.ts"
 
 describe('thread spec', () => 
 {
-  it('save thread', ()=> {
+  
+  it('save thread and unsave thread', ()=> {
     cy.visit('')
     cy.get('.absolute > [href="/sign-in"] > #sign-in').click();
     cy.get("#email").type("millersteven@ufl.edu");
@@ -14,14 +15,16 @@ describe('thread spec', () =>
     cy.wait(2000)
     cy.get(':nth-child(4) >.left-3>:nth-child(4)>#thread-menu').click();
     cy.get("#save").click();
-    //cy.get(':nth-child(4) > .left-3 > #save').click();
     cy.wait(1000);
     cy.get('#my-account').click();
     cy.wait(1000);
     cy.get('[href="/my-account/saved-threads"] > .rounded-lg').click();
-    cy.wait(1000);
-
+    cy.wait(5000);
+    cy.get('#thread-menu').click();
+    cy.get("#save").click();
+    cy.reload();
   })
+  
   it('like thread', ()=> {
     cy.visit('')
     cy.get('.absolute > [href="/sign-in"] > #sign-in').click();
@@ -69,6 +72,20 @@ describe('thread spec', () =>
     cy.get("#delete-btn").click();
   })
 
-
+  it('view thread replies', ()=> {
+    cy.visit('')
+    cy.get('.absolute > [href="/sign-in"] > #sign-in').click();
+    cy.get("#email").type("millersteven@ufl.edu");
+    cy.get("#password").type("KfkGt2J2sAwA9tg");
+    cy.get("#submit").click();
+    cy.wait(1000);
+    cy.get('#my-account').click();
+    cy.wait(1000);
+    cy.get('[href="/my-account/my-messages"] > .rounded-lg').click();
+    cy.wait(5000);
+    //cy.get('#thread-menu').click();
+    //cy.get("#save").click();
+    //cy.reload();
+  })
 
 })

@@ -40,13 +40,17 @@ const MyMessages = () => {
       },
     })
       .then((response) => response.json())
-      .then((data) => {
-        setUserAdmin(
-          data.some(
-            (role: { role_id: number; role_name: string }) =>
-              role.role_name === "Admin"
-          )
-        );
+      .then((data) => 
+      {
+        if (data && data.length > 0) 
+        {
+          setUserAdmin(
+            data.some(
+              (role: { role_id: number; role_name: string }) =>
+                role.role_name === "Admin"
+            )
+          );
+        }
       });
   };
 

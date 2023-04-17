@@ -146,9 +146,11 @@ func GetCreator(threadID uint8) (User, error) {
 }
 
 func GetSection(threadID uint8) (Section, error) {
+	var thread Thread
 	var section Section
 
-	result := middleware.DB.First(&section, threadID)
+	middleware.DB.First(&thread, threadID)
+	result := middleware.DB.First(&section, thread.SectionID)
 	if result.Error != nil {
 		return section, result.Error
 	}

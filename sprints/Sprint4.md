@@ -36,9 +36,9 @@
   - As a user, I want to be able to quickly access any section through the search bar, so I fixed the functionality of the search bar.
 - Created a display of the number of threads each section has in the section preview.
   - As a user, I want to be able to see how many threads a section has, so I edited the section previews to display this at the bottom.
- - Created a working reset password page that sends a code to the user's email and allows them to change their password using the code.
+- Created a working reset password page that sends a code to the user's email and allows them to change their password using the code.
   - As a user, I want to be able to change my password if I cannot remember it, so I created a page to allow this.
- - Created a working settings page that allows users to change information about their account, like password, profile picture, or major(s).
+- Created a working settings page that allows users to change information about their account, like password, profile picture, or major(s).
   - As a user, I want to be able to change information about my account, so I created a settings page to allow this.
   
   

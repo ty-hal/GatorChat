@@ -69,7 +69,7 @@ describe('section spec', () =>
     cy.wait(5000)
     cy.get('#create-a-thread').click();
     cy.get("#title").type("Alice in chains album")
-    cy.get("#editor-content").type("im currently listening to this while writing tests for this website! \n https://www.youtube.com/watch?v=19CXYQhqVu0 ")
+    cy.get("#editor-content").type("im not writing this thread! Cypress is! \n https://www.youtube.com/watch?v=19CXYQhqVu0 ")
     cy.get("#submit").click();
     cy.wait(5000);
   })

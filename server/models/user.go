@@ -254,3 +254,24 @@ func GetUserPosts(userID uint8) []Post {
 
 	return posts
 }
+
+type Stats struct {
+	Threads_Posted  int64 `json:"threads_posted"`
+	Messages_Posted int64 `json:"messages_posted"`
+	Likes_Received  int64 `json:"likes_received"`
+	Likes_Given     int64 `json:"likes_given"`
+}
+
+func GetUserStats(userID uint8) Stats {
+	var stats Stats
+
+	// Get Thread and Post count numbers
+	middleware.DB.Table("threads").Where("user_id = ?", userID).Count(&stats.Threads_Posted)
+	middleware.DB.Table("posts").Where("user_id = ?", userID).Count(&stats.Messages_Posted)
+
+	// Get Likes Given and Likes Received
+	middleware.DB.Table("likes").Where("user_id = ?", userID).Count(&stats.Likes_Given)
+	middleware.DB.Table("users").Select("likes").Where("user_id = ?", userID).Count(&stats.Likes_Received)
+
+	return stats
+}

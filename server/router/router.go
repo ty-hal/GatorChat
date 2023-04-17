@@ -19,6 +19,7 @@ func Router() *mux.Router {
 	router.HandleFunc("/api/user/logout", handlers.Logout).Methods("POST")
 	router.HandleFunc("/api/user/signin", handlers.SignIn).Methods("POST")
 	router.HandleFunc("/api/user/{id}", handlers.DeleteUser).Methods("DELETE")
+	router.HandleFunc("/api/user/{id}/stats", handlers.GetUserStats).Methods("GET")
 	router.HandleFunc("/api/user/{id}/updatepassword", handlers.UpdatePassword).Methods("PUT")
 	router.HandleFunc("/api/user/{id}/updateprofilepic", handlers.UpdateProfilePic).Methods("PUT")
 	router.HandleFunc("/api/user/{id}/createdthreads", handlers.GetCreatedThreads).Methods("GET")

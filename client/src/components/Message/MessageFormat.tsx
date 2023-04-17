@@ -106,7 +106,6 @@ const Message: React.FC<Props> = ({
       .then((data) => {
         if (data.profile_pic) {
           setProfilePicture(data.profile_pic);
-          // console.log(data.profile_pic);
         }
       });
 
@@ -299,10 +298,9 @@ const Message: React.FC<Props> = ({
 
         // let path = location.pathname;
         // if (path.includes("my-account")) {
-        //   path = `/s/${section_id}/${sectionName}`;
-        //   navigate(`${path}/t/${thread_id}/${thread_name}`, {
-        //     state: { parent_section },
-        //   });
+        //   // path = `/s/${section_id}/${sectionName}`;
+        //   navigate(`t/${thread_id}/${thread_name}`
+        //   );
         // }
       }}
     >

@@ -49,6 +49,8 @@ const Section: React.FC<Props> = ({
   const [userAdmin, setUserAdmin] = useState<boolean>(false);
   const [showSignInPopup, setShowSignInPopup] = useState<boolean>(false);
   const [userClass, setUserClass] = useState<boolean>(false);
+  const [userClassLoaded, setUserClassLoaded] = useState<boolean>(false);
+
   const [isClassSection, setIsClassSection] = useState<boolean>(false);
   const location = useLocation();
 
@@ -133,27 +135,35 @@ const Section: React.FC<Props> = ({
 
   const toggleUserClass = () => {
     setUserClass(!userClass);
-    // fetch(
-    //   `http://localhost:9000/api/togglesavedsection?sectionID=${section_id}&activeUser=${activeUserID}`,
-    //   {
-    //     method: "GET",
-    //     headers: {
-    //       "content-type": "application/json",
-    //     },
-    //   }
-    // ).then((response) => response.json());
+    fetch(
+      `http://localhost:9000/api/toggleclass?classID=${
+        section_name.substr(0, 3).toUpperCase() + section_name.substr(3)
+      }&userID=${activeUserID}`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    );
   };
   const getClassSaved = () => {
-    // setUserClass(!userClass);
-    // fetch(
-    //   `http://localhost:9000/api/togglesavedsection?sectionID=${section_id}&activeUser=${activeUserID}`,
-    //   {
-    //     method: "GET",
-    //     headers: {
-    //       "content-type": "application/json",
-    //     },
-    //   }
-    // ).then((response) => response.json());
+    fetch(
+      `http://localhost:9000/api/userinclass?classID=${
+        section_name.substr(0, 3).toUpperCase() + section_name.substr(3)
+      }&userID=${activeUserID}`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setUserClass(data);
+        setUserClassLoaded(true);
+      });
   };
   function hyphenToTitleCase(input: string): string {
     const excludedWords = ["and", "of", "a"];
@@ -316,11 +326,13 @@ const Section: React.FC<Props> = ({
           {/* Section Description */}
           {sectionDescription ? (
             <div className="mb-2 mt-1 flex w-11/12  items-center justify-center lg:w-4/5 ">
-              {isClassSection && <div className="flex-1"></div>}
+              {isClassSection && userClassLoaded && (
+                <div className="flex-1"></div>
+              )}
               <div className="text-center text-base font-normal dark:text-white sm:text-lg">
                 {sectionDescription}
               </div>
-              {isClassSection && (
+              {isClassSection && userClassLoaded && (
                 <div className="flex-1" onClick={() => toggleUserClass()}>
                   {userClass ? (
                     <div

@@ -237,7 +237,7 @@ func GetUserPostsWithOffset(userID uint8, pageNumber int, pageSize int) []Post {
 		creator, err := GetUserByID(posts[i].UserID)
 
 		if err == nil {
-			section, er := GetSectionOfPost(posts[i].PostID, userID)
+			section, thread, er := GetThreadAndSectionOfPost(posts[i].PostID, userID)
 
 			if er != nil {
 				fmt.Println("Error in saved posts from user")
@@ -248,6 +248,7 @@ func GetUserPostsWithOffset(userID uint8, pageNumber int, pageSize int) []Post {
 			posts[i].UserLiked = CheckMessageLike(userID, posts[i].PostID)
 			posts[i].UserSaved = CheckPostSaved(userID, posts[i].PostID)
 			posts[i].SectionName = section.SectionName
+			posts[i].ThreadTitle = thread.ThreadTitle
 		}
 	}
 
@@ -263,7 +264,7 @@ func GetUserPosts(userID uint8) []Post {
 		creator, err := GetUserByID(posts[i].UserID)
 
 		if err == nil {
-			section, er := GetSectionOfPost(posts[i].PostID, userID)
+			section, thread, er := GetThreadAndSectionOfPost(posts[i].PostID, userID)
 
 			if er != nil {
 				fmt.Println("Error in saved posts from user")
@@ -274,6 +275,7 @@ func GetUserPosts(userID uint8) []Post {
 			posts[i].UserLiked = CheckMessageLike(userID, posts[i].PostID)
 			posts[i].UserSaved = CheckPostSaved(userID, posts[i].PostID)
 			posts[i].SectionName = section.SectionName
+			posts[i].ThreadTitle = thread.ThreadTitle
 		}
 	}
 

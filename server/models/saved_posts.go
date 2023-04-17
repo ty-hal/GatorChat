@@ -37,7 +37,7 @@ func GetSavedPostsFromUser(userID uint8) []Post {
 		if posts[i].UserID == userID {
 			post, err := GetPostByID(posts[i].PostID)
 			if err == nil {
-				section, er := GetSectionOfPost(post.PostID, userID)
+				section, thread, er := GetThreadAndSectionOfPost(post.PostID, userID)
 
 				if er != nil {
 					fmt.Println("Error in saved posts from user")
@@ -55,6 +55,7 @@ func GetSavedPostsFromUser(userID uint8) []Post {
 				post.UserLiked = CheckMessageLike(userID, post.PostID)
 				post.UserSaved = true
 				post.SectionName = section.SectionName
+				post.ThreadTitle = thread.ThreadTitle
 				userSavedPosts = append(userSavedPosts, post)
 			}
 		}

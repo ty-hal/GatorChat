@@ -20,6 +20,7 @@ type Post struct {
 	UserLiked    bool      `json:"user_liked" gorm:"-"`
 	UserSaved    bool      `json:"user_saved" gorm:"-"`
 	SectionName  string    `json:"section_name" gorm:"-"`
+	ThreadTitle  string    `json:"thread_title" gorm:"-"`
 }
 
 func GetAllPosts() []Post {
@@ -30,24 +31,24 @@ func GetAllPosts() []Post {
 	return posts
 }
 
-func GetSectionOfPost(postID uint8, activeUser uint8) (Section, error) {
+func GetThreadAndSectionOfPost(postID uint8, activeUser uint8) (Section, Thread, error) {
 	post, er := GetPostByID(postID)
 	if er != nil {
-		return Section{}, er
+		return Section{}, Thread{}, er
 	}
 
 	thread, err := post.GetThread()
 	if err != nil {
-		return Section{}, err
+		return Section{}, Thread{}, err
 	}
 
 	section, errr := GetSectionByID(thread.SectionID, activeUser)
 
 	if errr != nil {
-		return Section{}, errr
+		return Section{}, Thread{}, errr
 	}
 
-	return section, nil
+	return section, thread, nil
 }
 
 func GetPostByID(postID uint8) (Post, error) {

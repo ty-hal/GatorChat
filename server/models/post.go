@@ -19,6 +19,7 @@ type Post struct {
 	Likes        uint8     `json:"likes"`
 	UserLiked    bool      `json:"user_liked" gorm:"-"`
 	UserSaved    bool      `json:"user_saved" gorm:"-"`
+	SectionName  string    `json:"section_name" gorm:"-"`
 }
 
 func GetAllPosts() []Post {

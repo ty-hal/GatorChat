@@ -76,7 +76,7 @@
 
 ### Cypress (end-to-end) tests:
 
-**Section**: visits section, creates thread, edits thread, deletes thread.
+**Section**: visits section, creates thread, edits thread, deletes thread, does not embed youtube video into thread.
 
 **Thread**: likes thread, replies to thread, deletes reply to thread.
 

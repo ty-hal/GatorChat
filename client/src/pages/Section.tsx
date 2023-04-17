@@ -106,12 +106,14 @@ const Section: React.FC<Props> = ({
     })
       .then((response) => response.json())
       .then((data) => {
-        setUserAdmin(
-          data.some(
-            (role: { role_id: number; role_name: string }) =>
-              role.role_name === "Admin"
-          )
-        );
+        if (data.length > 0) {
+          setUserAdmin(
+            data.some(
+              (role: { role_id: number; role_name: string }) =>
+                role.role_name === "Admin"
+            )
+          );
+        }
       });
   };
   const toggleSaveSection = () => {

@@ -18,6 +18,7 @@ type Post struct {
 	UpdatedAt    time.Time `json:"updated_at" gorm:"autoCreateTime"`
 	Likes        uint8     `json:"likes"`
 	UserLiked    bool      `json:"user_liked" gorm:"-"`
+	UserSaved    bool      `json:"user_saved" gorm:"-"`
 }
 
 func GetAllPosts() []Post {

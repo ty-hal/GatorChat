@@ -41,6 +41,7 @@
     "react-easy-crop": "^4.7.4",
     "react-image-crop": "^10.0.9",
     "react-infinite-scroll-component": "^6.1.0",
+    "react-multivalue-text-input": "^2.4.0",
     "react-scripts": "5.0.1",
     "react-search-autocomplete": "^8.3.2",
     "react-select-search": "^4.1.6",

@@ -40,11 +40,17 @@ func Like(user_id uint8, thread_id uint8, post_id uint8) Likes {
 	like := Likes{UserID: user_id, ThreadID: thread_id, PostID: post_id}
 	middleware.DB.Create(&like)
 
+	var userLiked int64
+
 	if thread_id != 0 {
 		middleware.DB.Table("threads").Where("thread_id = ?", thread_id).Omit("updated_at").Update("likes", gorm.Expr("likes + ?", 1))
+		middleware.DB.Table("threads").Select("user_id").Where("thread_id = ?", thread_id).Scan(&userLiked)
 	} else {
 		middleware.DB.Table("posts").Where("post_id = ?", post_id).Omit("updated_at").Update("likes", gorm.Expr("likes + ?", 1))
+		middleware.DB.Table("posts").Select("user_id").Where("post_id = ?", post_id).Scan(&userLiked)
 	}
+
+	middleware.DB.Table("users").Where("user_id = ?", userLiked).Omit("updated_at").Update("likes", gorm.Expr("likes + ?", 1))
 
 	return like
 }
@@ -53,11 +59,17 @@ func UnLike(user_id uint8, thread_id uint8, post_id uint8) Likes {
 	var like Likes
 	middleware.DB.Clauses(clause.Returning{}).Unscoped().Where("user_id = ? AND thread_id = ? AND post_id = ?", user_id, thread_id, post_id).Delete(&like)
 
+	var userLiked int64
+
 	if thread_id != 0 {
 		middleware.DB.Table("threads").Where("thread_id = ?", thread_id).Omit("updated_at").Update("likes", gorm.Expr("likes + ?", -1))
+		middleware.DB.Table("threads").Select("user_id").Where("thread_id = ?", thread_id).Scan(&userLiked)
 	} else {
 		middleware.DB.Table("posts").Where("post_id = ?", post_id).Omit("updated_at").Update("likes", gorm.Expr("likes + ?", -1))
+		middleware.DB.Table("posts").Select("user_id").Where("post_id = ?", post_id).Scan(&userLiked)
 	}
+
+	middleware.DB.Table("users").Where("user_id = ?", userLiked).Omit("updated_at").Update("likes", gorm.Expr("likes + ?", -1))
 
 	return like
 }

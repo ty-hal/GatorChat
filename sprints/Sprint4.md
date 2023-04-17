@@ -76,19 +76,23 @@
 
 ### Cypress (end-to-end) tests:
 
-**Section**: create thread, edit thread, delete thread
+**Section**: visits section, creates thread, edits thread, deletes thread, does not embed youtube video into thread.
 
-**Thread**: create thread, create reply, edit reply, edit thread, delete reply, delete thread
+**Thread**: likes thread, replies to thread, deletes reply to thread.
 
-**Register**: successfully register account, try to register an existing account, try to register before entering all information
+**Register**: successfully register account,try to register an existing account, try to register before entering all information
 
 **Sign In**: successful login, successful login, remember me feature, forgot password, toggle show password
 
-**ContactUs**: renders, enters name, enters email, does not submit.
+**ContactUs**: renders, enters name, enters email, submits.
 
-**Settings**: renders, enters new name, tries to change email, enters new password, enters new major, submits.
+**Settings**: renders, does not allow name change, does not allow email change, enters new password, enters new major, uploads new profile picture, submits.
 
-**ForgotPassword**: renders,clicks "forgot password" enters email, submits email.
+**ForgotPassword**: renders, clicks "forgot password" enters email, submits email, does not allow password to be reset without code
+
+**savesection**: saves section and unsaves section, does not allow you to save a section if youre not signed in, searches within a section and saves that subsection.
+
+**search**: searches for a section, searches for an invalid section and returns no results, searches for a subsection within a section.
 
 ---
 

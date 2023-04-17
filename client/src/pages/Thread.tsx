@@ -154,13 +154,15 @@ const Thread: React.FC<Props> = ({
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-        setUserAdmin(
-          data.some(
-            (role: { role_id: number; role_name: string }) =>
-              role.role_name === "Admin"
-          )
-        );
+        if (data && data.length > 0) 
+        {
+          setUserAdmin(
+            data.some(
+              (role: { role_id: number; role_name: string }) =>
+                role.role_name === "Admin"
+            )
+          );
+        }
       });
   };
 

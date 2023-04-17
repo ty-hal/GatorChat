@@ -9,8 +9,8 @@ describe('sign in spec', () => {
 
   it('successful login', () => {
     cy.visit('/sign-in')
-    cy.get("#email").type("random@ufl.edu");
-    cy.get("#password").type("Mypassword@123");
+    cy.get("#email").type("millersteven@ufl.edu");
+    cy.get("#password").type("KfkGt2J2sAwA9tg");
     cy.get("#submit").click();
     cy.url().should("eq", Cypress.config().baseUrl + "/");
     cy.getCookies().should('have.length', 1).then((cookies) => {

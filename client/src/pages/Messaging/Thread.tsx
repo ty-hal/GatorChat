@@ -141,7 +141,6 @@ const Thread: React.FC<Props> = ({
         ) {
           navigate(-1);
         }
-
         setSectionName(data.section_name);
       });
   };

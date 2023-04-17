@@ -20,7 +20,7 @@ const DefaultSection: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
   }, [parent_section]);
 
   const pathname = location.pathname;
-
+  console.log("Pathname: " + pathname);
   let section_id = "0";
   let section_name = "";
   let thread_id = "0";

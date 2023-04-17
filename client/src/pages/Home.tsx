@@ -36,7 +36,6 @@ const Home = () => {
   useEffect(() => {
     // Get user saved sections
     if (activeUserID != null && activeUserID > 0) {
-      console.log(activeUserID);
       fetch(`http://localhost:9000/api/user/${activeUserID}/savedsections`, {
         method: "GET",
         headers: {
@@ -45,7 +44,6 @@ const Home = () => {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
           setUserSavedSections(data);
           setLoadedSavedSections(true);
         });
@@ -62,7 +60,6 @@ const Home = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        //console.log(data);
         setParentSections(data);
         setLoaded(true);
       });
@@ -76,7 +73,6 @@ const Home = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         const extractedData: SearchBarItem[] = data.map(
           ({
             section_id,

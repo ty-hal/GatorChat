@@ -10,6 +10,7 @@ import { RichTextEditor } from "../RichTextEditor";
 import { useAtomValue, useAtom } from "jotai";
 import { userIDAtom } from "../../App";
 import { messageBoxAtom } from "../../pages/Messaging/Thread";
+import { useLocation, useNavigate } from "react-router-dom";
 
 type Props = {
   post_id: number;
@@ -87,6 +88,9 @@ const Message: React.FC<Props> = ({
   const [content, setContent] = useState<string>("");
   const [_, setUserMessageBox] = useAtom(messageBoxAtom);
   const [popupReason, setPopupReason] = useState<string>("");
+
+  let navigate = useNavigate();
+  const location = useLocation();
 
   // Get data
   useEffect(() => {
@@ -292,6 +296,14 @@ const Message: React.FC<Props> = ({
       onClick={(e) => {
         setShowDropdown(false);
         console.log(`Message ${post_id}`);
+
+        // let path = location.pathname;
+        // if (path.includes("my-account")) {
+        //   path = `/s/${section_id}/${sectionName}`;
+        //   navigate(`${path}/t/${thread_id}/${thread_name}`, {
+        //     state: { parent_section },
+        //   });
+        // }
       }}
     >
       {/* Profile Picture, Username, Date, and Dropdown */}

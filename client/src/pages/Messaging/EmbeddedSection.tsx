@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { darkModeAtom } from "../../App";
 import { useAtomValue } from "jotai";
 import Footer from "../../components/Footer";
@@ -12,6 +12,7 @@ import SignInPopup from "../../components/Popups/SignInPopup";
 type SearchBarItem = {
   id: number;
   name: string;
+  children: boolean;
 };
 
 type ChildSectionType = {
@@ -39,6 +40,8 @@ const EmbeddedSection: React.FC<Props> = ({
   description,
 }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const [childSections, setChildSections] = useState<ChildSectionType[]>([]);
   const [sectionName, setSectionName] = useState<string>("");
   const [searchMessage, setSearchMessage] = useState<string>(
@@ -75,12 +78,15 @@ const EmbeddedSection: React.FC<Props> = ({
           ({
             section_id,
             section_name,
+            parent_section,
           }: {
             section_id: number;
             section_name: string;
+            parent_section: boolean;
           }) => ({
             id: section_id,
             name: section_name,
+            children: parent_section,
           })
         );
         setSearchBarItems(extractedData);
@@ -134,7 +140,10 @@ const EmbeddedSection: React.FC<Props> = ({
       .replace(/\s+/g, "-")
       .toLowerCase();
     // FIX THIS TO NAVIGATE TO EMBEDDED SECTIONS
-    navigate(`${item.id}/${edited_section_name}`);
+    const pathname = location.pathname;
+    navigate(`${pathname}/${item.id}/${edited_section_name}`, {
+      state: { parent_section: item.children },
+    });
     window.location.reload();
   };
   const searchBarFormatResult = (item: SearchBarItem) => {

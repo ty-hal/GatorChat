@@ -60,7 +60,7 @@ const Thread: React.FC<Props> = ({
   const [edit, toggleEdit] = useState<boolean>(false);
   const activeUserID = useAtomValue(userIDAtom);
   const [thread_name, set_thread_name] = useState<string>("");
-  const [sectioName, setSectionName] = useState<string>("");
+  const [sectionName, setSectionName] = useState<string>("");
   const [liked, setLiked] = useState<boolean>(userLiked);
   const [numLikes, toggleLike] = useState<number>(likesCount);
   const [profilePicture, setProfilePicture] = useState<string>("");
@@ -264,13 +264,17 @@ const Thread: React.FC<Props> = ({
           "content-type": "application/json",
         },
       }
-    ).then((response) => response.json())
-     .then((data) => {
+    )
+      .then((response) => response.json())
+      .then((data) => {
         // Reload page when saving in account page
-        if (window.location.pathname === "/my-account/my-saved-threads" || window.location.pathname === "/my-account/my-saved-messages") {
-          window.location.reload()
+        if (
+          window.location.pathname === "/my-account/my-saved-threads" ||
+          window.location.pathname === "/my-account/my-saved-messages"
+        ) {
+          window.location.reload();
         }
-     });
+      });
   };
   // Hide copied link popup after 1.5 seconds
   useEffect(() => {
@@ -290,10 +294,8 @@ const Thread: React.FC<Props> = ({
         // Navigate to the thread
         let path = location.pathname;
         if (path.includes("my-account")) {
-          path = `/s/${section_id}/${sectioName}`;
+          path = `/s/${section_id}/${sectionName}`;
         }
-        console.log(path);
-
         navigate(`${path}/t/${thread_id}/${thread_name}`, {
           state: { parent_section },
         });

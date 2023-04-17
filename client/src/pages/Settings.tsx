@@ -376,7 +376,7 @@ const Settings = () => {
             className="mb-4 text-2xl font-bold  
                text-gray-900 dark:text-white"
           >
-            Account Settings
+            Account settings
           </div>
           {/* Personal Info */}
           <div className="space-y-3 text-sm font-medium text-gray-900 dark:text-white sm:text-base">

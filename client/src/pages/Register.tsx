@@ -11,8 +11,7 @@ type userRegistration = {
   password: String;
   profile_pic?: String;
 };
-interface verifycode 
-{
+interface confirmMail {
   email: string;
   message: string;
 }
@@ -206,8 +205,7 @@ let majorOptions = [
   { value: "Zoology", label: "Zoology" },
 ];
 
-const Register = () => 
-{
+const Register = () => {
   const [first_name, setFirstName] = useState("");
   const [last_name, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -219,9 +217,10 @@ const Register = () =>
   const [profilePicture, setProfilePicture] = useState({
     file: "",
   });
-  const[code,generatecode] = useState(Math.floor((Math.random()*1000000)).toString());
-  const [usercode, setusercode] = useState("");
-
+  const [code, setCode] = useState(
+    (Math.floor(Math.random() * 900000) + 100000).toString().padStart(6, "0")
+  );
+  const [userCode, setUserCode] = useState("");
 
   const [registrationInfo, setRegistrationInfo] =
     useState<storeageUserRegistration>({
@@ -236,25 +235,30 @@ const Register = () =>
   const [userExists, setUserExists] = useState(false);
   const [invalidForm, setInvalidForm] = useState(false);
   const [errorOccurred, setErrorOccured] = useState(false);
-  const verify:verifycode = 
-    {
-      email: email,
-      message: "your code is: "+ code
-    }
-    /*send email to user */
-  const sendemail=()=>
-  {
-    fetch("http://localhost:9000/api/contact", 
-        {
-          method: "POST",
-          headers: {
-          "content-type": "application/json",
-        },
-          body: JSON.stringify(verify),
-        }
-          
-        )
-  }
+  const [confirmEmail, setConfirmEmail] = useState(false);
+  const [invalidCode, setInvalidCode] = useState<boolean>(false);
+  const [resentEmail, setResentEmail] = useState<boolean>(false);
+  const [invalidEmail, setInvalidEmail] = useState<boolean>(false);
+
+  useEffect(() => {
+    console.log(code);
+  }, [code]);
+  const verifyEmail: confirmMail = {
+    email: email,
+    message: "Your code is: " + code,
+  };
+  /* Send email to user */
+  const sendEmail = (e: React.FormEvent) => {
+    e.preventDefault();
+    fetch("http://localhost:9000/api/contact", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(verifyEmail),
+    });
+  };
+
   useEffect(() => {
     setRegistrationInfo({
       ...registrationInfo,
@@ -390,8 +394,7 @@ const Register = () =>
     }
   };
 
-  const submitForm = (e: React.FormEvent) =>
-   {
+  const submitUserConfirmation = (e: React.FormEvent) => {
     e.preventDefault();
 
     const registration: userRegistration = {
@@ -402,16 +405,8 @@ const Register = () =>
       password: password,
       profile_pic: profilePicture.file,
     };
-    //const checkcode=()=>
-  //{
-    if(usercode != code)
-    {
-      alert("verification code incorrect")
-      console.log(code);
-    }
-    else
-    {
-      fetch("http://localhost:9000/api/user", {
+
+    fetch("http://localhost:9000/api/user", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -447,351 +442,437 @@ const Register = () =>
         }
       })
       .then((data) => (data ? clearRegistration() : null));
-  }
-  
   };
 
+  const submitUserForm = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    /* Verify email is a valid account*/
+    fetch(`http://localhost:9000/api/user/verify?email=${email}`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+    }).then((response) => {
+      // If email is valid
+      if (response.status == 200) {
+        setInvalidEmail(true);
+        return response.json();
+      }
+      setInvalidEmail(false);
+      setConfirmEmail(true);
+      sendEmail(e);
+    });
+  };
   return (
     <section className="min-h-screen bg-gray-50 py-8 pb-32 dark:bg-gray-900">
       <div className="mx-auto flex flex-col items-center justify-center px-6  lg:py-0">
         <div className="w-full rounded-lg bg-white shadow dark:border dark:border-gray-700 dark:bg-gray-800 sm:max-w-md md:mt-0 xl:p-0">
-          <div className="space-y-4 p-6 sm:p-8 md:space-y-6">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
-              Create an account
-            </h1>
-            <form className="space-y-4 md:space-y-3" onSubmit={submitForm}>
-              {/* Name  */}
-              <div className="flex-box flex justify-between">
-                {/* First Name  */}
-                <div className="sm:w-2/5">
-                  <label
-                    htmlFor="text"
-                    className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    First Name
-                  </label>
-                  <input
-                    type="text"
-                    name="text"
-                    id="first-name"
-                    className="block w-11/12 rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:w-full"
-                    placeholder="John"
-                    pattern="[a-zA-Z .'*_`~-]+"
-                    required
-                    onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                      setFirstName((e.target as HTMLInputElement).value);
-                      setRegistrationInfo({
-                        ...registrationInfo,
-                        first_name: (e.target as HTMLInputElement).value,
-                      });
-                    }}
-                  />
+          {!confirmEmail ? (
+            <div className="space-y-4 p-6 sm:p-8 md:space-y-6">
+              <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
+                Create an account
+              </h1>
+              <form
+                className="space-y-4 md:space-y-3"
+                onSubmit={submitUserForm}
+              >
+                {/* Name  */}
+                <div className="flex-box flex justify-between">
+                  {/* First Name  */}
+                  <div className="sm:w-2/5">
+                    <label
+                      htmlFor="text"
+                      className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      First Name
+                    </label>
+                    <input
+                      type="text"
+                      name="text"
+                      id="first-name"
+                      className="block w-11/12 rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:w-full"
+                      placeholder="John"
+                      pattern="[a-zA-Z .'*_`~-]+"
+                      required
+                      onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                        setFirstName((e.target as HTMLInputElement).value);
+                        setRegistrationInfo({
+                          ...registrationInfo,
+                          first_name: (e.target as HTMLInputElement).value,
+                        });
+                      }}
+                    />
+                  </div>
+                  {/* Last Name  */}
+                  <div>
+                    <label
+                      htmlFor="text"
+                      className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Last Name
+                    </label>
+                    <input
+                      type="text"
+                      name="text"
+                      id="last-name"
+                      className="w block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                      placeholder="Doe"
+                      pattern="[a-zA-Z .'*_`~-]+"
+                      required
+                      onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                        setLastName((e.target as HTMLInputElement).value);
+                        setRegistrationInfo({
+                          ...registrationInfo,
+                          last_name: (e.target as HTMLInputElement).value,
+                        });
+                      }}
+                    />
+                  </div>
                 </div>
-                {/* Last Name  */}
+                {/* Email  */}
                 <div>
                   <label
-                    htmlFor="text"
+                    htmlFor="email"
                     className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Last Name
+                    UFL Email
                   </label>
                   <input
-                    type="text"
-                    name="text"
-                    id="last-name"
-                    className="w block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                    placeholder="Doe"
-                    pattern="[a-zA-Z .'*_`~-]+"
+                    type="email"
+                    name="email"
+                    id="email"
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                    placeholder="email@ufl.edu"
+                    pattern="[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@ufl\.edu"
+                    title="Must use a UF email address"
                     required
                     onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                      setLastName((e.target as HTMLInputElement).value);
+                      setEmail((e.target as HTMLInputElement).value);
                       setRegistrationInfo({
                         ...registrationInfo,
-                        last_name: (e.target as HTMLInputElement).value,
+                        email: (e.target as HTMLInputElement).value,
                       });
                     }}
                   />
                 </div>
-              </div>
-              {/* Email  */}
-              <div>
-                <label
-                  htmlFor="email"
-                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  UFL Email
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                  placeholder="email@ufl.edu"
-                  pattern="[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@ufl\.edu"
-                  title="Must use a UF email address"
-                  required
-                  onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                    setEmail((e.target as HTMLInputElement).value);
-                    setRegistrationInfo({
-                      ...registrationInfo,
-                      email: (e.target as HTMLInputElement).value,
-                    });
-                  }}
-                />
-              </div>
-              {/* Major  */}
-              <div>
-                <label
-                  htmlFor="major"
-                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Major
-                </label>
-                <div id="majors-select">
-                  <Select
-                    primaryColor={"indigo"}
-                    value={majorsValue}
-                    isMultiple={true}
-                    isSearchable={true}
-                    noOptionsMessage={"No majors found"}
-                    placeholder={"Select major(s)..."}
-                    classNames={{
-                      menuButton: ({ isDisabled }) =>
-                        `rounded-lg flex text-sm text-gray-900 dark:text-gray-400 border border-gray-300 dark:border-gray-600  focus:outline-none bg-gray-50 dark:bg-gray-700 ${
-                          isDisabled
-                            ? ""
-                            : "focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                        }`,
-                      menu: "absolute z-10 w-full bg-gray-50 dark:bg-gray-700 border rounded-lg py-1 mt-1.5 text-sm text-gray-900",
-                      listItem: ({ isSelected }) =>
-                        `block p-2 cursor-pointer select-none truncate rounded text-gray-900 dark:text-white ${
-                          isSelected
-                            ? ``
-                            : `hover:bg-blue-200 dark:hover:bg-blue-500 hover:text-gray-900`
-                        }`,
+                {invalidEmail && (
+                  <div className="ml-1 text-sm font-medium text-red-500">
+                    There is already an account registered with this email
+                    address. Please{" "}
+                    <Link to="/sign-in">
+                      <span className="underline">sign in</span>
+                    </Link>{" "}
+                    or{" "}
+                    <Link to="/forgot-password">
+                      <span className="underline">reset your password</span>
+                    </Link>
+                    .
+                  </div>
+                )}
+                {/* Major  */}
+                <div>
+                  <label
+                    htmlFor="major"
+                    className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Major
+                  </label>
+                  <div id="majors-select">
+                    <Select
+                      primaryColor={"indigo"}
+                      value={majorsValue}
+                      isMultiple={true}
+                      isSearchable={true}
+                      noOptionsMessage={"No majors found"}
+                      placeholder={"Select major(s)..."}
+                      classNames={{
+                        menuButton: ({ isDisabled }) =>
+                          `rounded-lg flex text-sm text-gray-900 dark:text-gray-400 border border-gray-300 dark:border-gray-600  focus:outline-none bg-gray-50 dark:bg-gray-700 ${
+                            isDisabled
+                              ? ""
+                              : "focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                          }`,
+                        menu: "absolute z-10 w-full bg-gray-50 dark:bg-gray-700 border rounded-lg py-1 mt-1.5 text-sm text-gray-900",
+                        listItem: ({ isSelected }) =>
+                          `block p-2 cursor-pointer select-none truncate rounded text-gray-900 dark:text-white ${
+                            isSelected
+                              ? ``
+                              : `hover:bg-blue-200 dark:hover:bg-blue-500 hover:text-gray-900`
+                          }`,
+                      }}
+                      onChange={handleMajorChange}
+                      options={majorOptions}
+                    />
+                  </div>
+                </div>
+                {/* Password */}
+                <div>
+                  <label
+                    htmlFor="password"
+                    className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    placeholder="••••••••"
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                    title="Must be at least 8 characters long and contain a number and uppercase letter"
+                    required
+                    onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                      setPassword((e.target as HTMLInputElement).value);
+                      setRegistrationInfo({
+                        ...registrationInfo,
+                        password: (e.target as HTMLInputElement).value,
+                      });
                     }}
-                    onChange={handleMajorChange}
-                    options={majorOptions}
                   />
                 </div>
-              </div>
-              {/* Password */}
-              <div>
-                <label
-                  htmlFor="password"
-                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Password
-                </label>
-                <input
-                  type="password"
-                  name="password"
-                  id="password"
-                  placeholder="••••••••"
-                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                  title="Must be at least 8 characters long and contain a number and uppercase letter"
-                  required
-                  onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                    setPassword((e.target as HTMLInputElement).value);
-                    setRegistrationInfo({
-                      ...registrationInfo,
-                      password: (e.target as HTMLInputElement).value,
-                    });
-                  }}
-                />
-              </div>
-              {/* Confirm password */}
-              <div>
-                <label
-                  htmlFor="confirm-password"
-                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Confirm Password
-                </label>
-                <input
-                  type="password"
-                  name="confirm-password"
-                  id="confirm-password"
-                  placeholder="••••••••"
-                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                  title="Must be at least 8 characters long and contain a number and uppercase letter"
-                  required
-                  onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                    setConfirmPassword((e.target as HTMLInputElement).value);
-                    setRegistrationInfo({
-                      ...registrationInfo,
-                      confirm_password: (e.target as HTMLInputElement).value,
-                    });
-                  }}
-                />
-              </div>
-              {/* Profile Picture */}
-              <div>
-                <label
-                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                  htmlFor="file_input"
-                >
-                  Profile Picture{" "}
-                  <span className="text-gray-500">(Optional)</span>
-                </label>
-                <div className="flex-box flex">
+                {/* Confirm password */}
+                <div>
+                  <label
+                    htmlFor="confirm-password"
+                    className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Confirm Password
+                  </label>
                   <input
-                    className="block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400"
-                    id="profile_picture"
-                    type="file"
-                    accept="image/*"
-                    onChange={(event) => {
-                      if (event.target.files !== null) {
-                        handleImageUpload(event);
-                        setSelectedImage(true);
-                      }
+                    type="password"
+                    name="confirm-password"
+                    id="confirm-password"
+                    placeholder="••••••••"
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                    title="Must be at least 8 characters long and contain a number and uppercase letter"
+                    required
+                    onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                      setConfirmPassword((e.target as HTMLInputElement).value);
+                      setRegistrationInfo({
+                        ...registrationInfo,
+                        confirm_password: (e.target as HTMLInputElement).value,
+                      });
                     }}
                   />
-                  {selectedImage && (
-                    <div
-                      className="-ml-2 flex cursor-pointer  items-center justify-center rounded-lg rounded-l-sm border border-gray-300 bg-red-600  px-1 pt-0.5 text-center align-baseline text-sm text-gray-200 dark:border-gray-600 dark:placeholder-gray-400"
-                      onClick={() => {
-                        setSelectedImage(false);
-                        setProfilePicture({ ...profilePicture, file: "" });
+                </div>
+                {/* Profile Picture */}
+                <div>
+                  <label
+                    className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    htmlFor="file_input"
+                  >
+                    Profile Picture{" "}
+                    <span className="text-gray-500">(Optional)</span>
+                  </label>
+                  <div className="flex-box flex">
+                    <input
+                      className="block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400"
+                      id="profile_picture"
+                      type="file"
+                      accept="image/*"
+                      onChange={(event) => {
+                        if (event.target.files !== null) {
+                          handleImageUpload(event);
+                          setSelectedImage(true);
+                        }
                       }}
-                    >
-                      Remove
-                    </div>
+                    />
+                    {selectedImage && (
+                      <div
+                        className="-ml-2 flex cursor-pointer  items-center justify-center rounded-lg rounded-l-sm border border-gray-300 bg-red-600  px-1 pt-0.5 text-center align-baseline text-sm text-gray-200 dark:border-gray-600 dark:placeholder-gray-400"
+                        onClick={() => {
+                          setSelectedImage(false);
+                          setProfilePicture({ ...profilePicture, file: "" });
+                        }}
+                      >
+                        Remove
+                      </div>
+                    )}
+                  </div>
+                  {/* Show profile picture if one is inputted */}
+                  {selectedImage && (
+                    <ProfilePicture
+                      image={profilePicture}
+                      className="mt-4 h-40 w-40 rounded-full"
+                      from="register"
+                    />
                   )}
                 </div>
-                {/* Show profile picture if one is inputted */}
-                {selectedImage && (
-                  <ProfilePicture
-                    image={profilePicture}
-                    className="mt-4 h-40 w-40 rounded-full"
-                    from="register"
-                  />
-                )}
-              </div>
 
-              {/* Terms and Conditions  */}
-              <div className="flex items-start">
-                <div className="flex h-5 items-center">
-                  <input
-                    id="terms"
-                    aria-describedby="terms"
-                    type="checkbox"
-                    className="focus:ring-3 h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
-                    required
-                  />
-                </div>
-                <div className="ml-3 text-sm">
-                  <label
-                    htmlFor="terms"
-                    className="font-light text-gray-500 dark:text-gray-300"
-                  >
-                    I accept the{" "}
-                    <Link
-                      to="/terms-and-conditions"
-                      className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                      target="_blank"
+                {/* Terms and Conditions  */}
+                <div className="flex items-start">
+                  <div className="flex h-5 items-center">
+                    <input
+                      id="terms"
+                      aria-describedby="terms"
+                      type="checkbox"
+                      className="focus:ring-3 h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+                      required
+                    />
+                  </div>
+                  <div className="ml-3 text-sm">
+                    <label
+                      htmlFor="terms"
+                      className="font-light text-gray-500 dark:text-gray-300"
                     >
-                      {" "}
-                      <span className="mr-4"> Terms and Conditions</span>
-                    </Link>
-                  </label>
+                      I accept the{" "}
+                      <Link
+                        to="/terms-and-conditions"
+                        className="font-medium text-blue-600 hover:underline dark:text-blue-500"
+                        target="_blank"
+                      >
+                        {" "}
+                        <span className="mr-4"> Terms and Conditions</span>
+                      </Link>
+                    </label>
+                  </div>
                 </div>
-              </div>
-              {/* Error Handling */}
-              {userExists && (
-                <span className="mt-1 ml-1 flex items-center text-sm font-medium tracking-wide text-red-500">
-                  User Already Exists. Please Sign In.
-                </span>
-              )}
-              {invalidForm && (
-                <span className="mt-1 ml-1 flex items-center text-sm font-medium tracking-wide text-red-500">
-                  Please Fill Out Required Sections.
-                </span>
-              )}
-              {errorOccurred && (
-                <span className="mt-1 ml-1 flex items-center text-sm font-medium tracking-wide text-red-500">
-                  Error Occurred. Please Try Again.
-                </span>
-              )}
-              {/* Confirm code */}
-              <div>
-                <label
-                  htmlFor="confirm-password"
-                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                {/* Error Handling */}
+                {userExists && (
+                  <span className="mt-1 ml-1 flex items-center text-sm font-medium tracking-wide text-red-500">
+                    User Already Exists. Please Sign In.
+                  </span>
+                )}
+                {invalidForm && (
+                  <span className="mt-1 ml-1 flex items-center text-sm font-medium tracking-wide text-red-500">
+                    Please Fill Out Required Sections.
+                  </span>
+                )}
+                {errorOccurred && (
+                  <span className="mt-1 ml-1 flex items-center text-sm font-medium tracking-wide text-red-500">
+                    Error Occurred. Please Try Again.
+                  </span>
+                )}
+
+                {/* Submit Button  */}
+                <button
+                  type="submit"
+                  id="create-an-account"
+                  disabled={
+                    password && password === confirmPassword ? false : true
+                  }
+                  className={
+                    new RegExp(/[a-zA-Z .'*_`~-]+/).test(first_name) &&
+                    new RegExp(/[a-zA-Z .'*_`~-]+/).test(last_name) &&
+                    new RegExp(
+                      /[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@ufl\.edu/
+                    ).test(email) &&
+                    majors.length > 0 &&
+                    password &&
+                    password === confirmPassword
+                      ? "w-full rounded-lg bg-blue-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                      : "w-full cursor-auto rounded-lg bg-gray-500 px-5 py-2.5 text-center text-sm font-medium text-white"
+                  }
+                  title={
+                    new RegExp(/[a-zA-Z .'*_`~-]+/).test(first_name) &&
+                    new RegExp(/[a-zA-Z .'*_`~-]+/).test(last_name) &&
+                    new RegExp(
+                      /[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@ufl\.edu/
+                    ).test(email) &&
+                    majors.length > 0 &&
+                    password &&
+                    password === confirmPassword
+                      ? "Click to create an account."
+                      : "Please fill out all required fields correctly."
+                  }
                 >
-                  Confirm Verification Code
+                  Create an account
+                </button>
+                {/* Sign in Here  */}
+                <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+                  Already have an account?{" "}
+                  <Link
+                    to="/sign-in"
+                    className="font-medium text-blue-600 hover:underline dark:text-blue-500"
+                  >
+                    {" "}
+                    <span className="mr-4">Sign in here</span>
+                  </Link>
+                </p>
+              </form>
+            </div>
+          ) : (
+            <form
+              onSubmit={submitUserConfirmation}
+              className="space-y-4 p-6 sm:p-8 md:space-y-6"
+            >
+              <label
+                htmlFor="confirm-password"
+                className="text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl"
+              >
+                Confirm Email Address
+              </label>
+              <div className="text-base text-gray-900 dark:text-white ">
+                Please check your email and enter the six-digit verification
+                code below.
+              </div>
+              {/* Code */}
+              <div>
+                <label className="mb-2 block  text-sm font-medium text-gray-900 dark:text-white sm:text-base">
+                  Code
                 </label>
                 <input
-                  type="code"
+                  type="text"
                   name="code"
                   id="confirm-code"
-                  placeholder="••••••••"
+                  placeholder="123456"
                   className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                  //pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                 // title="Must be at least 8 characters long and contain a number and uppercase letter"
+                  pattern="[0-9]{6}"
+                  title="Enter the six-digit code from the email you received."
                   required
-                  value = {usercode}
-                  onChange={(event)=>setusercode(event.target.value)}
+                  onChange={(event) => setUserCode(event.target.value)}
                 />
-
+              </div>
+              {invalidCode && (
+                <span className="ml-1 text-sm font-medium text-red-500">
+                  Incorrect code! Try again or send a new email.
+                </span>
+              )}
+              {resentEmail && (
+                <span className="ml-1 text-sm font-medium text-green-400">
+                  Another code has been sent to your email address!
+                </span>
+              )}
+              <div className="flex space-x-8">
                 <button
-                type = "button"
-                 className=" w-full rounded-lg bg-blue-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300"
-                  id = "send code button"
-                   onClick={(event)=>sendemail()}
-                  >
-                  Send code
+                  type="button"
+                  className="w-1/2 rounded-lg bg-red-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300"
+                  id="send code button"
+                  onClick={(e) => {
+                    setCode(
+                      (Math.floor(Math.random() * 900000) + 100000)
+                        .toString()
+                        .padStart(6, "0")
+                    );
+                    setInvalidCode(false);
+                    setResentEmail(true);
+                    sendEmail(e);
+                  }}
+                >
+                  Resend code
+                </button>
+                <button
+                  type="button"
+                  className="w-1/2 rounded-lg bg-blue-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300"
+                  id="send code button"
+                  onClick={(e) => {
+                    setResentEmail(false);
+                    if (code !== userCode) {
+                      setInvalidCode(true);
+                    } else {
+                      setInvalidCode(false);
+                      submitUserConfirmation(e);
+                    }
+                  }}
+                >
+                  Submit code
                 </button>
               </div>
-              {/* Submit Button  */}
-              <button
-                type="submit"
-                id="create-an-account"
-                disabled={
-                  password && password === confirmPassword ? false : true
-                }
-                className={
-                  new RegExp(/[a-zA-Z .'*_`~-]+/).test(first_name) &&
-                  new RegExp(/[a-zA-Z .'*_`~-]+/).test(last_name) &&
-                  new RegExp(/[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@ufl\.edu/).test(
-                    email
-                  ) &&
-                  majors.length > 0 &&
-                  password &&
-                  password === confirmPassword
-                    ? "w-full rounded-lg bg-blue-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                    : "w-full cursor-auto rounded-lg bg-gray-500 px-5 py-2.5 text-center text-sm font-medium text-white"
-                }
-                title={
-                  new RegExp(/[a-zA-Z .'*_`~-]+/).test(first_name) &&
-                  new RegExp(/[a-zA-Z .'*_`~-]+/).test(last_name) &&
-                  new RegExp(/[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@ufl\.edu/).test(
-                    email
-                  ) &&
-                  majors.length > 0 &&
-                  password &&
-                  password === confirmPassword
-                    ? "Click to create an account."
-                    : "Please fill out all required fields correctly."
-                }
-              >
-                Create an account
-              </button>
-              {/* Sign in Here  */}
-              <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                Already have an account?{" "}
-                <Link
-                  to="/sign-in"
-                  className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                >
-                  {" "}
-                  <span className="mr-4">Sign in here</span>
-                </Link>
-              </p>
             </form>
-          </div>
+          )}
         </div>
       </div>
     </section>

@@ -1,8 +1,8 @@
 ## Demo Video:
 
-https://youtu.be/G6EoC8FDVwU
+**LINK HERE**
 
-## Work completed in Sprint 3
+## Work completed in Sprint 4
 
 ### Frontend:
 
@@ -26,8 +26,23 @@ https://youtu.be/G6EoC8FDVwU
   - As a user, I want to be able to quickly access any section that I regularly visit, so I created the option to save individual sections (embedded or not).
 - Created display of user's saved sections in the home page.
   - As a user, I want to be able to quickly access the sections that I have saved to my account, so I created a user saved sectiosn display on the home page.
-  - 
-### Backend:
+- Created a display of a user's information and statistics (likes given and received, number of threads and messages created, etc.) and all of their saved threads and messages and created threads and messages.
+  - As a user, I want to be able to check information about my account and access messages and threads that I have saved, so I created a page to display this information.
+- Implemented a toggle to save (bookmark) a thread.
+  - As a user, I want to be able to easily access any thread, so I created the option to save any threads.
+- Implemented a toggle to save (bookmark) a message.
+  - As a user, I want to be able to easily access any message, so I created the option to save any messages.
+- Fixed the search bar to not have transparent search results and to properly direct users to the appropiate thread page.
+  - As a user, I want to be able to quickly access any section through the search bar, so I fixed the functionality of the search bar.
+- Created a display of the number of threads each section has in the section preview.
+  - As a user, I want to be able to see how many threads a section has, so I edited the section previews to display this at the bottom.
+ - Created a working reset password page that sends a code to the user's email and allows them to change their password using the code.
+  - As a user, I want to be able to change my password if I cannot remember it, so I created a page to allow this.
+ - Created a working settings page that allows users to change information about their account, like password, profile picture, or major(s).
+  - As a user, I want to be able to change information about my account, so I created a settings page to allow this.
+  
+  
+  ### Backend:
 
 - Created
   - As a user, 

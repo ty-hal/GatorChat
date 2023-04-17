@@ -100,7 +100,6 @@ const Home = () => {
       .replace(/\s+/g, "-")
       .toLowerCase();
 
-    // FIX THIS TO NAVIGATE TO EMBEDDED SECTIONS
     navigate(`s/${item.id}/${edited_section_name}`, {
       state: { parent_section: item.children },
     });
@@ -207,6 +206,7 @@ const Home = () => {
           )}
         </div>
       </div>
+
       <Footer />
     </div>
   );

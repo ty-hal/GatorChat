@@ -6,6 +6,7 @@ import Footer from "../../components/Footer";
 import Select from "react-tailwindcss-select";
 import ProfilePicture from "../../components/ProfilePicture";
 import DeleteAccountPopup from "../../components/Popups/DeleteAccountPopup";
+import MultipleValueTextInput from "react-multivalue-text-input";
 
 type majorObj = {
   disabled: boolean;
@@ -205,12 +206,13 @@ const Settings = () => {
   });
   const [changedProfilePic, setChangedProfilePic] = useState(false);
   const [changedMajors, setChangedMajors] = useState(false);
+  const [classes, setClasses] = useState<string[]>([]);
+  const [changedClasses, setChangedClasses] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
   const submitChanges = (e: any) => {
     e.preventDefault();
-    console.log(changedMajors, changedProfilePic);
     if (
       (password.length > 0 || confirmPassword.length > 0) &&
       confirmPassword !== password
@@ -226,6 +228,9 @@ const Settings = () => {
 
     // If use updated their majors
     if (changedMajors) changeMajors();
+
+    // If use updated their classes
+    if (changedClasses) changeClasses();
 
     window.location.reload();
   };
@@ -249,7 +254,6 @@ const Settings = () => {
     });
   };
   const changeMajors = () => {
-    console.log(majors);
     fetch(
       `http://localhost:9000/api/user/${activeUserID}/updatemajors?majorNames=${majors}`,
       {
@@ -260,7 +264,18 @@ const Settings = () => {
       }
     );
   };
-
+  const changeClasses = () => {
+    console.log(classes);
+    fetch(
+      `http://localhost:9000/api/user/${activeUserID}/updateclasses?classCodes=${classes}`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    );
+  };
   const handleMajorChange = (value: any) => {
     setMajorsValue(value);
     setChangedMajors(true);
@@ -315,11 +330,28 @@ const Settings = () => {
               major.major_name.toString()
             )
           );
-        } else {
-          console.log("null data");
         }
       });
   };
+  const fetchUserClasses = () => {
+    fetch(`http://localhost:9000/api/user/${activeUserID}/classes`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data) {
+          const classIds = data.map(
+            (c: { class_id: string; class_name: string }) =>
+              c.class_id.toString()
+          );
+          setClasses(classIds);
+        }
+      });
+  };
+
   useEffect(() => {
     if (activeUserID === 0) navigate(-1);
     // GET and SET the user who posted the thread's profile picture and email
@@ -332,7 +364,6 @@ const Settings = () => {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
           setEmail(data.email);
           setFirstName(data.first_name);
           setLastName(data.last_name);
@@ -344,6 +375,7 @@ const Settings = () => {
           setSelectedImage(true);
         });
       fetchUserMajors();
+      fetchUserClasses();
     } else if (activeUserID !== null) {
       setProfilePicture("");
       setSelectedImage(true);
@@ -500,7 +532,7 @@ const Settings = () => {
             {/* Major(s) */}
             <div className="w-11/12 sm:w-full">
               <label htmlFor="major" className="mb-2 block">
-                Major
+                Majors
               </label>
               <div id="majors-select">
                 <Select
@@ -530,6 +562,38 @@ const Settings = () => {
                 />
               </div>
             </div>
+            {/* Classes */}
+            {classes && (
+              <div className="w-11/12 sm:w-full">
+                <label className="mb-2 block">Classes</label>
+
+                <MultipleValueTextInput
+                  key={classes.length}
+                  onItemAdded={(item, allItems) => {
+                    if (!classes.includes(item)) {
+                      setClasses([...classes, item]);
+                    }
+                    setChangedClasses(true);
+                  }}
+                  onItemDeleted={(item, allItems) => {
+                    const newClasses = classes.filter((c) => c !== item);
+                    setClasses(newClasses);
+                    setChangedClasses(true);
+                  }}
+                  name="classes"
+                  placeholder='Enter classes by course code, e.g. "CEN3031"'
+                  className="mt-2 block w-11/12 rounded-lg border 
+                border-gray-300 bg-gray-50 p-2 
+                text-sm text-gray-900 focus:border-blue-600 
+                focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 
+                dark:text-white dark:placeholder-gray-400 
+                dark:focus:border-blue-500 dark:focus:ring-blue-500 
+                sm:w-full"
+                  labelClassName="text-gray-900 font-sm font-normal"
+                  values={classes}
+                />
+              </div>
+            )}
             {/* Profile Picture */}
             <div className="w-11/12 text-sm sm:w-full sm:text-base">
               <label
@@ -583,14 +647,14 @@ const Settings = () => {
               disabled={
                 ((password.length === 0 && confirmPassword.length === 0) ||
                   (password.length !== 0 && password === confirmPassword)) &&
-                (changedMajors || changedProfilePic)
+                (changedMajors || changedProfilePic || changedClasses)
                   ? false
                   : true
               }
               className={
                 ((password.length === 0 && confirmPassword.length === 0) ||
                   (password.length !== 0 && password === confirmPassword)) &&
-                (changedMajors || changedProfilePic)
+                (changedClasses || changedProfilePic || changedMajors)
                   ? "rounded-lg bg-blue-600 px-2 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 sm:px-5"
                   : "cursor-auto rounded-lg bg-gray-500 px-3 py-2.5 text-center text-sm font-medium text-white sm:px-5"
               }

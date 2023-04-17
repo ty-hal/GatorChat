@@ -172,6 +172,9 @@ func GetThreadPosts(threadID uint8, activeUser uint8) []Post {
 			post.UserLiked = CheckMessageLike(activeUser, post.PostID)
 			post.UserSaved = CheckPostSaved(activeUser, post.PostID)
 
+			section, _ := GetSection(threadID)
+			post.SectionName = section.SectionName
+
 			posts = append(posts, post)
 		}
 	}
@@ -194,6 +197,9 @@ func GetThreadPostsWithOffset(thread_id uint8, pageNumber int, pageSize int, act
 
 			post.UserLiked = CheckMessageLike(activeUser, post.PostID)
 			post.UserSaved = CheckPostSaved(activeUser, post.PostID)
+
+			section, _ := GetSection(thread_id)
+			post.SectionName = section.SectionName
 
 			posts = append(posts, post)
 		}

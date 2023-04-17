@@ -106,7 +106,7 @@ const Section: React.FC<Props> = ({
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.length > 0) {
+        if (data && data.length > 0) {
           setUserAdmin(
             data.some(
               (role: { role_id: number; role_name: string }) =>

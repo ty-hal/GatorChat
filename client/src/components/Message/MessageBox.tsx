@@ -61,6 +61,10 @@ const MessageBox: React.FC<Props> = ({ thread_id }) => {
       });
   };
 
+  function messageIsValid(str: string): boolean {
+    const nonWhitespaceChars = str.replace(/\s/g, "");
+    return nonWhitespaceChars.length >= 9;
+  }
   return (
     <div className="mx-auto flex w-11/12 rounded-b-lg border-2 border-t border-gray-500 bg-gray-200 px-1 py-4 shadow-xl dark:border-gray-300 dark:bg-gray-800 md:px-3 lg:w-4/5">
       {/* Message */}
@@ -100,7 +104,7 @@ const MessageBox: React.FC<Props> = ({ thread_id }) => {
             className="inline-flex h-8 cursor-pointer justify-center rounded-full p-1 text-blue-600 hover:bg-blue-100 
             dark:text-blue-500 dark:hover:bg-gray-600 md:h-10 md:p-2"
             onClick={() => {
-              if (message.length > 0 && activeUserID && activeUserID > 0) {
+              if (messageIsValid(message) && activeUserID && activeUserID > 0) {
                 submitMessage();
               }
             }}
@@ -109,7 +113,11 @@ const MessageBox: React.FC<Props> = ({ thread_id }) => {
           >
             <svg
               aria-hidden="true"
-              className="h-6 w-6 rotate-90"
+              className={
+                messageIsValid(message)
+                  ? "h-6 w-6 rotate-90"
+                  : "h-6 w-6 rotate-90 fill-gray-400"
+              }
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"

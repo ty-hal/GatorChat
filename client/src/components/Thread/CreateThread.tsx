@@ -63,6 +63,11 @@ const CreateThread: React.FC<Props> = ({ section_id, loaded, invisible }) => {
       });
   };
 
+  function titleIsValid(str: string, len: number): boolean {
+    const nonWhitespaceChars = str.replace(/\s/g, "");
+    return nonWhitespaceChars.length >= len;
+  }
+
   useEffect(() => {
     setThread({ ...thread, title: title, text: text });
   }, [title, text]);
@@ -125,8 +130,8 @@ const CreateThread: React.FC<Props> = ({ section_id, loaded, invisible }) => {
                 <RichTextEditor setText={setText} />
               </div>
 
-              {thread!.title.length > 2 &&
-                thread!.text !== "" &&
+              {titleIsValid(thread!.title, 3) &&
+                titleIsValid(thread!.text, 9) &&
                 thread!.text !== "<p></p>" && (
                   <div className="mx-auto w-11/12 pb-2">
                     <button

@@ -10,6 +10,7 @@ describe('register spec', () => {
     cy.get('#password').type("JohnPassword1");
     cy.get('#confirm-password').type("JohnPassword1");
     cy.get('#terms').click();
+    cy.get('#profile_picture').selectFile('170394.png');
     cy.get('#create-an-account').click();
     // FIGURE OUT HOW TO DELETE USER BEFORE THIS RUNS
     // cy.url().should("eq", Cypress.config().baseUrl + "/");
@@ -50,5 +51,6 @@ describe('register spec', () => {
     cy.get('#terms').click();
     // cy.url().should("eq", Cypress.config().baseUrl + "/");
   })
+
 
 })

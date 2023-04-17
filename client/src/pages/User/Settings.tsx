@@ -208,6 +208,7 @@ const Settings = () => {
   const [changedMajors, setChangedMajors] = useState(false);
   const [classes, setClasses] = useState<string[]>([]);
   const [changedClasses, setChangedClasses] = useState<boolean>(false);
+  const [fakeClasses, setFakeClasses] = useState<string[]>([]);
 
   const navigate = useNavigate();
 
@@ -398,6 +399,17 @@ const Settings = () => {
     }
   }, [confirmPassword, password]);
 
+  const handleItemAdded = (item: string, allItems: string[]) => {
+    const isValidClass = /^[A-Z]{3}[0-9]{4}$/.test(item);
+    if (isValidClass && !classes.includes(item)) {
+      setClasses([...classes, item]);
+    } else {
+      setFakeClasses([...fakeClasses, item]);
+      return;
+    }
+    setChangedClasses(true);
+  };
+
   return (
     <div className="min-h-screen w-full bg-gray-50 py-8 dark:bg-gray-900">
       <form
@@ -563,37 +575,31 @@ const Settings = () => {
               </div>
             </div>
             {/* Classes */}
-            {classes && (
-              <div className="w-11/12 sm:w-full">
-                <label className="mb-2 block">Classes</label>
+            <div className="w-11/12 sm:w-full">
+              <label className="mb-2 block">Classes</label>
 
-                <MultipleValueTextInput
-                  key={classes.length}
-                  onItemAdded={(item, allItems) => {
-                    if (!classes.includes(item)) {
-                      setClasses([...classes, item]);
-                    }
-                    setChangedClasses(true);
-                  }}
-                  onItemDeleted={(item, allItems) => {
-                    const newClasses = classes.filter((c) => c !== item);
-                    setClasses(newClasses);
-                    setChangedClasses(true);
-                  }}
-                  name="classes"
-                  placeholder='Enter classes by course code, e.g. "CEN3031"'
-                  className="mt-2 block w-11/12 rounded-lg border 
+              <MultipleValueTextInput
+                key={classes.length + fakeClasses.length}
+                onItemAdded={handleItemAdded}
+                onItemDeleted={(item: string) => {
+                  const newClasses = classes.filter((c) => c !== item);
+                  setClasses(newClasses);
+                  setChangedClasses(true);
+                }}
+                name="classes"
+                placeholder='Enter classes by course code, e.g. "CEN3031"'
+                className="mt-2 block w-11/12 rounded-lg border 
                 border-gray-300 bg-gray-50 p-2 
                 text-sm text-gray-900 focus:border-blue-600 
                 focus:outline-none focus:ring-1 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 
                 dark:text-white dark:placeholder-gray-400 
                 dark:focus:border-blue-500 dark:focus:ring-blue-500 
                 sm:w-full"
-                  labelClassName="text-gray-900 font-sm font-normal"
-                  values={classes}
-                />
-              </div>
-            )}
+                labelClassName="text-gray-900 font-sm font-normal"
+                values={classes}
+              />
+            </div>
+
             {/* Profile Picture */}
             <div className="w-11/12 text-sm sm:w-full sm:text-base">
               <label

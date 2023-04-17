@@ -6,7 +6,7 @@ import Footer from "../../components/Footer";
 import Select from "react-tailwindcss-select";
 import ProfilePicture from "../../components/ProfilePicture";
 import DeleteAccountPopup from "../../components/Popups/DeleteAccountPopup";
-//import MultipleValueTextInput from "react-multivalue-text-input";
+import MultipleValueTextInput from "react-multivalue-text-input";
 
 type majorObj = {
   disabled: boolean;
@@ -577,7 +577,7 @@ const Settings = () => {
             {/* Classes */}
             <div className="w-11/12 sm:w-full">
               <label className="mb-2 block">Classes</label>
-              {/*
+
               <MultipleValueTextInput
                 key={classes.length + fakeClasses.length}
                 onItemAdded={handleItemAdded}
@@ -598,7 +598,6 @@ const Settings = () => {
                 labelClassName="text-gray-900 font-sm font-normal"
                 values={classes}
               />
-              */}
             </div>
 
             {/* Profile Picture */}

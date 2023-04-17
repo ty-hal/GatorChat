@@ -300,8 +300,10 @@ const Settings = () => {
       },
     })
       .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
+      .then((data) => 
+      {
+        if(data)
+        {
         const transformedData = data.map(
           (major: { major_id: number; major_name: string }) => ({
             disabled: false,
@@ -310,12 +312,21 @@ const Settings = () => {
           })
         );
         setMajorsValue(transformedData);
-        setMajors(
+        setMajors
+        (
           data.map((major: { major_id: number; major_name: string }) =>
             major.major_name.toString()
           )
         );
-      });
+        }
+        else
+        {
+          console.log("null data");
+
+        }
+      
+      }
+      );
   };
   useEffect(() => {
     if (activeUserID === 0) navigate(-1);

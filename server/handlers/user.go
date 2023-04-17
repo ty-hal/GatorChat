@@ -96,7 +96,10 @@ func GetCreatedThreads(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	params := mux.Vars(r)
+	queryParams := r.URL.Query()
 	id, err := strconv.Atoi(params["id"])
+	pageNumber, _ := strconv.Atoi(queryParams.Get("pageNumber"))
+	pageSize, _ := strconv.Atoi(queryParams.Get("pageSize"))
 
 	// Invalid parameter
 	if err != nil {
@@ -105,7 +108,7 @@ func GetCreatedThreads(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userThreads := models.GetUserThreads(uint8(id))
+	userThreads := models.GetUserThreadsWithOffset(uint8(id), pageNumber, pageSize)
 
 	json.NewEncoder(w).Encode(userThreads)
 }
@@ -114,7 +117,10 @@ func GetCreatedPosts(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	params := mux.Vars(r)
+	queryParams := r.URL.Query()
 	id, err := strconv.Atoi(params["id"])
+	pageNumber, _ := strconv.Atoi(queryParams.Get("pageNumber"))
+	pageSize, _ := strconv.Atoi(queryParams.Get("pageSize"))
 
 	// Invalid parameter
 	if err != nil {
@@ -123,7 +129,7 @@ func GetCreatedPosts(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userPosts := models.GetUserPosts(uint8(id))
+	userPosts := models.GetUserPostsWithOffset(uint8(id), pageNumber, pageSize)
 
 	json.NewEncoder(w).Encode(userPosts)
 }

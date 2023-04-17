@@ -208,6 +208,37 @@ func GetUserThreads(userID uint8) []Thread {
 	return threads
 }
 
+func GetUserThreadsWithOffset(userID uint8, pageNumber int, pageSize int) []Thread {
+	var threads []Thread
+
+	middleware.DB.Order("updated_at DESC").Where("user_id = ?", userID).Offset((pageNumber - 1) * pageSize).Limit(pageSize).Find(&threads)
+
+	for i := range threads {
+		creator, err := GetUserByID(threads[i].UserID)
+
+		if err == nil {
+			threads[i].User = creator.FirstName + " " + creator.LastName
+		}
+	}
+
+	return threads
+}
+func GetUserPostsWithOffset(userID uint8, pageNumber int, pageSize int) []Post {
+	var posts []Post
+
+	middleware.DB.Order("updated_at DESC").Where("user_id = ?", userID).Offset((pageNumber - 1) * pageSize).Limit(pageSize).Find(&posts)
+
+	for i := range posts {
+		creator, err := GetUserByID(posts[i].UserID)
+
+		if err == nil {
+			posts[i].User = creator.FirstName + " " + creator.LastName
+		}
+	}
+
+	return posts
+}
+
 func GetUserPosts(userID uint8) []Post {
 	var posts []Post
 

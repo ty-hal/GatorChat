@@ -17,6 +17,7 @@ type Message = {
   updated_at: string;
   likes: number;
   user_liked: boolean;
+  user_saved: boolean;
 };
 
 const MyMessages = () => {
@@ -51,12 +52,15 @@ const MyMessages = () => {
 
   // Get created messages
   const getCreatedMessages = () => {
-    fetch(`http://localhost:9000/api/user/${activeUserID}/createdposts?pageNumber=${page}&pageSize=${4}`, {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-      },
-    })
+    fetch(
+      `http://localhost:9000/api/user/${activeUserID}/createdposts?pageNumber=${page}&pageSize=${4}`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         if (data && more) {
@@ -68,15 +72,14 @@ const MyMessages = () => {
             ),
           ]);
           setPage((page) => page + 1);
-          console.log(data)
+          console.log(data);
         } else {
           setMore(false);
         }
       })
       .then(() => {
-        setLoadedCreatedMessages(true)
-      }
-      );
+        setLoadedCreatedMessages(true);
+      });
   };
 
   useEffect(() => {
@@ -91,59 +94,60 @@ const MyMessages = () => {
 
   return (
     <InfiniteScroll
-    dataLength={userCreatedMessages.length}
-    next={getCreatedMessages}
-    hasMore={more}
-    loader={null}
+      dataLength={userCreatedMessages.length}
+      next={getCreatedMessages}
+      hasMore={more}
+      loader={null}
     >
-    <div className="min-h-screen bg-white dark:bg-gray-900">
-      <div className="mx-auto w-11/12 pt-4 text-black dark:text-white">
-        {/* User created messages */}
+      <div className="min-h-screen bg-white dark:bg-gray-900">
         <div className="mx-auto w-11/12 pt-4 text-black dark:text-white">
-          <div
-            className="cursor-pointer text-center text-2xl font-bold hover:underline"
-            onClick={() => navigate(-1)}
-          >
-            My Messages
-          </div>
-          {loadedCreatedMessages ? (
-            userCreatedMessages && userCreatedMessages.length > 0 ? (
-              userCreatedMessages.map((messages, index) => {
-                return (
-                  <Message
-                    key={index}
-                    post_id={messages.post_id}
-                    user_id={messages.user_id}
-                    username={messages.username}
-                    messageContent={messages.content}
-                    messageDate={messages.creation_date}
-                    updatedOn={messages.updated_at}
-                    likesCount={messages.likes ? messages.likes : 0}
-                    userLiked={messages.user_liked}
-                    userAdmin={userAdmin}
-                    classname="relative my-2 mx-auto w-11/12 cursor-pointer rounded-2xl border-2 border-gray-500 bg-gray-200 py-8 font-normal shadow-md hover:border-blue-600 dark:bg-gray-800 lg:w-4/5"
-                  />
-                );
-              })
+          {/* User created messages */}
+          <div className="mx-auto w-11/12 pt-4 text-black dark:text-white">
+            <div
+              className="cursor-pointer text-center text-2xl font-bold hover:underline"
+              onClick={() => navigate(-1)}
+            >
+              My Messages
+            </div>
+            {loadedCreatedMessages ? (
+              userCreatedMessages && userCreatedMessages.length > 0 ? (
+                userCreatedMessages.map((messages, index) => {
+                  return (
+                    <Message
+                      key={index}
+                      post_id={messages.post_id}
+                      user_id={messages.user_id}
+                      username={messages.username}
+                      messageContent={messages.content}
+                      messageDate={messages.creation_date}
+                      updatedOn={messages.updated_at}
+                      likesCount={messages.likes ? messages.likes : 0}
+                      userLiked={messages.user_liked}
+                      userAdmin={userAdmin}
+                      user_saved={messages.user_saved}
+                      classname="relative my-2 mx-auto w-11/12 cursor-pointer rounded-2xl border-2 border-gray-500 bg-gray-200 py-8 font-normal shadow-md hover:border-blue-600 dark:bg-gray-800 lg:w-4/5"
+                    />
+                  );
+                })
+              ) : (
+                <div className="mt-2 text-center">
+                  {activeUserID === 0
+                    ? "Sign in to your account to create messages and access them here."
+                    : "You do not have any messages created on your account."}
+                </div>
+              )
             ) : (
-              <div className="mt-2 text-center">
-                {activeUserID === 0
-                  ? "Sign in to your account to create messages and access them here."
-                  : "You do not have any messages created on your account."}
-              </div>
-            )
-          ) : (
-            <>
-              <SkeletonThreadPreview />
-              <SkeletonThreadPreview />
-              <SkeletonThreadPreview />
-              <SkeletonThreadPreview />
-            </>
-          )}
+              <>
+                <SkeletonThreadPreview />
+                <SkeletonThreadPreview />
+                <SkeletonThreadPreview />
+                <SkeletonThreadPreview />
+              </>
+            )}
+          </div>
         </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
     </InfiniteScroll>
   );
 };

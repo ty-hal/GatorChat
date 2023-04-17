@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAtom } from "jotai";
-import { userIDAtom } from "../App";
+import { userIDAtom } from "../../App";
 interface userLogin {
   email: string;
   password: string;

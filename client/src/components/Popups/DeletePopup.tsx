@@ -21,16 +21,12 @@ const DeletePopup: React.FC<Props> = ({
         headers: {
           "content-type": "application/json",
         },
-      })
-        .then((response) => {
-          if (response.status === 200) {
-            window.location.reload();
-            return response.json();
-          }
-        })
-        .then((data) => {
-          console.log(data);
-        });
+      }).then((response) => {
+        if (response.status === 200) {
+          window.location.reload();
+          return response.json();
+        }
+      });
     }
     // If the popup is for a message
     else {
@@ -128,6 +124,7 @@ const DeletePopup: React.FC<Props> = ({
                   onClick={(e) => {
                     e.stopPropagation();
                     deletePost();
+                    window.location.reload();
                   }}
                 >
                   Delete

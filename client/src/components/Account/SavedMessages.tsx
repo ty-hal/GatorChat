@@ -16,6 +16,7 @@ type Message = {
   updated_at: string;
   likes: number;
   user_liked: boolean;
+  user_saved: boolean;
 };
 
 const SavedMessages = () => {
@@ -97,6 +98,7 @@ const SavedMessages = () => {
                     likesCount={messages.likes ? messages.likes : 0}
                     userLiked={messages.user_liked}
                     userAdmin={userAdmin}
+                    user_saved={messages.user_saved}
                     classname="relative my-2 mx-auto w-11/12 cursor-pointer rounded-2xl border-2 border-gray-500 bg-gray-200 py-8 font-normal shadow-md hover:border-blue-600 dark:bg-gray-800 lg:w-4/5"
                   />
                 );

@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAtomValue } from "jotai";
-import { userIDAtom } from "../App";
-import Footer from "../components/Footer";
+import { userIDAtom } from "../../App";
+import Footer from "../../components/Footer";
 import Select from "react-tailwindcss-select";
-import ProfilePicture from "../components/ProfilePicture";
-import DeleteAccountPopup from "../components/Popups/DeleteAccountPopup";
+import ProfilePicture from "../../components/ProfilePicture";
+import DeleteAccountPopup from "../../components/Popups/DeleteAccountPopup";
 
 type majorObj = {
   disabled: boolean;
@@ -300,33 +300,25 @@ const Settings = () => {
       },
     })
       .then((response) => response.json())
-      .then((data) => 
-      {
-        if(data)
-        {
-        const transformedData = data.map(
-          (major: { major_id: number; major_name: string }) => ({
-            disabled: false,
-            label: major.major_name,
-            value: major.major_name.toString(),
-          })
-        );
-        setMajorsValue(transformedData);
-        setMajors
-        (
-          data.map((major: { major_id: number; major_name: string }) =>
-            major.major_name.toString()
-          )
-        );
-        }
-        else
-        {
+      .then((data) => {
+        if (data) {
+          const transformedData = data.map(
+            (major: { major_id: number; major_name: string }) => ({
+              disabled: false,
+              label: major.major_name,
+              value: major.major_name.toString(),
+            })
+          );
+          setMajorsValue(transformedData);
+          setMajors(
+            data.map((major: { major_id: number; major_name: string }) =>
+              major.major_name.toString()
+            )
+          );
+        } else {
           console.log("null data");
-
         }
-      
-      }
-      );
+      });
   };
   useEffect(() => {
     if (activeUserID === 0) navigate(-1);

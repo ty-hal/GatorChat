@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import ProfilePicture from "../components/ProfilePicture";
+import ProfilePicture from "../../components/ProfilePicture";
 import Select from "react-tailwindcss-select";
 
 type userRegistration = {

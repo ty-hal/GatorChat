@@ -9,7 +9,7 @@ import UserProfilePopup from "../Popups/UserProfilePopup";
 import { RichTextEditor } from "../RichTextEditor";
 import { useAtomValue, useAtom } from "jotai";
 import { userIDAtom } from "../../App";
-import { messageBoxAtom } from "../../pages/Thread";
+import { messageBoxAtom } from "../../pages/Messaging/Thread";
 
 type Props = {
   post_id: number;
@@ -21,6 +21,7 @@ type Props = {
   likesCount: number;
   userLiked: boolean;
   userAdmin: boolean;
+  user_saved: boolean;
   replyFunc?: () => void;
   classname?: string;
 };
@@ -39,6 +40,7 @@ const Message: React.FC<Props> = ({
   likesCount,
   userLiked,
   userAdmin,
+  user_saved,
   replyFunc,
   classname,
 }) => {
@@ -88,6 +90,7 @@ const Message: React.FC<Props> = ({
 
   // Get data
   useEffect(() => {
+    setSavedMessage(user_saved);
     // GET and SET the user who posted the thread's profile picture
     fetch(`http://localhost:9000/api/user/${user_id}`, {
       method: "GET",

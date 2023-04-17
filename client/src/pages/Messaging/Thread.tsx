@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { atom } from "jotai";
-import Footer from "../components/Footer";
-import ThreadPost from "../components/Thread/ThreadPost";
-import Message from "../components/Message/MessageFormat";
-import MessageBox from "../components/Message/MessageBox";
-import SkeletonThreadPost from "../components/Thread/SkeletonThreadPost";
-import SkeletonMessage from "../components/Message/SkeletonMessage";
-import SkeletonMessageBox from "../components/Message/SkeletonMessageBox";
+import Footer from "../../components/Footer";
+import ThreadPost from "../../components/Thread/ThreadPost";
+import Message from "../../components/Message/MessageFormat";
+import MessageBox from "../../components/Message/MessageBox";
+import SkeletonThreadPost from "../../components/Thread/SkeletonThreadPost";
+import SkeletonMessage from "../../components/Message/SkeletonMessage";
+import SkeletonMessageBox from "../../components/Message/SkeletonMessageBox";
 import InfiniteScroll from "react-infinite-scroll-component";
 export const messageBoxAtom = atom("");
 
@@ -21,6 +21,7 @@ type MessageType = {
   updated_at: string;
   likes: number;
   user_liked: boolean;
+  user_saved: boolean;
 };
 
 type ThreadType = {
@@ -154,8 +155,7 @@ const Thread: React.FC<Props> = ({
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data && data.length > 0) 
-        {
+        if (data && data.length > 0) {
           setUserAdmin(
             data.some(
               (role: { role_id: number; role_name: string }) =>
@@ -270,6 +270,7 @@ const Thread: React.FC<Props> = ({
                   likesCount={messages.likes ? messages.likes : 0}
                   userLiked={messages.user_liked}
                   userAdmin={userAdmin}
+                  user_saved={messages.user_saved}
                   replyFunc={replyFunc}
                 />
               );

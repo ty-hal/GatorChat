@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAtom } from "jotai";
 import { userIDAtom } from "../../App";
-import { messageBoxAtom } from "../../pages/Thread";
+import { messageBoxAtom } from "../../pages/Messaging/Thread";
 import { RichTextEditor } from "../RichTextEditor";
 import ProfilePicture from "../ProfilePicture";
 import DeletePopup from "../Popups/DeletePopup";
@@ -249,13 +249,17 @@ const Thread: React.FC<Props> = ({
           "content-type": "application/json",
         },
       }
-    ).then((response) => response.json())
-     .then((data) => {
+    )
+      .then((response) => response.json())
+      .then((data) => {
         // Reload page when saving in account page
-        if (window.location.pathname === "/my-account/my-saved-threads" || window.location.pathname === "/my-account/my-saved-messages") {
-          window.location.reload()
+        if (
+          window.location.pathname === "/my-account/my-saved-threads" ||
+          window.location.pathname === "/my-account/my-saved-messages"
+        ) {
+          window.location.reload();
         }
-     });
+      });
   };
   // Hide copied link popup after 1.5 seconds
   useEffect(() => {

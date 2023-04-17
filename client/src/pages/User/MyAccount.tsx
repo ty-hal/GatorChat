@@ -1,10 +1,10 @@
-import Footer from "../components/Footer";
+import Footer from "../../components/Footer";
 import { useAtomValue } from "jotai";
-import { userIDAtom } from "../App";
+import { userIDAtom } from "../../App";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import ProfilePicture from "../components/ProfilePicture";
-import SkeletonUserProfile from "../components/Account/SkeletonUserProfile";
+import ProfilePicture from "../../components/ProfilePicture";
+import SkeletonUserProfile from "../../components/Account/SkeletonUserProfile";
 
 type UserData = {
   username?: string;
@@ -158,7 +158,7 @@ const MyAccount = () => {
           <SkeletonUserProfile />
         )}
         {/* Thread and Messages Links*/}
-        <div className="mt-8 flex justify-between">
+        <div className="mt-8 flex justify-between md:justify-center md:space-x-6">
           <Link to="/my-account/my-threads">
             <div className="rounded-lg border border-black bg-blue-600 p-2 font-medium text-white hover:bg-blue-500 dark:border-gray-600">
               {" "}

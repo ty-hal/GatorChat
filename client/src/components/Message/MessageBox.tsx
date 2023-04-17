@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { RichTextEditor } from "../RichTextEditor";
 import { useAtomValue } from "jotai";
-import { messageBoxAtom } from "../../pages/Thread";
+import { messageBoxAtom } from "../../pages/Messaging/Thread";
 import { userIDAtom } from "../../App";
 import SignInPopup from "../Popups/SignInPopup";
 

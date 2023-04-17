@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Footer from "../components/Footer";
-import ThreadPreview from "../components/Thread/ThreadPreview";
-import CreateThread from "../components/Thread/CreateThread";
+import Footer from "../../components/Footer";
+import ThreadPreview from "../../components/Thread/ThreadPreview";
+import CreateThread from "../../components/Thread/CreateThread";
 import InfiniteScroll from "react-infinite-scroll-component";
-import SkeletonThreadPreview from "../components/Thread/SkeletonThreadPreview";
+import SkeletonThreadPreview from "../../components/Thread/SkeletonThreadPreview";
 import EmbeddedSection from "./EmbeddedSection";
-import SignInPopup from "../components/Popups/SignInPopup";
+import SignInPopup from "../../components/Popups/SignInPopup";
 
 type ThreadType = {
   thread_id: number;

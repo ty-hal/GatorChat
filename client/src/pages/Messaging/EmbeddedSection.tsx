@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { darkModeAtom } from "../App";
+import { darkModeAtom } from "../../App";
 import { useAtomValue } from "jotai";
-import Footer from "../components/Footer";
-import SkeletonSectionPreview from "../components/Section/SkeletonSectionPreview";
-import SectionPreview from "../components/Section/SectionPreview";
+import Footer from "../../components/Footer";
+import SkeletonSectionPreview from "../../components/Section/SkeletonSectionPreview";
+import SectionPreview from "../../components/Section/SectionPreview";
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
-import CreateSectionPopup from "../components/Popups/CreateSectionPopup";
-import SignInPopup from "../components/Popups/SignInPopup";
+import CreateSectionPopup from "../../components/Popups/CreateSectionPopup";
+import SignInPopup from "../../components/Popups/SignInPopup";
 
 type SearchBarItem = {
   id: number;

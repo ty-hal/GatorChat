@@ -20,6 +20,7 @@ import MyThreads from "./components/Account/MyThreads";
 import MyMessages from "./components/Account/MyMessages";
 import SavedThreads from "./components/Account/SavedThreads";
 import SavedMessages from "./components/Account/SavedMessages";
+import Thread from "./pages/Messaging/Thread";
 
 // Uses local storage to detect user dark mode preference
 export const darkModeAtom = atomWithStorage("dark-mode", true);
@@ -90,6 +91,13 @@ export default function App() {
               activeUserID={userID || 0}
               checkedCookie={checkedCookie}
             />
+          }
+        />
+        {/* Threads accessed from My Account */}
+        <Route
+          path="/t/:param_thread_id/:param_thread_name"
+          element={
+            <Thread activeUserID={userID || 0} checkedCookie={checkedCookie} />
           }
         />
         <Route path="sign-in" element={<SignIn />} />

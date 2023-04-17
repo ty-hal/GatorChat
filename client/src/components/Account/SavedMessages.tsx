@@ -7,7 +7,6 @@ import Message from "../../components/Message/MessageFormat";
 import { useNavigate } from "react-router-dom";
 
 type Message = {
-  thread_id: number;
   user_id: number;
   username: string;
   post_id: number;
@@ -17,6 +16,9 @@ type Message = {
   likes: number;
   user_liked: boolean;
   user_saved: boolean;
+  thread_id: string;
+  thread_title: string;
+  section_name: string;
 };
 
 const SavedMessages = () => {
@@ -36,10 +38,8 @@ const SavedMessages = () => {
       },
     })
       .then((response) => response.json())
-      .then((data) => 
-      {
-        if (data && data.length > 0) 
-        {
+      .then((data) => {
+        if (data && data.length > 0) {
           setUserAdmin(
             data.some(
               (role: { role_id: number; role_name: string }) =>
@@ -60,7 +60,6 @@ const SavedMessages = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setUserSavedMessages(data);
         setLoadedSavedMessages(true);
       });
@@ -90,6 +89,12 @@ const SavedMessages = () => {
           {loadedSavedMessages ? (
             userSavedMessages && userSavedMessages.length > 0 ? (
               userSavedMessages.map((messages, index) => {
+                let temp = messages.thread_title.replace(/[\W_]+/g, " ");
+                messages.thread_title = temp
+                  .replace(/\s+/g, "-")
+                  .toLowerCase()
+                  .substring(0, 50);
+
                 return (
                   <Message
                     key={index}
@@ -104,6 +109,9 @@ const SavedMessages = () => {
                     userAdmin={userAdmin}
                     user_saved={messages.user_saved}
                     classname="relative my-2 mx-auto w-11/12 cursor-pointer rounded-2xl border-2 border-gray-500 bg-gray-200 py-8 font-normal shadow-md hover:border-blue-600 dark:bg-gray-800 lg:w-4/5"
+                    thread_id={messages.thread_id}
+                    thread_name={messages.thread_title}
+                    section_name={messages.section_name}
                   />
                 );
               })

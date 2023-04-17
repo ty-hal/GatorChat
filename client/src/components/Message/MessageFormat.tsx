@@ -25,6 +25,9 @@ type Props = {
   user_saved: boolean;
   replyFunc?: () => void;
   classname?: string;
+  thread_id?: string;
+  thread_name?: string;
+  section_name?: string;
 };
 
 interface messageBody {
@@ -44,6 +47,9 @@ const Message: React.FC<Props> = ({
   user_saved,
   replyFunc,
   classname,
+  thread_id,
+  thread_name,
+  section_name,
 }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -296,12 +302,12 @@ const Message: React.FC<Props> = ({
         setShowDropdown(false);
         console.log(`Message ${post_id}`);
 
-        // let path = location.pathname;
-        // if (path.includes("my-account")) {
-        //   // path = `/s/${section_id}/${sectionName}`;
-        //   navigate(`t/${thread_id}/${thread_name}`
-        //   );
-        // }
+        let path = location.pathname;
+        if (path.includes("my-account")) {
+          navigate(`/t/${thread_id}/${thread_name}`, {
+            state: { param_section_name: section_name },
+          });
+        }
       }}
     >
       {/* Profile Picture, Username, Date, and Dropdown */}

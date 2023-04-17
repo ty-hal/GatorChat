@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { atom } from "jotai";
 import Footer from "../../components/Footer";
@@ -42,10 +42,10 @@ type ThreadType = {
 interface Props {
   activeUserID: number;
   checkedCookie: boolean;
-  thread_name: string;
-  thread_id: string;
-  section_name: string;
-  section_id: string;
+  thread_name?: string;
+  thread_id?: string;
+  section_name?: string;
+  section_id?: string;
 }
 
 const Thread: React.FC<Props> = ({
@@ -66,11 +66,14 @@ const Thread: React.FC<Props> = ({
 
   const [page, setPage] = useState<number>(1);
   const [more, setMore] = useState<boolean>(true);
+  const { param_thread_id, param_thread_name } = useParams();
+  const location = useLocation();
+  const paramSectionName = location.state?.param_section_name;
 
   // Get thread
-  const getThread = () => {
+  const getThread = (threadID: string) => {
     fetch(
-      `http://localhost:9000/api/thread/${thread_id}?activeUser=${activeUserID}`,
+      `http://localhost:9000/api/thread/${threadID}?activeUser=${activeUserID}`,
       {
         method: "GET",
         headers: {
@@ -82,7 +85,6 @@ const Thread: React.FC<Props> = ({
       .then((data) => {
         if (data !== null) {
           setThread(data);
-          console.log(data);
         }
         setThreadLoaded(true);
       });
@@ -100,7 +102,6 @@ const Thread: React.FC<Props> = ({
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         if (data && more) {
           setMessages((messages) => [
             ...messages,
@@ -118,8 +119,38 @@ const Thread: React.FC<Props> = ({
         setMessageLoaded(true);
       });
   };
-  // Get section
-  const getSection = () => {
+  // Get messages
+  const getMessagesParamID = () => {
+    fetch(
+      `http://localhost:9000/api/thread/${param_thread_id}/posts?pageNumber=${page}&pageSize=${4}&activeUser=${activeUserID}`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data && more) {
+          setMessages((messages) => [
+            ...messages,
+            ...data.filter(
+              (message: MessageType) =>
+                !messages.some((t) => t.post_id === message.post_id)
+            ),
+          ]);
+          setPage((page) => page + 1);
+        } else {
+          setMore(false);
+        }
+      })
+      .then(() => {
+        setMessageLoaded(true);
+      });
+  };
+  // Check that section matches the URL
+  const getSectionValid = () => {
     fetch(
       `http://localhost:9000/api/section/${section_id}?activeUser=${activeUserID}`,
       {
@@ -133,6 +164,7 @@ const Thread: React.FC<Props> = ({
       .then((data) => {
         const regex = /^[a-zA-Z]{3}\d{4}$/;
         if (
+          section_name &&
           !regex.test(section_name) &&
           data.section_name
             .replace(/[\W_]+/g, " ")
@@ -165,8 +197,8 @@ const Thread: React.FC<Props> = ({
       });
   };
 
-  useEffect(() => {
-    // Check if thread belongs to the section
+  // Check if thread belongs to the section
+  const checkThreadInSection = () => {
     fetch(`http://localhost:9000/api/thread/${thread_id}`, {
       method: "GET",
       headers: {
@@ -193,11 +225,24 @@ const Thread: React.FC<Props> = ({
         }
         navigate(-1);
       });
+  };
 
+  useEffect(() => {
     if (checkedCookie) {
-      getSection();
-      getThread();
-      getMessages();
+      if (section_id && thread_id) {
+        checkThreadInSection();
+      }
+      if (section_id && section_name) {
+        getSectionValid();
+      }
+      if (param_thread_id && param_thread_name) {
+        getThread(param_thread_id);
+        getMessagesParamID();
+      } else if (thread_id) {
+        getThread(thread_id);
+        getMessages();
+      }
+
       getUserPermission();
     }
   }, [section_id, thread_id, navigate, checkedCookie]);
@@ -215,7 +260,9 @@ const Thread: React.FC<Props> = ({
       dataLength={messages.length}
       next={
         checkedCookie
-          ? getMessages
+          ? param_thread_id
+            ? getMessagesParamID
+            : getMessages
           : () =>
               console.log(
                 "InfiniteScroll next not loaded yet -- user auth first"
@@ -230,7 +277,7 @@ const Thread: React.FC<Props> = ({
             className="mb-4 h-8 cursor-pointer text-2xl font-semibold hover:underline dark:text-white"
             onClick={() => navigate(-1)}
           >
-            {threadLoaded && messageLoaded && sectionName}
+            {(threadLoaded && messageLoaded && paramSectionName) || sectionName}
           </div>
 
           {/* Load thread or skeleton thread */}

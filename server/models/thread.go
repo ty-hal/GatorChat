@@ -145,7 +145,7 @@ func GetCreator(threadID uint8) (User, error) {
 	return user, nil
 }
 
-func GetSection(threadID uint8) (Section, error) {
+func GetSection(threadID uint8, activeUser uint8) (Section, error) {
 	var thread Thread
 	var section Section
 
@@ -154,6 +154,8 @@ func GetSection(threadID uint8) (Section, error) {
 	if result.Error != nil {
 		return section, result.Error
 	}
+
+	section.UserSaved = CheckSectionSaved(activeUser, section.SectionID)
 
 	return section, nil
 }
@@ -174,7 +176,7 @@ func GetThreadPosts(threadID uint8, activeUser uint8) []Post {
 			post.UserLiked = CheckMessageLike(activeUser, post.PostID)
 			post.UserSaved = CheckPostSaved(activeUser, post.PostID)
 
-			section, _ := GetSection(threadID)
+			section, _ := GetSection(threadID, activeUser)
 			post.SectionName = section.SectionName
 
 			posts = append(posts, post)
@@ -200,7 +202,7 @@ func GetThreadPostsWithOffset(thread_id uint8, pageNumber int, pageSize int, act
 			post.UserLiked = CheckMessageLike(activeUser, post.PostID)
 			post.UserSaved = CheckPostSaved(activeUser, post.PostID)
 
-			section, _ := GetSection(thread_id)
+			section, _ := GetSection(thread_id, activeUser)
 			post.SectionName = section.SectionName
 
 			posts = append(posts, post)

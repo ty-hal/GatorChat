@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/team/swe-project/middleware"
@@ -202,6 +203,8 @@ func GetUserThreads(userID uint8) []Thread {
 
 		if err == nil {
 			threads[i].User = creator.FirstName + " " + creator.LastName
+			threads[i].UserLiked = CheckMessageLike(userID, threads[i].ThreadID)
+			threads[i].UserSaved = CheckPostSaved(userID, threads[i].ThreadID)
 		}
 	}
 
@@ -218,6 +221,8 @@ func GetUserThreadsWithOffset(userID uint8, pageNumber int, pageSize int) []Thre
 
 		if err == nil {
 			threads[i].User = creator.FirstName + " " + creator.LastName
+			threads[i].UserLiked = CheckMessageLike(userID, threads[i].ThreadID)
+			threads[i].UserSaved = CheckPostSaved(userID, threads[i].ThreadID)
 		}
 	}
 
@@ -232,7 +237,17 @@ func GetUserPostsWithOffset(userID uint8, pageNumber int, pageSize int) []Post {
 		creator, err := GetUserByID(posts[i].UserID)
 
 		if err == nil {
+			section, er := GetSectionOfPost(posts[i].PostID, userID)
+
+			if er != nil {
+				fmt.Println("Error in saved posts from user")
+				return nil
+			}
+
 			posts[i].User = creator.FirstName + " " + creator.LastName
+			posts[i].UserLiked = CheckMessageLike(userID, posts[i].PostID)
+			posts[i].UserSaved = CheckPostSaved(userID, posts[i].PostID)
+			posts[i].SectionName = section.SectionName
 		}
 	}
 
@@ -248,7 +263,17 @@ func GetUserPosts(userID uint8) []Post {
 		creator, err := GetUserByID(posts[i].UserID)
 
 		if err == nil {
+			section, er := GetSectionOfPost(posts[i].PostID, userID)
+
+			if er != nil {
+				fmt.Println("Error in saved posts from user")
+				return nil
+			}
+
 			posts[i].User = creator.FirstName + " " + creator.LastName
+			posts[i].UserLiked = CheckMessageLike(userID, posts[i].PostID)
+			posts[i].UserSaved = CheckPostSaved(userID, posts[i].PostID)
+			posts[i].SectionName = section.SectionName
 		}
 	}
 

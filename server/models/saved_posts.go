@@ -1,6 +1,8 @@
 package models
 
 import (
+	"fmt"
+
 	"github.com/team/swe-project/middleware"
 )
 
@@ -29,10 +31,22 @@ func GetSavedPostRowsFromUser(userID uint8) []SavedPosts {
 func GetSavedPostsFromUser(userID uint8) []Post {
 	var userSavedPosts []Post
 
-	for _, savedPostRow := range GetSavedPostRowsFromUser(userID) {
-		if savedPostRow.UserID == userID {
-			post, err := GetPostByID(savedPostRow.PostID)
+	posts := GetSavedPostRowsFromUser(userID)
+
+	for i := range posts {
+		if posts[i].UserID == userID {
+			post, err := GetPostByID(posts[i].PostID)
 			if err == nil {
+				section, er := GetSectionOfPost(post.PostID, userID)
+
+				if er != nil {
+					fmt.Println("Error in saved posts from user")
+					return nil
+				}
+
+				post.UserLiked = CheckMessageLike(userID, post.PostID)
+				post.UserSaved = true
+				post.SectionName = section.SectionName
 				userSavedPosts = append(userSavedPosts, post)
 			}
 		}

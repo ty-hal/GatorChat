@@ -30,6 +30,26 @@ func GetAllPosts() []Post {
 	return posts
 }
 
+func GetSectionOfPost(postID uint8, activeUser uint8) (Section, error) {
+	post, er := GetPostByID(postID)
+	if er != nil {
+		return Section{}, er
+	}
+
+	thread, err := post.GetThread()
+	if err != nil {
+		return Section{}, err
+	}
+
+	section, errr := GetSectionByID(thread.SectionID, activeUser)
+
+	if errr != nil {
+		return Section{}, errr
+	}
+
+	return section, nil
+}
+
 func GetPostByID(postID uint8) (Post, error) {
 	var post Post
 

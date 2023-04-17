@@ -333,6 +333,28 @@ func UpdateClasses(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(newClasses)
 }
 
+func ToggleClass(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	queryParams := r.URL.Query()
+	userID, _ := strconv.Atoi(queryParams.Get("userID"))
+	classID := queryParams.Get("classID")
+
+	userClass := models.ToggleClass(uint8(userID), classID)
+	json.NewEncoder(w).Encode(userClass)
+}
+
+func UserInClass(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	queryParams := r.URL.Query()
+	userID, _ := strconv.Atoi(queryParams.Get("userID"))
+	classID := queryParams.Get("classID")
+
+	inClass := models.CheckUserInClass(uint8(userID), classID)
+	json.NewEncoder(w).Encode(inClass)
+}
+
 /*
 func SaveSection(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")

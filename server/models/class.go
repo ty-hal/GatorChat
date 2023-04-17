@@ -18,13 +18,9 @@ func GetAllClasses() []Class {
 }
 
 func GetClassByID(class_id string) (Class, error) {
-	var class Class
+	class := Class{ClassID: class_id}
 
-	err := middleware.DB.Where("class_id = ?", class_id).First(&class).Error
-
-	if err != nil {
-		return Class{}, err
-	}
+	middleware.DB.Where("class_id = ?", class_id).FirstOrCreate(&class)
 
 	return class, nil
 }

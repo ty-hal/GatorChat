@@ -71,6 +71,8 @@ func Router() *mux.Router {
 	router.HandleFunc("/api/togglesavedsection", handlers.ToggleSectionSaved).Methods("GET")
 	router.HandleFunc("/api/togglesavedthread", handlers.ToggleThreadSaved).Methods("GET")
 	router.HandleFunc("/api/togglesavedpost", handlers.TogglePostSaved).Methods("GET")
+	router.HandleFunc("/api/toggleclass", handlers.ToggleClass).Methods("GET")
+	router.HandleFunc("/api/userinclass", handlers.UserInClass).Methods("GET")
 	router.HandleFunc("/api/contact", handlers.ContactUs).Methods("POST")
 
 	return router

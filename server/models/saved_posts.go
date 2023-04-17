@@ -44,6 +44,14 @@ func GetSavedPostsFromUser(userID uint8) []Post {
 					return nil
 				}
 
+				creator, err := GetUserByID(post.UserID)
+
+				if err != nil {
+					post.User = "[DELETED]"
+				} else {
+					post.User = creator.FirstName + " " + creator.LastName
+				}
+
 				post.UserLiked = CheckMessageLike(userID, post.PostID)
 				post.UserSaved = true
 				post.SectionName = section.SectionName

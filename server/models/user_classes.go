@@ -56,3 +56,26 @@ func UpdateClassesForUser(userID uint8, newClasses []string) []Class {
 
 	return newClassObjects
 }
+
+func ToggleClass(userID uint8, classID string) UserClasses {
+	var userClass UserClasses
+
+	r := middleware.DB.Where("user_id = ? AND class_id = ?", userID, classID).Find(&userClass)
+
+	if r.RowsAffected > 0 {
+		middleware.DB.Delete(&userClass)
+	} else {
+		userClass = UserClasses{UserID: userID, ClassID: classID}
+		middleware.DB.Create(&userClass)
+	}
+
+	return userClass
+}
+
+func CheckUserInClass(userID uint8, classID string) bool {
+	var userClass UserClasses
+
+	r := middleware.DB.Where("user_id = ? AND class_id = ?", userID, classID).Find(&userClass)
+
+	return r.RowsAffected > 0
+}

@@ -137,7 +137,7 @@ const Header = () => {
                 className="cursor-pointer rounded-lg p-1 text-3xl font-bold"
                 id="logo"
               >
-                Logo
+                GatorChat
               </span>
             </Link>
           </div>

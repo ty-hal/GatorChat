@@ -1,9 +1,9 @@
 import { useCallback, useState, useEffect } from "react";
 import { useAtomValue } from "jotai";
 import { darkModeAtom } from "../App";
+import { messageBoxAtom } from "../pages/Messaging/Thread";
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
-
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
@@ -11,13 +11,9 @@ import TextAlign from "@tiptap/extension-text-align";
 import CharacterCount from "@tiptap/extension-character-count";
 import Typography from "@tiptap/extension-typography";
 import Image from "@tiptap/extension-image";
-// import Dropcursor from "@tiptap/extension-dropcursor";
 import Link from "@tiptap/extension-link";
 import Underline from "@tiptap/extension-underline";
 import Youtube from "@tiptap/extension-youtube";
-// import Blockquote from "@tiptap/extension-blockquote";
-
-import { messageBoxAtom } from "../pages/Messaging/Thread";
 
 type Props = {
   setText?: React.Dispatch<React.SetStateAction<string>>;

@@ -9,7 +9,7 @@ describe('settings spec', () =>
     cy.get("#settings").click();
     cy.get("#password").type("password");
     cy.get("#confirm-password").type("password");
-    cy.get("#submit").click();
+    cy.get("#submit").should("be.disabled");
     cy.wait(5000);
   })
   it("login and dont confirm password",()=>
@@ -21,11 +21,7 @@ describe('settings spec', () =>
     cy.wait(500)
     cy.get("#settings").click();
     cy.get("#password").type("KfkGt2J2sAwA9tg");
-    cy.get("#submit").click();
-    cy.on("window:alert",(text)=>
-    {
-      expect(text).contain("passwords do not match!");
-    })
+    cy.get("#submit").should("be.disabled");
   })
   
   it("login and try to change email",()=>
@@ -36,7 +32,7 @@ describe('settings spec', () =>
     cy.get("#submit").click()
     cy.wait(500)
     cy.get("#settings").click();
-    cy.get("#email").click();
+    cy.get("#email").should("be.disabled");
     cy.on("window:alert",(text)=>
     {
       expect(text).contain("Contact support if you need to change your email");
@@ -50,9 +46,8 @@ describe('settings spec', () =>
     cy.get("#submit").click()
     cy.wait(500)
     cy.get("#settings").click();
-    cy.get("#first-name").type("steven");
-    cy.get("#last-name").type("miller");
-    cy.get("#submit").click();
+    cy.get("#first-name").should("be.disabled");
+    cy.get("#last-name").should("be.disabled");
   })
   it("login and change major",()=>
   {
@@ -62,7 +57,10 @@ describe('settings spec', () =>
     cy.get("#submit").click()
     cy.wait(500)
     cy.get("#settings").click();
-    cy.get("#major").select("Advertising")
+    cy.get('.flex-none').click();
+    cy.get('.max-h-72 > :nth-child(1) > .block').click();
+    cy.get('.p-6').click();
     cy.get("#submit").click();
   })
+
 })

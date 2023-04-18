@@ -547,3 +547,179 @@ func TestUnLikePost(t *testing.T) {
 		t.Errorf("RESPONSE EXPECTED LIKES: got %v", rr.Body.String())
 	}
 }
+
+func TestGetMajors(t *testing.T) {
+	req, err := http.NewRequest("GET", "/api/user/18/majors", nil)
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rr := httptest.NewRecorder()
+
+	newRouter.ServeHTTP(rr, req)
+
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("STATUS CODE EXPECTED 200: got %v want %v",
+			status, http.StatusOK)
+	}
+
+	var response []models.Major
+	if err := json.Unmarshal(rr.Body.Bytes(), &response); err != nil {
+		t.Errorf("RESPONSE EXPECTED MAJORS: got %v", rr.Body.String())
+	}
+}
+
+func TestGetClasses(t *testing.T) {
+	req, err := http.NewRequest("GET", "/api/user/18/classes", nil)
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rr := httptest.NewRecorder()
+
+	newRouter.ServeHTTP(rr, req)
+
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("STATUS CODE EXPECTED 200: got %v want %v",
+			status, http.StatusOK)
+	}
+
+	var response []models.Class
+	if err := json.Unmarshal(rr.Body.Bytes(), &response); err != nil {
+		t.Errorf("RESPONSE EXPECTED CLASSES: got %v", rr.Body.String())
+	}
+}
+
+func TestGetRoles(t *testing.T) {
+	req, err := http.NewRequest("GET", "/api/user/18/roles", nil)
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rr := httptest.NewRecorder()
+
+	newRouter.ServeHTTP(rr, req)
+
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("STATUS CODE EXPECTED 200: got %v want %v",
+			status, http.StatusOK)
+	}
+
+	var response []models.Role
+	if err := json.Unmarshal(rr.Body.Bytes(), &response); err != nil {
+		t.Errorf("RESPONSE EXPECTED ROLES: got %v", rr.Body.String())
+	}
+}
+
+func TestGetCreatedThreads(t *testing.T) {
+	req, err := http.NewRequest("GET", "/api/user/18/createdthreads?pageNumber=1&pageSize=4", nil)
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rr := httptest.NewRecorder()
+
+	newRouter.ServeHTTP(rr, req)
+
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("STATUS CODE EXPECTED 200: got %v want %v",
+			status, http.StatusOK)
+	}
+
+	var response []models.Thread
+	if err := json.Unmarshal(rr.Body.Bytes(), &response); err != nil {
+		t.Errorf("RESPONSE EXPECTED THREADS: got %v", rr.Body.String())
+	}
+}
+
+func TestGetCreatedPosts(t *testing.T) {
+	req, err := http.NewRequest("GET", "/api/user/18/createdposts?pageNumber=1&pageSize=4", nil)
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rr := httptest.NewRecorder()
+
+	newRouter.ServeHTTP(rr, req)
+
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("STATUS CODE EXPECTED 200: got %v want %v",
+			status, http.StatusOK)
+	}
+
+	var response []models.Post
+	if err := json.Unmarshal(rr.Body.Bytes(), &response); err != nil {
+		t.Errorf("RESPONSE EXPECTED POSTS: got %v", rr.Body.String())
+	}
+}
+
+func TestGetSavedThreads(t *testing.T) {
+	req, err := http.NewRequest("GET", "/api/user/18/savedthreads?pageNumber=1&pageSize=4", nil)
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rr := httptest.NewRecorder()
+
+	newRouter.ServeHTTP(rr, req)
+
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("STATUS CODE EXPECTED 200: got %v want %v",
+			status, http.StatusOK)
+	}
+
+	var response []models.Thread
+	if err := json.Unmarshal(rr.Body.Bytes(), &response); err != nil {
+		t.Errorf("RESPONSE EXPECTED THREADS: got %v", rr.Body.String())
+	}
+}
+
+func TestGetSavedPosts(t *testing.T) {
+	req, err := http.NewRequest("GET", "/api/user/18/savedposts?pageNumber=1&pageSize=4", nil)
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rr := httptest.NewRecorder()
+
+	newRouter.ServeHTTP(rr, req)
+
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("STATUS CODE EXPECTED 200: got %v want %v",
+			status, http.StatusOK)
+	}
+
+	var response []models.Post
+	if err := json.Unmarshal(rr.Body.Bytes(), &response); err != nil {
+		t.Errorf("RESPONSE EXPECTED POSTS: got %v", rr.Body.String())
+	}
+}
+
+func TestGetSavedSections(t *testing.T) {
+	req, err := http.NewRequest("GET", "/api/user/18/savedsections", nil)
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rr := httptest.NewRecorder()
+
+	newRouter.ServeHTTP(rr, req)
+
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("STATUS CODE EXPECTED 200: got %v want %v",
+			status, http.StatusOK)
+	}
+
+	var response []models.Section
+	if err := json.Unmarshal(rr.Body.Bytes(), &response); err != nil {
+		t.Errorf("RESPONSE EXPECTED SECTIONS: got %v", rr.Body.String())
+	}
+}

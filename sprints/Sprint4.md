@@ -45,7 +45,16 @@
   ### Backend:
 
 - Created
-  - As a user, 
+  - Completed like system
+    - As a user, I want to be able to like posts and threads, so I finished the complete like system 
+  - Implement infinite scrollers for all parts of the website
+    - As a user, I want the website to be fast, so I implemented pagination for my threads/posts and saved threads/posts
+  - Send email to user when forgot password form is submitted
+    - As a user, I want to be able to change my password if forgotten, so I created a way for the user to receive an email to change the password
+  - Email GatorChat gmail account when user submits contact us form
+    - As a user, I want to be able to contact the website developers, so I created a way for developers to receive an email from the user.
+  - Statistics handler to gather information about account
+    - As a user, I want to see the statistics of my account, so I created a handler to get statistics such as thread/post counts and likes given/received
 
 
 ---

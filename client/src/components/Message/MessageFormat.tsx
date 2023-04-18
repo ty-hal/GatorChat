@@ -239,10 +239,12 @@ const Message: React.FC<Props> = ({
       })
       .then((data) => {
         // Reload page when saving in account page
+        console.log(window.location.pathname === "/my-account/saved-threads")
         if (
-          window.location.pathname === "/my-account/my-saved-threads" ||
-          window.location.pathname === "/my-account/my-saved-messages"
+          window.location.pathname === "/my-account/saved-threads" ||
+          window.location.pathname === "/my-account/saved-messages"
         ) {
+          console.log("here")
           window.location.reload();
         }
       });

@@ -268,10 +268,11 @@ const Thread: React.FC<Props> = ({
       .then((response) => response.json())
       .then((data) => {
         // Reload page when saving in account page
-        if (
-          window.location.pathname === "/my-account/my-saved-threads" ||
-          window.location.pathname === "/my-account/my-saved-messages"
+        console.log(window.location.pathname === "/my-account/saved-threads")
+        if (window.location.pathname === "/my-account/saved-threads" ||
+          window.location.pathname === "/my-account/saved-messages"
         ) {
+          console.log("here")
           window.location.reload();
         }
       });

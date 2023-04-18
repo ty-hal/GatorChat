@@ -18,18 +18,18 @@ func GetAllSavedThreadRows() []SavedThreads {
 	return savedThreads
 }
 
-func GetSavedThreadRowsFromUser(userID uint8) []SavedThreads {
+func GetSavedThreadRowsFromUser(userID uint8, pageNumber int, pageSize int) []SavedThreads {
 	var savedThreadRows []SavedThreads
 
-	middleware.DB.Find(&savedThreadRows, "user_id = ?", userID)
+	middleware.DB.Where("user_id = ?", userID).Offset((pageNumber - 1) * pageSize).Limit(pageSize).Find(&savedThreadRows)
 
 	return savedThreadRows
 }
 
-func GetSavedThreadsFromUser(userID uint8) []Thread {
+func GetSavedThreadsFromUser(userID uint8, pageNumber int, pageSize int) []Thread {
 	var userSavedThreads []Thread
 
-	for _, savedThreadRow := range GetSavedThreadRowsFromUser(userID) {
+	for _, savedThreadRow := range GetSavedThreadRowsFromUser(userID, pageNumber, pageSize) {
 		if savedThreadRow.UserID == userID {
 			thread, err := GetThreadById(savedThreadRow.ThreadID, userID)
 			if err == nil {

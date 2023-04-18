@@ -228,6 +228,7 @@ func GetUserThreadsWithOffset(userID uint8, pageNumber int, pageSize int) []Thre
 
 	return threads
 }
+
 func GetUserPostsWithOffset(userID uint8, pageNumber int, pageSize int) []Post {
 	var posts []Post
 

@@ -228,7 +228,10 @@ func GetSavedThreads(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	params := mux.Vars(r)
+	queryParams := r.URL.Query()
 	id, err := strconv.Atoi(params["id"])
+	pageNumber, _ := strconv.Atoi(queryParams.Get("pageNumber"))
+	pageSize, _ := strconv.Atoi(queryParams.Get("pageSize"))
 
 	// Invalid parameter
 	if err != nil {
@@ -237,7 +240,7 @@ func GetSavedThreads(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userThreads := models.GetSavedThreadsFromUser(uint8(id))
+	userThreads := models.GetSavedThreadsFromUser(uint8(id), pageNumber, pageSize)
 
 	json.NewEncoder(w).Encode(userThreads)
 }

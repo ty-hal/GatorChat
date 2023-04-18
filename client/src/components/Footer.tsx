@@ -120,10 +120,9 @@ const Footer = () => {
                 </Link>
               )}
             </div>
-
           </div>
         </div>
-        
+
         <div className="mt-8 border-t border-gray-100 pt-8 dark:border-gray-800">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
             <p className="text-left text-xs text-gray-500 dark:text-gray-400">

@@ -15,11 +15,11 @@ type UserData = {
 };
 
 type UserStats = {
-  threads_posted: number,
-  messages_posted: number,
-  likes_received: number,
-  likes_given: number
-}
+  threads_posted: number;
+  messages_posted: number;
+  likes_received: number;
+  likes_given: number;
+};
 
 const MyAccount = () => {
   const activeUserID = useAtomValue(userIDAtom);
@@ -68,14 +68,14 @@ const MyAccount = () => {
         });
       })
       .then(() => setLoaded(true));
-      
-      // Get User Stats
-      fetch(`http://localhost:9000/api/user/${activeUserID}/stats`, {
-        method: "GET",
-        headers: {
-          "content-type": "application/json",
-        },
-      })
+
+    // Get User Stats
+    fetch(`http://localhost:9000/api/user/${activeUserID}/stats`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    })
       .then((response) => {
         if (response.status === 200) {
           return response.json();
@@ -84,9 +84,7 @@ const MyAccount = () => {
       .then((data) => {
         console.log(data);
         setUserStats(data);
-      })
-  
-  
+      });
   };
   useEffect(() => {
     // Get user saved threads

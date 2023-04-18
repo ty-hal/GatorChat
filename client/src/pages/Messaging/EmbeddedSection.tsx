@@ -269,7 +269,7 @@ const EmbeddedSection: React.FC<Props> = ({
           <div className="z-40 mx-auto my-1 w-full outline-none">
             <ReactSearchAutocomplete
               items={searchBarItems}
-              fuseOptions={{ threshold: 0.3 }}
+              fuseOptions={{ threshold: 0.5 }}
               onSelect={searchBarHandleOnSelect}
               formatResult={searchBarFormatResult}
               placeholder={searchMessage}

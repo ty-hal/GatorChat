@@ -114,7 +114,7 @@ const Home = () => {
       <div className="z-40 mx-auto w-3/4 pt-2 outline-none">
         <ReactSearchAutocomplete
           items={searchBarItems}
-          fuseOptions={{ threshold: 0.3 }}
+          fuseOptions={{ threshold: 0.5 }}
           onSelect={searchBarHandleOnSelect}
           formatResult={searchBarFormatResult}
           placeholder="Search sections..."

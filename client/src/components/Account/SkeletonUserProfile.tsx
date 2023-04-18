@@ -27,6 +27,11 @@ const SkeletonUserProfile = () => {
           <div className="h-4 w-12 rounded bg-black dark:bg-white"></div>
           <div className="h-4 w-64 rounded bg-black dark:bg-white"></div>
         </div>
+
+        <div className="h-1"></div>
+        <hr className="mx-auto h-0.5 w-full animate-pulse rounded bg-gray-700" />
+        <div className="h-1"></div>
+
         {/* Likes Received */}
         <div className="flex animate-pulse space-x-2">
           <div className="h-4 w-12 rounded bg-black dark:bg-white"></div>

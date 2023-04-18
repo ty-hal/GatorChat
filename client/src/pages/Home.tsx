@@ -173,7 +173,7 @@ const Home = () => {
       </div>
 
       {/* Horizontal rule */}
-      <hr className="mx-auto mt-12 h-1 w-11/12 rounded border-0 bg-gray-400 dark:bg-gray-700" />
+      <hr className="mx-auto mt-12 h-0.5 w-11/12 rounded border-0 bg-gray-300 dark:bg-gray-700" />
 
       {/* Display the parent sections */}
       <div className="mx-auto mt-10 w-11/12 text-black dark:text-white">

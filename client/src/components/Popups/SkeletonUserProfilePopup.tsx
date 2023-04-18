@@ -27,6 +27,22 @@ const SkeletonUserProfilePopup = () => {
           <div className="h-4 w-12 rounded bg-gray-400 dark:bg-gray-600"></div>
           <div className="h-4 w-64 rounded bg-gray-400 dark:bg-gray-600"></div>
         </div>{" "}
+        <hr className="mx-auto h-0.5 w-full animate-pulse rounded bg-gray-700" />
+        {/* Majors  */}
+        <div className="flex animate-pulse space-x-2">
+          <div className="h-4 w-12 rounded bg-gray-400 dark:bg-gray-600"></div>
+          <div className="h-4 w-64 rounded bg-gray-400 dark:bg-gray-600"></div>
+        </div>
+        {/* Courses */}
+        <div className="flex animate-pulse space-x-2">
+          <div className="h-4 w-12 rounded bg-gray-400 dark:bg-gray-600"></div>
+          <div className="h-4 w-64 rounded bg-gray-400 dark:bg-gray-600"></div>
+        </div>{" "}
+        {/* User Since */}
+        <div className="flex animate-pulse space-x-2">
+          <div className="h-4 w-12 rounded bg-gray-400 dark:bg-gray-600"></div>
+          <div className="h-4 w-64 rounded bg-gray-400 dark:bg-gray-600"></div>
+        </div>{" "}
       </div>
     </div>
   );

@@ -26,21 +26,21 @@ const Footer = () => {
   return (
     <div
       aria-label="Site Footer"
-      className="min-w-full bg-white dark:bg-gray-900"
+      className="mx-auto w-11/12 bg-white dark:bg-gray-900"
     >
-      <div className="mx-auto w-full px-4 pt-16 pb-4 sm:px-6 lg:px-8 ">
-        <div className="hidden w-full justify-between sm:flex lg:items-start lg:gap-8">
-          <div className="mt-8 grid w-full grid-cols-3 justify-between lg:mt-0 lg:grid-cols-6 lg:gap-y-10">
-            <div className="col-span-2 sm:col-span-1">
-              <p className="cursor-pointer font-medium text-gray-900 dark:text-white md:text-lg">
+      <div className="mx-auto w-full pt-16 pb-4">
+        {/* Top Part */}
+        <div className="mx-auto mt-8 border-t border-gray-300 dark:border-gray-800 sm:flex lg:items-start lg:gap-8">
+          <div className="mt-8 flex w-full justify-between text-xs sm:text-sm md:text-base">
+            <div>
+              <p className="cursor-pointer font-medium text-gray-700 dark:text-gray-400">
                 About
               </p>
             </div>
-
-            <div className="col-span-2 sm:col-span-1">
+            <div>
               <Link to="/faq">
                 <span
-                  className="cursor-pointer font-medium text-gray-900 dark:text-white md:text-lg"
+                  className="cursor-pointer font-medium text-gray-700 dark:text-gray-400"
                   role="menuitem"
                   id="faq"
                 >
@@ -48,11 +48,10 @@ const Footer = () => {
                 </span>
               </Link>
             </div>
-
-            <div className="col-span-2 sm:col-span-1">
+            <div>
               <Link to={userID === 0 ? "/sign-in" : "/settings"}>
                 <span
-                  className="cursor-pointer font-medium text-gray-900 dark:text-white md:text-lg"
+                  className="cursor-pointer font-medium text-gray-700 dark:text-gray-400"
                   role="menuitem"
                   id="settings"
                 >
@@ -60,11 +59,10 @@ const Footer = () => {
                 </span>
               </Link>
             </div>
-
-            <div className="col-span-2 sm:col-span-1">
+            <div>
               <Link to="/contact-us">
                 <span
-                  className="cursor-pointer font-medium text-gray-900 dark:text-white md:text-lg"
+                  className="cursor-pointer font-medium text-gray-700 dark:text-gray-400"
                   role="menuitem"
                   id="contact-us"
                 >
@@ -72,12 +70,11 @@ const Footer = () => {
                 </span>
               </Link>
             </div>
-
-            <div className="col-span-2 sm:col-span-1">
+            <div>
               {userID === 0 ? (
                 <Link
                   to="/sign-in"
-                  className="cursor-pointer font-medium text-gray-900 dark:text-white md:text-lg"
+                  className="cursor-pointer font-medium text-gray-700 dark:text-gray-400"
                 >
                   {" "}
                   <span className="font-medium" id="sign-in">
@@ -87,7 +84,7 @@ const Footer = () => {
               ) : (
                 <Link to="/">
                   <span
-                    className="cursor-pointer font-medium text-gray-900 dark:text-white md:text-lg"
+                    className="cursor-pointer font-medium text-gray-700 dark:text-gray-400"
                     id="sign-out"
                     onClick={signOut}
                   >
@@ -96,12 +93,11 @@ const Footer = () => {
                 </Link>
               )}
             </div>
-
-            <div className="col-span-2 sm:col-span-1">
+            <div>
               {userID === 0 ? (
                 <Link
                   to="/register"
-                  className="cursor-pointer font-medium text-gray-900 dark:text-white md:text-lg"
+                  className="cursor-pointer font-medium text-gray-700 dark:text-gray-400"
                 >
                   {" "}
                   <span className="font-medium" id="register">
@@ -111,7 +107,7 @@ const Footer = () => {
               ) : (
                 <Link
                   to="/my-account"
-                  className="cursor-pointer font-medium text-gray-900 dark:text-white md:text-lg"
+                  className="cursor-pointer font-medium text-gray-700 dark:text-gray-400"
                 >
                   {" "}
                   <span className="font-medium" id="my-account">
@@ -123,14 +119,17 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="mt-8 border-t border-gray-100 pt-8 dark:border-gray-800">
+        {/* Bottom Part */}
+        <div className="pt-8 ">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+            {/* Copymark */}
             <p className="text-left text-xs text-gray-500 dark:text-gray-400">
               &copy; 2023. GatorChat. All rights reserved.
             </p>
 
+            {/* Navigation */}
             <div aria-label="Footer Navigation - Support">
-              <ul className="flex flex-wrap justify-evenly text-xs lg:justify-end lg:space-x-4">
+              <ul className="flex flex-wrap justify-between text-xs lg:justify-end lg:space-x-8">
                 <li>
                   <Link
                     to="/terms-and-conditions"
@@ -158,7 +157,7 @@ const Footer = () => {
                     className="text-gray-500 transition hover:opacity-75 dark:text-gray-400"
                   >
                     {" "}
-                    <span className="mr-4 font-medium" id="contact-us">
+                    <span className="font-medium" id="contact-us">
                       Contact Us
                     </span>
                   </Link>

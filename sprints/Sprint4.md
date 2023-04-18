@@ -86,7 +86,7 @@
 
 **ContactUs**: renders, enters name, enters email, submits.
 
-**Settings**: renders, does not allow name change, does not allow email change, enters new password, enters new major, uploads new profile picture, submits.
+**Settings**: renders, does not allow name change, does not allow email change, enters new password, enters new major, uploads new profile picture, submits, enters new classes.
 
 **ForgotPassword**: renders, clicks "forgot password" enters email, submits email, does not allow password to be reset without code
 

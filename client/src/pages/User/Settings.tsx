@@ -598,6 +598,7 @@ const Settings = () => {
                 labelClassName="text-gray-900 font-sm font-normal"
                 values={classes}
               />
+
             </div>
 
             {/* Profile Picture */}

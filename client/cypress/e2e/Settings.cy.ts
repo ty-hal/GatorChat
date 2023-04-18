@@ -1,5 +1,37 @@
 describe('settings spec', () => 
 {
+  it("login and add invalid class",()=>
+  {
+    cy.visit("/sign-in")
+    cy.get("#email").type("millersteven@ufl.edu")
+    cy.get("#password").type("KfkGt2J2sAwA9tg")
+    cy.get("#submit").click()
+    cy.wait(500)
+    cy.get("#settings").click();
+    cy.get('.mt-2').click();
+    cy.get('.mt-2').type("underwaterbasketweaving");
+    cy.get('.mt-2').type("{enter}")
+    //cy.get('.flex-none').click();
+    //cy.get('.max-h-72 > :nth-child(1) > .block').click();
+    //cy.get('.p-6').click();
+    cy.get("#submit").should("be.disabled");
+  })
+  it("login and add valid class",()=>
+  {
+    cy.visit("/sign-in")
+    cy.get("#email").type("millersteven@ufl.edu")
+    cy.get("#password").type("KfkGt2J2sAwA9tg")
+    cy.get("#submit").click()
+    cy.wait(500)
+    cy.get("#settings").click();
+    cy.get('.mt-2').click();
+    cy.get('.mt-2').type("CEN3031");
+    cy.get('.mt-2').type("{enter}");
+    //cy.get('.flex-none').click();
+    //cy.get('.max-h-72 > :nth-child(1) > .block').click();
+    //cy.get('.p-6').click();
+    cy.get("#submit").click();
+  })
   it("login and change password to invalid password",()=>{
     cy.visit("/sign-in")
     cy.get("#email").type("millersteven@ufl.edu")

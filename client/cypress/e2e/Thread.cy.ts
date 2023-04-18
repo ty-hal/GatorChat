@@ -87,5 +87,21 @@ describe('thread spec', () =>
     //cy.get("#save").click();
     //cy.reload();
   })
-
+  
+  it('report thread', ()=> {
+    cy.visit('')
+    cy.get('.absolute > [href="/sign-in"] > #sign-in').click();
+    cy.get("#email").type("millersteven@ufl.edu");
+    cy.get("#password").type("KfkGt2J2sAwA9tg");
+    cy.get("#submit").click();
+    cy.wait(2000);
+    cy.get('.mt-2 > :nth-child(1) > .text-lg').click();
+    cy.wait(2000)
+    cy.get(':nth-child(5) >.left-3>:nth-child(4)>#thread-menu').click();
+    cy.get("#report").click();
+    cy.get('#report-options > :nth-child(11)').click();
+    cy.get('#other-input').type("terrible music taste")
+    cy.get('.border-transparent').click();
+    
+  })
 })

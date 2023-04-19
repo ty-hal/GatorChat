@@ -44,17 +44,16 @@
   
   ### Backend:
 
-- Created
-  - Completed like system
-    - As a user, I want to be able to like posts and threads, so I finished the complete like system 
-  - Implement infinite scrollers for all parts of the website
-    - As a user, I want the website to be fast, so I implemented pagination for my threads/posts and saved threads/posts
-  - Send email to user when forgot password form is submitted
-    - As a user, I want to be able to change my password if forgotten, so I created a way for the user to receive an email to change the password
-  - Email GatorChat gmail account when user submits contact us form
-    - As a user, I want to be able to contact the website developers, so I created a way for developers to receive an email from the user.
-  - Statistics handler to gather information about account
-    - As a user, I want to see the statistics of my account, so I created a handler to get statistics such as thread/post counts and likes given/received
+- Completed like system
+  - As a user, I want to be able to like posts and threads, so I finished the complete like system 
+- Implement infinite scrollers for all parts of the website
+  - As a user, I want the website to be fast, so I implemented pagination for my threads/posts and saved threads/posts
+- Send email to user when forgot password form is submitted
+  - As a user, I want to be able to change my password if forgotten, so I created a way for the user to receive an email to change the password
+- Email GatorChat gmail account when user submits contact us form
+  - As a user, I want to be able to contact the website developers, so I created a way for developers to receive an email from the user.
+- Statistics handler to gather information about account
+  - As a user, I want to see the statistics of my account, so I created a handler to get statistics such as thread/post counts and likes given/received
 
 
 ---
@@ -126,6 +125,14 @@
 **TestCreateUser**,
 **TestCreateExistingUser**,
 **TestDeleteUser**,
+**TestGetCreatedThreads**
+**TestGetCreatedPosts**
+**TestGetSavedThreads**
+**TestGetSavedPosts**
+**TestGetStats**
+**TestGetClasses**
+**TestGetMajors**
+**TestGetRoles**
 
 ### Sections:
 
@@ -139,6 +146,12 @@
 **TestGetAllPosts**,
 **TestGetPostByIdValid**,
 **TestGetPostByIdInvalid**,
+
+### Misc:
+**TestLikeThread**
+**TestUnlikeThread**
+**TestLikePost**
+**TestUnlikePost**
 
 ---
 
@@ -229,8 +242,53 @@ Return list of user majors
 - Status Responses
   - 200 OK 
 
-### Sign User In
+### Get User Created Threads
+Return list of user created threads
+- URL: `/api/user/:id/createdthreads`
+- Method: `GET`
+- Parameters: `id=[integer]`
+- Status Responses
+  - 200 OK 
+  - 400 BAD REQUEST
 
+### Get User Created Posts
+Return list of user created posts
+- URL: `/api/user/:id/createdposts`
+- Method: `GET`
+- Parameters: `id=[integer]`
+- Status Responses
+  - 200 OK 
+  - 400 BAD REQUEST
+
+### Get User Saved Threads
+Return list of user saved threads
+- URL: `/api/user/:id/savedthreads`
+- Method: `GET`
+- Parameters: `id=[integer]`
+- Status Responses
+  - 200 OK 
+  - 400 BAD REQUEST
+
+### Get User Saved Posts
+Return list of user saved posts
+- URL: `/api/user/:id/savedposts`
+- Method: `GET`
+- Parameters: `id=[integer]`
+- Status Responses
+  - 200 OK 
+  - 400 BAD REQUEST
+
+### Get User Stats
+Return user stats
+- URL: `/api/user/:id/stats`
+- Method: `GET`
+- Parameters: `id=[integer]`
+- Status Responses
+  - 200 OK 
+  - 400 BAD REQUEST
+
+
+### Sign User In
 Return user
 
 - URL: `/api/user/signin`
@@ -464,7 +522,6 @@ Return list of majors
 
 
 ### Like
-
 Return Liked Thread/Post
 
 - URL: `/api/like?activeUser=:id&threadID=:id&postID=:id`
@@ -474,7 +531,6 @@ Return Liked Thread/Post
   - 400 BAD REQUEST
 
 ### Unlike
-
 Return Unliked Thread/Post
 
 - URL: `/api/unlike?activeUser=:id&threadID=:id&postID=:id`

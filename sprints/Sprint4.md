@@ -1,6 +1,6 @@
 ## Demo Video:
 
-**LINK HERE**
+https://youtu.be/ATRNz7RvU_I
 
 ## Work completed in Sprint 4
 
@@ -54,7 +54,12 @@
   - As a user, I want to be able to contact the website developers, so I created a way for developers to receive an email from the user.
 - Statistics handler to gather information about account
   - As a user, I want to see the statistics of my account, so I created a handler to get statistics such as thread/post counts and likes given/received
-
+- Implemented ability for a user to save sections, threads, and messages 
+  - As a user, I want to be able to save sections, threads, and messages to easily access, so I created tables in the database and handlers to manipulate the data to achieve this
+- Handlers to change a user's info including password, profile picture, classes, and majors
+  - As a user, I want to be able to change my info on my profile for others to see, so I will create handlers to change this info.
+- Handlers for manipulating user roles
+  - As a user, I want to see the roles of other users that are posting, so I will create handlers to retrieve this data.
 
 ---
 

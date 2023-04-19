@@ -1,6 +1,8 @@
 import "./ContactUs.cy";
 import "./ForgotPassword.cy";
 import "./Register.cy";
+import "./savesection.cy.ts";
+import "./search.cy.ts";
 import "./Section.cy";
 import "./Settings.cy";
 import "./SignIn.cy";

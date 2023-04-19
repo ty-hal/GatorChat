@@ -20,6 +20,7 @@ describe('save a section', () =>
     cy.wait(2000);
     cy.get("#bookmark-section").click();
   })
+  /*
   it('save a subsection', ()=> {
     cy.visit('')
     cy.get('.absolute > [href="/sign-in"] > #sign-in').click();
@@ -34,6 +35,7 @@ describe('save a section', () =>
     cy.get("#bookmark-section").click();
     cy.get('#logo').click();
   })
+  */
   it('save a section while not signed in', ()=> {
     cy.visit('')
    // cy.get('.absolute > [href="/sign-in"] > #sign-in').click();

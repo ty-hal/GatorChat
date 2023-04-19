@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "react-multivalue-text-input": "^2.4.0",
-    "react-search-autocomplete": "^8.3.2"
-  }
-}

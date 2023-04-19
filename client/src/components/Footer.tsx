@@ -35,7 +35,7 @@ const Footer = () => {
             <div>
               <Link to="/">
                 <span
-                  className="cursor-pointer font-medium text-gray-700 dark:text-gray-400"
+                  className="cursor-pointer font-medium text-gray-700 hover:opacity-75 dark:text-gray-400"
                   role="menuitem"
                   id="home"
                 >
@@ -46,7 +46,7 @@ const Footer = () => {
             <div>
               <Link to="/faq">
                 <span
-                  className="cursor-pointer font-medium text-gray-700 dark:text-gray-400"
+                  className="cursor-pointer font-medium text-gray-700 hover:opacity-75 dark:text-gray-400"
                   role="menuitem"
                   id="faq"
                 >
@@ -57,7 +57,7 @@ const Footer = () => {
             <div>
               <Link to="/contact-us">
                 <span
-                  className="cursor-pointer font-medium text-gray-700 dark:text-gray-400"
+                  className="cursor-pointer font-medium text-gray-700 hover:opacity-75 dark:text-gray-400"
                   role="menuitem"
                   id="contact-us"
                 >
@@ -68,7 +68,7 @@ const Footer = () => {
             <div>
               <Link to={userID === 0 ? "/sign-in" : "/settings"}>
                 <span
-                  className="cursor-pointer font-medium text-gray-700 dark:text-gray-400"
+                  className="cursor-pointer font-medium text-gray-700 hover:opacity-75 dark:text-gray-400"
                   role="menuitem"
                   id="settings"
                 >
@@ -80,7 +80,7 @@ const Footer = () => {
               {userID === 0 ? (
                 <Link
                   to="/register"
-                  className="cursor-pointer font-medium text-gray-700 dark:text-gray-400"
+                  className="cursor-pointer font-medium text-gray-700 hover:opacity-75 dark:text-gray-400"
                 >
                   {" "}
                   <span className="font-medium" id="register">
@@ -90,7 +90,7 @@ const Footer = () => {
               ) : (
                 <Link
                   to="/my-account"
-                  className="cursor-pointer font-medium text-gray-700 dark:text-gray-400"
+                  className="cursor-pointer font-medium text-gray-700 hover:opacity-75 dark:text-gray-400"
                 >
                   {" "}
                   <span className="font-medium" id="my-account">
@@ -103,7 +103,7 @@ const Footer = () => {
               {userID === 0 ? (
                 <Link
                   to="/sign-in"
-                  className="cursor-pointer font-medium text-gray-700 dark:text-gray-400"
+                  className="cursor-pointer font-medium text-gray-700 hover:opacity-75 dark:text-gray-400"
                 >
                   {" "}
                   <span className="font-medium" id="sign-in">
@@ -113,7 +113,7 @@ const Footer = () => {
               ) : (
                 <Link to="/">
                   <span
-                    className="cursor-pointer font-medium text-gray-700 dark:text-gray-400"
+                    className="cursor-pointer font-medium text-gray-700 hover:opacity-75 dark:text-gray-400"
                     id="sign-out"
                     onClick={signOut}
                   >

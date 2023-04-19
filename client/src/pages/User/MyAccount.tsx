@@ -92,7 +92,7 @@ const MyAccount = () => {
       <div className="mx-auto w-full pt-4 text-black dark:text-white sm:w-5/6 lg:w-2/3">
         {/* User Profile */}
         {loadedInfo && loadedStats ? (
-          <div className="mx-auto flex flex-col space-y-2 rounded-3xl  border border-gray-200 bg-gray-300 p-8 text-center dark:border-gray-700 dark:bg-gray-800">
+          <div className="mx-auto flex flex-col space-y-2 rounded-3xl  bg-gray-200 p-8 text-center shadow-md dark:bg-gray-800 dark:shadow-gray-700/40">
             {/* Username */}
             <div
               className="mx-auto text-2xl font-bold text-gray-900 dark:text-white"
@@ -234,25 +234,25 @@ const MyAccount = () => {
         {/* Thread and Messages Links*/}
         <div className="mt-8 flex justify-between md:justify-center md:space-x-6">
           <Link to="/my-account/my-threads">
-            <div className="rounded-xl border border-black bg-blue-600 p-2 font-medium text-white hover:bg-blue-500 dark:border-gray-600">
+            <div className="rounded-xl bg-blue-600 p-2 font-medium text-white hover:bg-blue-500 hover:shadow-sm hover:shadow-blue-600">
               {" "}
               My Threads
             </div>
           </Link>
           <Link to="/my-account/my-messages">
-            <div className="rounded-xl border border-black bg-blue-600 p-2 font-medium text-white hover:bg-blue-500 dark:border-gray-600">
+            <div className="rounded-xl  bg-blue-600 p-2 font-medium text-white hover:bg-blue-500 hover:shadow-sm hover:shadow-blue-600">
               {" "}
               My Messages
             </div>
           </Link>
           <Link to="/my-account/saved-threads">
-            <div className="rounded-xl border border-black bg-blue-600 p-2 font-medium text-white hover:bg-blue-500 dark:border-gray-600">
+            <div className="rounded-xl  bg-blue-600 p-2 font-medium text-white hover:bg-blue-500 hover:shadow-sm hover:shadow-blue-600">
               {" "}
               Saved Threads
             </div>
           </Link>
           <Link to="/my-account/saved-messages">
-            <div className="rounded-xl border border-black bg-blue-600 p-2 font-medium text-white hover:bg-blue-500 dark:border-gray-600">
+            <div className="rounded-xl  bg-blue-600 p-2 font-medium text-white hover:bg-blue-500 hover:shadow-sm hover:shadow-blue-600">
               {" "}
               Saved Messages
             </div>

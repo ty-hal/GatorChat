@@ -133,7 +133,7 @@ const SignIn = () => {
       <div className="mx-auto w-11/12 rounded-lg bg-white shadow dark:border dark:border-gray-700 dark:bg-gray-800 sm:w-full sm:max-w-md md:mt-0 xl:p-0">
         <div className="space-y-4 p-6 shadow sm:p-8 md:space-y-6">
           <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
-            Sign into your account
+            Sign in to your account
           </h1>
           <form className="space-y-4" onSubmit={submit}>
             {/* Email */}

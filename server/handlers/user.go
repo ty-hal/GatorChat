@@ -442,7 +442,7 @@ func SignIn(w http.ResponseWriter, r *http.Request) {
 
 	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
 		Issuer:    strconv.Itoa(int(user.UserID)),
-		ExpiresAt: time.Now().Add(time.Hour * 24).Unix(), //1 day
+		ExpiresAt: time.Now().Add(time.Hour * 24).Unix(), // 1 day
 	})
 
 	token, err := claims.SignedString([]byte(SecretKey))

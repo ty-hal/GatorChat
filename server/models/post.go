@@ -66,7 +66,7 @@ func GetPostByID(postID uint8) (Post, error) {
 func GetAllPostsWithOffset(pageNumber int, pageSize int, thread_id int) []Post {
 	var posts []Post
 
-	middleware.DB.Order("updated_at DESC").Where("thread_id = ?", thread_id).Offset((pageNumber - 1) * pageSize).Limit(pageSize).Find(&posts)
+	middleware.DB.Order("updated_at ASC").Where("thread_id = ?", thread_id).Offset((pageNumber - 1) * pageSize).Limit(pageSize).Find(&posts)
 
 	return posts
 }

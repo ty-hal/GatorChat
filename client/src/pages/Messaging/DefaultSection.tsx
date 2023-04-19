@@ -20,7 +20,6 @@ const DefaultSection: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
   }, [parent_section]);
 
   const pathname = location.pathname;
-  console.log("Pathname: " + pathname);
   let section_id = "0";
   let section_name = "";
   let thread_id = "0";
@@ -47,10 +46,6 @@ const DefaultSection: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
       section_id = match[1];
       section_name = match[2];
     }
-    // console.log(
-    //   "Section ID: " + section_id + "  Section Name: " + section_name
-    // );
-    // console.log("Thread ID: " + thread_id + "  Thread Name: " + thread_name);
 
     // Return (render) the Thread
     return (
@@ -90,8 +85,6 @@ const DefaultSection: React.FC<Props> = ({ activeUserID, checkedCookie }) => {
   } else {
     section_name = match[1];
   }
-
-  // console.log("Section ID: " + section_id + "  Section Name: " + section_name);
 
   return (
     <Section

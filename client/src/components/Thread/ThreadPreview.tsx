@@ -208,7 +208,6 @@ const Thread: React.FC<Props> = ({
 
   // Edit thread
   const editThread = () => {
-    console.log(title, content);
     toggleEdit(false);
 
     const threadRequest: threadBody = {
@@ -222,16 +221,12 @@ const Thread: React.FC<Props> = ({
         "content-type": "application/json",
       },
       body: JSON.stringify(threadRequest),
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          window.location.reload();
-          return response.json();
-        }
-      })
-      .then((data) => {
-        // console.log(data);
-      });
+    }).then((response) => {
+      if (response.status === 200) {
+        window.location.reload();
+        return response.json();
+      }
+    });
   };
   const likeThread = () => {
     fetch(
@@ -268,11 +263,10 @@ const Thread: React.FC<Props> = ({
       .then((response) => response.json())
       .then((data) => {
         // Reload page when saving in account page
-        console.log(window.location.pathname === "/my-account/saved-threads")
-        if (window.location.pathname === "/my-account/saved-threads" ||
+        if (
+          window.location.pathname === "/my-account/saved-threads" ||
           window.location.pathname === "/my-account/saved-messages"
         ) {
-          console.log("here")
           window.location.reload();
         }
       });
@@ -291,7 +285,6 @@ const Thread: React.FC<Props> = ({
       id="container"
       onClick={(e) => {
         setShowDropdown(false);
-        console.log(`Open thread ${thread_id}`);
         // Navigate to the thread
         let path = location.pathname;
         if (path.includes("my-account")) {

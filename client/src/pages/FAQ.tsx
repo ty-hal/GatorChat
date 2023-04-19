@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Accordion from "../components/FAQsAccordion";
+import Footer from "../components/Footer";
 
 const FAQ = () => {
   const [index, setIndex] = useState(0);
@@ -27,37 +28,37 @@ const FAQ = () => {
       id: 4,
       question: "How do I navigate the website?",
       answer:
-        "The website is organized into forums and threads. You can access different forums by clicking on the links at the top of the page. Within each forum, you will find various threads that you can participate in.",
+        "The website is organized into sections and threads. You can access different sections by clicking on them on the home page. Within each section, you will find various sub-sections or threads that you can communicate and engage in.",
     },
     {
       id: 5,
-      question: "How do I start a new thread?",
+      question: "How do I create a new thread?",
       answer:
-        "To start a new thread, click on the 'New Thread' button within the forum you would like to post in. Enter a question and message for your thread, and click 'Post'.",
+        "To create a new thread, click on the 'Create a thread' button within the section you would like to post in. Enter a title and message for your thread, and click 'Create thread'.",
     },
     {
       id: 6,
       question: "How do I post a reply to a thread?",
       answer:
-        "To post a reply to a thread, click on the thread you would like to reply to. Enter your message in the text box provided and click 'Post Reply'.",
+        "To post a reply to a thread, click on the thread you would like to reply to. Enter your message in the text box at the bottom of the thread and click the blue submit button.",
     },
     {
       id: 7,
-      question: "How do I edit or delete my post?",
+      question: "How do I edit or delete my thread or message?",
       answer:
-        "To edit or delete a post, click on the post you would like to edit or delete. Click on 'Edit' or 'Delete' button on the top right corner of the post.",
+        "To edit or delete your thread or message, click on the three dots at the bottom of the thread or message. Then click on 'Edit' or 'Delete'.",
     },
     {
       id: 8,
       question: "How do I report a post?",
       answer:
-        "To report a post, click on the post you would like to report. Click on the 'Report' button on the top right corner of the post.",
+        "To report a post, click on the three dots at the bottom of the post you would like to report. Then click on the 'Report'.",
     },
     {
       id: 9,
-      question: "How do I contact the website administrator?",
+      question: "How do I contact the website administrators?",
       answer:
-        "You can contact the website administrator by clicking on the 'Contact Us' button on the homepage. Fill out the contact form with your name, email address, and message, and click 'Submit'.",
+        "You can contact the website administrators by clicking on the 'Contact Us' button on the footer of the website. Fill out the contact form with your name, email address, and message, and click 'Submit'.",
     },
     {
       id: 10,
@@ -72,7 +73,7 @@ const FAQ = () => {
       <h1 className="pt-4 text-center text-4xl font-semibold leading-tight tracking-tight text-gray-900 dark:text-white">
         Frequently Asked Questions
       </h1>
-      <div className="flex h-auto flex-col items-center rounded-xl p-10">
+      <div className="flex h-auto flex-col items-center rounded-xl py-6">
         {FAQs.map((FAQs) => {
           return (
             <Accordion
@@ -87,6 +88,7 @@ const FAQ = () => {
           );
         })}
       </div>
+      <Footer />
     </div>
   );
 };

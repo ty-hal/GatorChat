@@ -33,9 +33,15 @@ const Footer = () => {
         <div className="mx-auto mt-8 border-t border-gray-300 dark:border-gray-800 sm:flex lg:items-start lg:gap-8">
           <div className="mt-8 flex w-full justify-between text-xs sm:text-sm md:text-base">
             <div>
-              <p className="cursor-pointer font-medium text-gray-700 dark:text-gray-400">
-                About
-              </p>
+              <Link to="/">
+                <span
+                  className="cursor-pointer font-medium text-gray-700 dark:text-gray-400"
+                  role="menuitem"
+                  id="home"
+                >
+                  Home
+                </span>
+              </Link>
             </div>
             <div>
               <Link to="/faq">
@@ -45,17 +51,6 @@ const Footer = () => {
                   id="faq"
                 >
                   FAQs
-                </span>
-              </Link>
-            </div>
-            <div>
-              <Link to={userID === 0 ? "/sign-in" : "/settings"}>
-                <span
-                  className="cursor-pointer font-medium text-gray-700 dark:text-gray-400"
-                  role="menuitem"
-                  id="settings"
-                >
-                  Settings
                 </span>
               </Link>
             </div>
@@ -71,27 +66,15 @@ const Footer = () => {
               </Link>
             </div>
             <div>
-              {userID === 0 ? (
-                <Link
-                  to="/sign-in"
+              <Link to={userID === 0 ? "/sign-in" : "/settings"}>
+                <span
                   className="cursor-pointer font-medium text-gray-700 dark:text-gray-400"
+                  role="menuitem"
+                  id="settings"
                 >
-                  {" "}
-                  <span className="font-medium" id="sign-in">
-                    Sign in
-                  </span>
-                </Link>
-              ) : (
-                <Link to="/">
-                  <span
-                    className="cursor-pointer font-medium text-gray-700 dark:text-gray-400"
-                    id="sign-out"
-                    onClick={signOut}
-                  >
-                    Sign out
-                  </span>
-                </Link>
-              )}
+                  Settings
+                </span>
+              </Link>
             </div>
             <div>
               {userID === 0 ? (
@@ -112,6 +95,29 @@ const Footer = () => {
                   {" "}
                   <span className="font-medium" id="my-account">
                     My Account
+                  </span>
+                </Link>
+              )}
+            </div>
+            <div>
+              {userID === 0 ? (
+                <Link
+                  to="/sign-in"
+                  className="cursor-pointer font-medium text-gray-700 dark:text-gray-400"
+                >
+                  {" "}
+                  <span className="font-medium" id="sign-in">
+                    Sign in
+                  </span>
+                </Link>
+              ) : (
+                <Link to="/">
+                  <span
+                    className="cursor-pointer font-medium text-gray-700 dark:text-gray-400"
+                    id="sign-out"
+                    onClick={signOut}
+                  >
+                    Sign out
                   </span>
                 </Link>
               )}

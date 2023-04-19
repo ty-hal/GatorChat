@@ -30,7 +30,6 @@ const SectionPreview: React.FC<Props> = ({
       className="relative m-2 cursor-pointer rounded-2xl border-2 border-gray-500 bg-gray-200 p-2 text-center text-lg font-normal text-gray-900 shadow-md hover:border-blue-600  dark:bg-gray-800 dark:text-white"
       id="section-preview"
       onClick={(e) => {
-        console.log(`Open section ${section_id}`);
         // Navigate to the section
         let path = location.pathname;
         if (path === "/") {

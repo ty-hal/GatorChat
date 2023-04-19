@@ -57,12 +57,12 @@ const Accordion: React.FC<Props> = ({
       <div
         id={`question-${id}`}
         onClick={() => handleSetIndex(id)}
-        className="group mx-auto mt-4 flex h-16 w-full cursor-pointer  items-center justify-between rounded-md bg-gray-800 p-2 shadow-xl first:mt-0 dark:bg-gray-100 md:w-4/5 md:text-lg 2xl:w-3/4 "
+        className="group mx-auto mt-4 flex h-16 w-full cursor-pointer  items-center justify-between rounded-md bg-gray-600 p-2 shadow-xl first:mt-0 dark:bg-gray-100 md:w-4/5 md:text-lg 2xl:w-3/4 "
       >
         <div className="group flex cursor-pointer ">
           <div
             id={`question-${id}`}
-            className="pl-4 font-bold text-white group-hover:text-blue-500 dark:text-gray-900  md:pl-10"
+            className="pl-4 font-bold text-white group-hover:text-blue-500 dark:text-gray-900 dark:group-hover:text-blue-600  md:pl-10"
             onClick={() => {}}
           >
             {question}

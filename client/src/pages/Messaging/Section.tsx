@@ -337,7 +337,7 @@ const Section: React.FC<Props> = ({
                   {userClass ? (
                     <div
                       className="ml-auto w-32 cursor-pointer rounded-xl border border-red-500 bg-red-600 py-1 text-center font-medium hover:bg-red-500 dark:text-white"
-                      title="Remove this class to your account"
+                      title="Remove this class from your account"
                     >
                       Remove class
                     </div>

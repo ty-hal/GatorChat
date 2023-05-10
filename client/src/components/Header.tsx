@@ -5,9 +5,9 @@ import { darkModeAtom, userIDAtom } from "../App";
 import ProfilePicture from "../components/ProfilePicture";
 
 const Header = () => {
+  const [listening, setListening] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
-  const [listening, setListening] = useState(false);
 
   // Creates event listener to toggle dropdown menu
   useEffect(() => {
